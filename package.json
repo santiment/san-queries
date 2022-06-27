@@ -26,7 +26,7 @@
     "validate:errors": "yarn validate --threshold error",
     "lib:prepare": "node scripts/prepare.js && tsc --p ./scripts/tsconfig.json && node scripts/cleanup.js",
     "lib": "npm run lib:prepare && node scripts/lib.js",
-    "install": "npm run lib",
+    "-install": "npm run lib",
     "postinstall": "patch-package",
     "prepare": "husky install"
   },
@@ -48,9 +48,13 @@
     "vite-plugin-ts-checker": "^0.1.5"
   },
   "dependencies": {
+    "san-webkit": "https://github.com/santiment/san-webkit#ef0819e",
     "svelte-preprocess": "^4.7.4",
     "svelte-preprocess-cssmodules": "https://github.com/DmitriVanGuard/svelte-preprocess-cssmodules#3b24f22",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "phoenix": "^1.6.6"
   },
-  "peerDependencies": {}
+  "peerDependencies": {
+    "san-webkit": "https://github.com/santiment/san-webkit.git"
+  }
 }
