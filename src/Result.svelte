@@ -1,6 +1,7 @@
 <script>
   import Svg from 'webkit/ui/Svg/svelte'
   import RowPanels from './RowPanels.svelte'
+  import Table from './Table/index.svelte'
 </script>
 
 <div class="body-2">Query results</div>
@@ -14,6 +15,8 @@
         <button class="action btn-3"><Svg id="fullscreen" w="14" /></button>
       </div>
     </div>
+
+    <Table />
   </svelte:fragment>
 
   <svelte:fragment slot="right">

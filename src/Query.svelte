@@ -4,7 +4,7 @@
 
 <RowPanels class="mrg-xl mrg--t mrg--b">
   <svelte:fragment slot="left">
-    <textarea name="" id="" cols="30" rows="10" />
+    <textarea name="" id="" cols="30" rows="10" value="SELECT * FROM intraday_metrics LIMIT 20" />
   </svelte:fragment>
 
   <svelte:fragment slot="right">
