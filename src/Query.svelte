@@ -16,12 +16,25 @@
         Avg. running time <b>1 min</b>
       </div>
     </div>
+
+    <div class="scroll">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui maiores ipsum non eaque dicta est
+      excepturi molestias distinctio quos ducimus tenetur commodi nobis corrupti eum enim eveniet,
+      harum tempora fugit voluptatum! Quia laudantium sapiente sit fugit voluptatum dolores vitae
+      cupiditate officia tempora, adipisci, cumque libero repudiandae et a tempore quo quis quasi
+      consequuntur maxime, quos voluptatem ratione facere possimus. Repellat delectus et consequatur
+      dolores rem explicabo ut illum, placeat sed dicta ipsa sequi magnam optio fugit rerum sit
+      totam maxime? Aliquid fugiat, incidunt repudiandae aperiam pariatur maiores corporis omnis
+      accusamus praesentium fuga rem nam aliquam natus minima, quisquam adipisci odio?
+    </div>
   </svelte:fragment>
 </RowPanels>
 
 <style>
   textarea {
     resize: none;
+    width: 100%;
+    height: 100%;
   }
 
   b {
@@ -30,5 +43,9 @@
 
   button {
     padding: 6px 31px;
+  }
+
+  .scroll {
+    margin: 12px -16px 0 0;
   }
 </style>

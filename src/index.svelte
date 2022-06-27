@@ -24,13 +24,14 @@
 <main>
   <div class="row v-center">
     <CreationInfo
+      fallback="Unsaved dashboard"
       type={CreationType.Layout}
       {id}
       {title}
       {user}
       {votes}
       currentUser={null}
-      editLabel={isAuthor ? 'Edit layout' : 'Save as'}
+      editLabel={isAuthor ? 'Edit dashboard' : 'Save as'}
       comments={{
         count: commentsCount,
         active: false, // $Sidewidget === SidewidgetType.LAYOUT_COMMENTS,
