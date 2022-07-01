@@ -43,7 +43,7 @@
     </CreationInfo>
 
     <button class="btn mrg-a mrg--l row v-center">
-      <Svg id="close" w="16" class="mrg-s mrg--r" />
+      <Svg id="copy" w="16" class="mrg-s mrg--r" />
       Duplicate</button>
     <button class="btn mrg-xl mrg--l row v-center">
       <Svg id="share-dots" w="14" h="16" class="mrg-s mrg--r" />

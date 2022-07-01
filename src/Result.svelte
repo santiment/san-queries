@@ -47,6 +47,6 @@
   }
 
   .scroll {
-    --max-height: 300px;
+    --max-height: 522px;
   }
 </style>
