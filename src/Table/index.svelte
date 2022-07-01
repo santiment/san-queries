@@ -1,14 +1,16 @@
 <script>
   import Table from 'webkit/ui/Table/Paged.svelte'
 
-  const columns = [
+  export let headers = []
+
+  $: columns = [
     {
-      title: 'Price',
+      title: headers[0],
       format: ({ value }) => '$' + value,
       sortAccessor: ({ value }) => value,
     },
     {
-      title: 'Tokens',
+      title: headers[1],
       format: ({ volume }) => volume + ' VOL',
       sortAccessor: ({ volume }) => volume,
     },
