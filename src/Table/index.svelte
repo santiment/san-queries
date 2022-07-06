@@ -1,21 +1,22 @@
 <script>
   import Table from 'webkit/ui/Table/Paged.svelte'
 
-  export let headers = []
+  export let columns = []
 
-  $: columns = [
-    {
-      title: headers[0],
-      format: ({ value }) => '$' + value,
-      sortAccessor: ({ value }) => value,
-    },
-    {
-      title: headers[1],
-      format: ({ volume }) => volume + ' VOL',
-      sortAccessor: ({ volume }) => volume,
-    },
-  ]
+  // $: columns = [
+  // {
+  // title: headers[0],
+  // format: ({ value }) => '$' + value,
+  // sortAccessor: ({ value }) => value,
+  // },
+  // {
+  // title: headers[1],
+  // format: ({ volume }) => volume + ' VOL',
+  // sortAccessor: ({ volume }) => volume,
+  // },
+  // ]
 
+  /*
   const ITEMS = [
     { value: 300, volume: 2000 },
     { value: 100, volume: 4000 },
@@ -23,6 +24,15 @@
     { value: 50, volume: 1000 },
     { value: 2000, volume: 30 },
     { value: 150, volume: 5000 },
+  ]
+  */
+  const ITEMS = [
+    [300, 2000],
+    [100, 4000],
+    [800, 90],
+    [50, 1000],
+    [2000, 30],
+    [150, 5000],
   ]
 
   const items = ITEMS.concat(ITEMS)
@@ -48,6 +58,7 @@
     margin: 16px -16px 0;
     max-height: 392px;
     overflow: auto;
+    flex: 1;
 
     &:global {
       th {

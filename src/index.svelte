@@ -22,7 +22,7 @@
 </script>
 
 <main>
-  <div class="row v-center">
+  <div class="row v-center mrg-xl mrg--b">
     <CreationInfo
       fallback="Unsaved dashboard"
       type={CreationType.Layout}

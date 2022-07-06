@@ -4,13 +4,15 @@
 </script>
 
 <div class="row {className}">
-  <div class="border fluid">
+  <div class="border fluid column">
     <slot name="left" />
   </div>
 
-  <div class="border right mrg-s mrg--l">
-    <slot name="right" />
-  </div>
+  {#if $$slots.right}
+    <div class="border right mrg-s mrg--l">
+      <slot name="right" />
+    </div>
+  {/if}
 </div>
 
 <style lang="scss">

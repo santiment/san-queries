@@ -6,14 +6,18 @@
   import Chart from './Chart/index.svelte'
   import Visualizations from './Visualizations.svelte'
   import Field from './Field.svelte'
+  import FormatOption from './Result/Options/Format.svelte'
 
   let visualization = {
     type: 'table',
     title: 'My table',
   }
 
-  const columns = ['title', 'volume']
-  $: headers = columns.slice()
+  const headers = ['title', 'volume']
+  $: columns = headers.map((title, i) => {
+    const accessor = (data) => data[i]
+    return { title, accessor, format: accessor, sortAccessor: accessor }
+  })
 </script>
 
 <div class="row v-center">
@@ -36,7 +40,7 @@
     </div>
 
     {#if visualization.type === 'table'}
-      <Table {headers} />
+      <Table {columns} />
     {:else}
       <Chart />
     {/if}
@@ -49,27 +53,12 @@
       <Field title="Table name" placeholder="My table" bind:value={visualization.title} />
 
       {#each columns as column, i}
-        <Field title={`Column ${i}: ${column}`} placeholder={column} bind:value={headers[i]} />
+        <Field
+          title={`Column ${i}: Title - ${headers[i]}`}
+          placeholder={headers[i]}
+          bind:value={column.title} />
+        <FormatOption {i} bind:column={columns[i]} />
       {/each}
-
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui maiores ipsum non eaque dicta est
-      excepturi molestias distinctio quos ducimus tenetur commodi nobis corrupti eum enim eveniet,
-      harum tempora fugit voluptatum! Quia laudantium sapiente sit fugit voluptatum dolores vitae
-      cupiditate officia tempora, adipisci, cumque libero repudiandae et a tempore quo quis quasi
-      consequuntur maxime, quos voluptatem ratione facere possimus. Repellat delectus et consequatur
-      dolores rem explicabo ut illum, placeat sed dicta ipsa sequi magnam optio fugit rerum sit
-      totam maxime? Aliquid fugiat, incidunt repudiandae aperiam pariatur maiores corporis omnis
-      accusamus praesentium fuga rem nam aliquam natus minima, quisquam adipisci odio? cupiditate
-      officia tempora, adipisci, cumque libero repudiandae et a tempore quo quis quasi consequuntur
-      maxime, quos voluptatem ratione facere possimus. Repellat delectus et consequatur dolores rem
-      explicabo ut illum, placeat sed dicta ipsa sequi magnam optio fugit rerum sit totam maxime?
-      Aliquid fugiat, incidunt repudiandae aperiam pariatur maiores corporis omnis accusamus
-      praesentium fuga rem nam aliquam natus minima, quisquam adipisci odio? cupiditate officia
-      tempora, adipisci, cumque libero repudiandae et a tempore quo quis quasi consequuntur maxime,
-      quos voluptatem ratione facere possimus. Repellat delectus et consequatur dolores rem
-      explicabo ut illum, placeat sed dicta ipsa sequi magnam optio fugit rerum sit totam maxime?
-      Aliquid fugiat, incidunt repudiandae aperiam pariatur maiores corporis omnis accusamus
-      praesentium fuga rem nam aliquam natus minima, quisquam adipisci odio?
     </div>
   </svelte:fragment>
 </RowPanels>
