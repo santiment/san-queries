@@ -1,12 +1,12 @@
 <script>
+  import { downloadCsv } from 'webkit/utils/csv'
   import Svg from 'webkit/ui/Svg/svelte'
   import NewVisualization from './NewVisualization.svelte'
   import RowPanels from './RowPanels.svelte'
   import Table from './Table/index.svelte'
   import Chart from './Chart/index.svelte'
   import Visualizations from './Visualizations.svelte'
-  import Field from './Field.svelte'
-  import FormatOption from './Result/Options/Format.svelte'
+  import Options from './Result/Options/index.svelte'
 
   let visualization = {
     type: 'table',
@@ -18,6 +18,33 @@
     const accessor = (data) => data[i]
     return { title, accessor, format: accessor, sortAccessor: accessor }
   })
+
+  const ITEMS = [
+    [300, 2000],
+    [100, 4000],
+    [800, 90],
+    [50, 1000],
+    [2000, 30],
+    [150, 5000],
+  ]
+
+  const data = ITEMS.concat(ITEMS)
+    .concat(ITEMS)
+    .concat(ITEMS)
+    .concat(ITEMS)
+    .concat(ITEMS)
+    .concat(ITEMS)
+    .concat(ITEMS)
+    .concat(ITEMS)
+    .map((v, i) => {
+      v.id = i
+      return { ...v }
+    })
+
+  function onDownload() {
+    console.log(visualization)
+    downloadCsv(visualization.title, columns, data)
+  }
 </script>
 
 <div class="row v-center">
@@ -34,47 +61,26 @@
       <div class="body-2 mrg-a mrg--r">{visualization.title}</div>
 
       <div class="row">
-        <button class="action btn-3"><Svg id="download" w="17" /></button>
+        <button class="action btn-3" on:click={onDownload}><Svg id="download" w="17" /></button>
         <button class="action btn-3"><Svg id="fullscreen" w="14" /></button>
       </div>
     </div>
 
     {#if visualization.type === 'table'}
-      <Table {columns} />
+      <Table {columns} {data} />
     {:else}
       <Chart />
     {/if}
   </svelte:fragment>
 
   <svelte:fragment slot="right">
-    <h3 class="body-2">Options</h3>
-
-    <div class="scroll">
-      <Field title="Table name" placeholder="My table" bind:value={visualization.title} />
-
-      {#each columns as column, i}
-        <Field
-          title={`Column ${i}: Title - ${headers[i]}`}
-          placeholder={headers[i]}
-          bind:value={column.title} />
-        <FormatOption {i} bind:column={columns[i]} />
-      {/each}
-    </div>
+    <Options bind:visualization bind:columns {headers} />
   </svelte:fragment>
 </RowPanels>
 
 <style>
-  h3 {
-    border-bottom: 1px solid var(--porcelain);
-    padding: 0 0 16px;
-  }
-
   .action {
     --fill: var(--waterloo);
     margin-left: 8px;
-  }
-
-  .scroll {
-    --max-height: 446px;
   }
 </style>

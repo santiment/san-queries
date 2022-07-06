@@ -10,17 +10,19 @@
   function newVisualization() {}
 </script>
 
-<Tooltip on="click" position="bottom" bind:isOpened>
-  <button slot="trigger" class="btn-2 {className}"
-    >Create new visualization
-    <Svg id="arrow-down" w="8" h="5" class="mrg-xl mrg--l" />
-  </button>
+<div class="relative {className}">
+  <Tooltip on="click" position="bottom" class="$style.tooltip" bind:isOpened>
+    <button slot="trigger" class="btn-2"
+      >Create new visualization
+      <Svg id="arrow-down" w="8" h="5" class="mrg-xl mrg--l" />
+    </button>
 
-  <div slot="tooltip" class="tooltip column">
-    <button class="btn-ghost" on:click={() => newVisualization('')}>Table</button>
-    <button class="btn-ghost" on:click={() => newVisualization('')}>Chart</button>
-  </div>
-</Tooltip>
+    <div slot="tooltip" class="column">
+      <button class="btn-ghost" on:click={() => newVisualization('')}>Table</button>
+      <button class="btn-ghost" on:click={() => newVisualization('')}>Chart</button>
+    </div>
+  </Tooltip>
+</div>
 
 <style>
   button {
@@ -30,6 +32,6 @@
 
   .tooltip {
     padding: 8px;
-    width: 150px;
+    width: 100%;
   }
 </style>

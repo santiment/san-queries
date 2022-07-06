@@ -2,6 +2,7 @@
   import Table from 'webkit/ui/Table/Paged.svelte'
 
   export let columns = []
+  export let data
 
   // $: columns = [
   // {
@@ -26,30 +27,9 @@
     { value: 150, volume: 5000 },
   ]
   */
-  const ITEMS = [
-    [300, 2000],
-    [100, 4000],
-    [800, 90],
-    [50, 1000],
-    [2000, 30],
-    [150, 5000],
-  ]
-
-  const items = ITEMS.concat(ITEMS)
-    .concat(ITEMS)
-    .concat(ITEMS)
-    .concat(ITEMS)
-    .concat(ITEMS)
-    .concat(ITEMS)
-    .concat(ITEMS)
-    .concat(ITEMS)
-    .map((v, i) => {
-      v.id = i
-      return { ...v }
-    })
 </script>
 
-<Table {items} {columns} keyProp="id" class="$style.table" sticky />
+<Table items={data} {columns} keyProp="id" class="$style.table" sticky />
 
 <style lang="scss">
   .table {

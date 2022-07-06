@@ -9,7 +9,7 @@
   </div>
 
   {#if $$slots.right}
-    <div class="border right mrg-s mrg--l">
+    <div class="right border column mrg-s mrg--l">
       <slot name="right" />
     </div>
   {/if}
