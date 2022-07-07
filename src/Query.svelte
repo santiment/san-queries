@@ -5,7 +5,7 @@
 </script>
 
 <div class="controls row mrg-l mrg--b">
-  <button class="btn-1 btn--s btn--accent row v-center mrg-s mrg--r">
+  <button class="btn-1 btn--s row v-center mrg-s mrg--r">
     <Svg id="time" w="16" class="mrg-s mrg--r" />
     Execute</button>
 

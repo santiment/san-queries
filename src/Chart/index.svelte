@@ -1,59 +1,32 @@
 <script>
-  import { themes } from 'studio/Chart/theme'
   import { getMetricNodes } from 'studio/Chart/nodes'
-  import Chart from 'studio/Chart/index.svelte'
-  import Lines from 'studio/Chart/Lines.svelte'
-  import Axes from 'studio/Chart/Axes/index.svelte'
-  import Tooltip from 'studio/Chart/Tooltip/index.svelte'
-  import { FORMATTER } from 'studio/metrics/formatters'
-  import { newChartColors } from 'studio/Chart/colors'
+  import Chart from './Chart.svelte'
+  import { newChartColors, newHighlightedColors } from 'studio/Chart/colors'
+  import Metrics from './Metrics.svelte'
 
   export let columns
   export let data
 
-  $: metrics = columns.map((column, i) => ({ key: i, node: 'line' }))
+  $: metrics = columns.map((column, i) => ({
+    key: i.toString(),
+    label: column.title,
+    node: 'line',
+  }))
 
-  $: theme = themes[0] // +$globals.isNightMode]
   $: chartData = data.map((v) => ({ ...v, datetime: v.id }))
   $: categories = getMetricNodes(metrics, {})
 
-  $: colors = newChartColors(metrics)
+  $: rawColors = newChartColors(metrics)
+  $: colors = rawColors
 
-  $: metricSettings = getTooltipSettings(columns)
+  $: console.log(data, categories, colors)
 
-  function getTooltipSettings(columns) {
-    const metricSettings = {
-      datetime: {
-        formatter: (value) => {
-          return value
-        },
-      },
-    }
-
-    columns.forEach((column, i) => {
-      const { key, formatter = FORMATTER, title, axisFormatter } = column
-
-      metricSettings[i] = Object.assign({
-        label: title,
-        formatter,
-        axisFormatter,
-      })
-    })
-
-    return metricSettings
+  function onMetricHover(metric) {
+    console.log(metric)
+    colors = metric ? newHighlightedColors(rawColors, metric) : rawColors
   }
-
-  $: axesMetricKeys = [0, 1]
-
-  $: console.log(data, categories, colors, metricSettings)
 </script>
 
-<Chart data={chartData} {categories} {theme} {colors}>
-  <Lines />
+<Metrics {metrics} {colors} {onMetricHover} />
 
-  <Axes {axesMetricKeys} {metricSettings} xTicks={10} />
-
-  {#if process.browser}
-    <Tooltip {axesMetricKeys} {metricSettings} isShiftForced />
-  {/if}
-</Chart>
+<Chart data={chartData} {metrics} {colors} />
