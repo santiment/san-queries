@@ -2,7 +2,7 @@
   export let color = '#ff0000'
 </script>
 
-<button class="btn row v-center" style="--b-color:{color}" on:mouseenter on:mouseleave>
+<button class="btn row v-center" style="--b-color:{color}" on:click on:mouseenter on:mouseleave>
   <div class="color" />
   <slot />
 </button>

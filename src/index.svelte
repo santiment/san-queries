@@ -25,7 +25,7 @@
 <div class="row">
   <Sidebar />
 
-  <main>
+  <main class="column">
     <div class="row v-center mrg-xl mrg--b">
       <CreationInfo
         fallback="Unsaved dashboard"
@@ -65,6 +65,7 @@
     padding: 24px 16px;
     background: var(--athens);
     min-height: 100vh;
+    flex: 1;
   }
 
   button {

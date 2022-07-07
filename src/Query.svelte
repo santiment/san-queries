@@ -1,21 +1,20 @@
 <script>
   import Svg from 'webkit/ui/Svg/svelte'
-  import Parameter from './Parameter.svelte'
+  import Parameters from './Query/Parameters.svelte'
   import RowPanels from './RowPanels.svelte'
+  import { showParameterDialog } from './ParameterDialog.svelte'
 </script>
 
 <div class="row mrg-l mrg--b">
   <div class="controls row">
-    <button class="btn-1 btn--s row v-center mrg-s mrg--r">
+    <button class="btn-1 btn--s row v-center mrg-m mrg--r">
       <Svg id="time" w="16" class="mrg-s mrg--r" />
       Execute</button>
 
-    {#each [0, 0, 0, 0, 0, 0, 0] as _}
-      <Parameter />
-    {/each}
+    <Parameters />
   </div>
 
-  <button class="add btn row v-center mrg-a mrg--l nowrap">
+  <button class="add btn row v-center mrg-a mrg--l nowrap" on:click={() => showParameterDialog()}>
     <Svg id="braces" w="16" class="mrg-s mrg--r" />
     Add parameter</button>
 </div>

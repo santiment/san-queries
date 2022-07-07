@@ -55,7 +55,7 @@
   <NewVisualization />
 </div>
 
-<RowPanels class="mrg-l mrg--t">
+<RowPanels class="$style.result mrg-l mrg--t">
   <svelte:fragment slot="left">
     <div class="row v-center">
       <div class="body-2 mrg-a mrg--r">{visualization.title}</div>
@@ -79,6 +79,10 @@
 </RowPanels>
 
 <style>
+  .result {
+    flex: 1;
+  }
+
   .action {
     --fill: var(--waterloo);
     margin-left: 8px;

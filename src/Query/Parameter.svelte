@@ -1,9 +1,14 @@
 <script>
   import Svg from 'webkit/ui/Svg/svelte'
   import ColorBorder from '@/ColorBorder.svelte'
+  import { showParameterDialog } from '@/ParameterDialog.svelte'
+
+  export let color
 </script>
 
-<ColorBorder>
+<ColorBorder
+  {color}
+  on:click={() => showParameterDialog({ parameter: { name: 'Name/Address', value: 'Value' } })}>
   Name/Address:
   <span class="c-waterloo mrg-s mrg--l">Value</span>
 
@@ -13,7 +18,7 @@
   </div>
  -->
 
-  <div class="delete btn" on:click={() => console.log(123)}>
+  <div class="delete btn" on:click|stopPropagation={() => console.log(123)}>
     <Svg id="cross" w="8" />
   </div>
 </ColorBorder>
