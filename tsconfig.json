@@ -32,6 +32,8 @@
       "@/*": ["src/*"],
       "webkit/*": ["node_modules/san-webkit/lib/*"],
       "webkit": ["node_modules/san-webkit/lib"],
+      "studio/*": ["node_modules/san-studio/lib/*"],
+      "studio": ["node_modules/san-studio/lib"],
       "san-chart/*": ["node_modules/@santiment-network/chart/*"],
       "san-chart": ["node_modules/@santiment-network/chart"]
     }

@@ -48,13 +48,16 @@
     "vite-plugin-ts-checker": "^0.1.5"
   },
   "dependencies": {
+    "@santiment-network/chart": "^0.10.12",
     "san-webkit": "https://github.com/santiment/san-webkit#ef0819e",
+    "san-studio": "https://github.com/santiment/san-studio#43f2aca",
     "svelte-preprocess": "^4.7.4",
     "svelte-preprocess-cssmodules": "https://github.com/DmitriVanGuard/svelte-preprocess-cssmodules#3b24f22",
     "typescript": "^4.7.4",
     "phoenix": "^1.6.6"
   },
   "peerDependencies": {
-    "san-webkit": "https://github.com/santiment/san-webkit.git"
+    "san-webkit": "https://github.com/santiment/san-webkit.git",
+    "san-studio": "https://github.com/santiment/san-studio.git"
   }
 }

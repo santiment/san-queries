@@ -69,7 +69,7 @@
     {#if visualization.type === 'table'}
       <Table {columns} {data} />
     {:else}
-      <Chart />
+      <Chart {columns} {data} />
     {/if}
   </svelte:fragment>
 
