@@ -4,14 +4,20 @@
   import RowPanels from './RowPanels.svelte'
 </script>
 
-<div class="controls row mrg-l mrg--b">
-  <button class="btn-1 btn--s row v-center mrg-s mrg--r">
-    <Svg id="time" w="16" class="mrg-s mrg--r" />
-    Execute</button>
+<div class="row mrg-l mrg--b">
+  <div class="controls row">
+    <button class="btn-1 btn--s row v-center mrg-s mrg--r">
+      <Svg id="time" w="16" class="mrg-s mrg--r" />
+      Execute</button>
 
-  {#each [0, 0, 0, 0, 0, 0, 0] as _}
-    <Parameter />
-  {/each}
+    {#each [0, 0, 0, 0, 0, 0, 0] as _}
+      <Parameter />
+    {/each}
+  </div>
+
+  <button class="add btn row v-center mrg-a mrg--l nowrap">
+    <Svg id="braces" w="16" class="mrg-s mrg--r" />
+    Add parameter</button>
 </div>
 
 <RowPanels class="mrg-xl mrg--b">
@@ -57,15 +63,25 @@
     height: 100%;
   }
 
+  /*
+
   b {
     font-weight: bold;
   }
 
   button {
-    /* padding: 6px 31px; */
+     padding: 6px 31px; 
   }
 
   .scroll {
     margin: 12px -16px 0 0;
+  }
+*/
+
+  .add {
+    --fill: var(--waterloo);
+    --color-hover: var(--green);
+    height: 32px;
+    align-self: flex-start;
   }
 </style>

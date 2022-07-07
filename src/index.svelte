@@ -4,6 +4,7 @@
   import { CreationType } from 'webkit/ui/Profile/types'
   import Query from './Query.svelte'
   import Result from './Result.svelte'
+  import Sidebar from './Sidebar/index.svelte'
 
   let isAuthor = true
 
@@ -21,39 +22,43 @@
   function onVote() {}
 </script>
 
-<main>
-  <div class="row v-center mrg-xl mrg--b">
-    <CreationInfo
-      fallback="Unsaved dashboard"
-      type={CreationType.Layout}
-      {id}
-      {title}
-      {user}
-      {votes}
-      currentUser={null}
-      editLabel={isAuthor ? 'Edit dashboard' : 'Save as'}
-      comments={{
-        count: commentsCount,
-        active: false, // $Sidewidget === SidewidgetType.LAYOUT_COMMENTS,
-        onClick: null, // () => Sidewidget.set(SidewidgetType.LAYOUT_COMMENTS),
-      }}
-      {onEditClick}
-      {onVote}>
-      <svelte:fragment slot="info">123</svelte:fragment>
-    </CreationInfo>
+<div class="row">
+  <Sidebar />
 
-    <button class="btn mrg-a mrg--l row v-center">
-      <Svg id="copy" w="16" class="mrg-s mrg--r" />
-      Duplicate</button>
-    <button class="btn mrg-xl mrg--l row v-center">
-      <Svg id="share-dots" w="14" h="16" class="mrg-s mrg--r" />
-      Share</button>
-  </div>
+  <main>
+    <div class="row v-center mrg-xl mrg--b">
+      <CreationInfo
+        fallback="Unsaved dashboard"
+        type={CreationType.Layout}
+        {id}
+        {title}
+        {user}
+        {votes}
+        currentUser={null}
+        editLabel={isAuthor ? 'Edit dashboard' : 'Save as'}
+        comments={{
+          count: commentsCount,
+          active: false, // $Sidewidget === SidewidgetType.LAYOUT_COMMENTS,
+          onClick: null, // () => Sidewidget.set(SidewidgetType.LAYOUT_COMMENTS),
+        }}
+        {onEditClick}
+        {onVote}>
+        <svelte:fragment slot="info">123</svelte:fragment>
+      </CreationInfo>
 
-  <Query />
+      <button class="btn mrg-a mrg--l row v-center">
+        <Svg id="copy" w="16" class="mrg-s mrg--r" />
+        Duplicate</button>
+      <button class="btn mrg-xl mrg--l row v-center">
+        <Svg id="share-dots" w="14" h="16" class="mrg-s mrg--r" />
+        Share</button>
+    </div>
 
-  <Result />
-</main>
+    <Query />
+
+    <Result />
+  </main>
+</div>
 
 <style>
   main {
