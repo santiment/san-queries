@@ -3,10 +3,13 @@
   import ColorBorder from '@/ColorBorder.svelte'
   import { showParameterDialog } from '@/ParameterDialog.svelte'
 
+  let className = ''
+  export { className as class }
   export let color
 </script>
 
 <ColorBorder
+  class={className}
   {color}
   on:click={() => showParameterDialog({ parameter: { name: 'Name/Address', value: 'Value' } })}>
   Name/Address:

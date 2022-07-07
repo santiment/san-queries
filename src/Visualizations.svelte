@@ -1,5 +1,6 @@
 <script>
   import Svg from 'webkit/ui/Svg/svelte'
+  import { FeatureWalkthrough$ } from 'webkit/ui/FeatureWalkthrough/context'
 
   export let visualizations = [
     {
@@ -9,9 +10,22 @@
     { type: 'chart', title: 'My chart' },
   ]
   export let visualization = visualizations[0]
+
+  let visualizationsNode
+
+  $: if (visualizationsNode) {
+    const node = visualizationsNode.firstElementChild
+
+    // false &&
+    FeatureWalkthrough$.show({
+      id: 'fw-visulizations-select',
+      title: "Result's visualizations",
+      description: `<p class="mrg-l mrg--b">Change between visualizations and customize them inside the option's pane on the right</p>`,
+    })
+  }
 </script>
 
-<div class="row">
+<div id="fw-visulizations-select" class="row" bind:this={visualizationsNode}>
   {#each visualizations as item}
     <button
       class="btn-2 mrg-s mrg--r row v-center"
