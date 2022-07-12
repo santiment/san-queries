@@ -7,8 +7,12 @@
   import RowPanels from './RowPanels.svelte'
   import { showParameterDialog } from './ParameterDialog.svelte'
   import { onMount } from 'svelte'
+  import { mutateComputeRawClickhouseQuery } from './api/rawQuery'
+
+  export let data
 
   let controlsNode
+  let queryNode
 
   const parameters = [0, 1, 2, 3, 4].map((v) => ({ key: v }))
 
@@ -25,6 +29,16 @@
       })
   }
 
+  function onExecuteClick(resolve) {
+    const query = queryNode.value
+    mutateComputeRawClickhouseQuery({
+      query,
+    }).then((sqlResult) => {
+      data = sqlResult
+      resolve()
+    })
+  }
+
   onMount(() => {
     false &&
       FeatureWalkthrough$.show({
@@ -37,7 +51,7 @@
 
 <div class="row mrg-l mrg--b">
   <div class="controls row" bind:this={controlsNode}>
-    <ExecuteButton />
+    <ExecuteButton onClick={onExecuteClick} />
 
     {#each parameters as parameter}
       <Parameter class="parameter" color={colors[parameter.key]} />
@@ -54,7 +68,11 @@
 
 <RowPanels class="mrg-xl mrg--b">
   <svelte:fragment slot="left">
-    <textarea name="" id="" cols="30" rows="10" value="SELECT * FROM intraday_metrics LIMIT 20" />
+    <textarea
+      bind:this={queryNode}
+      cols="30"
+      rows="10"
+      value="SELECT * FROM intraday_metrics LIMIT 20" />
   </svelte:fragment>
 
   <!-- 

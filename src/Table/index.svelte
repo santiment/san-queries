@@ -29,7 +29,7 @@
   */
 </script>
 
-<Table items={data} {columns} keyProp="id" class="$style.table" sticky />
+<Table items={data} {columns} class="$style.table" sticky />
 
 <style lang="scss">
   .table {

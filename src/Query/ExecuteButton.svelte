@@ -3,16 +3,27 @@
   import Tooltip from 'webkit/ui/Tooltip/svelte'
   import ExecutionStats from './ExecutionStats.svelte'
 
+  export let onClick
+
   let stats
   let loading = false
   let lastRun
   let isOpened = false
 
+  $: console.log(stats)
+
   function onQueryExecute() {
     if (loading) return
+
     loading = true
     lastRun = Date.now()
     isOpened = true
+
+    onClick(() => {
+      loading = false
+      const resultOn = Date.now()
+      stats = { resultOn, loadTime: resultOn - lastRun }
+    })
   }
 </script>
 
@@ -28,7 +39,7 @@
   </button>
 
   <div slot="tooltip" class="caption">
-    <ExecutionStats {stats} {lastRun} />
+    <ExecutionStats {loading} {stats} {lastRun} />
   </div>
 </Tooltip>
 

@@ -8,42 +8,18 @@
   import Visualizations from './Visualizations.svelte'
   import Options from './Result/Options/index.svelte'
 
+  export let headers = []
+  export let rows = []
+  export let columns
+
   let visualization = {
     type: 'table',
     title: 'My table',
   }
 
-  const headers = ['title', 'volume']
-  $: columns = headers.map((title, i) => {
-    const accessor = (data) => data[i]
-    return { title, accessor, format: accessor, sortAccessor: accessor }
-  })
-
-  const ITEMS = [
-    [300, 2000],
-    [100, 4000],
-    [800, 90],
-    [50, 1000],
-    [2000, 30],
-    [150, 5000],
-  ]
-
-  const data = ITEMS.concat(ITEMS)
-    .concat(ITEMS)
-    .concat(ITEMS)
-    .concat(ITEMS)
-    .concat(ITEMS)
-    .concat(ITEMS)
-    .concat(ITEMS)
-    .concat(ITEMS)
-    .map((v, i) => {
-      v.id = i
-      return { ...v }
-    })
-
   function onDownload() {
     console.log(visualization)
-    downloadCsv(visualization.title, columns, data)
+    downloadCsv(visualization.title, columns, rows)
   }
 </script>
 
@@ -67,9 +43,9 @@
     </div>
 
     {#if visualization.type === 'table'}
-      <Table {columns} {data} />
+      <Table {columns} data={rows} />
     {:else}
-      <Chart {columns} {data} />
+      <Chart {columns} data={rows} />
     {/if}
   </svelte:fragment>
 

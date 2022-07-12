@@ -16,6 +16,14 @@
     username: 'Tim_Jones',
   }
   let votes = {}
+  let data
+
+  $: columns = data ? data.headers.map(newColumn) : []
+
+  function newColumn(title, i) {
+    const accessor = (data) => data[i]
+    return { title, accessor, format: accessor, sortAccessor: accessor }
+  }
 
   function onEditClick() {}
 
@@ -54,9 +62,9 @@
         Share</button>
     </div>
 
-    <Query />
+    <Query bind:data />
 
-    <Result />
+    <Result {...data} {columns} />
   </main>
 </div>
 
