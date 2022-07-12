@@ -16,12 +16,12 @@
   $: if (visualizationsNode) {
     const node = visualizationsNode.firstElementChild
 
-    // false &&
-    FeatureWalkthrough$.show({
-      id: 'fw-visulizations-select',
-      title: "Result's visualizations",
-      description: `<p class="mrg-l mrg--b">Change between visualizations and customize them inside the option's pane on the right</p>`,
-    })
+    false &&
+      FeatureWalkthrough$.show({
+        id: 'fw-visulizations-select',
+        title: "Result's visualizations",
+        description: `<p class="mrg-l mrg--b">Change between visualizations and customize them inside the option's pane on the right</p>`,
+      })
   }
 </script>
 

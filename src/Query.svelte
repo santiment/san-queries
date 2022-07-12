@@ -3,6 +3,7 @@
   import { FeatureWalkthrough$ } from 'webkit/ui/FeatureWalkthrough/context'
   import { newChartColors } from 'studio/Chart/colors'
   import Parameter from './Query/Parameter.svelte'
+  import ExecuteButton from './Query/ExecuteButton.svelte'
   import RowPanels from './RowPanels.svelte'
   import { showParameterDialog } from './ParameterDialog.svelte'
   import { onMount } from 'svelte'
@@ -16,29 +17,27 @@
     const node = controlsNode.querySelector('.parameter')
     node.id = 'fw-parameter-options'
 
-    // false &&
-    FeatureWalkthrough$.show({
-      id: node.id,
-      title: 'Parameter Options',
-      description: `<p class="mrg-l mrg--b">Click on the parameter to open the options dialog</p>`,
-    })
+    false &&
+      FeatureWalkthrough$.show({
+        id: node.id,
+        title: 'Parameter options',
+        description: `<p class="mrg-l mrg--b">Click on the parameter to open the options dialog</p>`,
+      })
   }
 
   onMount(() => {
-    // false &&
-    FeatureWalkthrough$.show({
-      id: 'fw-add-parameter',
-      title: 'Add Parameter',
-      description: `<p class="mrg-l mrg--b">Click on the parameter to open the options dialog</p>`,
-    })
+    false &&
+      FeatureWalkthrough$.show({
+        id: 'fw-add-parameter',
+        title: 'Add parameter',
+        description: `<p class="mrg-l mrg--b">Click on the parameter to open the options dialog</p>`,
+      })
   })
 </script>
 
 <div class="row mrg-l mrg--b">
   <div class="controls row" bind:this={controlsNode}>
-    <button class="btn-1 btn--s row v-center mrg-m mrg--r">
-      <Svg id="time" w="16" class="mrg-s mrg--r" />
-      Execute</button>
+    <ExecuteButton />
 
     {#each parameters as parameter}
       <Parameter class="parameter" color={colors[parameter.key]} />
