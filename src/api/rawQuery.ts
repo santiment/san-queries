@@ -19,6 +19,30 @@ type Variables = {
   parameters?: { [key: string]: string | number }
 }
 
+function cacheModifier(data) {
+  const { sql } = data
+  const row = sql.rows[0]
+
+  const dateColumns = []
+  row.forEach((value, i) => {
+    const date = Date.parse(value)
+    if (date > 0) dateColumns.push(i)
+  })
+
+  dateColumns.forEach((i) => {
+    sql.rows.forEach((row) => {
+      row[i] = Date.parse(row[i])
+    })
+  })
+
+  data.sql.dateColumns = new Set(dateColumns)
+
+  return data
+}
+const precacher = () => cacheModifier
+
 const accessor = ({ sql }) => sql
 export const mutateComputeRawClickhouseQuery = (variables: Variables) =>
-  mutate<Query>(RAW_CLICKHOUSE_QUERY_MUTATION, { variables }).then(accessor) as Promise<SQLResult>
+  mutate<Query>(RAW_CLICKHOUSE_QUERY_MUTATION, { precacher, variables }).then(
+    accessor,
+  ) as Promise<SQLResult>

@@ -5,6 +5,7 @@
   import Query from './Query.svelte'
   import Result from './Result.svelte'
   import Sidebar from './Sidebar/index.svelte'
+  import { Formatter, FormatType } from './Result/Options/Format.svelte'
 
   let isAuthor = true
 
@@ -19,10 +20,25 @@
   let data
 
   $: columns = data ? data.headers.map(newColumn) : []
+  $: console.log(data)
 
   function newColumn(title, i) {
     const accessor = (data) => data[i]
-    return { title, accessor, format: accessor, sortAccessor: accessor }
+
+    const column = {
+      title,
+      accessor,
+      format: accessor,
+      sortAccessor: accessor,
+    }
+
+    if (data.dateColumns.has(i)) {
+      const { id, fn } = Formatter[FormatType.DATE]
+      column.format = (data) => fn(accessor(data))
+      column.formatterId = id
+    }
+
+    return column
   }
 
   function onEditClick() {}

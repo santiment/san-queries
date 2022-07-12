@@ -30,7 +30,6 @@
   import Svg from 'webkit/ui/Svg/svelte'
   import Tooltip from 'webkit/ui/Tooltip/svelte'
   import Field from '@/Field.svelte'
-
   export let i
   export let column
 
