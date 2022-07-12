@@ -13,9 +13,15 @@
   export let rows = []
   export let columns
 
+  $: visibleColumns = getVisibleColumns(columns, rows)
+
   let visualization = {
     type: 'table',
     title: 'My table',
+  }
+
+  function getVisibleColumns(columns, rows) {
+    return columns.filter((column) => !column.isHidden)
   }
 
   function onDownload() {
@@ -46,9 +52,9 @@
         </div>
 
         {#if visualization.type === 'table'}
-          <Table {columns} data={rows} />
+          <Table columns={visibleColumns} data={rows} />
         {:else}
-          <Chart {columns} data={rows} />
+          <Chart columns={visibleColumns} data={rows} />
         {/if}
       {:else}
         <div class="column hv-center">

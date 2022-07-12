@@ -42,11 +42,7 @@
   }
 </script>
 
-<Field
-  title={`Column ${i}: Format`}
-  placeholder={column.title}
-  bind:value={column.title}
-  let:classes>
+<Field title={`Column ${i}: Format`} let:classes>
   <div class="relative">
     <Tooltip on="click" class="$style.tooltip" bind:isOpened>
       <button slot="trigger" class="btn-2 btn--s {classes} row v-center justify">

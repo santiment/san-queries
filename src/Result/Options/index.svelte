@@ -2,6 +2,7 @@
   import Field from '@/Field.svelte'
   import TitleOption from './Title.svelte'
   import FormatOption from './Format.svelte'
+  import VisibilityOption from './Visibility.svelte'
 
   export let visualization
   export let headers
@@ -16,6 +17,7 @@
   {#each columns as column, i}
     <TitleOption bind:column {i} {headers} />
     <FormatOption bind:column {i} />
+    <VisibilityOption bind:column {i} />
   {/each}
 </div>
 
