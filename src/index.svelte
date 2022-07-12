@@ -1,22 +1,11 @@
 <script>
   import Svg from 'webkit/ui/Svg/svelte'
-  import CreationInfo from 'webkit/ui/CreationInfo/svelte'
-  import { CreationType } from 'webkit/ui/Profile/types'
   import Query from './Query.svelte'
   import Result from './Result.svelte'
   import Sidebar from './Sidebar/index.svelte'
   import { Formatter, FormatType } from './Result/Options/Format.svelte'
+  import CreationInfo from './Header/CreationInfo.svelte'
 
-  let isAuthor = true
-
-  let commentsCount = 3
-
-  let id = 0
-  let title = 'My query'
-  let user = {
-    username: 'Tim_Jones',
-  }
-  let votes = {}
   let data
 
   $: columns = data ? data.headers.map(newColumn) : []
@@ -40,10 +29,6 @@
 
     return column
   }
-
-  function onEditClick() {}
-
-  function onVote() {}
 </script>
 
 <div class="row">
@@ -51,24 +36,7 @@
 
   <main class="column">
     <div class="row v-center mrg-xl mrg--b">
-      <CreationInfo
-        fallback="Unsaved dashboard"
-        type={CreationType.Layout}
-        {id}
-        {title}
-        {user}
-        {votes}
-        currentUser={null}
-        editLabel={isAuthor ? 'Edit dashboard' : 'Save as'}
-        comments={{
-          count: commentsCount,
-          active: false, // $Sidewidget === SidewidgetType.LAYOUT_COMMENTS,
-          onClick: null, // () => Sidewidget.set(SidewidgetType.LAYOUT_COMMENTS),
-        }}
-        {onEditClick}
-        {onVote}>
-        <svelte:fragment slot="info">123</svelte:fragment>
-      </CreationInfo>
+      <CreationInfo />
 
       <button class="btn mrg-a mrg--l row v-center">
         <Svg id="copy" w="16" class="mrg-s mrg--r" />
