@@ -48,7 +48,7 @@
 
     <Query bind:data />
 
-    <Result {...data} {columns} />
+    <Result {data} {...data} {columns} />
   </main>
 </div>
 

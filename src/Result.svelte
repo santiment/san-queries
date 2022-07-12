@@ -8,6 +8,7 @@
   import Visualizations from './Visualizations.svelte'
   import Options from './Result/Options/index.svelte'
 
+  export let data
   export let headers = []
   export let rows = []
   export let columns
@@ -23,7 +24,7 @@
   }
 </script>
 
-<div class="row v-center">
+<div class="row v-center mrg-l mrg--b">
   <h2 class="body-2 mrg-xl mrg--r">Query results</h2>
 
   <Visualizations bind:visualization />
@@ -31,28 +32,42 @@
   <NewVisualization />
 </div>
 
-<RowPanels class="$style.result mrg-l mrg--t">
-  <svelte:fragment slot="left">
-    <div class="row v-center">
-      <div class="body-2 mrg-a mrg--r">{visualization.title}</div>
+{#if visualization}
+  <RowPanels class="$style.result">
+    <svelte:fragment slot="left">
+      {#if data}
+        <div class="row v-center">
+          <div class="body-2 mrg-a mrg--r">{visualization.title}</div>
 
-      <div class="row">
-        <button class="action btn-3" on:click={onDownload}><Svg id="download" w="17" /></button>
-        <button class="action btn-3"><Svg id="fullscreen" w="14" /></button>
-      </div>
-    </div>
+          <div class="row">
+            <button class="action btn-3" on:click={onDownload}><Svg id="download" w="17" /></button>
+            <button class="action btn-3"><Svg id="fullscreen" w="14" /></button>
+          </div>
+        </div>
 
-    {#if visualization.type === 'table'}
-      <Table {columns} data={rows} />
-    {:else}
-      <Chart {columns} data={rows} />
-    {/if}
-  </svelte:fragment>
+        {#if visualization.type === 'table'}
+          <Table {columns} data={rows} />
+        {:else}
+          <Chart {columns} data={rows} />
+        {/if}
+      {:else}
+        <div class="column hv-center">
+          <h2 class="body-2 txt-b">No data</h2>
+          <p class="mrg-xs mrg--t">Run your query first</p>
+        </div>
+      {/if}
+    </svelte:fragment>
 
-  <svelte:fragment slot="right">
-    <Options bind:visualization bind:columns {headers} />
-  </svelte:fragment>
-</RowPanels>
+    <svelte:fragment slot="right">
+      <Options bind:visualization bind:columns {headers} />
+    </svelte:fragment>
+  </RowPanels>
+{:else}
+  <div class="border column hv-center">
+    <h2 class="body-2 txt-b">No visualization</h2>
+    <p class="mrg-xs mrg--t">Create and select visualization first</p>
+  </div>
+{/if}
 
 <style>
   .result {
@@ -62,5 +77,10 @@
   .action {
     --fill: var(--waterloo);
     margin-left: 8px;
+  }
+
+  .column {
+    min-height: 284px;
+    flex: 1;
   }
 </style>
