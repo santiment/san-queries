@@ -1,4 +1,5 @@
 <script>
+  import { getDateFormats, getTimeFormats } from 'webkit/utils/dates'
   import { themes } from 'studio/Chart/theme'
   import { getMetricNodes } from 'studio/Chart/nodes'
   import Chart from 'studio/Chart/index.svelte'
@@ -10,9 +11,9 @@
   export let data
   export let metrics
   export let colors
+  export let axesMetricKeys
 
   $: theme = themes[0] // +$globals.isNightMode]
-  $: chartData = data.map((v) => ({ ...v, datetime: v.id }))
   $: categories = getMetricNodes(metrics, {})
   $: metricSettings = getTooltipSettings(metrics)
 
@@ -20,15 +21,18 @@
     const metricSettings = {
       datetime: {
         formatter: (value) => {
-          return value
+          const date = new Date(value)
+          const { HH, mm } = getTimeFormats(date)
+          const { MMMM, DD, YYYY } = getDateFormats(date)
+          return `${HH}:${mm}, ${MMMM} ${DD}, ${YYYY}`
         },
       },
     }
 
-    metrics.forEach((column, i) => {
+    metrics.forEach((column) => {
       const { key, formatter = FORMATTER, label, axisFormatter } = column
 
-      metricSettings[i] = Object.assign({
+      metricSettings[key] = Object.assign({
         label,
         formatter,
         axisFormatter,
@@ -37,11 +41,9 @@
 
     return metricSettings
   }
-
-  $: axesMetricKeys = [0, 1]
 </script>
 
-<Chart data={chartData} {categories} {theme} {colors}>
+<Chart {data} {categories} {theme} {colors}>
   <Lines />
 
   <Axes {axesMetricKeys} {metricSettings} xTicks={10} />

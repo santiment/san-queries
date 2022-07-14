@@ -23,7 +23,7 @@ function cacheModifier(data) {
   const { sql } = data
   const row = sql.rows[0]
 
-  const dateColumns = []
+  const dateColumns = [] as number[]
   row.forEach((value, i) => {
     const date = Date.parse(value)
     if (date > 0) dateColumns.push(i)

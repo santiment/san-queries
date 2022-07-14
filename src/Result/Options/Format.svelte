@@ -54,7 +54,7 @@
       <div slot="tooltip" class="column">
         {#each Object.values(Formatter) as formatter}
           <button
-            class="btn-ghost txt-left"
+            class="btn-ghost"
             class:active={(column.formatterId || 0) === formatter.id}
             on:click={() => onSelect(formatter)}>{formatter.title}</button>
         {/each}

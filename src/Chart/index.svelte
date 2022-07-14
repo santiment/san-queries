@@ -5,21 +5,23 @@
   import Metrics from './Metrics.svelte'
 
   export let columns
+  export let dateColumns
   export let data
+  export let xAxisKey = [...dateColumns][0]
 
-  $: metrics = columns.map((column, i) => ({
-    key: i.toString(),
-    label: column.title,
-    node: 'line',
-  }))
+  $: metrics = columns
+    .filter(({ id }) => !dateColumns.has(id))
+    .map(({ id, title }) => ({
+      key: id.toString(),
+      label: title,
+      node: 'line',
+    }))
 
-  $: chartData = data.map((v) => ({ ...v, datetime: v.id }))
-  $: categories = getMetricNodes(metrics, {})
-
+  $: chartData = data.map((row) => ({ ...row, datetime: row[xAxisKey] }))
   $: rawColors = newChartColors(metrics)
   $: colors = rawColors
 
-  $: console.log(data, categories, colors)
+  $: axesMetricKeys = metrics.map(({ key }) => key)
 
   function onMetricHover(metric) {
     console.log(metric)
@@ -29,4 +31,4 @@
 
 <Metrics {metrics} {colors} {onMetricHover} />
 
-<Chart data={chartData} {metrics} {colors} />
+<Chart data={chartData} {metrics} {colors} {axesMetricKeys} />

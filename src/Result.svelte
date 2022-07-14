@@ -12,15 +12,22 @@
   export let headers = []
   export let rows = []
   export let columns
+  export let dateColumns
 
-  $: visibleColumns = getVisibleColumns(columns, rows)
+  let visualization
 
-  let visualization = {
-    type: 'table',
-    title: 'My table',
+  $: visualization && normalizeVisualization(dateColumns)
+  $: visibleColumns = getVisibleColumns(columns)
+  $: console.log(data)
+
+  function normalizeVisualization(dateColumns) {
+    if (visualization.type !== 'chart') return
+    if (dateColumns.has(visualization.xAxisKey)) return
+
+    visualization.xAxisKey = [...dateColumns][0]
   }
 
-  function getVisibleColumns(columns, rows) {
+  function getVisibleColumns(columns) {
     return columns.filter((column) => !column.isHidden)
   }
 
@@ -54,7 +61,11 @@
         {#if visualization.type === 'table'}
           <Table columns={visibleColumns} data={rows} />
         {:else}
-          <Chart columns={visibleColumns} data={rows} />
+          <Chart
+            columns={visibleColumns}
+            data={rows}
+            {dateColumns}
+            xAxisKey={visualization.xAxisKey} />
         {/if}
       {:else}
         <div class="column hv-center">
@@ -65,7 +76,7 @@
     </svelte:fragment>
 
     <svelte:fragment slot="right">
-      <Options bind:visualization bind:columns {headers} />
+      <Options bind:visualization bind:columns {headers} {dateColumns} />
     </svelte:fragment>
   </RowPanels>
 {:else}

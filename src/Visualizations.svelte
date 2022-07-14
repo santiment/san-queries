@@ -7,7 +7,7 @@
       type: 'table',
       title: 'My table',
     },
-    { type: 'chart', title: 'My chart' },
+    { type: 'chart', title: 'My chart', xAxisKey: 2 },
   ]
   export let visualization = visualizations[0]
 

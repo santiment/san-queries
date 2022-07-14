@@ -15,6 +15,7 @@
     const accessor = (data) => data[i]
 
     const column = {
+      id: i,
       title,
       accessor,
       format: accessor,
