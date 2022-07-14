@@ -5,11 +5,14 @@
 </script>
 
 <button
+  {...$$restProps}
   class="btn row v-center {className}"
   style="--b-color:{color}"
   on:click
   on:mouseenter
-  on:mouseleave>
+  on:mouseleave
+  on:dragstart
+  on:dragend>
   <div class="color" />
   <slot />
 </button>

@@ -17,7 +17,7 @@
       node: 'line',
     }))
 
-  $: chartData = data.map((row) => ({ ...row, datetime: row[xAxisKey] }))
+  $: chartData = data.map((row) => ({ ...row, datetime: row[xAxisKey] })).sort(datetimeSorter)
   $: rawColors = newChartColors(metrics)
   $: colors = rawColors
 
@@ -26,6 +26,10 @@
   function onMetricHover(metric) {
     console.log(metric)
     colors = metric ? newHighlightedColors(rawColors, metric) : rawColors
+  }
+
+  function datetimeSorter(a, b) {
+    return a.datetime - b.datetime
   }
 </script>
 

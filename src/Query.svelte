@@ -2,7 +2,7 @@
   import Svg from 'webkit/ui/Svg/svelte'
   import { FeatureWalkthrough$ } from 'webkit/ui/FeatureWalkthrough/context'
   import { newChartColors } from 'studio/Chart/colors'
-  import Parameter from './Query/Parameter.svelte'
+  import Parameter, { getParameterSQL } from './Query/Parameter.svelte'
   import ExecuteButton from './Query/ExecuteButton.svelte'
   import RowPanels from './RowPanels.svelte'
   import { showParameterDialog } from './ParameterDialog.svelte'
@@ -13,13 +13,12 @@
 
   let controlsNode
   let queryNode
-
-  const parameters = [0, 1, 2, 3, 4].map((v) => ({ key: v }))
+  let parameters = []
 
   $: colors = newChartColors(parameters)
   $: if (controlsNode) {
     const node = controlsNode.querySelector('.parameter')
-    node.id = 'fw-parameter-options'
+    if (node) node.id = 'fw-parameter-options'
 
     false &&
       FeatureWalkthrough$.show({
@@ -39,6 +38,22 @@
     })
   }
 
+  function onNewParameter(parameter) {
+    parameters = parameters.concat(parameter)
+    const name = getParameterSQL(parameter)
+
+    const { value, selectionStart } = queryNode
+    queryNode.value = value.slice(0, selectionStart) + name + value.slice(selectionStart)
+
+    queryNode.focus()
+    queryNode.selectionStart = selectionStart
+    queryNode.selectionEnd = selectionStart + name.length
+  }
+
+  function onParameterUpdate(parameter) {
+    parameters = parameters
+  }
+
   onMount(() => {
     false &&
       FeatureWalkthrough$.show({
@@ -54,14 +69,18 @@
     <ExecuteButton onClick={onExecuteClick} />
 
     {#each parameters as parameter}
-      <Parameter class="parameter" color={colors[parameter.key]} />
+      <Parameter
+        class="parameter"
+        {parameter}
+        color={colors[parameter.key]}
+        onUpdate={onParameterUpdate} />
     {/each}
   </div>
 
   <button
     id="fw-add-parameter"
     class="add btn row v-center mrg-a mrg--l nowrap"
-    on:click={() => showParameterDialog()}>
+    on:click={() => showParameterDialog({ onSubmit: onNewParameter })}>
     <Svg id="braces" w="16" class="mrg-s mrg--r" />
     Add parameter</button>
 </div>

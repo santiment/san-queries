@@ -43,7 +43,7 @@
   }
 </script>
 
-<Chart {data} {categories} {theme} {colors}>
+<Chart {data} {categories} {theme} {colors} onChart={console.log}>
   <Lines />
 
   <Axes {axesMetricKeys} {metricSettings} xTicks={10} />
