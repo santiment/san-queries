@@ -2,6 +2,7 @@
   import { ONE_SECOND_IN_MS } from 'san-webkit/lib/utils/dates'
   import { onDestroy, onMount } from 'svelte'
 
+  export let loading
   export let stats
   export let lastRun
 
@@ -10,6 +11,10 @@
   let interval
   let seconds = 1
   let minutes = 0
+
+  function formatLoadTime(loadTime) {
+    return +(loadTime / ONE_SECOND_IN_MS).toFixed(3)
+  }
 
   onMount(() => {
     const diff = Date.now() - lastRun
@@ -33,7 +38,14 @@
   })
 </script>
 
-Currently running <span class="txt-b">{format(minutes)}:{format(seconds)}</span>
+{#if loading}
+  Currently running <span class="txt-b">{format(minutes)}:{format(seconds)}</span>
+  <br />
+{/if}
+
+{#if stats}
+  Last run took <b class="txt-b">{formatLoadTime(stats.loadTime)}</b> seconds
+{/if}
 
 <style>
   span {

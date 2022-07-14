@@ -1,7 +1,6 @@
 <script>
-  import { getMetricNodes } from 'studio/Chart/nodes'
-  import Chart from './Chart.svelte'
   import { newChartColors, newHighlightedColors } from 'studio/Chart/colors'
+  import Chart from './Chart.svelte'
   import Metrics from './Metrics.svelte'
 
   export let columns
@@ -11,10 +10,11 @@
 
   $: metrics = columns
     .filter(({ id }) => !dateColumns.has(id))
-    .map(({ id, title }) => ({
+    .map(({ id, title, formatter }) => ({
       key: id.toString(),
       label: title,
       node: 'line',
+      formatter,
     }))
 
   $: chartData = data.map((row) => ({ ...row, datetime: row[xAxisKey] })).sort(datetimeSorter)

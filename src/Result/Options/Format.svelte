@@ -37,6 +37,7 @@
 
   function onSelect({ id, fn }) {
     column.format = fn ? (data) => fn(column.accessor(data)) : column.accessor
+    column.formatter = fn
     column.formatterId = id
     isOpened = false
   }

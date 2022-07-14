@@ -25,6 +25,7 @@
     if (data.dateColumns.has(i)) {
       const { id, fn } = Formatter[FormatType.DATE]
       column.format = (data) => fn(accessor(data))
+      column.formatter = fn
       column.formatterId = id
     }
 

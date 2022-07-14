@@ -32,6 +32,9 @@
     const query = queryNode.value
     mutateComputeRawClickhouseQuery({
       query,
+      parameters: JSON.stringify(
+        parameters.reduce((acc, { key, value }) => Object.assign(acc, { [key]: value }), {}),
+      ),
     }).then((sqlResult) => {
       data = sqlResult
       resolve()

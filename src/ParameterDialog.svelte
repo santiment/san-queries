@@ -21,17 +21,17 @@
   export let onSubmit
 
   let closeDialog
+  let { name, value, type = 'Text' } = parameter || {}
 
-  $: ({ name, value, type = 'Text' } = parameter || {})
+  function onFormSubmit() {
+    if (!name) return
 
-  function onFormSubmit({ currentTarget: form }) {
     const changed = parameter || {}
 
-    changed.name = form.name.value.trim()
-    changed.value = form.value.value.trim()
+    changed.name = name.trim()
+    changed.value = type === 'Number' ? +value : value.trim()
     changed.type = type
-
-    console.log(changed, form)
+    changed.key = changed.name
 
     onSubmit(changed)
     closeDialog()
@@ -45,25 +45,35 @@
   class="$style.dialog">
   <form class="dialog-body" on:submit|preventDefault={onFormSubmit}>
     <Field
+      bind:value={name}
+      autofocus
+      required
       title="Name"
       name="name"
       placeholder="Name of the parameter"
-      value={name}
       autocomplete="off" />
-    <FieldSelector title="Type" bind:selected={type} options={['Text']} class="mrg-xl mrg--b">
+
+    <FieldSelector
+      bind:selected={type}
+      title="Type"
+      options={['Text', 'Number']}
+      class="mrg-xl mrg--b">
       {type}
       <svelte:fragment slot="option" let:option>{option}</svelte:fragment>
     </FieldSelector>
+
     <Field
+      bind:value
+      required
       title="Value"
       name="value"
       placeholder="Default value of the parameter"
-      {value}
       autocomplete="off" />
 
     <div class="row mrg-s mrg--t">
-      <button class="add btn-1" type="submit"> {parameter ? 'Save' : 'Add'}</button>
-      <button class="btn-2 mrg-s mrg--l" on:click={closeDialog}>Cancel</button>
+      <button class="add btn-1" type="submit" class:disabled={!name || !value}
+        >{parameter ? 'Save' : 'Add'}</button>
+      <button type="button" class="btn-2 mrg-s mrg--l" on:click={closeDialog}>Cancel</button>
     </div>
   </form>
 </Dialog>

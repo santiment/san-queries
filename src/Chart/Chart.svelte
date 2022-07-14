@@ -30,7 +30,7 @@
     }
 
     metrics.forEach((column) => {
-      const { key, formatter = FORMATTER, label, axisFormatter } = column
+      const { key, formatter = FORMATTER, label, axisFormatter = formatter } = column
 
       metricSettings[key] = Object.assign({
         label,
