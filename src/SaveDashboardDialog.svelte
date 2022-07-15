@@ -1,9 +1,9 @@
 <script context="module" lang="ts">
   import { dialogs } from 'webkit/ui/Dialog'
-  import DashboardDialog from './DashboardDialog.svelte'
+  import SaveDashboardDialog from './SaveDashboardDialog.svelte'
 
-  export const showDashboardDialog = (props): Promise<unknown> =>
-    dialogs.showOnce(DashboardDialog, props)
+  export const showSaveDashboardDialog = (props): Promise<unknown> =>
+    dialogs.showOnce(SaveDashboardDialog, props)
 </script>
 
 <script lang="ts">
@@ -14,20 +14,37 @@
 
   export let dashboard
   export let onSubmit
+  export let title = 'New dashboard'
+  export let action = 'Create'
+  export let dashboardMutation, panelMutation
 
   let closeDialog
-  let { name, description = '', isPublic } = dashboard || {}
+  let { id, name, description = '', isPublic, panels, sql } = dashboard
 
   function onFormSubmit() {
     if (!name) return
+
+    dashboardMutation({ id, name, description, isPublic }).then((data) => {
+      console.log(data, dashboard)
+
+      Object.assign(dashboard, data)
+      // dashboard.panels = panels
+
+      return Promise.all(
+        panels.map((panel) =>
+          panelMutation({
+            dashboardId: id,
+            name: panel.name,
+            type: panel.type,
+            sql,
+          }),
+        ),
+      ).then((panels) => dashboard.panels.push(...panels))
+    })
   }
 </script>
 
-<Dialog
-  bind:closeDialog
-  {...$$props}
-  title={dashboard ? 'Edit dashboard' : 'New dashboard'}
-  class="$style.dialog">
+<Dialog bind:closeDialog {...$$props} {title} class="$style.dialog">
   <form class="dialog-body" on:submit|preventDefault={onFormSubmit}>
     <Field
       bind:value={name}
@@ -42,13 +59,13 @@
         class="input border fluid"
         name="description"
         rows="4"
-        value={description}
+        bind:value={description}
         placeholder="Description of the dashboard" />
     </Field>
 
     <div class="row v-center mrg-xl mrg--t">
       <button class="btn-1 btn--l mrg-a mrg--r" type="submit">
-        {dashboard ? 'Save' : 'Create'}
+        {action}
       </button>
 
       Public

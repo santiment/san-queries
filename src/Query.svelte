@@ -9,13 +9,17 @@
   import { showParameterDialog } from './ParameterDialog.svelte'
   import { mutateComputeRawClickhouseQuery } from './api/rawQuery'
   import { showParameterOptionsWalkthrough } from './walkthroughs/parameters'
+  import { getAppContext } from './context'
+
+  const { dashboard$ } = getAppContext()
 
   export let data: SAN.Queries.SQLResult
 
   let controlsNode
   let queryNode
-  let parameters = []
 
+  $: dashboard = $dashboard$
+  $: ({ query, parameters } = dashboard.sql)
   $: colors = newChartColors(parameters)
   $: if (controlsNode) showParameterOptionsWalkthrough(controlsNode)
 
@@ -31,7 +35,9 @@
   }
 
   function onNewParameter(parameter) {
-    parameters = parameters.concat(parameter)
+    parameters.push(parameter)
+    $dashboard$.sql.parameters = parameters
+
     const name = getParameterSQL(parameter)
 
     const { value, selectionStart } = queryNode
@@ -46,13 +52,16 @@
     parameters = parameters
   }
 
+  function onBlur({ currentTarget }) {
+    $dashboard$.sql.query = currentTarget.value
+  }
+
   onMount(() => {
-    false &&
-      FeatureWalkthrough$.show({
-        id: 'fw-add-parameter',
-        title: 'Add parameter',
-        description: `<p class="mrg-l mrg--b">Click on the parameter to open the options dialog</p>`,
-      })
+    FeatureWalkthrough$.show({
+      id: 'fw-add-parameter',
+      title: 'Add parameter',
+      description: `<p class="mrg-l mrg--b">Click on the parameter to open the options dialog</p>`,
+    })
   })
 </script>
 
@@ -79,11 +88,7 @@
 
 <RowPanels class="mrg-xl mrg--b">
   <svelte:fragment slot="left">
-    <textarea
-      bind:this={queryNode}
-      cols="30"
-      rows="10"
-      value="SELECT * FROM intraday_metrics LIMIT 20" />
+    <textarea bind:this={queryNode} cols="30" rows="10" value={query} on:blur={onBlur} />
   </svelte:fragment>
 
   <!-- 

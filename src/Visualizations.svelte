@@ -2,22 +2,14 @@
   import Svg from 'webkit/ui/Svg/svelte'
   import { FeatureWalkthrough$ } from 'webkit/ui/FeatureWalkthrough/context'
   import { PanelType } from '@/types'
+  import { showResultVisualizationsWalkthrough } from './walkthroughs/visualizations'
 
   export let visualizations = []
   export let visualization: SAN.Queries.PanelType
 
   let visualizationsNode
 
-  $: if (visualizationsNode) {
-    const node = visualizationsNode.firstElementChild
-
-    false &&
-      FeatureWalkthrough$.show({
-        id: 'fw-visulizations-select',
-        title: "Result's visualizations",
-        description: `<p class="mrg-l mrg--b">Change between visualizations and customize them inside the option's pane on the right</p>`,
-      })
-  }
+  $: if (visualizationsNode) showResultVisualizationsWalkthrough(visualizationsNode)
 </script>
 
 <div id="fw-visulizations-select" class="row" bind:this={visualizationsNode}>

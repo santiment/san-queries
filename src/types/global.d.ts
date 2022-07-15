@@ -46,8 +46,8 @@ declare namespace SAN {
       isPublic: boolean
       user?: SAN.Author
       panels: DashboardPanel[]
-      insertedAt: string
-      updatedAt: string
+      // insertedAt: string
+      // updatedAt: string
       commentsCount: number
       votedAt: string
       votes?: { currentUserVotes: number; totalVoters: number; totalVotes: number }

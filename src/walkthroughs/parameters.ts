@@ -19,11 +19,10 @@ export function showParameterOptionsWalkthrough(parametersNode) {
   function show(node) {
     node.id = 'fw-parameter-options'
 
-    false &&
-      FeatureWalkthrough$.show({
-        id: node.id,
-        title: 'Parameter options',
-        description: `<p class="mrg-l mrg--b">Click on the parameter to open the options dialog</p>`,
-      })
+    FeatureWalkthrough$.show({
+      id: node.id,
+      title: 'Parameter options',
+      description: `<p class="mrg-l mrg--b">Click on the parameter to open the options dialog</p>`,
+    })
   }
 }

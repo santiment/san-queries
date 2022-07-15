@@ -3,8 +3,8 @@
   import { CreationType } from 'webkit/ui/Profile/types'
   import { currentUser as currentUser$ } from 'studio/stores/user'
   import { getAppContext } from '@/context'
-  import { CommentsType } from 'san-webkit/lib/api/comments'
-  import { showDashboardDialog } from '@/DashboardDialog.svelte'
+  import { showSaveDashboardDialog } from '@/SaveDashboardDialog.svelte'
+  import { mutateCreateDashboard, mutateCreateDashboardPanel } from '@/api/dashboard/create'
 
   export let onCommentsClick
 
@@ -16,20 +16,49 @@
   $: dashboard = $dashboard$
   $: currentUser = $currentUser$
 
-  $: ({ id, title, user, commentsCount, votes, description } = dashboard || {})
+  $: ({ id, title, user, commentsCount, votes, description } = dashboard)
   $: isAuthor = currentUser && user && +user.id === +currentUser.id
 
   $: console.log(dashboard)
+
+  function getState() {
+    if (!dashboard.user)
+      return {
+        title: 'New dashboard',
+        action: 'Create',
+        dashboardMutation: mutateCreateDashboard,
+        panelMutation: mutateCreateDashboardPanel,
+      }
+
+    if (isAuthor)
+      return {
+        title: 'Edit dashboard',
+        action: 'Save',
+        // dashboardMutation: mutateUpdateDashboard,
+        // panelMutation: mutateUpdateDashboardPanel,
+      }
+
+    return {
+      title: 'Duplicate dashboard',
+      action: 'Duplicate',
+      dashboardMutation: mutateCreateDashboard,
+      panelMutation: mutateCreateDashboardPanel,
+    }
+  }
 
   function onEditClick() {
     if (!currentUser) return
 
     // if (isAuthor)
-    const handler = dashboard ? (isAuthor ? 0 : 1) : 2
+    const handler = getState()
 
     console.log({ handler })
 
-    showDashboardDialog()
+    showSaveDashboardDialog({
+      ...getState(),
+      dashboard,
+      onSubmit: console.log,
+    })
   }
 
   function onVote() {}
