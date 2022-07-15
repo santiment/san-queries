@@ -27,7 +27,8 @@
     "lib:prepare": "node scripts/prepare.js && tsc --p ./scripts/tsconfig.json && node scripts/cleanup.js",
     "lib": "npm run lib:prepare && node scripts/lib.js",
     "-install": "npm run lib",
-    "postinstall": "patch-package",
+    "webkit": "node scripts/webkit",
+    "postinstall": "patch-package && npm run webkit",
     "prepare": "husky install"
   },
   "devDependencies": {
@@ -55,7 +56,7 @@
     "medium-editor": "^5.23.3",
     "phoenix": "^1.6.6",
     "san-studio": "https://github.com/santiment/san-studio#43f2aca",
-    "san-webkit": "https://github.com/santiment/san-webkit#ef0819e",
+    "san-webkit": "https://github.com/santiment/san-webkit#34c8fdb",
     "svelte-preprocess": "^4.7.4",
     "svelte-preprocess-cssmodules": "https://github.com/DmitriVanGuard/svelte-preprocess-cssmodules#3b24f22",
     "turndown": "^7.1.1",
