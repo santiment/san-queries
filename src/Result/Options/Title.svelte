@@ -1,5 +1,5 @@
 <script>
-  import Field from '@/Field.svelte'
+  import Field from 'webkit/ui/Field/svelte'
 
   export let i
   export let column

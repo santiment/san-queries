@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Svg from 'webkit/ui/Svg/svelte'
   import { FeatureWalkthrough$ } from 'webkit/ui/FeatureWalkthrough/context'
   import { newChartColors } from 'studio/Chart/colors'
@@ -9,7 +9,7 @@
   import { onMount } from 'svelte'
   import { mutateComputeRawClickhouseQuery } from './api/rawQuery'
 
-  export let data
+  export let data: SAN.Queries.SQLResult
 
   let controlsNode
   let queryNode
@@ -30,12 +30,10 @@
 
   function onExecuteClick(resolve) {
     const query = queryNode.value
-    mutateComputeRawClickhouseQuery({
+    mutateComputeRawClickhouseQuery(
       query,
-      parameters: JSON.stringify(
-        parameters.reduce((acc, { key, value }) => Object.assign(acc, { [key]: value }), {}),
-      ),
-    }).then((sqlResult) => {
+      parameters.reduce((acc, { key, value }) => Object.assign(acc, { [key]: value }), {}),
+    ).then((sqlResult) => {
       data = sqlResult
       resolve()
     })

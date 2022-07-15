@@ -1,13 +1,14 @@
 <script>
   import Svg from 'webkit/ui/Svg/svelte'
   import { FeatureWalkthrough$ } from 'webkit/ui/FeatureWalkthrough/context'
+  import { PanelType } from '@/types'
 
   export let visualizations = [
     {
-      type: 'table',
+      type: PanelType.TABLE,
       title: 'My table',
     },
-    { type: 'chart', title: 'My chart', xAxisKey: 2 },
+    { type: PanelType.CHART, title: 'My chart', xAxisKey: 2 },
   ]
   export let visualization = visualizations[0]
 

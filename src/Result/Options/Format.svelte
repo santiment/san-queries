@@ -20,6 +20,8 @@
     Format(FormatType.USD, 'USD', formatUsd),
   )
 
+  const options = Object.values(Formatter)
+
   function dateFormatter(date) {
     const { D, MMM, YY } = getDateFormats(new Date(date))
     return `${D} ${MMM}, ${YY}`
@@ -27,50 +29,23 @@
 </script>
 
 <script>
-  import Svg from 'webkit/ui/Svg/svelte'
-  import Tooltip from 'webkit/ui/Tooltip/svelte'
-  import Field from '@/Field.svelte'
+  import Field from 'webkit/ui/Field/Select.svelte'
   export let i
   export let column
 
-  let isOpened = false
+  $: selected = Formatter[column.formatterId || 0]
 
   function onSelect({ id, fn }) {
     column.format = fn ? (data) => fn(column.accessor(data)) : column.accessor
     column.formatter = fn
     column.formatterId = id
-    isOpened = false
   }
 </script>
 
-<Field title={`Column ${i}: Format`} let:classes>
-  <div class="relative">
-    <Tooltip on="click" class="$style.tooltip" bind:isOpened>
-      <button slot="trigger" class="btn-2 btn--s {classes} row v-center justify">
-        {Formatter[column.formatterId || 0].title}
+<Field title={`Column ${i}: Format`} bind:selected {options} {onSelect} class="mrg-xl mrg--b">
+  {selected.title}
 
-        <Svg id="arrow-down" w="8" h="5" class="mrg-xl mrg--l" />
-      </button>
-
-      <div slot="tooltip" class="column">
-        {#each Object.values(Formatter) as formatter}
-          <button
-            class="btn-ghost"
-            class:active={(column.formatterId || 0) === formatter.id}
-            on:click={() => onSelect(formatter)}>{formatter.title}</button>
-        {/each}
-      </div>
-    </Tooltip>
-  </div>
+  <svelte:fragment slot="option" let:option>
+    {option.title}
+  </svelte:fragment>
 </Field>
-
-<style>
-  .tooltip {
-    padding: 8px;
-    width: 100%;
-  }
-
-  .active {
-    --color: var(--green);
-  }
-</style>

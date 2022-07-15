@@ -1,6 +1,6 @@
 <script>
   import Checkbox from 'webkit/ui/Checkbox.svelte'
-  import Field from '@/Field.svelte'
+  import Field from 'webkit/ui/Field/svelte'
 
   export let i
   export let column

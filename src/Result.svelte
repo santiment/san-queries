@@ -1,6 +1,7 @@
 <script>
   import { downloadCsv } from 'webkit/utils/csv'
   import Svg from 'webkit/ui/Svg/svelte'
+  import { PanelType } from '@/types'
   import NewVisualization from './NewVisualization.svelte'
   import RowPanels from './RowPanels.svelte'
   import Table from './Table/index.svelte'
@@ -21,7 +22,7 @@
   $: console.log(data)
 
   function normalizeVisualization(dateColumns) {
-    if (visualization.type !== 'chart') return
+    if (visualization.type !== PanelType.CHART) return
     if (dateColumns.has(visualization.xAxisKey)) return
 
     visualization.xAxisKey = [...dateColumns][0]
@@ -58,7 +59,7 @@
           </div>
         </div>
 
-        {#if visualization.type === 'table'}
+        {#if visualization.type === PanelType.TABLE}
           <Table columns={visibleColumns} data={rows} />
         {:else}
           <Chart

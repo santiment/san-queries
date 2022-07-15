@@ -15,7 +15,6 @@
   import Dialog from 'webkit/ui/Dialog'
   import Field from 'webkit/ui/Field/svelte'
   import FieldSelector from 'webkit/ui/Field/Select.svelte'
-  // import Field from './Field.svelte'
 
   export let parameter
   export let onSubmit

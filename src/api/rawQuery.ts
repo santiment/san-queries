@@ -8,16 +8,7 @@ const RAW_CLICKHOUSE_QUERY_MUTATION = `
     }
   }`
 
-type SQLResult = {
-  columns: string[]
-  rows: { [column: string]: any }[]
-}
-type Query = SAN.API.Query<'sql', SQLResult>
-
-type Variables = {
-  query: string
-  parameters?: { [key: string]: string | number }
-}
+type Query = SAN.API.Query<'sql', SAN.Queries.SQLResult>
 
 function cacheModifier(data) {
   const { sql } = data
@@ -42,7 +33,14 @@ function cacheModifier(data) {
 const precacher = () => cacheModifier
 
 const accessor = ({ sql }) => sql
-export const mutateComputeRawClickhouseQuery = (variables: Variables) =>
-  mutate<Query>(RAW_CLICKHOUSE_QUERY_MUTATION, { precacher, variables }).then(
-    accessor,
-  ) as Promise<SQLResult>
+export const mutateComputeRawClickhouseQuery = (
+  query: string,
+  parameters?: { [key: string]: string | number },
+) =>
+  mutate<Query>(RAW_CLICKHOUSE_QUERY_MUTATION, {
+    precacher,
+    variables: {
+      query,
+      parameters: JSON.stringify(parameters),
+    },
+  }).then(accessor) as Promise<SAN.Queries.SQLResult>

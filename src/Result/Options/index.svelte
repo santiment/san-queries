@@ -1,5 +1,6 @@
 <script>
-  import Field from '@/Field.svelte'
+  import Field from 'webkit/ui/Field/svelte'
+  import { PanelType } from '@/types'
   import TitleOption from './Title.svelte'
   import FormatOption from './Format.svelte'
   import VisibilityOption from './Visibility.svelte'
@@ -10,13 +11,13 @@
   export let columns
   export let dateColumns
 
-  $: isChartVisualization = visualization.type === 'chart'
+  $: isChartVisualization = visualization.type === PanelType.CHART
 </script>
 
 <h3 class="body-2">Options</h3>
 
 <div class="scroll">
-  <Field title="Table name" placeholder="My table" bind:value={visualization.title} />
+  <Field title="Visualization name" placeholder="My table" bind:value={visualization.title} />
 
   {#if isChartVisualization && columns.length}
     <ChartXAxisOption bind:visualization {columns} {dateColumns} />
