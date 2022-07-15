@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "dev": "vite --config vite/config.js",
-    "build": "vite build",
+    "build": "vite build --config vite/config.js",
     "serve": "vite preview",
     "test": "jest",
     "validate": "svelte-check",
