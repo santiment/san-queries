@@ -1,14 +1,30 @@
 <script>
-  import Svg from 'webkit/ui/Svg/svelte'
   import Query from './Query.svelte'
   import Result from './Result.svelte'
   import Sidebar from './Sidebar/index.svelte'
   import { Formatter, FormatType } from './Result/Options/Format.svelte'
-  import CreationInfo from './Header/CreationInfo.svelte'
   import { setAppContext } from './context'
   import { Dashboard } from './stores/dashboard'
   import { PanelType } from './types'
   import Header from './Header/index.svelte'
+
+  export let dashbord = null && {
+    id: 0,
+    title: 'My query',
+    description: 'Hello this is dashboard',
+    user: {
+      username: 'Tim_Jones',
+    },
+    commentsCount: 3,
+    votes: {},
+    panels: [
+      {
+        type: PanelType.TABLE,
+        title: 'My table',
+      },
+      { type: PanelType.CHART, title: 'My chart', xAxisKey: 2 },
+    ],
+  }
 
   let data
 
@@ -37,23 +53,7 @@
   }
 
   const ctx = setAppContext({
-    dashboard$: Dashboard({
-      id: 0,
-      title: 'My query',
-      description: 'Hello this is dashboard',
-      user: {
-        username: 'Tim_Jones',
-      },
-      commentsCount: 3,
-      votes: {},
-      panels: [
-        {
-          type: PanelType.TABLE,
-          title: 'My table',
-        },
-        { type: PanelType.CHART, title: 'My chart', xAxisKey: 2 },
-      ],
-    }),
+    dashboard$: Dashboard(dashbord),
   })
 </script>
 

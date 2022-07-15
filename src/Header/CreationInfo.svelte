@@ -4,6 +4,7 @@
   import { currentUser as currentUser$ } from 'studio/stores/user'
   import { getAppContext } from '@/context'
   import { CommentsType } from 'san-webkit/lib/api/comments'
+  import { showDashboardDialog } from '@/DashboardDialog.svelte'
 
   export let onCommentsClick
 
@@ -27,6 +28,8 @@
     const handler = dashboard ? (isAuthor ? 0 : 1) : 2
 
     console.log({ handler })
+
+    showDashboardDialog()
   }
 
   function onVote() {}

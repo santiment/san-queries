@@ -1,13 +1,23 @@
 <script>
   import Svg from 'webkit/ui/Svg/svelte'
   import Tooltip from 'webkit/ui/Tooltip/svelte'
+  import { PanelType } from './types'
 
   let className = 'mrg-a mrg--l'
   export { className as class }
+  export let visualizations
+  export let visualization
 
   let isOpened = false
 
-  function newVisualization() {}
+  function newVisualization(type, title) {
+    visualizations.push({ type, title })
+    visualizations = visualizations
+
+    if (visualizations.length === 1) visualization = visualizations[0]
+
+    isOpened = false
+  }
 </script>
 
 <div class="relative {className}">
@@ -18,8 +28,10 @@
     </button>
 
     <div slot="tooltip" class="column">
-      <button class="btn-ghost" on:click={() => newVisualization('')}>Table</button>
-      <button class="btn-ghost" on:click={() => newVisualization('')}>Chart</button>
+      <button class="btn-ghost" on:click={() => newVisualization(PanelType.TABLE, 'My table')}
+        >Table</button>
+      <button class="btn-ghost" on:click={() => newVisualization(PanelType.CHART, 'My chart')}
+        >Chart</button>
     </div>
   </Tooltip>
 </div>

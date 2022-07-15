@@ -44,13 +44,13 @@ declare namespace SAN {
       name: string
       description: string
       isPublic: boolean
-      user: SAN.Author
+      user?: SAN.Author
       panels: DashboardPanel[]
       insertedAt: string
       updatedAt: string
       commentsCount: number
       votedAt: string
-      votes: { currentUserVotes: number; totalVoters: number; totalVotes: number }
+      votes?: { currentUserVotes: number; totalVoters: number; totalVotes: number }
     }
   }
 }

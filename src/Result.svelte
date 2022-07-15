@@ -19,7 +19,8 @@
   export let dateColumns
 
   let dashboard = $dashboard$
-  let visualization = dashboard?.panels[0]
+  let visualizations = dashboard.panels
+  let visualization = visualizations[0]
   // NOTE: `$: visualization = dashboard?.panels[0]` doesn't allow to change `visualization` using bind:visualization [@vanguard]
   dashboard$.subscribe((value) => (dashboard = value))
 
@@ -46,9 +47,9 @@
 <div class="row v-center mrg-l mrg--b">
   <h2 class="body-2 mrg-xl mrg--r">Query results</h2>
 
-  <Visualizations bind:visualization visualizations={dashboard?.panels} />
+  <Visualizations bind:visualization {visualizations} />
 
-  <NewVisualization />
+  <NewVisualization bind:visualization bind:visualizations={$dashboard$.panels} />
 </div>
 
 {#if visualization}

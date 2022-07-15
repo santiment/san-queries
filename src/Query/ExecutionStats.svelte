@@ -12,17 +12,21 @@
   let seconds = 1
   let minutes = 0
 
+  $: lastRun, getRunningTime()
+
   function formatLoadTime(loadTime) {
     return +(loadTime / ONE_SECOND_IN_MS).toFixed(3)
   }
 
-  onMount(() => {
+  function getRunningTime() {
     const diff = Date.now() - lastRun
 
     seconds = Math.ceil(diff / ONE_SECOND_IN_MS)
     minutes = Math.floor(seconds / 60)
     seconds %= 60
+  }
 
+  onMount(() => {
     interval = setInterval(() => {
       if (seconds >= 59) {
         minutes++
