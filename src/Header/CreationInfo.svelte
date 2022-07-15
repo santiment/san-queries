@@ -2,23 +2,20 @@
   import CreationInfo from 'webkit/ui/CreationInfo/svelte'
   import { CreationType } from 'webkit/ui/Profile/types'
   import { currentUser as currentUser$ } from 'studio/stores/user'
+  import { getAppContext } from '@/context'
+
+  const ctx = getAppContext()
+  const { dashboard$ } = ctx
 
   let isAuthor = true
 
-  let commentsCount = 3
-
-  let votes = {}
-  const dashboard = {
-    id: 0,
-    title: 'My query',
-    user: {
-      username: 'Tim_Jones',
-    },
-  }
-
-  $: ({ id, title, user } = dashboard)
+  $: dashboard = $dashboard$
   $: currentUser = $currentUser$
+
+  $: ({ id, title, user, commentsCount, votes, description } = dashboard || {})
   $: isAuthor = currentUser && user && +user.id === +currentUser.id
+
+  $: console.log(dashboard)
 
   function onEditClick() {
     if (!currentUser) return
@@ -47,6 +44,7 @@
     onClick: null, // () => Sidewidget.set(SidewidgetType.LAYOUT_COMMENTS),
   }}
   {onEditClick}
-  {onVote}>
-  <svelte:fragment slot="info">123</svelte:fragment>
+  {onVote}
+>
+  <svelte:fragment slot="info">{description}</svelte:fragment>
 </CreationInfo>

@@ -1,16 +1,10 @@
-<script>
+<script lang="ts">
   import Svg from 'webkit/ui/Svg/svelte'
   import { FeatureWalkthrough$ } from 'webkit/ui/FeatureWalkthrough/context'
   import { PanelType } from '@/types'
 
-  export let visualizations = [
-    {
-      type: PanelType.TABLE,
-      title: 'My table',
-    },
-    { type: PanelType.CHART, title: 'My chart', xAxisKey: 2 },
-  ]
-  export let visualization = visualizations[0]
+  export let visualizations = []
+  export let visualization: SAN.Queries.PanelType
 
   let visualizationsNode
 
@@ -33,7 +27,8 @@
       class:active={visualization === item}
       on:click={() => (visualization = item)}>
       <Svg id={item.type} w="16" class="mrg-s mrg--r" />
-      {item.title}</button>
+      {item.title}
+    </button>
   {/each}
 </div>
 

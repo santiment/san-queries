@@ -1,3 +1,19 @@
+/// <reference types="svelte" />
+/// <reference types="vite/client" />
+/// <reference types="san-webkit" />
+
+declare module '*.png' {
+  const value: string
+  export = value
+}
+
+declare namespace NodeJS {
+  interface Process {
+    browser: boolean
+    GQL_SERVER_URL: string
+  }
+}
+
 declare namespace SAN {
   declare namespace Queries {
     type PanelType = import('./index').PanelType

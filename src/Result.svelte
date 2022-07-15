@@ -8,6 +8,9 @@
   import Chart from './Chart/index.svelte'
   import Visualizations from './Visualizations.svelte'
   import Options from './Result/Options/index.svelte'
+  import { getAppContext } from '@/context'
+
+  const { dashboard$ } = getAppContext()
 
   export let data
   export let headers = []
@@ -15,11 +18,13 @@
   export let columns
   export let dateColumns
 
-  let visualization
+  let dashboard = $dashboard$
+  let visualization = dashboard?.panels[0]
+  // NOTE: `$: visualization = dashboard?.panels[0]` doesn't allow to change `visualization` using bind:visualization [@vanguard]
+  dashboard$.subscribe((value) => (dashboard = value))
 
-  $: visualization && normalizeVisualization(dateColumns)
+  $: visualization && dateColumns && normalizeVisualization(dateColumns)
   $: visibleColumns = getVisibleColumns(columns)
-  $: console.log(data)
 
   function normalizeVisualization(dateColumns) {
     if (visualization.type !== PanelType.CHART) return
@@ -41,7 +46,7 @@
 <div class="row v-center mrg-l mrg--b">
   <h2 class="body-2 mrg-xl mrg--r">Query results</h2>
 
-  <Visualizations bind:visualization />
+  <Visualizations bind:visualization visualizations={dashboard?.panels} />
 
   <NewVisualization />
 </div>
