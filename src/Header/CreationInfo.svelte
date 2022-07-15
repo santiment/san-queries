@@ -3,6 +3,9 @@
   import { CreationType } from 'webkit/ui/Profile/types'
   import { currentUser as currentUser$ } from 'studio/stores/user'
   import { getAppContext } from '@/context'
+  import { CommentsType } from 'san-webkit/lib/api/comments'
+
+  export let onCommentsClick
 
   const ctx = getAppContext()
   const { dashboard$ } = ctx
@@ -41,10 +44,9 @@
   comments={{
     count: commentsCount,
     active: false, // $Sidewidget === SidewidgetType.LAYOUT_COMMENTS,
-    onClick: null, // () => Sidewidget.set(SidewidgetType.LAYOUT_COMMENTS),
+    onClick: onCommentsClick,
   }}
   {onEditClick}
-  {onVote}
->
+  {onVote}>
   <svelte:fragment slot="info">{description}</svelte:fragment>
 </CreationInfo>

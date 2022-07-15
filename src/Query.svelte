@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from 'svelte'
   import Svg from 'webkit/ui/Svg/svelte'
   import { FeatureWalkthrough$ } from 'webkit/ui/FeatureWalkthrough/context'
   import { newChartColors } from 'studio/Chart/colors'
@@ -6,8 +7,8 @@
   import ExecuteButton from './Query/ExecuteButton.svelte'
   import RowPanels from './RowPanels.svelte'
   import { showParameterDialog } from './ParameterDialog.svelte'
-  import { onMount } from 'svelte'
   import { mutateComputeRawClickhouseQuery } from './api/rawQuery'
+  import { showParameterOptionsWalkthrough } from './walkthroughs/parameters'
 
   export let data: SAN.Queries.SQLResult
 
@@ -16,17 +17,7 @@
   let parameters = []
 
   $: colors = newChartColors(parameters)
-  $: if (controlsNode) {
-    const node = controlsNode.querySelector('.parameter')
-    if (node) node.id = 'fw-parameter-options'
-
-    false &&
-      FeatureWalkthrough$.show({
-        id: node.id,
-        title: 'Parameter options',
-        description: `<p class="mrg-l mrg--b">Click on the parameter to open the options dialog</p>`,
-      })
-  }
+  $: if (controlsNode) showParameterOptionsWalkthrough(controlsNode)
 
   function onExecuteClick(resolve) {
     const query = queryNode.value

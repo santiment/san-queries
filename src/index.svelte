@@ -8,6 +8,7 @@
   import { setAppContext } from './context'
   import { Dashboard } from './stores/dashboard'
   import { PanelType } from './types'
+  import Header from './Header/index.svelte'
 
   let data
 
@@ -60,16 +61,7 @@
   <Sidebar />
 
   <main class="column">
-    <div class="row v-center mrg-xl mrg--b">
-      <CreationInfo />
-
-      <button class="btn mrg-a mrg--l row v-center">
-        <Svg id="copy" w="16" class="mrg-s mrg--r" />
-        Duplicate</button>
-      <button class="btn mrg-xl mrg--l row v-center">
-        <Svg id="share-dots" w="14" h="16" class="mrg-s mrg--r" />
-        Share</button>
-    </div>
+    <Header />
 
     <Query bind:data />
 
@@ -83,10 +75,5 @@
     background: var(--athens);
     min-height: 100vh;
     flex: 1;
-  }
-
-  button {
-    --fill: var(--waterloo);
-    --color-hover: var(--green);
   }
 </style>
