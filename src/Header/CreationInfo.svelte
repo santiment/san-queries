@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { notifications$ } from 'webkit/ui/Notifications'
   import CreationInfo from 'webkit/ui/CreationInfo/svelte'
   import { CreationType } from 'webkit/ui/Profile/types'
   import { currentUser as currentUser$ } from 'studio/stores/user'
@@ -55,11 +56,22 @@
       ...getState(),
       dashboard,
       onSubmit: console.log,
-    }).then((dashboard?: SAN.Queries.Dashboard) => {
-      if (!dashboard) return
-
-      dashboard$.set(dashboard)
     })
+      .then((dashboard?: SAN.Queries.Dashboard) => {
+        if (!dashboard) return
+
+        dashboard$.set(dashboard)
+        notifications$.show({
+          type: 'success',
+          title: 'Dashboard was saved successfully',
+        })
+      })
+      .catch(() => {
+        notifications$.show({
+          type: 'error',
+          title: 'Failed to save the dashboard. Please try again',
+        })
+      })
   }
 
   function onVote() {}
