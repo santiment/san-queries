@@ -50,7 +50,8 @@ declare namespace SAN {
       // updatedAt: string
       commentsCount: number
       votedAt: string
-      votes?: { currentUserVotes: number; totalVoters: number; totalVotes: number }
+      votes?: { userVotes: number; totalVoters: number; totalVotes: number }
+      sql?: SQL
     }
   }
 }

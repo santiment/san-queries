@@ -21,7 +21,7 @@ export const DASHBOARD_FRAGMENT = `
   commentsCount
   votedAt
   votes { 
-    currentUserVotes
+    userVotes:currentUserVotes
     totalVoters
     totalVotes
   }
