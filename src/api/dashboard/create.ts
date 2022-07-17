@@ -1,5 +1,5 @@
 import { mutate } from 'webkit/api'
-import { DASHBOARD_FRAGMENT } from './fragments'
+import { DASHBOARD_FRAGMENT, PANEL_FRAGMENT } from './fragments'
 
 const CREATE_DASHBOARD_MUTATION = `
   mutation($title:String!, $description:String, $isPublic:Boolean) {
@@ -10,7 +10,7 @@ const CREATE_DASHBOARD_MUTATION = `
 
 type CreateDashboardQuery = SAN.API.Query<'createDashboard', SAN.Queries.Dashboard>
 
-type CreateDashboardVariables = {
+export type CreateDashboardVariables = {
   title: string
   description?: string
   isPublic?: boolean
@@ -27,19 +27,13 @@ export const mutateCreateDashboard = (variables: CreateDashboardVariables) =>
 const CREATE_DASHBOARD_PANEL_MUTATION = `
   mutation($dashboardId:Int!, $sql:PanelSqlInputObject!, $name:String!, $description:String, $type:PanelType) {
     createDashboardPanel(dashboardId:$dashboardId, panel:{sql:$sql, name:$name, description:$description, type:$type}) {
-      name
-      description
-      type
-      sql {
-        query
-        parameters
-      }
+      ${PANEL_FRAGMENT}
     }
   }`
 
-type Query = SAN.API.Query<'createDashboardPanel', SAN.Queries.DashboardPanel>
+type CreatePanelQuery = SAN.API.Query<'createDashboardPanel', SAN.Queries.DashboardPanel>
 
-type CreateDashboardPanelVariables = {
+export type CreatePanelVariables = {
   dashboardId: number
   name: string
   description: string
@@ -48,8 +42,8 @@ type CreateDashboardPanelVariables = {
 }
 
 const createDashboardPanelAccessor = ({ createDashboardPanel }) => createDashboardPanel
-export const mutateCreateDashboardPanel = (variables: CreateDashboardPanelVariables) =>
-  mutate<Query>(CREATE_DASHBOARD_PANEL_MUTATION, {
+export const mutateCreateDashboardPanel = (variables: CreatePanelVariables) =>
+  mutate<CreatePanelQuery>(CREATE_DASHBOARD_PANEL_MUTATION, {
     variables,
   }).then(createDashboardPanelAccessor) as Promise<SAN.Queries.DashboardPanel>
 

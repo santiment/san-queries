@@ -5,6 +5,7 @@
   import { getAppContext } from '@/context'
   import { showSaveDashboardDialog } from '@/SaveDashboardDialog.svelte'
   import { mutateCreateDashboard, mutateCreateDashboardPanel } from '@/api/dashboard/create'
+  import { mutateUpdateDashboard, mutateUpdateDashboardPanel } from '@/api/dashboard/update'
 
   export let onCommentsClick
 
@@ -18,21 +19,23 @@
   $: isAuthor = currentUser && user && +user.id === +currentUser.id
 
   function getState() {
-    if (!dashboard.user)
+    if (!dashboard.user) {
       return {
         title: 'New dashboard',
         action: 'Create',
         dashboardMutation: mutateCreateDashboard,
         panelMutation: mutateCreateDashboardPanel,
       }
+    }
 
-    if (isAuthor)
+    if (isAuthor) {
       return {
         title: 'Edit dashboard',
         action: 'Save',
-        // dashboardMutation: mutateUpdateDashboard,
-        // panelMutation: mutateUpdateDashboardPanel,
+        dashboardMutation: mutateUpdateDashboard,
+        panelMutation: mutateUpdateDashboardPanel,
       }
+    }
 
     return {
       title: 'Duplicate dashboard',

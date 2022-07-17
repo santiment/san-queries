@@ -3,13 +3,13 @@
   import Svg from 'webkit/ui/Svg/svelte'
   import { FeatureWalkthrough$ } from 'webkit/ui/FeatureWalkthrough/context'
   import { newChartColors } from 'studio/Chart/colors'
-  import Parameter, { getParameterSQL } from './Query/Parameter.svelte'
-  import ExecuteButton from './Query/ExecuteButton.svelte'
-  import RowPanels from './RowPanels.svelte'
-  import { showParameterDialog } from './ParameterDialog.svelte'
-  import { mutateComputeRawClickhouseQuery } from './api/rawQuery'
-  import { showParameterOptionsWalkthrough } from './walkthroughs/parameters'
-  import { getAppContext } from './context'
+  import RowPanels from '@/RowPanels.svelte'
+  import { showParameterDialog } from '@/ParameterDialog.svelte'
+  import { mutateComputeRawClickhouseQuery } from '@/api/rawQuery'
+  import { showParameterOptionsWalkthrough } from '@/walkthroughs/parameters'
+  import { getAppContext } from '@/context'
+  import Parameter, { getParameterSQL } from './Parameter.svelte'
+  import ExecuteButton from './ExecuteButton.svelte'
 
   const { dashboard$ } = getAppContext()
 

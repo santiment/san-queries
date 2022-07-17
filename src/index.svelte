@@ -1,6 +1,6 @@
 <script>
-  import Query from './Query.svelte'
-  import Result from './Result.svelte'
+  import Query from './Query/index.svelte'
+  import Result from './Result/index.svelte'
   import Sidebar from './Sidebar/index.svelte'
   import { Formatter, FormatType } from './Result/Options/Format.svelte'
   import { setAppContext } from './context'

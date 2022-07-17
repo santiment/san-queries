@@ -1,15 +1,15 @@
 <script>
+  import { onDestroy } from 'svelte'
   import { downloadCsv } from 'webkit/utils/csv'
   import Svg from 'webkit/ui/Svg/svelte'
   import { PanelType } from '@/types'
-  import NewVisualization from './NewVisualization.svelte'
-  import RowPanels from './RowPanels.svelte'
-  import Table from './Table/index.svelte'
-  import Chart from './Chart/index.svelte'
-  import Visualizations from './Visualizations.svelte'
-  import Options from './Result/Options/index.svelte'
+  import NewVisualization from '@/NewVisualization.svelte'
+  import RowPanels from '@/RowPanels.svelte'
+  import Table from '@/Table/index.svelte'
+  import Chart from '@/Chart/index.svelte'
+  import Visualizations from '@/Visualizations.svelte'
   import { getAppContext } from '@/context'
-  import { onDestroy } from 'svelte'
+  import Options from './Options/index.svelte'
 
   const { dashboard$ } = getAppContext()
 

@@ -26,3 +26,14 @@ export const DASHBOARD_FRAGMENT = `
     totalVotes
   }
 `
+
+export const PANEL_FRAGMENT = `
+  id
+  name
+  description
+  type
+  sql {
+    query
+    parameters
+  }
+`
