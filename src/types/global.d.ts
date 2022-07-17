@@ -41,7 +41,7 @@ declare namespace SAN {
 
     type Dashboard = {
       id: number
-      name: string
+      title: string
       description: string
       isPublic: boolean
       user?: SAN.Author

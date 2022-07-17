@@ -17,7 +17,7 @@
 <h3 class="body-2">Options</h3>
 
 <div class="scroll">
-  <Field title="Visualization name" placeholder="My table" bind:value={visualization.title} />
+  <Field title="Visualization name" placeholder="My table" bind:value={visualization.name} />
 
   {#if isChartVisualization && columns.length}
     <ChartXAxisOption bind:visualization {columns} {dateColumns} />

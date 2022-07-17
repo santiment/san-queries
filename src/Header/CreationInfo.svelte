@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import CreationInfo from 'webkit/ui/CreationInfo/svelte'
   import { CreationType } from 'webkit/ui/Profile/types'
   import { currentUser as currentUser$ } from 'studio/stores/user'
@@ -58,6 +58,10 @@
       ...getState(),
       dashboard,
       onSubmit: console.log,
+    }).then((dashboard?: SAN.Queries.Dashboard) => {
+      if (!dashboard) return
+
+      dashboard$.set(dashboard)
     })
   }
 

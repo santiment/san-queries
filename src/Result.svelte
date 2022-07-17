@@ -9,6 +9,7 @@
   import Visualizations from './Visualizations.svelte'
   import Options from './Result/Options/index.svelte'
   import { getAppContext } from '@/context'
+  import { onDestroy } from 'svelte'
 
   const { dashboard$ } = getAppContext()
 
@@ -22,10 +23,14 @@
   let visualizations = dashboard.panels
   let visualization = visualizations[0]
   // NOTE: `$: visualization = dashboard?.panels[0]` doesn't allow to change `visualization` using bind:visualization [@vanguard]
-  dashboard$.subscribe((value) => (dashboard = value))
+  let unsub = dashboard$.subscribe((value) => {
+    dashboard = value
+    visualizations = dashboard.panels
+  })
 
   $: visualization && dateColumns && normalizeVisualization(dateColumns)
   $: visibleColumns = getVisibleColumns(columns)
+  $: visualization && dashboard$.set(dashboard)
 
   function normalizeVisualization(dateColumns) {
     if (visualization.type !== PanelType.CHART) return
@@ -40,8 +45,10 @@
 
   function onDownload() {
     console.log(visualization)
-    downloadCsv(visualization.title, columns, rows)
+    downloadCsv(visualization.name, columns, rows)
   }
+
+  onDestroy(unsub)
 </script>
 
 <div class="row v-center mrg-l mrg--b">
@@ -57,7 +64,7 @@
     <svelte:fragment slot="left">
       {#if data}
         <div class="row v-center">
-          <div class="body-2 mrg-a mrg--r">{visualization.title}</div>
+          <div class="body-2 mrg-a mrg--r">{visualization.name}</div>
 
           <div class="row">
             <button class="action btn-3" on:click={onDownload}><Svg id="download" w="17" /></button>

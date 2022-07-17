@@ -10,8 +10,8 @@
 
   let isOpened = false
 
-  function newVisualization(type, title) {
-    visualizations.push({ type, title })
+  function newVisualization(type, name) {
+    visualizations.push({ type, name })
     visualizations = visualizations
 
     if (visualizations.length === 1) visualization = visualizations[0]

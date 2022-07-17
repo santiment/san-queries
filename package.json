@@ -28,8 +28,16 @@
     "lib": "npm run lib:prepare && node scripts/lib.js",
     "-install": "npm run lib",
     "webkit": "node scripts/webkit",
-    "postinstall": "patch-package && npm run webkit",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "postinstall": "patch-package && npm run webkit"
+  },
+  "dependencies": {
+    "@santiment-network/chart": "^0.10.12",
+    "marked": "^4.0.18",
+    "medium-editor": "^5.23.3",
+    "san-webkit": "https://github.com/santiment/san-webkit#1590221",
+    "san-studio": "https://github.com/santiment/san-studio#645c4d0",
+    "turndown": "^7.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.18.6",
@@ -48,22 +56,13 @@
     "prettier-plugin-svelte": "^2.7.0",
     "svelte": "^3.49.0",
     "vite": "^2.9.14",
-    "vite-plugin-ts-checker": "^0.1.5"
-  },
-  "dependencies": {
-    "@santiment-network/chart": "^0.10.12",
-    "marked": "^4.0.18",
-    "medium-editor": "^5.23.3",
-    "phoenix": "^1.6.6",
-    "san-studio": "https://github.com/santiment/san-studio#43f2aca",
-    "san-webkit": "https://github.com/santiment/san-webkit#34c8fdb",
+    "vite-plugin-ts-checker": "^0.1.5",
+    "typescript": "^4.7.4",
     "svelte-preprocess": "^4.7.4",
-    "svelte-preprocess-cssmodules": "https://github.com/DmitriVanGuard/svelte-preprocess-cssmodules#3b24f22",
-    "turndown": "^7.1.1",
-    "typescript": "^4.7.4"
+    "svelte-preprocess-cssmodules": "https://github.com/DmitriVanGuard/svelte-preprocess-cssmodules#3b24f22"
   },
   "peerDependencies": {
-    "san-webkit": "https://github.com/santiment/san-webkit.git",
-    "san-studio": "https://github.com/santiment/san-studio.git"
+    "san-webkit": "https://github.com/santiment/san-webkit",
+    "san-studio": "https://github.com/santiment/san-studio"
   }
 }

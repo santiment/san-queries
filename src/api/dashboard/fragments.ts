@@ -1,6 +1,6 @@
 export const DASHBOARD_FRAGMENT = `
   id
-  name
+  title:name
   description
   isPublic
   user {

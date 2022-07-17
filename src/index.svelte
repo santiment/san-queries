@@ -20,9 +20,9 @@
     panels: [
       {
         type: PanelType.TABLE,
-        title: 'My table',
+        name: 'My table',
       },
-      { type: PanelType.CHART, title: 'My chart', xAxisKey: 2 },
+      { type: PanelType.CHART, name: 'My chart', xAxisKey: 2 },
     ],
   }
 

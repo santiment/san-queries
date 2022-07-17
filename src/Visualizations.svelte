@@ -1,7 +1,5 @@
 <script lang="ts">
   import Svg from 'webkit/ui/Svg/svelte'
-  import { FeatureWalkthrough$ } from 'webkit/ui/FeatureWalkthrough/context'
-  import { PanelType } from '@/types'
   import { showResultVisualizationsWalkthrough } from './walkthroughs/visualizations'
 
   export let visualizations = []
@@ -19,7 +17,7 @@
       class:active={visualization === item}
       on:click={() => (visualization = item)}>
       <Svg id={item.type} w="16" class="mrg-s mrg--r" />
-      {item.title}
+      {item.name}
     </button>
   {/each}
 </div>

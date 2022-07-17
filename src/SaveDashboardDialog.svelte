@@ -18,28 +18,46 @@
   export let action = 'Create'
   export let dashboardMutation, panelMutation
 
+  export let DialogPromise: SAN.DialogController
   let closeDialog
-  let { id, name, description = '', isPublic, panels, sql } = dashboard
+  let { title: name, description = '', isPublic, panels, sql } = dashboard
+  let loading = false
 
   function onFormSubmit() {
     if (!name) return
 
-    dashboardMutation({ id, name, description, isPublic }).then((data) => {
-      console.log(data, dashboard)
+    loading = true
+
+    dashboardMutation({ title: name, description, isPublic }).then((data) => {
+      console.log(data, dashboard, panels)
 
       Object.assign(dashboard, data)
       // dashboard.panels = panels
 
+      /*
       return Promise.all(
         panels.map((panel) =>
           panelMutation({
-            dashboardId: id,
+            dashboardId: dashboard.id,
             name: panel.name,
             type: panel.type,
-            sql,
+            sql: {
+              query: sql.query,
+              parameters: JSON.stringify(
+                {}, // sql.parameters
+              ),
+            },
           }),
         ),
-      ).then((panels) => dashboard.panels.push(...panels))
+      )
+      */
+      Promise.resolve(panels).then((panels) => {
+        console.log(panels)
+        dashboard.panels.push(...panels)
+        DialogPromise.resolve(dashboard)
+        loading = false
+        closeDialog()
+      })
     })
   }
 </script>
@@ -64,7 +82,7 @@
     </Field>
 
     <div class="row v-center mrg-xl mrg--t">
-      <button class="btn-1 btn--l mrg-a mrg--r" type="submit">
+      <button class="btn-1 btn--l mrg-a mrg--r" class:loading type="submit">
         {action}
       </button>
 
