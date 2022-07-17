@@ -16,7 +16,7 @@ export const Dashboard = (defaultValue?: null | SAN.Queries.Dashboard) => {
       if (!dashboard.sql && dashboard.panels.length) {
         dashboard.sql = { ...dashboard.panels[0].sql }
       } else {
-        dashboard.sql = { query: '', parameters: [] }
+        dashboard.sql = { query: '', parameters: [] as any }
       }
 
       set(dashboard)
