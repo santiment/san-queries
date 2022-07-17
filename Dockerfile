@@ -7,5 +7,5 @@ WORKDIR /app
 
 COPY ./ /app
 
-RUN npm i
+RUN npm i -f
 RUN npm run build
