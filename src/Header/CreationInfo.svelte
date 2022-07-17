@@ -11,15 +11,11 @@
   const ctx = getAppContext()
   const { dashboard$ } = ctx
 
-  let isAuthor = true
-
   $: dashboard = $dashboard$
   $: currentUser = $currentUser$
 
   $: ({ id, title, user, commentsCount, votes, description } = dashboard)
   $: isAuthor = currentUser && user && +user.id === +currentUser.id
-
-  $: console.log(dashboard)
 
   function getState() {
     if (!dashboard.user)
@@ -49,9 +45,7 @@
   function onEditClick() {
     if (!currentUser) return
 
-    // if (isAuthor)
     const handler = getState()
-
     console.log({ handler })
 
     showSaveDashboardDialog({
@@ -70,7 +64,7 @@
 
 <CreationInfo
   fallback="Unsaved dashboard"
-  type={CreationType.Layout}
+  type={CreationType.Dashboard}
   {id}
   {title}
   {user}

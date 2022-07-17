@@ -1,28 +1,23 @@
 <script>
   import Comments from 'webkit/ui/Comments/svelte'
-  import { CommentsType } from 'san-webkit/lib/api/comments'
+  import { CommentsType } from 'webkit/api/comments'
+  import { currentUser as currentUser$ } from 'studio/stores/user'
+  import { getAppContext } from '@/context'
 
   export let isCommentsShowed = false
+
+  const ctx = getAppContext()
+  const { dashboard$ } = ctx
+
+  $: dashboard = $dashboard$
+  $: currentUser = $currentUser$
 </script>
 
-{#if isCommentsShowed}
+{#if isCommentsShowed && dashboard.user}
   <div id="comments">
     <div class="bg fluid" on:click={() => (isCommentsShowed = false)} />
     <div class="column border mrg-a mrg--l">
-      <Comments
-        type={CommentsType.Insight}
-        commentsFor={{
-          id: 16457,
-          user: {
-            id: 113,
-          },
-        }}
-        currentUser={{
-          id: '113',
-          following: {
-            users: [],
-          },
-        }} />
+      <Comments type={CommentsType.Dashboard} commentsFor={dashboard} {currentUser} />
     </div>
   </div>
 {/if}
