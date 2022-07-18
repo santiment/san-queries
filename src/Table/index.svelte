@@ -3,30 +3,6 @@
 
   export let columns = []
   export let data
-
-  // $: columns = [
-  // {
-  // title: headers[0],
-  // format: ({ value }) => '$' + value,
-  // sortAccessor: ({ value }) => value,
-  // },
-  // {
-  // title: headers[1],
-  // format: ({ volume }) => volume + ' VOL',
-  // sortAccessor: ({ volume }) => volume,
-  // },
-  // ]
-
-  /*
-  const ITEMS = [
-    { value: 300, volume: 2000 },
-    { value: 100, volume: 4000 },
-    { value: 800, volume: 90 },
-    { value: 50, volume: 1000 },
-    { value: 2000, volume: 30 },
-    { value: 150, volume: 5000 },
-  ]
-  */
 </script>
 
 <Table items={data} {columns} class="$style.table" sticky />
@@ -36,7 +12,7 @@
     width: calc(100% + 32px) !important;
     border-top: 1px solid var(--porcelain);
     margin: 16px -16px 0;
-    max-height: 392px;
+    max-height: var(--table-max-height, 392px);
     overflow: auto;
     flex: 1;
 

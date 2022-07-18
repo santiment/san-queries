@@ -1,15 +1,12 @@
 <script>
   import { onDestroy } from 'svelte'
-  import { downloadCsv } from 'webkit/utils/csv'
-  import Svg from 'webkit/ui/Svg/svelte'
   import { PanelType } from '@/types'
   import NewVisualization from '@/NewVisualization.svelte'
   import RowPanels from '@/RowPanels.svelte'
-  import Table from '@/Table/index.svelte'
-  import Chart from '@/Chart/index.svelte'
   import Visualizations from '@/Visualizations.svelte'
   import { getAppContext } from '@/context'
   import Options from './Options/index.svelte'
+  import Visualization from './Visualization.svelte'
 
   const { dashboard$ } = getAppContext()
 
@@ -26,6 +23,9 @@
   let unsub = dashboard$.subscribe((value) => {
     dashboard = value
     visualizations = dashboard.panels
+    if (!visualizations.includes(visualization)) {
+      visualization = visualizations[0]
+    }
   })
 
   $: visualization && dateColumns && normalizeVisualization(dateColumns)
@@ -43,11 +43,6 @@
     return columns.filter((column) => !column.isHidden)
   }
 
-  function onDownload() {
-    console.log(visualization)
-    downloadCsv(visualization.name, columns, rows)
-  }
-
   onDestroy(unsub)
 </script>
 
@@ -63,24 +58,7 @@
   <RowPanels class="$style.result">
     <svelte:fragment slot="left">
       {#if data}
-        <div class="row v-center">
-          <div class="body-2 mrg-a mrg--r">{visualization.name}</div>
-
-          <div class="row">
-            <button class="action btn-3" on:click={onDownload}><Svg id="download" w="17" /></button>
-            <button class="action btn-3"><Svg id="fullscreen" w="14" /></button>
-          </div>
-        </div>
-
-        {#if visualization.type === PanelType.TABLE}
-          <Table columns={visibleColumns} data={rows} />
-        {:else}
-          <Chart
-            columns={visibleColumns}
-            data={rows}
-            {dateColumns}
-            xAxisKey={visualization.xAxisKey} />
-        {/if}
+        <Visualization {visualization} {columns} {rows} {dateColumns} {visibleColumns} />
       {:else}
         <div class="column hv-center">
           <h2 class="body-2 txt-b">No data</h2>
@@ -103,11 +81,6 @@
 <style>
   .result {
     flex: 1;
-  }
-
-  .action {
-    --fill: var(--waterloo);
-    margin-left: 8px;
   }
 
   .column {

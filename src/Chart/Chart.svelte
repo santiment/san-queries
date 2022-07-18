@@ -1,4 +1,5 @@
 <script>
+  import { ui$ } from 'webkit/stores/ui'
   import { getDateFormats, getTimeFormats } from 'webkit/utils/dates'
   import { themes } from 'studio/Chart/theme'
   import { getMetricNodes } from 'studio/Chart/nodes'
@@ -13,7 +14,7 @@
   export let colors
   export let axesMetricKeys
 
-  $: theme = themes[0] // +$globals.isNightMode]
+  $: theme = themes[+$ui$.nightMode] // +$globals.isNightMode]
   $: categories = getMetricNodes(metrics, {})
   $: metricSettings = getTooltipSettings(metrics)
 
