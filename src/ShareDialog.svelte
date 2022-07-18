@@ -38,7 +38,7 @@
 
   export let title = 'Share'
   export let data = {}
-  export let isAuthor = true
+  export let isAuthor = false
 
   const {
     title: shareTitle = 'Sanbase',

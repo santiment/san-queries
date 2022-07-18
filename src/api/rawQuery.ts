@@ -14,6 +14,8 @@ function cacheModifier(data) {
   const { sql } = data
   const row = sql.rows[0]
 
+  if (!row) return data
+
   const dateColumns = [] as number[]
   row.forEach((value, i) => {
     const date = Date.parse(value)

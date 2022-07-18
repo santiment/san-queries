@@ -1,12 +1,14 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import Svg from 'webkit/ui/Svg/svelte'
-  import { FeatureWalkthrough$ } from 'webkit/ui/FeatureWalkthrough/context'
   import { newChartColors } from 'studio/Chart/colors'
   import RowPanels from '@/RowPanels.svelte'
   import { showParameterDialog } from '@/ParameterDialog.svelte'
   import { mutateComputeRawClickhouseQuery } from '@/api/rawQuery'
-  import { showParameterOptionsWalkthrough } from '@/walkthroughs/parameters'
+  import {
+    showAddParameterWalkthrough,
+    showParameterOptionsWalkthrough,
+  } from '@/walkthroughs/parameters'
   import { getAppContext } from '@/context'
   import Parameter, { getParameterSQL } from './Parameter.svelte'
   import ExecuteButton from './ExecuteButton.svelte'
@@ -25,7 +27,7 @@
 
   function onExecuteClick(resolve) {
     const query = queryNode.value
-    mutateComputeRawClickhouseQuery(
+    return mutateComputeRawClickhouseQuery(
       query,
       parameters.reduce((acc, { key, value }) => Object.assign(acc, { [key]: value }), {}),
     ).then((sqlResult) => {
@@ -57,11 +59,7 @@
   }
 
   onMount(() => {
-    FeatureWalkthrough$.show({
-      id: 'fw-add-parameter',
-      title: 'Add parameter',
-      description: `<p class="mrg-l mrg--b">Click on the parameter to open the options dialog</p>`,
-    })
+    showAddParameterWalkthrough()
   })
 </script>
 

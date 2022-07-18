@@ -1,4 +1,5 @@
 <script>
+  import { notifications$ } from 'webkit/ui/Notifications'
   import Svg from 'webkit/ui/Svg/svelte'
   import Tooltip from 'webkit/ui/Tooltip/svelte'
   import ExecutionStats from './ExecutionStats.svelte'
@@ -23,6 +24,19 @@
       loading = false
       const resultOn = Date.now()
       stats = { resultOn, loadTime: resultOn - lastRun }
+    }).catch((e) => {
+      loading = false
+
+      const { message } = e[0] || e
+      const msgIndex = message.indexOf(':', message.indexOf('col')) + 1
+
+      console.warn(message)
+
+      notifications$.show({
+        type: 'error',
+        title: 'Failed to execute query. Please try again.',
+        description: message.slice(msgIndex).trim(),
+      })
     })
   }
 </script>

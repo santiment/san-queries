@@ -2,22 +2,19 @@
   import { notifications$ } from 'webkit/ui/Notifications'
   import CreationInfo from 'webkit/ui/CreationInfo/svelte'
   import { CreationType } from 'webkit/ui/Profile/types'
-  import { currentUser as currentUser$ } from 'studio/stores/user'
   import { getAppContext } from '@/context'
   import { showSaveDashboardDialog } from '@/SaveDashboardDialog.svelte'
   import { mutateCreateDashboard, mutateCreateDashboardPanel } from '@/api/dashboard/create'
   import { mutateUpdateDashboard, mutateUpdateDashboardPanel } from '@/api/dashboard/update'
 
+  export let dashboard
+  export let currentUser
+  export let isAuthor
   export let onCommentsClick
 
-  const ctx = getAppContext()
-  const { dashboard$ } = ctx
-
-  $: dashboard = $dashboard$
-  $: currentUser = $currentUser$
+  const { dashboard$ } = getAppContext()
 
   $: ({ id, title, user, commentsCount, votes, description } = dashboard)
-  $: isAuthor = currentUser && user && +user.id === +currentUser.id
 
   function getState() {
     if (!dashboard.user) {

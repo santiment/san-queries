@@ -1,20 +1,19 @@
 import { FeatureWalkthrough$ } from 'webkit/ui/FeatureWalkthrough/context'
+import { awaitChildren } from './utils'
 
-export function showParameterOptionsWalkthrough(parametersNode) {
-  const node = parametersNode.querySelector('.parameter')
+export function showAddParameterWalkthrough() {
+  FeatureWalkthrough$.show({
+    id: 'fw-add-parameter',
+    title: 'Add parameter',
+    description: `<p class="mrg-l mrg--b">Add parameters to the query by opening the parameter's creation dialog</p>`,
+  })
+}
+
+export function showParameterOptionsWalkthrough(parentNode) {
+  const node = parentNode.querySelector('.parameter')
 
   if (node) show(node)
-  else {
-    const config = { childList: true }
-    const observer = new MutationObserver(() => {
-      const node = parametersNode.querySelector('.parameter')
-      if (node) {
-        show(node)
-        observer.disconnect()
-      }
-    })
-    observer.observe(parametersNode, config)
-  }
+  else awaitChildren(parentNode, show, () => parentNode.querySelector('.parameter'))
 
   function show(node) {
     node.id = 'fw-parameter-options'
