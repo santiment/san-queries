@@ -5,7 +5,10 @@ export const Dashboard = (defaultValue?: null | SAN.Queries.Dashboard) => {
   const { subscribe, set } = writable(
     defaultValue ||
       ({
-        sql: { query: 'SELECT * FROM intraday_metrics LIMIT 20', parameters: [] },
+        settings: {
+          sql: 'SELECT * FROM intraday_metrics LIMIT 20',
+          parameters: [],
+        },
         panels: [],
       } as any as SAN.Queries.Dashboard),
   )
@@ -13,6 +16,14 @@ export const Dashboard = (defaultValue?: null | SAN.Queries.Dashboard) => {
   const store = {
     subscribe,
     set(dashboard: SAN.Queries.Dashboard) {
+      const { settings } = dashboard
+
+      if (!settings.sql) {
+        settings.sql = ''
+        settings.parameters = []
+      }
+
+      /*
       if (!dashboard.sql) {
         if (dashboard.panels.length) {
           dashboard.sql = { ...dashboard.panels[0].sql }
@@ -20,6 +31,8 @@ export const Dashboard = (defaultValue?: null | SAN.Queries.Dashboard) => {
           dashboard.sql = { query: '', parameters: [] as any }
         }
       }
+      */
+
       set(dashboard)
     },
   }

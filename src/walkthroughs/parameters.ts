@@ -21,7 +21,10 @@ export function showParameterOptionsWalkthrough(parentNode) {
     FeatureWalkthrough$.show({
       id: node.id,
       title: 'Parameter options',
-      description: `<p class="mrg-l mrg--b">Click on the parameter to open the options dialog</p>`,
+      description: `<p class="mrg-l mrg--b">Click on the parameter to open the options dialog
+      <br class="mrg-s mrg--b" />
+      Drag and drop the parameter to the editor below to quickly add it to your SQL query
+      </p>`,
     })
   }
 }

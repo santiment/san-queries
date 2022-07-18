@@ -3,7 +3,7 @@ export function awaitChildren(parentNode, show, acessor) {
   const observer = new MutationObserver(() => {
     const node = acessor()
     if (node) {
-      show()
+      show(node)
       observer.disconnect()
     }
   })

@@ -51,7 +51,10 @@ declare namespace SAN {
       commentsCount: number
       votedAt: string
       votes?: { userVotes: number; totalVoters: number; totalVotes: number }
-      sql?: SQL
+      settings: {
+        sql: string
+        parameters: any[]
+      }
     }
   }
 }

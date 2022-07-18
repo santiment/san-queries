@@ -3,8 +3,8 @@ import type { CreateDashboardVariables, CreatePanelVariables } from './create'
 import { DASHBOARD_FRAGMENT, PANEL_FRAGMENT } from './fragments'
 
 const UPDATE_DASHBOARD_MUTATION = `
-  mutation($id:Int!, $title:String!, $description:String, $isPublic:Boolean) {
-    updateDashboard(id:$id, name:$title, description:$description, isPublic:$isPublic) {
+  mutation($id:Int!, $title:String!, $description:String, $isPublic:Boolean, $settings:json) {
+    updateDashboard(id:$id, name:$title, description:$description, isPublic:$isPublic tempJson:$settings) {
       ${DASHBOARD_FRAGMENT}
     }
   }`
@@ -24,8 +24,8 @@ export const mutateUpdateDashboard = (variables: updateDashboardVariables) =>
 // ---------------------------------------
 
 const UPDATE_DASHBOARD_PANEL_MUTATION = `
-  mutation($dashboardId:Int!, $panelId:String!, $sql:PanelSqlInputObject!, $name:String!, $description:String, $type:PanelType) {
-    updateDashboardPanel(dashboardId:$dashboardId, panelId:$panelId, panel:{sql:$sql, name:$name, description:$description, type:$type}) {
+  mutation($dashboardId:Int!, $panelId:String!, $sql:PanelSqlInputObject!, $name:String!, $description:String, tempJson:$settings) {
+    updateDashboardPanel(dashboardId:$dashboardId, panelId:$panelId, panel:{sql:$sql, name:$name, description:$description, settings:$settings}) {
       ${PANEL_FRAGMENT}
     }
   }`

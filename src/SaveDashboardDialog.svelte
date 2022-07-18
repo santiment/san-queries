@@ -20,7 +20,7 @@
 
   export let DialogPromise: SAN.DialogController
   let closeDialog
-  let { title: name, description = '', isPublic, panels, sql } = dashboard
+  let { id, title: name, description = '', isPublic, panels, sql, settings } = dashboard
   let loading = false
 
   function onFormSubmit() {
@@ -28,7 +28,13 @@
 
     loading = true
 
-    dashboardMutation({ title: name, description, isPublic }).then((data) => {
+    dashboardMutation({
+      id,
+      title: name,
+      description,
+      isPublic,
+      settings: JSON.stringify(settings),
+    }).then((data) => {
       console.log(data, dashboard, panels)
 
       Object.assign(dashboard, data)

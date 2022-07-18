@@ -3,6 +3,7 @@ export const DASHBOARD_FRAGMENT = `
   title:name
   description
   isPublic
+  settings:tempJson
   user {
     id
     username
@@ -12,7 +13,7 @@ export const DASHBOARD_FRAGMENT = `
   panels {
     name
     description
-    type
+    settings
     sql {
       query
       parameters
@@ -31,7 +32,7 @@ export const PANEL_FRAGMENT = `
   id
   name
   description
-  type
+  settings
   sql {
     query
     parameters

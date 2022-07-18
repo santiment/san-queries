@@ -35,7 +35,7 @@
     "@santiment-network/chart": "^0.10.12",
     "marked": "^4.0.18",
     "medium-editor": "^5.23.3",
-    "san-webkit": "https://github.com/santiment/san-webkit#97799a6",
+    "san-webkit": "https://github.com/santiment/san-webkit#1292ac1",
     "san-studio": "https://github.com/santiment/san-studio#c9983e6",
     "turndown": "^7.1.1"
   },

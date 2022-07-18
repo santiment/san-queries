@@ -21,7 +21,7 @@
   let queryNode
 
   $: dashboard = $dashboard$
-  $: ({ query, parameters } = dashboard.sql)
+  $: ({ sql, parameters } = dashboard.settings)
   $: colors = newChartColors(parameters)
   $: if (controlsNode) showParameterOptionsWalkthrough(controlsNode)
 
@@ -38,7 +38,7 @@
 
   function onNewParameter(parameter) {
     parameters.push(parameter)
-    $dashboard$.sql.parameters = parameters
+    $dashboard$.settings.parameters = parameters
 
     const name = getParameterSQL(parameter)
 
@@ -55,7 +55,7 @@
   }
 
   function onBlur({ currentTarget }) {
-    $dashboard$.sql.query = currentTarget.value
+    $dashboard$.settings.sql = currentTarget.value
   }
 
   onMount(() => {
@@ -86,7 +86,7 @@
 
 <RowPanels class="mrg-xl mrg--b">
   <svelte:fragment slot="left">
-    <textarea bind:this={queryNode} cols="30" rows="10" value={query} on:blur={onBlur} />
+    <textarea bind:this={queryNode} cols="30" rows="10" value={sql} on:blur={onBlur} />
   </svelte:fragment>
 
   <!-- 
