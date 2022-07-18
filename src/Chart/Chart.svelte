@@ -13,6 +13,7 @@
   export let metrics
   export let colors
   export let axesMetricKeys
+  export let onChart
 
   $: theme = themes[+$ui$.nightMode] // +$globals.isNightMode]
   $: categories = getMetricNodes(metrics, {})
@@ -44,7 +45,7 @@
   }
 </script>
 
-<Chart {data} {categories} {theme} {colors} onChart={console.log}>
+<Chart {data} {categories} {theme} {colors} {onChart}>
   <Lines />
 
   <Axes {axesMetricKeys} {metricSettings} xTicks={10} />

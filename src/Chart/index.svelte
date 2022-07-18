@@ -1,4 +1,6 @@
 <script>
+  import { downloadPng } from '@/Result/downloadPng'
+
   import { newChartColors, newHighlightedColors } from 'studio/Chart/colors'
   import Chart from './Chart.svelte'
   import Metrics from './Metrics.svelte'
@@ -7,6 +9,8 @@
   export let dateColumns
   export let data
   export let xAxisKey = [...dateColumns][0]
+
+  let chart
 
   $: metrics = columns
     .filter(({ id }) => !dateColumns.has(id))
@@ -31,8 +35,17 @@
   function datetimeSorter(a, b) {
     return a.datetime - b.datetime
   }
+
+  export function download(title) {
+    downloadPng(chart, metrics, title)
+  }
 </script>
 
 <Metrics {metrics} {colors} {onMetricHover} />
 
-<Chart data={chartData} {metrics} {colors} {axesMetricKeys} />
+<Chart
+  data={chartData}
+  {metrics}
+  {colors}
+  {axesMetricKeys}
+  onChart={(_chart) => (chart = _chart)} />

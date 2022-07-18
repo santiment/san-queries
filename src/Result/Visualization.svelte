@@ -13,9 +13,14 @@
   export let visibleColumns
   export let onFullscreenClick = showFullscreenDialog
 
+  let downloadChart
+
   function onDownload() {
-    console.log(visualization)
-    downloadCsv(visualization.name, columns, rows)
+    if (visualization.type === PanelType.TABLE) {
+      downloadCsv(visualization.name, columns, rows)
+    } else if (visualization.type === PanelType.CHART) {
+      downloadChart(visualization.name)
+    }
   }
 </script>
 
@@ -33,7 +38,12 @@
 {#if visualization.type === PanelType.TABLE}
   <Table columns={visibleColumns} data={rows} />
 {:else}
-  <Chart columns={visibleColumns} data={rows} {dateColumns} xAxisKey={visualization.xAxisKey} />
+  <Chart
+    columns={visibleColumns}
+    data={rows}
+    {dateColumns}
+    xAxisKey={visualization.xAxisKey}
+    bind:download={downloadChart} />
 {/if}
 
 <style>
