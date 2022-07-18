@@ -10,6 +10,7 @@
   export let dashboard
   export let currentUser
   export let isAuthor
+  export let columns
   export let onCommentsClick
 
   const { dashboard$ } = getAppContext()
@@ -32,6 +33,7 @@
         action: 'Save',
         dashboardMutation: mutateUpdateDashboard,
         panelMutation: mutateUpdateDashboardPanel,
+        newPanelMutation: mutateCreateDashboardPanel,
       }
     }
 
@@ -52,7 +54,7 @@
     showSaveDashboardDialog({
       ...getState(),
       dashboard,
-      onSubmit: console.log,
+      columns,
     })
       .then((dashboard?: SAN.Queries.Dashboard) => {
         if (!dashboard) return

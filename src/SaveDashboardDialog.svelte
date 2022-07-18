@@ -11,16 +11,17 @@
   import Dialog from 'webkit/ui/Dialog'
   import Field from 'webkit/ui/Field/svelte'
   import Toggle from 'webkit/ui/Toggle.svelte'
+  import { getParametersMap } from './utils/parameters'
 
   export let dashboard
-  export let onSubmit
   export let title = 'New dashboard'
   export let action = 'Create'
   export let dashboardMutation, panelMutation
+  export let newPanelMutation = panelMutation
 
   export let DialogPromise: SAN.DialogController
   let closeDialog
-  let { id, title: name, description = '', isPublic, panels, sql, settings } = dashboard
+  let { id, title: name, description = '', isPublic, panels, settings } = dashboard
   let loading = false
 
   function onFormSubmit() {
@@ -38,28 +39,26 @@
       console.log(data, dashboard, panels)
 
       Object.assign(dashboard, data)
-      // dashboard.panels = panels
+      dashboard.panels = panels
 
-      /*
       return Promise.all(
         panels.map((panel) =>
-          panelMutation({
+          (panel.id ? panelMutation : newPanelMutation)({
             dashboardId: dashboard.id,
+            panelId: panel.id,
             name: panel.name,
-            type: panel.type,
             sql: {
-              query: sql.query,
-              parameters: JSON.stringify(
-                {}, // sql.parameters
-              ),
+              query: settings.sql,
+              parameters: JSON.stringify(getParametersMap(settings.parameters)),
             },
+            settings: JSON.stringify({
+              type: panel.type,
+              xAxisKey: panel.xAxisKey,
+            }),
           }),
         ),
-      )
-      */
-      Promise.resolve(panels).then((panels) => {
+      ).then((panels) => {
         console.log(panels)
-        dashboard.panels.push(...panels)
         DialogPromise.resolve(dashboard)
         loading = false
         closeDialog()

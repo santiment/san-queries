@@ -8,6 +8,7 @@ export const Dashboard = (defaultValue?: null | SAN.Queries.Dashboard) => {
         settings: {
           sql: 'SELECT * FROM intraday_metrics LIMIT 20',
           parameters: [],
+          columns: [],
         },
         panels: [],
       } as any as SAN.Queries.Dashboard),
@@ -16,12 +17,19 @@ export const Dashboard = (defaultValue?: null | SAN.Queries.Dashboard) => {
   const store = {
     subscribe,
     set(dashboard: SAN.Queries.Dashboard) {
-      const { settings } = dashboard
+      const { settings, panels } = dashboard
 
       if (!settings.sql) {
         settings.sql = ''
         settings.parameters = []
       }
+
+      settings.columns = settings.columns || []
+
+      panels.forEach((panel) => {
+        if (!panel.settings) panel.settings = {} as any
+        panel.type = panel.settings.type || 'TABLE'
+      })
 
       /*
       if (!dashboard.sql) {

@@ -26,9 +26,14 @@
     ],
   }
 
+  const { dashboard$ } = setAppContext({
+    dashboard$: Dashboard(dashbord),
+  })
+
   let data
 
   $: columns = data ? data.headers.map(newColumn) : []
+  $: updateColumns(columns)
   $: console.log(data)
 
   function newColumn(title, i) {
@@ -52,16 +57,19 @@
     return column
   }
 
-  const ctx = setAppContext({
-    dashboard$: Dashboard(dashbord),
-  })
+  function updateColumns(columns) {
+    $dashboard$.settings.columns.forEach((column, i) => {
+      Object.assign(columns[i], column)
+    })
+    $dashboard$.settings.columns = columns
+  }
 </script>
 
 <div class="row">
   <Sidebar />
 
   <main class="column">
-    <Header />
+    <Header {columns} />
 
     <Query bind:data />
 

@@ -12,6 +12,7 @@
   import { getAppContext } from '@/context'
   import Parameter, { getParameterSQL } from './Parameter.svelte'
   import ExecuteButton from './ExecuteButton.svelte'
+  import { getParametersMap } from '@/utils/parameters'
 
   const { dashboard$ } = getAppContext()
 
@@ -27,13 +28,12 @@
 
   function onExecuteClick(resolve) {
     const query = queryNode.value
-    return mutateComputeRawClickhouseQuery(
-      query,
-      parameters.reduce((acc, { key, value }) => Object.assign(acc, { [key]: value }), {}),
-    ).then((sqlResult) => {
-      data = sqlResult
-      resolve()
-    })
+    return mutateComputeRawClickhouseQuery(query, getParametersMap(parameters)).then(
+      (sqlResult) => {
+        data = sqlResult
+        resolve()
+      },
+    )
   }
 
   function onNewParameter(parameter) {

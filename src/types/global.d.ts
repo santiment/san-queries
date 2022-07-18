@@ -37,6 +37,9 @@ declare namespace SAN {
       description: string
       sql: SQL
       type: PanelType
+      settings: {
+        type: PanelType
+      }
     }
 
     type Dashboard = {
@@ -54,6 +57,7 @@ declare namespace SAN {
       settings: {
         sql: string
         parameters: any[]
+        columns: any[]
       }
     }
   }

@@ -8,6 +8,8 @@
 
   const { dashboard$ } = getAppContext()
 
+  export let columns
+
   let isCommentsShowed = false
 
   $: dashboard = $dashboard$
@@ -21,6 +23,7 @@
   <CreationInfo
     {currentUser}
     {dashboard}
+    {columns}
     {isAuthor}
     onCommentsClick={() => (isCommentsShowed = !isCommentsShowed)} />
 
