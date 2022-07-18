@@ -7,6 +7,7 @@
   import { Dashboard } from './stores/dashboard'
   import { PanelType } from './types'
   import Header from './Header/index.svelte'
+  import { onDestroy } from 'svelte'
 
   export let dashbord = null && {
     id: 0,
@@ -63,6 +64,16 @@
     })
     $dashboard$.settings.columns = columns
   }
+
+  let id = $dashboard$.id
+  onDestroy(
+    dashboard$.subscribe((dashboard) => {
+      if (dashboard.id === id) return
+
+      data = undefined
+      id = dashboard.id
+    }),
+  )
 </script>
 
 <div class="row">
