@@ -1,5 +1,5 @@
-export function shareColumn({ title, formatterId, isHidden }) {
-  const column = { title, formatterId } as any
+export function shareColumn({ title, formatterId, chartStyle, isHidden }) {
+  const column = { title, chartStyle, formatterId } as any
 
   if (isHidden) column.isHidden = true
 

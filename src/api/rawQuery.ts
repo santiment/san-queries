@@ -18,6 +18,8 @@ function cacheModifier(data) {
 
   const dateColumns = [] as number[]
   row.forEach((value, i) => {
+    if (typeof value !== 'string') return
+
     const date = Date.parse(value)
     if (date > 0) dateColumns.push(i)
   })

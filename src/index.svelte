@@ -8,6 +8,7 @@
   import { PanelType } from './types'
   import Header from './Header/index.svelte'
   import { onDestroy } from 'svelte'
+  import { shareColumn } from './utils/columns'
 
   export let dashbord = null && {
     id: 0,
@@ -93,6 +94,7 @@
     padding: 24px 16px;
     background: var(--athens);
     min-height: 100vh;
+    min-width: 0;
     flex: 1;
   }
 </style>
