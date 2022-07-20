@@ -2,8 +2,8 @@
   import Svg from 'webkit/ui/Svg/svelte'
   import { showResultVisualizationsWalkthrough } from './walkthroughs/visualizations'
 
-  export let visualizations = []
-  export let visualization: SAN.Queries.PanelType
+  export let visualizations = [] as SAN.Queries.DashboardPanel[]
+  export let visualization: SAN.Queries.DashboardPanel
 
   let visualizationsNode
 
@@ -16,7 +16,7 @@
       class="btn-2 mrg-s mrg--r row v-center"
       class:active={visualization === item}
       on:click={() => (visualization = item)}>
-      <Svg id={item.type} w="16" class="mrg-s mrg--r" />
+      <Svg id={item.type.toLowerCase()} w="16" class="mrg-s mrg--r" />
       {item.name}
     </button>
   {/each}

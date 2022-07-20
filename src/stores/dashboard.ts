@@ -1,4 +1,5 @@
 import { writable } from 'svelte/store'
+import { PanelType } from '@/types'
 
 export type Dashboard$ = ReturnType<typeof Dashboard>
 export const Dashboard = (defaultValue?: null | SAN.Queries.Dashboard) => {
@@ -28,7 +29,7 @@ export const Dashboard = (defaultValue?: null | SAN.Queries.Dashboard) => {
 
       panels.forEach((panel) => {
         if (!panel.settings) panel.settings = {} as any
-        panel.type = panel.settings.type || 'TABLE'
+        panel.type = panel.settings.type || panel.type || PanelType.TABLE
       })
 
       /*

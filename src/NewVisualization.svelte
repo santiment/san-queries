@@ -11,7 +11,7 @@
   let isOpened = false
 
   function newVisualization(type, name) {
-    visualizations.push({ type, name })
+    visualizations.push({ type, name, settings: { type } })
     visualizations = visualizations
 
     if (visualizations.length === 1) visualization = visualizations[0]
