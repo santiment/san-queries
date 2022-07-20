@@ -24,11 +24,13 @@ function cacheModifier(data) {
     if (date > 0) dateColumns.push(i)
   })
 
+  /* 
   dateColumns.forEach((i) => {
     sql.rows.forEach((row) => {
       row[i] = Date.parse(row[i])
     })
   })
+*/
 
   data.sql.dateColumns = new Set(dateColumns)
 

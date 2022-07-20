@@ -21,7 +21,9 @@
       formatter,
     }))
 
-  $: chartData = data.map((row) => ({ ...row, datetime: row[xAxisKey] })).sort(datetimeSorter)
+  $: chartData = data
+    .map((row) => ({ ...row, datetime: Date.parse(row[xAxisKey]) }))
+    .sort(datetimeSorter)
   $: rawColors = newChartColors(metrics)
   $: colors = rawColors
 
