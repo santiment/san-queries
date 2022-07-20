@@ -14,10 +14,10 @@
 
   $: metrics = columns
     .filter(({ id }) => !dateColumns.has(id))
-    .map(({ id, title, formatter }) => ({
+    .map(({ id, title, formatter, chartStyle }) => ({
       key: id.toString(),
       label: title,
-      node: 'line',
+      node: chartStyle || 'line',
       formatter,
     }))
 

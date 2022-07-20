@@ -11,6 +11,7 @@ export const DASHBOARD_FRAGMENT = `
     avatarUrl
   }
   panels {
+    id
     name
     description
     settings

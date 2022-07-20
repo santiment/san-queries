@@ -5,6 +5,8 @@
   import { getMetricNodes } from 'studio/Chart/nodes'
   import Chart from 'studio/Chart/index.svelte'
   import Lines from 'studio/Chart/Lines.svelte'
+  import Areas from 'studio/Chart/Areas.svelte'
+  import Bars from 'studio/Chart/Bars.svelte'
   import Axes from 'studio/Chart/Axes/index.svelte'
   import Tooltip from 'studio/Chart/Tooltip/index.svelte'
   import { FORMATTER } from 'studio/metrics/formatters'
@@ -46,6 +48,8 @@
 </script>
 
 <Chart {data} {categories} {theme} {colors} {onChart}>
+  <Bars />
+  <Areas />
   <Lines />
 
   <Axes {axesMetricKeys} {metricSettings} xTicks={10} />

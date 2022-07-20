@@ -55,6 +55,8 @@
               type: panel.type,
               xAxisKey: panel.xAxisKey,
             }),
+          }).then((savedPanel) => {
+            panel.id = savedPanel.id
           }),
         ),
       ).then((panels) => {

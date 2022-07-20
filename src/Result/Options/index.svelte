@@ -5,6 +5,7 @@
   import FormatOption from './Format.svelte'
   import VisibilityOption from './Visibility.svelte'
   import ChartXAxisOption from './ChartXAxis.svelte'
+  import ChartNodeStyleOption from './ChartNodeStyle.svelte'
 
   export let visualization
   export let headers
@@ -27,6 +28,10 @@
     <TitleOption bind:column {i} {headers} />
     <FormatOption bind:column {i} />
     <VisibilityOption bind:column {i} {dateColumns} {isChartVisualization} />
+
+    {#if isChartVisualization && !dateColumns.has(column)}
+      <ChartNodeStyleOption bind:column {columns} {i} />
+    {/if}
   {/each}
 </div>
 
