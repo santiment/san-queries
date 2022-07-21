@@ -1,10 +1,22 @@
 import { mutate } from 'webkit/api'
-import { DASHBOARD_FRAGMENT, PANEL_FRAGMENT } from './fragments'
 
 const CREATE_DASHBOARD_MUTATION = `
   mutation($title:String!, $description:String, $isPublic:Boolean, $settings:json) {
     createDashboard(name:$title, description:$description, isPublic:$isPublic, tempJson:$settings) {
-      ${DASHBOARD_FRAGMENT}
+      id
+      user {
+        id
+        username
+        email
+        avatarUrl
+      }
+      commentsCount
+      votedAt
+      votes { 
+        userVotes:currentUserVotes
+        totalVoters
+        totalVotes
+      }
     }
   }`
 
@@ -27,7 +39,7 @@ export const mutateCreateDashboard = (variables: CreateDashboardVariables) =>
 const CREATE_DASHBOARD_PANEL_MUTATION = `
   mutation($dashboardId:Int!, $sql:PanelSqlInputObject!, $name:String!, $description:String, $settings:json) {
     createDashboardPanel(dashboardId:$dashboardId, panel:{sql:$sql, name:$name, description:$description, settings:$settings}) {
-      ${PANEL_FRAGMENT}
+      id
     }
   }`
 
@@ -36,9 +48,9 @@ type CreatePanelQuery = SAN.API.Query<'createDashboardPanel', SAN.Queries.Dashbo
 export type CreatePanelVariables = {
   dashboardId: number
   name: string
-  description: string
+  description?: string
   sql: SAN.Queries.SQL
-  type: SAN.Queries.PanelType
+  settings: any
 }
 
 const createDashboardPanelAccessor = ({ createDashboardPanel }) => createDashboardPanel

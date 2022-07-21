@@ -46,9 +46,11 @@
   }
 
   function onVisualizationDelete(i) {
-    if (visualizations[i] === visualization) {
-      visualization = visualizations[(i || 1) - 1]
-    }
+    const removed = visualizations[i]
+    if (removed === visualization) visualization = visualizations[(i || 1) - 1]
+
+    if (removed.id) dashboard.removedPanels.push(removed)
+
     visualizations.splice(i, 1)
     visualizations = visualizations
   }

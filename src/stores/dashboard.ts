@@ -32,6 +32,10 @@ export const Dashboard = (defaultValue?: null | SAN.Queries.Dashboard) => {
         panel.type = panel.settings.type || panel.type || PanelType.TABLE
       })
 
+      if (!dashboard.removedPanels) {
+        dashboard.removedPanels = []
+      }
+
       /*
       if (!dashboard.sql) {
         if (dashboard.panels.length) {

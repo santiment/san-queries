@@ -30,8 +30,17 @@
   <Comments bind:isCommentsShowed />
 
   <button class="btn mrg-a mrg--l row v-center">
-    <Svg id="copy" w="16" class="mrg-s mrg--r" />
-    Duplicate</button>
+    <Svg id={user && !isAuthor ? 'copy' : 'save'} w="16" class="mrg-s mrg--r" />
+
+    {#if !user}
+      Save as
+    {:else if isAuthor}
+      Save
+    {:else}
+      Duplicate
+    {/if}
+  </button>
+
   <button
     class="btn mrg-xl mrg--l row v-center"
     on:click={() => showShareDialog({ title: 'Share dashboard', isAuthor })}>

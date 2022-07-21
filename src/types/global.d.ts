@@ -59,6 +59,8 @@ declare namespace SAN {
         parameters: any[]
         columns: any[]
       }
+
+      removedPanels: DashboardPanel[]
     }
   }
 }
