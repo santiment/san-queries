@@ -32,6 +32,8 @@
   $: visibleColumns = getVisibleColumns(columns)
   $: visualization && dashboard$.set(dashboard)
 
+  $: console.log(visualization, columns)
+
   function normalizeVisualization(dateColumns) {
     if (visualization.type !== PanelType.CHART) return
     if (dateColumns.has(visualization.xAxisKey)) return
@@ -43,13 +45,21 @@
     return columns.filter((column) => !column.isHidden)
   }
 
+  function onVisualizationDelete(i) {
+    if (visualizations[i] === visualization) {
+      visualization = visualizations[(i || 1) - 1]
+    }
+    visualizations.splice(i, 1)
+    visualizations = visualizations
+  }
+
   onDestroy(unsub)
 </script>
 
 <div class="row v-center mrg-l mrg--b">
   <h2 class="body-2 mrg-xl mrg--r">Query results</h2>
 
-  <Visualizations bind:visualization {visualizations} />
+  <Visualizations bind:visualization {visualizations} {onVisualizationDelete} />
 
   <NewVisualization bind:visualization bind:visualizations={$dashboard$.panels} />
 </div>
