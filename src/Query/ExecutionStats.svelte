@@ -1,5 +1,5 @@
 <script>
-  import { ONE_SECOND_IN_MS } from 'san-webkit/lib/utils/dates'
+  import { ONE_SECOND_IN_MS } from 'webkit/utils/dates'
   import { onDestroy, onMount } from 'svelte'
 
   export let loading

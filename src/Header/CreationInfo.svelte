@@ -10,7 +10,6 @@
   export let dashboard
   export let currentUser
   export let isAuthor
-  export let columns
   export let onCommentsClick
 
   const { dashboard$ } = getAppContext()
@@ -47,23 +46,9 @@
     showSaveDashboardDialog({
       ...getState(),
       dashboard,
-      columns,
+    }).then((dashboard?: SAN.Queries.Dashboard) => {
+      if (dashboard) dashboard$.set(dashboard)
     })
-      .then((dashboard?: SAN.Queries.Dashboard) => {
-        if (!dashboard) return
-
-        dashboard$.set(dashboard)
-        notifications$.show({
-          type: 'success',
-          title: 'Dashboard was saved successfully',
-        })
-      })
-      .catch(() => {
-        notifications$.show({
-          type: 'error',
-          title: 'Failed to save the dashboard. Please try again',
-        })
-      })
   }
 
   function onVote() {}

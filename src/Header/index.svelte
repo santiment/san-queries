@@ -5,6 +5,7 @@
   import CreationInfo from './CreationInfo.svelte'
   import Comments from './Comments.svelte'
   import { showShareDialog } from '@/ShareDialog.svelte'
+  import SaveButton from './SaveButton.svelte'
 
   const { dashboard$ } = getAppContext()
 
@@ -29,17 +30,7 @@
 
   <Comments bind:isCommentsShowed />
 
-  <button class="btn mrg-a mrg--l row v-center">
-    <Svg id={user && !isAuthor ? 'copy' : 'save'} w="16" class="mrg-s mrg--r" />
-
-    {#if !user}
-      Save as
-    {:else if isAuthor}
-      Save
-    {:else}
-      Duplicate
-    {/if}
-  </button>
+  <SaveButton class="$style.action" {user} {isAuthor} />
 
   <button
     class="btn mrg-xl mrg--l row v-center"
@@ -49,7 +40,8 @@
 </div>
 
 <style>
-  button {
+  button,
+  .action {
     --fill: var(--waterloo);
     --color-hover: var(--green);
   }

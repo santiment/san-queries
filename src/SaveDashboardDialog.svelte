@@ -27,6 +27,8 @@
 
     loading = true
 
+    Object.assign(dashboard, { title: name, description, isPublic })
+
     startSaveFlow(dashboard)
       .then(() => {
         DialogPromise.resolve(dashboard)

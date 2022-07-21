@@ -1,3 +1,4 @@
+import { notifications$ } from 'webkit/ui/Notifications'
 import { mutateCreateDashboard, mutateCreateDashboardPanel } from '@/api/dashboard/create'
 import { mutateRemoveDashboardPanel } from '@/api/dashboard/remove'
 import { mutateUpdateDashboard, mutateUpdateDashboardPanel } from '@/api/dashboard/update'
@@ -49,12 +50,28 @@ export function startRemoveDashboardPanelsFlow(dashboard: SAN.Queries.Dashboard)
 }
 
 export function startSaveFlow(dashboard: SAN.Queries.Dashboard) {
-  return startSaveDashboardFlow(dashboard).then((dashboard) => {
-    const { panels } = dashboard
-    return Promise.all(
-      panels
-        .map((panel) => startSavePanelFlow(panel, dashboard))
-        .concat(startRemoveDashboardPanelsFlow(dashboard) as any),
-    )
-  })
+  return startSaveDashboardFlow(dashboard)
+    .then((dashboard) => {
+      const { panels } = dashboard
+      return Promise.all(
+        panels
+          .map((panel) => startSavePanelFlow(panel, dashboard))
+          .concat(startRemoveDashboardPanelsFlow(dashboard) as any),
+      )
+    })
+    .then(() => {
+      notifications$.show({
+        type: 'success',
+        title: 'Dashboard was saved successfully',
+      })
+      console.log('Sucess????')
+      return dashboard
+    })
+    .catch((e) => {
+      notifications$.show({
+        type: 'error',
+        title: 'Failed to save the dashboard. Please try again',
+      })
+      return Promise.reject(e)
+    })
 }
