@@ -27,6 +27,16 @@ export const Dashboard = (defaultValue?: null | SAN.Queries.Dashboard) => {
 
       settings.columns = settings.columns || []
 
+      dashboard.panels = dashboard.panels.slice(0, 1)
+
+      if (!panels.length) {
+        dashboard.panels.push({
+          name: 'My table',
+          type: PanelType.TABLE,
+          settings: {},
+        })
+      }
+
       panels.forEach((panel) => {
         if (!panel.settings) panel.settings = {} as any
         panel.type = panel.settings.type || panel.type || PanelType.TABLE
@@ -35,6 +45,8 @@ export const Dashboard = (defaultValue?: null | SAN.Queries.Dashboard) => {
       if (!dashboard.removedPanels) {
         dashboard.removedPanels = []
       }
+
+      console.log(dashboard)
 
       /*
       if (!dashboard.sql) {

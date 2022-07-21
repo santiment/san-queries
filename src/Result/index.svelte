@@ -63,7 +63,7 @@
 
   <Visualizations bind:visualization {visualizations} {onVisualizationDelete} />
 
-  <NewVisualization bind:visualization bind:visualizations={$dashboard$.panels} />
+  <!-- <NewVisualization bind:visualization bind:visualizations={$dashboard$.panels} /> -->
 </div>
 
 {#if visualization}

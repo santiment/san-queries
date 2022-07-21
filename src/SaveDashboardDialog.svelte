@@ -11,17 +11,15 @@
   import Dialog from 'webkit/ui/Dialog'
   import Field from 'webkit/ui/Field/svelte'
   import Toggle from 'webkit/ui/Toggle.svelte'
-  import { getParametersMap } from './utils/parameters'
+  import { startSaveFlow } from './flow/dashboard'
 
   export let dashboard
   export let title = 'New dashboard'
   export let action = 'Create'
-  export let dashboardMutation, panelMutation
-  export let newPanelMutation = panelMutation
 
   export let DialogPromise: SAN.DialogController
   let closeDialog
-  let { id, title: name, description = '', isPublic, panels, settings } = dashboard
+  let { title: name, description = '', isPublic } = dashboard
   let loading = false
 
   function onFormSubmit() {
@@ -29,43 +27,14 @@
 
     loading = true
 
-    dashboardMutation({
-      id,
-      title: name,
-      description,
-      isPublic,
-      settings: JSON.stringify(settings),
-    }).then((data) => {
-      console.log(data, dashboard, panels)
-
-      Object.assign(dashboard, data)
-      dashboard.panels = panels
-
-      return Promise.all(
-        panels.map((panel) =>
-          (panel.id ? panelMutation : newPanelMutation)({
-            dashboardId: dashboard.id,
-            panelId: panel.id,
-            name: panel.name,
-            sql: {
-              query: settings.sql,
-              parameters: JSON.stringify(getParametersMap(settings.parameters)),
-            },
-            settings: JSON.stringify({
-              type: panel.type,
-              xAxisKey: panel.xAxisKey,
-            }),
-          }).then((savedPanel) => {
-            panel.id = savedPanel.id
-          }),
-        ),
-      ).then((panels) => {
-        console.log(panels)
+    startSaveFlow(dashboard)
+      .then(() => {
         DialogPromise.resolve(dashboard)
-        loading = false
         closeDialog()
       })
-    })
+      .finally(() => {
+        loading = false
+      })
   }
 </script>
 

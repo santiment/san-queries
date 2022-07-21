@@ -20,9 +20,11 @@
       <Svg id={item.type.toLowerCase()} w="16" class="mrg-s mrg--r" />
       {item.name}
 
+      <!-- 
       <div class="delete btn" on:click|stopPropagation={() => onVisualizationDelete(i)}>
         <Svg id="cross" w="8" />
       </div>
+ -->
     </button>
   {/each}
 </div>

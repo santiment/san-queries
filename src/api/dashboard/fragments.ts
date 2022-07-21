@@ -1,15 +1,26 @@
-export const DASHBOARD_FRAGMENT = `
+export const SHORT_DASHBOARD_FRAGMENT = `
   id
-  title:name
-  description
-  isPublic
-  settings:tempJson
   user {
     id
     username
     email
     avatarUrl
   }
+  commentsCount
+  votedAt
+  votes { 
+    userVotes:currentUserVotes
+    totalVoters
+    totalVotes
+  }
+`
+
+export const DASHBOARD_FRAGMENT = `
+  ${SHORT_DASHBOARD_FRAGMENT}
+  title:name
+  description
+  isPublic
+  settings:tempJson
   panels {
     id
     name
@@ -19,13 +30,6 @@ export const DASHBOARD_FRAGMENT = `
       query
       parameters
     }
-  }
-  commentsCount
-  votedAt
-  votes { 
-    userVotes:currentUserVotes
-    totalVoters
-    totalVotes
   }
 `
 

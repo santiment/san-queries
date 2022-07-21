@@ -1,22 +1,10 @@
 import { mutate } from 'webkit/api'
+import { SHORT_DASHBOARD_FRAGMENT } from './fragments'
 
 const CREATE_DASHBOARD_MUTATION = `
   mutation($title:String!, $description:String, $isPublic:Boolean, $settings:json) {
     createDashboard(name:$title, description:$description, isPublic:$isPublic, tempJson:$settings) {
-      id
-      user {
-        id
-        username
-        email
-        avatarUrl
-      }
-      commentsCount
-      votedAt
-      votes { 
-        userVotes:currentUserVotes
-        totalVoters
-        totalVotes
-      }
+      ${SHORT_DASHBOARD_FRAGMENT}
     }
   }`
 
@@ -26,6 +14,7 @@ export type CreateDashboardVariables = {
   title: string
   description?: string
   isPublic?: boolean
+  settings: any
 }
 
 const createDashboardAccessor = ({ createDashboard }) => createDashboard

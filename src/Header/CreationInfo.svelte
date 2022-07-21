@@ -22,8 +22,6 @@
       return {
         title: 'New dashboard',
         action: 'Create',
-        dashboardMutation: mutateCreateDashboard,
-        panelMutation: mutateCreateDashboardPanel,
       }
     }
 
@@ -31,17 +29,12 @@
       return {
         title: 'Edit dashboard',
         action: 'Save',
-        dashboardMutation: mutateUpdateDashboard,
-        panelMutation: mutateUpdateDashboardPanel,
-        newPanelMutation: mutateCreateDashboardPanel,
       }
     }
 
     return {
       title: 'Duplicate dashboard',
       action: 'Duplicate',
-      dashboardMutation: mutateCreateDashboard,
-      panelMutation: mutateCreateDashboardPanel,
     }
   }
 
