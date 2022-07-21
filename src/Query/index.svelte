@@ -54,6 +54,11 @@
     parameters = parameters
   }
 
+  function onParameterDelete(i) {
+    parameters.splice(i, 1)
+    parameters = parameters
+  }
+
   function onBlur({ currentTarget }) {
     $dashboard$.settings.sql = currentTarget.value
   }
@@ -67,12 +72,14 @@
   <div class="controls row" bind:this={controlsNode}>
     <ExecuteButton onClick={onExecuteClick} />
 
-    {#each parameters as parameter}
+    {#each parameters as parameter, i}
       <Parameter
         class="parameter"
+        {i}
         {parameter}
         color={colors[parameter.key]}
-        onUpdate={onParameterUpdate} />
+        onUpdate={onParameterUpdate}
+        onDelete={onParameterDelete} />
     {/each}
   </div>
 

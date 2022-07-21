@@ -8,10 +8,12 @@
   import { showParameterDialog } from '@/ParameterDialog.svelte'
 
   let className = ''
+  export let i
   export { className as class }
   export let parameter
   export let color
   export let onUpdate
+  export let onDelete
 
   $: ({ name, value } = parameter)
 
@@ -36,7 +38,7 @@
 
 <ColorBorder
   draggable
-  class={className}
+  class={'$style.parameter {className}'}
   {color}
   on:click={() => showParameterDialog({ parameter, onSubmit: onUpdate })}
   on:dragstart={onDrag}
@@ -50,18 +52,23 @@
   </div>
  -->
 
-  <div class="delete btn" on:click|stopPropagation={() => console.log(123)}>
+  <div class="delete btn" on:click|stopPropagation={() => onDelete(i)}>
     <Svg id="cross" w="8" />
   </div>
 </ColorBorder>
 
 <style lang="scss">
+  .parameter {
+    padding-right: 5px !important;
+  }
+
   .settings {
     margin: 0 19px;
   }
 
   .delete {
-    margin-left: 19px;
+    margin-left: 13px;
     --fill-hover: var(--red);
+    padding: 0 5px;
   }
 </style>
