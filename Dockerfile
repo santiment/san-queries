@@ -7,5 +7,5 @@ WORKDIR /app
 
 COPY ./ /app
 
-RUN npm i -f
+RUN npm i -f --unsafe-perm
 RUN npm run build
