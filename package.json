@@ -19,7 +19,7 @@
   ],
   "scripts": {
     "dev": "vite --config vite/config.js",
-    "build": "npm run webkit && vite build --config vite/config.js",
+    "build": "npm run webkit && npm run get-schema && vite build --config vite/config.js",
     "serve": "vite preview",
     "test": "jest",
     "validate": "svelte-check",
@@ -29,19 +29,24 @@
     "-install": "npm run lib",
     "webkit": "node scripts/webkit",
     "prepare": "husky install",
-    "postinstall": "patch-package && npm run webkit"
+    "postinstall": "patch-package && npm run webkit && npm run get-schema",
+    "get-schema": "babel-node --presets @babel/preset-env -o scripts,node_modules/san-webkit scripts/schema.js"
   },
   "dependencies": {
     "@santiment-network/chart": "^0.10.12",
     "marked": "^4.0.18",
     "medium-editor": "^5.23.3",
-    "san-webkit": "https://github.com/santiment/san-webkit#1292ac1",
+    "monaco-editor": "^0.33.0",
     "san-studio": "https://github.com/santiment/san-studio#c9983e6",
+    "san-webkit": "https://github.com/santiment/san-webkit#9a2a166",
+    "monaco-clickhouse": "https://github.com/microsoft/monaco-editor#305b9db",
     "turndown": "^7.1.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.18.6",
+    "@babel/core": "^7.18.9",
+    "@babel/node": "^7.18.9",
     "@babel/plugin-proposal-optional-chaining": "^7.18.6",
+    "@babel/preset-env": "^7.18.9",
     "@sveltejs/vite-plugin-svelte": "^1.0.1",
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "@typescript-eslint/parser": "^5.29.0",
@@ -52,14 +57,17 @@
     "eslint-svelte3-preprocess": "0.0.5",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
+    "node-fetch": "^2.6.1",
     "prettier": "^2.7.1",
     "prettier-plugin-svelte": "^2.7.0",
     "svelte": "^3.49.0",
-    "vite": "^2.9.14",
-    "vite-plugin-ts-checker": "^0.1.5",
-    "typescript": "^4.7.4",
     "svelte-preprocess": "^4.7.4",
-    "svelte-preprocess-cssmodules": "https://github.com/DmitriVanGuard/svelte-preprocess-cssmodules#3b24f22"
+    "svelte-preprocess-cssmodules": "https://github.com/DmitriVanGuard/svelte-preprocess-cssmodules#3b24f22",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.0.0",
+    "typescript": "^4.7.4",
+    "vite": "^2.9.14",
+    "vite-plugin-ts-checker": "^0.1.5"
   },
   "peerDependencies": {
     "san-webkit": "https://github.com/santiment/san-webkit",

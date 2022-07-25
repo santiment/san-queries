@@ -1,4 +1,5 @@
 import { query } from 'webkit/api'
+import { Cache } from 'webkit/api/cache'
 import { DASHBOARD_FRAGMENT } from './fragments'
 
 const DASHBOARD_QUERY = (id: number) => `{
@@ -11,9 +12,12 @@ const dashboardAccessor = ({ dashboard }) => dashboard
 export const queryDashboard = (id: number) =>
   query<any>(DASHBOARD_QUERY(id)).then(dashboardAccessor) as Promise<SAN.Queries.Dashboard>
 
+export const setQueryDashboardCache = (id: number, dashboard: any) =>
+  Cache.set(DASHBOARD_QUERY(id), { dashboard })
+
 // -------------------------
 
-const RECENT_USER_DASHBOARDS_QUERY = `{
+export const RECENT_USER_DASHBOARDS_QUERY = `{
   getMostRecent(types: [DASHBOARD], page: 1, pageSize: 30, currentUserDataOnly: true) {
     data {
       dashboard {
@@ -25,7 +29,7 @@ const RECENT_USER_DASHBOARDS_QUERY = `{
   }
 }`
 
-type ShortDashboard = {
+export type ShortDashboard = {
   id: number
   title: string
   description

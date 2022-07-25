@@ -1,5 +1,5 @@
 import { mutate } from 'webkit/api'
-import { SHORT_DASHBOARD_FRAGMENT } from './fragments'
+import { PANEL_FRAGMENT, SHORT_DASHBOARD_FRAGMENT } from './fragments'
 
 const CREATE_DASHBOARD_MUTATION = `
   mutation($title:String!, $description:String, $isPublic:Boolean, $settings:json) {
@@ -14,7 +14,6 @@ export type CreateDashboardVariables = {
   title: string
   description?: string
   isPublic?: boolean
-  settings: any
 }
 
 const createDashboardAccessor = ({ createDashboard }) => createDashboard
@@ -28,7 +27,7 @@ export const mutateCreateDashboard = (variables: CreateDashboardVariables) =>
 const CREATE_DASHBOARD_PANEL_MUTATION = `
   mutation($dashboardId:Int!, $sql:PanelSqlInputObject!, $name:String!, $description:String, $settings:json) {
     createDashboardPanel(dashboardId:$dashboardId, panel:{sql:$sql, name:$name, description:$description, settings:$settings}) {
-      id
+      ${PANEL_FRAGMENT}
     }
   }`
 

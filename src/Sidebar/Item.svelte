@@ -1,14 +1,14 @@
 <script lang="ts">
+  import type { Dashboard$ } from '@/stores/dashboard'
   import { queryDashboard } from '@/api/dashboard'
-  import { getAppContext } from '@/context'
   import Item from 'studio/Sidebar/Item.svelte'
   import HoverItem from './HoverItem.svelte'
 
   export let item
+  export let selected: number
+  export let dashboard$: Dashboard$
 
-  const { dashboard$ } = getAppContext()
-
-  $: isActive = false // $selectedLayout && +item.id === +$selectedLayout?.id
+  $: isActive = selected === item.id
 
   function onClick() {
     queryDashboard(item.id).then((dashboard) => {

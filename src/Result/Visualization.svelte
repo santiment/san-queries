@@ -15,10 +15,12 @@
 
   let downloadChart
 
+  $: ({ type } = visualization.settings)
+
   function onDownload() {
-    if (visualization.type === PanelType.TABLE) {
+    if (type === PanelType.TABLE) {
       downloadCsv(visualization.name, columns, rows)
-    } else if (visualization.type === PanelType.CHART) {
+    } else if (type === PanelType.CHART) {
       downloadChart(visualization.name)
     }
   }
@@ -35,7 +37,7 @@
   </div>
 </div>
 
-{#if visualization.type === PanelType.TABLE}
+{#if type === PanelType.TABLE}
   <Table columns={visibleColumns} data={rows} />
 {:else}
   <Chart

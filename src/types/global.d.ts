@@ -7,6 +7,11 @@ declare module '*.png' {
   export = value
 }
 
+declare module '*.json' {
+  const value: any
+  export = value
+}
+
 declare namespace NodeJS {
   interface Process {
     browser: boolean
@@ -18,8 +23,9 @@ declare namespace SAN {
   declare namespace Queries {
     type PanelType = import('./index').PanelType
 
+    type ParameterValue = number | string
     type SQL = {
-      parameters: string | undefined
+      parameters: { [parameter: string]: ParameterValue }
       query: string
     }
 
@@ -30,16 +36,36 @@ declare namespace SAN {
       rows: (string | number)[][]
     }
 
+    type Column = {
+      title: string
+      formatterId: number
+      isHidden?: boolean
+      chartStyle?: any
+    }
+
+    type PanelSettings = {
+      type: PanelType
+      columns: any[]
+      xAxisKey?: number
+    }
+
+    type PanelParameter = { key: string; value: ParameterValue }
+    type Panel = {
+      id: string
+      dashboardId: number
+      name: string
+      description: string
+      sql: { query: string; parameters: PanelParameter[] }
+      settings: PanelSettings
+    }
+
     type DashboardPanel = {
       id: string
       dashboardId: number
       name: string
       description: string
       sql: SQL
-      type: PanelType
-      settings: {
-        type: PanelType
-      }
+      settings: PanelSettings
     }
 
     type Dashboard = {
@@ -54,11 +80,6 @@ declare namespace SAN {
       commentsCount: number
       votedAt: string
       votes?: { userVotes: number; totalVoters: number; totalVotes: number }
-      settings: {
-        sql: string
-        parameters: any[]
-        columns: any[]
-      }
 
       removedPanels: DashboardPanel[]
     }

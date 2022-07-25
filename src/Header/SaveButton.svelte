@@ -14,9 +14,10 @@
   function onClick() {
     const dashboard = $dashboard$
 
-    const promise = isAuthor
-      ? startSaveFlow(dashboard)
-      : showSaveDashboardDialog({ title: 'Save dashboard', action: 'Save', dashboard })
+    const promise =
+      false && isAuthor
+        ? startSaveFlow(dashboard)
+        : showSaveDashboardDialog({ title: 'Save dashboard', action: 'Save', dashboard })
 
     promise.then((dashboard) => {
       if (dashboard) dashboard$.set(dashboard as SAN.Queries.Dashboard)

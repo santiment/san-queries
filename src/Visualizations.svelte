@@ -17,7 +17,7 @@
       class="btn-2 mrg-s mrg--r row v-center"
       class:active={visualization === item}
       on:click={() => (visualization = item)}>
-      <Svg id={item.type.toLowerCase()} w="16" class="mrg-s mrg--r" />
+      <Svg id={item.settings.type.toLowerCase()} w="16" class="mrg-s mrg--r" />
       {item.name}
 
       <!-- 

@@ -35,7 +35,7 @@
   $: console.log(visualization, columns)
 
   function normalizeVisualization(dateColumns) {
-    if (visualization.type !== PanelType.CHART) return
+    if (visualization.settings.type !== PanelType.CHART) return
     if (dateColumns.has(visualization.xAxisKey)) return
 
     visualization.xAxisKey = [...dateColumns][0]
@@ -58,7 +58,7 @@
   onDestroy(unsub)
 </script>
 
-<div class="row v-center mrg-l mrg--b">
+<div class="row v-center mrg-m mrg--b">
   <h2 class="body-2 mrg-xl mrg--r">Query results</h2>
 
   <Visualizations bind:visualization {visualizations} {onVisualizationDelete} />
@@ -93,6 +93,7 @@
 <style>
   .result {
     flex: 1;
+    min-height: 0;
   }
 
   .column {

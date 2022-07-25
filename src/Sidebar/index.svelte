@@ -17,7 +17,7 @@
 <Sidebar isOpened isLocked>
   <section class="header">
     <!-- <div class="sidebar-project" bind:this={projectNode} /> -->
-    <Search bind:searchTerm />
+    <Search bind:searchTerm placeholder="Search dashboards" />
     <!-- <div class="caption c-waterloo mrg-s mrg--t">Available metrics for asset: {metrics.length}</div> -->
   </section>
 
@@ -51,6 +51,11 @@
       scrollbar-width: thin;
       padding-bottom: 30vh;
       max-width: 258px;
+
+      &:hover {
+        overflow-y: auto;
+        overflow-y: overlay;
+      }
     }
   }
 </style>

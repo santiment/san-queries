@@ -42,11 +42,16 @@ const accessor = ({ sql }) => sql
 export const mutateComputeRawClickhouseQuery = (
   query: string,
   parameters?: { [key: string]: string | number },
+  requestOptions?: SAN.API.RequestOptions,
 ) =>
-  mutate<Query>(RAW_CLICKHOUSE_QUERY_MUTATION, {
-    precacher,
-    variables: {
-      query,
-      parameters: JSON.stringify(parameters),
+  mutate<Query>(
+    RAW_CLICKHOUSE_QUERY_MUTATION,
+    {
+      precacher,
+      variables: {
+        query,
+        parameters: JSON.stringify(parameters),
+      },
     },
-  }).then(accessor) as Promise<SAN.Queries.SQLResult>
+    requestOptions,
+  ).then(accessor) as Promise<SAN.Queries.SQLResult>

@@ -20,17 +20,16 @@
   export let onSubmit
 
   let closeDialog
-  let { name, value, type = 'Text' } = parameter || {}
+  let { key, value, type = 'Text' } = parameter || {}
 
   function onFormSubmit() {
-    if (!name) return
+    if (!key) return
 
     const changed = parameter || {}
 
-    changed.name = name.trim()
+    changed.key = key.trim()
     changed.value = type === 'Number' ? +value : value.trim()
     changed.type = type
-    changed.key = changed.name
 
     onSubmit(changed)
     closeDialog()
@@ -44,7 +43,7 @@
   class="$style.dialog">
   <form class="dialog-body" on:submit|preventDefault={onFormSubmit}>
     <Field
-      bind:value={name}
+      bind:value={key}
       autofocus
       required
       title="Name"
@@ -70,7 +69,7 @@
       autocomplete="off" />
 
     <div class="row mrg-s mrg--t">
-      <button class="add btn-1" type="submit" class:disabled={!name || !value}
+      <button class="add btn-1" type="submit" class:disabled={!key || !value}
         >{parameter ? 'Save' : 'Add'}</button>
       <button type="button" class="btn-2 mrg-s mrg--l" on:click={closeDialog}>Cancel</button>
     </div>

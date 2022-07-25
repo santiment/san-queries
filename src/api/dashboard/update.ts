@@ -1,6 +1,6 @@
 import { mutate } from 'webkit/api'
 import type { CreateDashboardVariables, CreatePanelVariables } from './create'
-import { SHORT_DASHBOARD_FRAGMENT } from './fragments'
+import { PANEL_FRAGMENT, SHORT_DASHBOARD_FRAGMENT } from './fragments'
 
 const UPDATE_DASHBOARD_MUTATION = `
   mutation($id:Int!, $title:String!, $description:String, $isPublic:Boolean, $settings:json) {
@@ -26,7 +26,7 @@ export const mutateUpdateDashboard = (variables: updateDashboardVariables) =>
 const UPDATE_DASHBOARD_PANEL_MUTATION = `
   mutation($dashboardId:Int!, $panelId:String!, $sql:PanelSqlInputObject!, $name:String!, $description:String, $settings:json) {
     updateDashboardPanel(dashboardId:$dashboardId, panelId:$panelId, panel:{sql:$sql, name:$name, description:$description, settings:$settings}) {
-      id
+      ${PANEL_FRAGMENT}
     }
   }`
 

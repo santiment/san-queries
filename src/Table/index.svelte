@@ -12,7 +12,6 @@
     width: calc(100% + 32px) !important;
     border-top: 1px solid var(--porcelain);
     margin: 16px -16px 0;
-    max-height: var(--table-max-height, 392px);
     overflow: auto;
     flex: 1;
 

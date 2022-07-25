@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Query from './Query/index.svelte'
   import Result from './Result/index.svelte'
   import Sidebar from './Sidebar/index.svelte'
@@ -10,33 +10,20 @@
   import { onDestroy } from 'svelte'
   import { shareColumn } from './utils/columns'
 
-  export let dashbord = null && {
-    id: 0,
-    title: 'My query',
-    description: 'Hello this is dashboard',
-    user: {
-      username: 'Tim_Jones',
-    },
-    commentsCount: 3,
-    votes: {},
-    panels: [
-      {
-        type: PanelType.TABLE,
-        name: 'My table',
-      },
-      { type: PanelType.CHART, name: 'My chart', xAxisKey: 2 },
-    ],
-  }
+  export let dashbord = null
 
   const { dashboard$ } = setAppContext({
     dashboard$: Dashboard(dashbord),
   })
 
   let data
+  let id = $dashboard$.id
+  let panel = $dashboard$.panels[0]
 
   $: columns = data ? data.headers.map(newColumn) : []
   $: updateColumns(columns)
   $: console.log(data)
+  $: console.log(panel)
 
   function newColumn(title, i) {
     const accessor = (data) => data[i]
@@ -60,19 +47,19 @@
   }
 
   function updateColumns(columns) {
-    $dashboard$.settings.columns.forEach((column, i) => {
+    panel.settings.columns.forEach((column, i) => {
       Object.assign(columns[i], column)
     })
-    $dashboard$.settings.columns = columns
+    panel.settings.columns = columns
   }
 
-  let id = $dashboard$.id
   onDestroy(
     dashboard$.subscribe((dashboard) => {
       if (dashboard.id === id) return
 
       data = undefined
       id = dashboard.id
+      panel = dashboard.panels[0]
     }),
   )
 </script>
@@ -81,9 +68,9 @@
   <Sidebar />
 
   <main class="column">
-    <Header {columns} />
+    <Header {columns} {panel} bind:data />
 
-    <Query bind:data />
+    <Query bind:data {panel} />
 
     <Result {data} {...data} {columns} />
   </main>
@@ -96,5 +83,6 @@
     min-height: 100vh;
     min-width: 0;
     flex: 1;
+    max-height: calc(100vh + calc(1035px - 100vh));
   }
 </style>

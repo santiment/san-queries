@@ -1,5 +1,5 @@
 <script context="module">
-  export const getParameterSQL = ({ name }) => `{{${name}}}`
+  export const getParameterSQL = ({ key }) => `{{${key}}}`
 </script>
 
 <script lang="ts">
@@ -15,7 +15,7 @@
   export let onUpdate
   export let onDelete
 
-  $: ({ name, value } = parameter)
+  $: ({ key, value } = parameter)
 
   let ghost
   function onDrag(e) {
@@ -43,7 +43,7 @@
   on:click={() => showParameterDialog({ parameter, onSubmit: onUpdate })}
   on:dragstart={onDrag}
   on:dragend={onDrop}>
-  {name}
+  {key}
   <span class="c-waterloo mrg-s mrg--l">{value}</span>
 
   <!-- 

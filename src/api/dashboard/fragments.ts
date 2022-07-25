@@ -15,24 +15,6 @@ export const SHORT_DASHBOARD_FRAGMENT = `
   }
 `
 
-export const DASHBOARD_FRAGMENT = `
-  ${SHORT_DASHBOARD_FRAGMENT}
-  title:name
-  description
-  isPublic
-  settings:tempJson
-  panels {
-    id
-    name
-    description
-    settings
-    sql {
-      query
-      parameters
-    }
-  }
-`
-
 export const PANEL_FRAGMENT = `
   id
   name
@@ -41,5 +23,15 @@ export const PANEL_FRAGMENT = `
   sql {
     query
     parameters
+  }
+`
+
+export const DASHBOARD_FRAGMENT = `
+  ${SHORT_DASHBOARD_FRAGMENT}
+  title:name
+  description
+  isPublic
+  panels {
+    ${PANEL_FRAGMENT}
   }
 `
