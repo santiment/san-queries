@@ -13,11 +13,14 @@ function newPanel() {
 }
 
 function normalizePanel(panel: SAN.Queries.DashboardPanel): SAN.Queries.Panel {
-  const { sql, settings } = panel
+  const { sql } = panel
   const { query, parameters } = sql
+
+  const settings = Object.assign({ type: PanelType.TABLE, columns: [] }, panel.settings)
+
   return {
     ...panel,
-    settings: settings || { type: PanelType.TABLE, columns: [] },
+    settings,
     sql: {
       query,
       parameters: Object.keys(parameters).map((key) => ({

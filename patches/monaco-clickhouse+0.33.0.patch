@@ -16,10 +16,18 @@ index cc2f51a..edcffd6 100644
  	}
  });
 diff --git a/node_modules/monaco-clickhouse/src/basic-languages/clickhouse/clickhouse.ts b/node_modules/monaco-clickhouse/src/basic-languages/clickhouse/clickhouse.ts
-index 2ff2b30..d9755af 100644
+index 2ff2b30..9643014 100644
 --- a/node_modules/monaco-clickhouse/src/basic-languages/clickhouse/clickhouse.ts
 +++ b/node_modules/monaco-clickhouse/src/basic-languages/clickhouse/clickhouse.ts
-@@ -1275,6 +1275,7 @@ export const language = <languages.IMonarchLanguage>{
+@@ -256,6 +256,7 @@ export const language = <languages.IMonarchLanguage>{
+ 		'SIMILAR',
+ 		'SNAPSHOT',
+ 		'SOME',
++		'SHOW',
+ 		'SYSDATE',
+ 		'SYSTEM',
+ 		'TABLE',
+@@ -1275,6 +1276,7 @@ export const language = <languages.IMonarchLanguage>{
  	tokenizer: {
  		root: [
  			{ include: '@comments' },
@@ -27,7 +35,7 @@ index 2ff2b30..d9755af 100644
  			{ include: '@whitespace' },
  			{ include: '@pseudoColumns' },
  			{ include: '@numbers' },
-@@ -1297,6 +1298,9 @@ export const language = <languages.IMonarchLanguage>{
+@@ -1297,6 +1299,9 @@ export const language = <languages.IMonarchLanguage>{
  			],
  			[/[<>=!%&+\-*/|~^]/, 'operator']
  		],
