@@ -22,7 +22,8 @@
 
       td {
         border-bottom: 1px solid var(--porcelain);
-        padding: 10px 25px;
+        // padding: 10px 25px;
+        white-space: pre !important;
       }
     }
   }

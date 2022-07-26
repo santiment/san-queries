@@ -19,6 +19,7 @@
   let data
   let id = $dashboard$.id
   let panel = $dashboard$.panels[0]
+  let columnsHash = ''
 
   $: columns = data ? data.headers.map(newColumn) : []
   $: updateColumns(columns)
@@ -47,6 +48,12 @@
   }
 
   function updateColumns(columns) {
+    const hash = data?.headers.toString() || ''
+    const isNewHash = columnsHash && columnsHash !== hash
+
+    columnsHash = hash
+    if (isNewHash) return
+
     panel.settings.columns.forEach((column, i) => {
       Object.assign(columns[i], column)
     })
