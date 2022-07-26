@@ -33,6 +33,7 @@ export function startSavePanelFlow(panel: SAN.Queries.Panel, dashboard: SAN.Quer
       type,
       xAxisKey,
       columns: columns.map(shareColumn),
+      parameters: sql.parameters.map(({ type }) => ({ type })),
     }),
   } as any).then((updated) => {
     panel.id = updated.id

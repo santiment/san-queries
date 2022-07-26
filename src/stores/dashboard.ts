@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store'
-import { PanelType } from '@/types'
+import { PanelType, ParameterType } from '@/types'
+import { Formatter } from '@/Result/Options/format'
 
 function newPanel() {
   return {
@@ -12,20 +13,39 @@ function newPanel() {
   } as any as SAN.Queries.DashboardPanel
 }
 
+function normalizeColumn({ title, formatterId }, id) {
+  const column = { title, formatterId } as any
+
+  const { fn } = Formatter[formatterId || 0]
+
+  if (fn) {
+    const accessor = (data) => data[id]
+    column.format = (data) => fn(accessor(data))
+    column.formatter = fn
+  }
+
+  return column
+}
+
 function normalizePanel(panel: SAN.Queries.DashboardPanel): SAN.Queries.Panel {
   const { sql } = panel
   const { query, parameters } = sql
 
-  const settings = Object.assign({ type: PanelType.TABLE, columns: [] }, panel.settings)
+  const settings: SAN.Queries.Panel['settings'] = Object.assign(
+    { type: PanelType.TABLE, columns: [] },
+    panel.settings,
+  )
+  settings.columns = settings.columns.map(normalizeColumn)
 
   return {
     ...panel,
     settings,
     sql: {
       query,
-      parameters: Object.keys(parameters).map((key) => ({
+      parameters: Object.keys(parameters).map((key, i) => ({
         key,
         value: parameters[key],
+        type: settings.parameters?.[i].type || ParameterType.Text,
       })),
     },
   }
@@ -35,6 +55,7 @@ function normalizeDashboard(dashboard?: null | SAN.Queries.Dashboard) {
   if (!dashboard) {
     return {
       panels: [normalizePanel(newPanel())],
+      __normalized: true,
     }
   }
 

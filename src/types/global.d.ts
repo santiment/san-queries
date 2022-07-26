@@ -22,6 +22,7 @@ declare namespace NodeJS {
 declare namespace SAN {
   declare namespace Queries {
     type PanelType = import('./index').PanelType
+    type ParameterType = import('./index').ParameterType
 
     type ParameterValue = number | string
     type SQL = {
@@ -47,9 +48,11 @@ declare namespace SAN {
       type: PanelType
       columns: any[]
       xAxisKey?: number
+      parameters?: { type: ParameterType }[]
     }
 
-    type PanelParameter = { key: string; value: ParameterValue }
+    type PanelParameter = { key: string; value: ParameterValue; type: ParameterType }
+
     type Panel = {
       id: string
       dashboardId: number

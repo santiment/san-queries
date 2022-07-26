@@ -3,12 +3,13 @@
   import { currentUser as currentUser$ } from 'studio/stores/user'
   import { getAppContext } from '@/context'
   import ExecuteButton from '@/Query/ExecuteButton.svelte'
-  import CreationInfo from './CreationInfo.svelte'
-  import Comments from './Comments.svelte'
+  // import CreationInfo from './CreationInfo.svelte'
+  // import Comments from './Comments.svelte'
   import { showShareDialog } from '@/ShareDialog.svelte'
   import SaveButton from './SaveButton.svelte'
   import { mutateComputeRawClickhouseQuery } from '@/api/rawQuery'
   import { getParametersMap } from '@/utils/parameters'
+  import { shareColumn } from '@/utils/columns'
 
   const { dashboard$ } = getAppContext()
 
@@ -33,6 +34,25 @@
       },
     )
   }
+
+  function onShare() {
+    let link = window.location.href + '?shared='
+    const { name, sql, settings } = dashboard.panels[0]
+    const { type, columns, xAxisKey } = settings
+
+    link += JSON.stringify({
+      name,
+      sql: { ...sql, parameters: getParametersMap(sql.parameters) },
+      settings: {
+        type,
+        xAxisKey,
+        columns: columns.map(shareColumn),
+        parameters: sql.parameters.map(({ type }) => ({ type })),
+      },
+    })
+
+    showShareDialog({ title: 'Share dashboard', data: { link } })
+  }
 </script>
 
 <div class="row v-center mrg-m mrg--b">
@@ -51,9 +71,7 @@
 
   <SaveButton class="$style.action" {user} {isAuthor} />
 
-  <button
-    class="btn mrg-xl mrg--l row v-center"
-    on:click={() => showShareDialog({ title: 'Share dashboard', isAuthor })}>
+  <button class="btn mrg-xl mrg--l row v-center" on:click={onShare}>
     <Svg id="share-dots" w="14" h="16" class="mrg-s mrg--r" />
     Share</button>
 </div>

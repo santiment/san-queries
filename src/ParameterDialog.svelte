@@ -4,10 +4,6 @@
 
   export const showParameterDialog = (props): Promise<unknown> =>
     dialogs.showOnce(ParameterDialog, props)
-
-  export enum ParameterType {
-    Text = 'Text',
-  }
 </script>
 
 <script lang="ts">

@@ -1,19 +1,17 @@
 <script lang="ts">
+  import { onDestroy } from 'svelte'
   import Query from './Query/index.svelte'
   import Result from './Result/index.svelte'
   import Sidebar from './Sidebar/index.svelte'
-  import { Formatter, FormatType } from './Result/Options/Format.svelte'
+  import { Formatter, FormatType } from './Result/Options/format'
   import { setAppContext } from './context'
   import { Dashboard } from './stores/dashboard'
-  import { PanelType } from './types'
   import Header from './Header/index.svelte'
-  import { onDestroy } from 'svelte'
-  import { shareColumn } from './utils/columns'
 
-  export let dashbord = null
+  export let dashboard = null
 
   const { dashboard$ } = setAppContext({
-    dashboard$: Dashboard(dashbord),
+    dashboard$: Dashboard(dashboard),
   })
 
   let data
@@ -22,7 +20,7 @@
   let columnsHash = ''
 
   $: columns = data ? data.headers.map(newColumn) : []
-  $: updateColumns(columns)
+  $: columns.length && updateColumns(columns)
   $: console.log(data)
   $: console.log(panel)
 
