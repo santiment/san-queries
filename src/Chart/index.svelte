@@ -1,7 +1,6 @@
 <script>
-  import { downloadPng } from '@/Result/downloadPng'
-
   import { newChartColors, newHighlightedColors } from 'studio/Chart/colors'
+  import { downloadPng } from '@/Result/downloadPng'
   import Chart from './Chart.svelte'
   import Metrics from './Metrics.svelte'
 

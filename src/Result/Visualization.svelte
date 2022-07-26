@@ -3,7 +3,7 @@
   import { downloadCsv } from 'webkit/utils/csv'
   import { PanelType } from '@/types'
   import Table from '@/Table/index.svelte'
-  import Chart from '@/Chart/index.svelte'
+  // import Chart from '@/Chart/index.svelte'
   import { showFullscreenDialog } from './FullscreenDialog.svelte'
 
   export let visualization
@@ -40,12 +40,14 @@
 {#if type === PanelType.TABLE}
   <Table columns={visibleColumns} data={rows} />
 {:else}
+  <!-- 
   <Chart
     columns={visibleColumns}
     data={rows}
     {dateColumns}
     xAxisKey={visualization.xAxisKey}
     bind:download={downloadChart} />
+ -->
 {/if}
 
 <style>

@@ -28,15 +28,23 @@ export default defineConfig({
       },
       { find: 'webkit', replacement: '/node_modules/san-webkit/lib/' },
       { find: 'studio', replacement: '/node_modules/san-studio/lib/' },
+
+      { find: 'svelte', replacement: '/node_modules/svelte/' },
+      { find: 'san-webkit', replacement: '/node_modules/san-webkit/' },
     ],
   },
   define: {
     'process.browser': true,
-    'process.env': process.env,
-    'process.env.IS_DEV_MODE': process.env.IS_DEV_MODE,
+
+    'process.env.GQL_SERVER_URL': JSON.stringify(process.env.GQL_SERVER_URL),
+    'process.env.MEDIA_PATH': JSON.stringify(process.env.MEDIA_PATH),
+    'process.env.ICONS_PATH': JSON.stringify(process.env.ICONS_PATH),
+    'process.env.IS_DEV_MODE': JSON.stringify(process.env.IS_DEV_MODE),
+
+    'process.env': isDev ? process.env : {},
   },
   optimizeDeps: {
-    exclude: ['webkit', 'san-webkit', 'canvas', 'node-fetch'],
+    exclude: ['svelte', 'webkit', 'san-webkit', 'studio', 'san-studio', 'canvas', 'node-fetch'],
   },
 
   build: {
@@ -44,6 +52,11 @@ export default defineConfig({
     rollupOptions: {
       input: {
         index: resolve(__dirname, '..', 'index.html'),
+      },
+      output: {
+        manualChunks: {
+          monaco: ['monaco-editor'],
+        },
       },
     },
   },

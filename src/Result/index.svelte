@@ -1,7 +1,7 @@
 <script>
   import { onDestroy } from 'svelte'
   import { PanelType } from '@/types'
-  import NewVisualization from '@/NewVisualization.svelte'
+  // import NewVisualization from '@/NewVisualization.svelte'
   import RowPanels from '@/RowPanels.svelte'
   import Visualizations from '@/Visualizations.svelte'
   import { getAppContext } from '@/context'
