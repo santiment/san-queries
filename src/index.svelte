@@ -18,6 +18,7 @@
   let id = $dashboard$.id
   let panel = $dashboard$.panels[0]
   let columnsHash = ''
+  let error = ''
 
   $: columns = data ? data.headers.map(newColumn) : []
   $: columns.length && updateColumns(columns)
@@ -75,9 +76,9 @@
   <Sidebar />
 
   <main class="column">
-    <Header {columns} {panel} bind:data />
+    <Header {columns} {panel} bind:error bind:data />
 
-    <Query bind:data {panel} />
+    <Query bind:data {panel} {error} />
 
     <Result {data} {...data} {columns} />
   </main>

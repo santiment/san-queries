@@ -1,10 +1,10 @@
 <script>
-  import { notifications$ } from 'webkit/ui/Notifications'
   import Svg from 'webkit/ui/Svg/svelte'
   import Tooltip from 'webkit/ui/Tooltip/svelte'
   import ExecutionStats from './ExecutionStats.svelte'
 
   export let onClick
+  export let onError
 
   let stats
   let loading = false
@@ -29,14 +29,9 @@
 
       const { message } = e[0] || e
       const msgIndex = message.indexOf(':', message.indexOf('col')) + 1
+      const msg = message.slice(msgIndex).trim()
 
-      console.warn(message)
-
-      notifications$.show({
-        type: 'error',
-        title: 'Failed to execute query. Please try again.',
-        description: message.slice(msgIndex).trim(),
-      })
+      return onError(msg)
     })
   }
 </script>

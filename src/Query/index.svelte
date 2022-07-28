@@ -13,6 +13,7 @@
 
   export let data: SAN.Queries.SQLResult
   export let panel: SAN.Queries.Panel
+  export let error: string
 
   let controlsNode
   let editor
@@ -71,8 +72,12 @@
   {/each}
 </div>
 
-<div class="query border mrg-l mrg--b">
+<div class="query border mrg-l mrg--b relative">
   <Editor class="$style.editor" bind:editor value={query} {parameters} />
+
+  {#if error}
+    <div class="error caption c-red">{error}</div>
+  {/if}
 </div>
 
 <style>
@@ -91,5 +96,15 @@
     /* --color-hover: var(--green); */
     height: 32px;
     align-self: flex-start;
+  }
+
+  .error {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 8px;
+    background: var(--red-light-1);
+    color: var(--red);
+    width: 100%;
   }
 </style>

@@ -16,24 +16,30 @@ index a6b7213..8e3b8a0 100644
  import "./yaml/yaml.contribution.js";
 +*/
 diff --git a/node_modules/monaco-editor/esm/vs/editor/edcore.main.js b/node_modules/monaco-editor/esm/vs/editor/edcore.main.js
-index b5dddfe..e5f02f3 100644
+index b5dddfe..7011455 100644
 --- a/node_modules/monaco-editor/esm/vs/editor/edcore.main.js
 +++ b/node_modules/monaco-editor/esm/vs/editor/edcore.main.js
-@@ -6,10 +6,10 @@ import './editor.all.js';
- import './standalone/browser/accessibilityHelp/accessibilityHelp.js';
- import './standalone/browser/iPadShowKeyboard/iPadShowKeyboard.js';
+@@ -3,13 +3,13 @@
+  *  Licensed under the MIT License. See License.txt in the project root for license information.
+  *--------------------------------------------------------------------------------------------*/
+ import './editor.all.js';
+-import './standalone/browser/accessibilityHelp/accessibilityHelp.js';
+-import './standalone/browser/iPadShowKeyboard/iPadShowKeyboard.js';
++// import './standalone/browser/accessibilityHelp/accessibilityHelp.js';
++// import './standalone/browser/iPadShowKeyboard/iPadShowKeyboard.js';
  import './standalone/browser/inspectTokens/inspectTokens.js';
 -import './standalone/browser/quickAccess/standaloneHelpQuickAccess.js';
 -import './standalone/browser/quickAccess/standaloneGotoLineQuickAccess.js';
 -import './standalone/browser/quickAccess/standaloneGotoSymbolQuickAccess.js';
 -import './standalone/browser/quickAccess/standaloneCommandsQuickAccess.js';
 -import './standalone/browser/referenceSearch/standaloneReferenceSearch.js';
+-import './standalone/browser/toggleHighContrast/toggleHighContrast.js';
 +// import './standalone/browser/quickAccess/standaloneHelpQuickAccess.js';
 +// import './standalone/browser/quickAccess/standaloneGotoLineQuickAccess.js';
 +// import './standalone/browser/quickAccess/standaloneGotoSymbolQuickAccess.js';
 +// import './standalone/browser/quickAccess/standaloneCommandsQuickAccess.js';
 +// import './standalone/browser/referenceSearch/standaloneReferenceSearch.js';
- import './standalone/browser/toggleHighContrast/toggleHighContrast.js';
++// import './standalone/browser/toggleHighContrast/toggleHighContrast.js';
  export * from './editor.api.js';
 diff --git a/node_modules/monaco-editor/esm/vs/editor/editor.all.js b/node_modules/monaco-editor/esm/vs/editor/editor.all.js
 index f49e000..36bbe1d 100644

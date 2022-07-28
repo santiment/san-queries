@@ -16,6 +16,7 @@
   export let columns
   export let data
   export let panel: SAN.Queries.Panel
+  export let error = ''
 
   let isCommentsShowed = false
 
@@ -30,9 +31,14 @@
     return mutateComputeRawClickhouseQuery(query, getParametersMap(parameters)).then(
       (sqlResult) => {
         data = sqlResult
+        error = ''
         resolve()
       },
     )
+  }
+
+  function onQueryError(msg) {
+    error = msg
   }
 
   function onShare() {
@@ -56,7 +62,7 @@
 </script>
 
 <div class="row v-center mrg-m mrg--b">
-  <ExecuteButton onClick={onExecuteClick} />
+  <ExecuteButton onClick={onExecuteClick} onError={onQueryError} />
 
   <!-- 
   <CreationInfo
