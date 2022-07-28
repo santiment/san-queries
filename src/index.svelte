@@ -46,16 +46,18 @@
   }
 
   function updateColumns(columns) {
+    const { settings } = panel
     const hash = data?.headers.toString() || ''
-    const isNewHash = columnsHash && columnsHash !== hash
+    const isOldHash = !columnsHash || columnsHash === hash
+
+    if (isOldHash && settings.columns.length === columns.length) {
+      settings.columns.forEach((column, i) => {
+        Object.assign(columns[i], column)
+      })
+    }
 
     columnsHash = hash
-    if (isNewHash) return
-
-    panel.settings.columns.forEach((column, i) => {
-      Object.assign(columns[i], column)
-    })
-    panel.settings.columns = columns
+    settings.columns = columns
   }
 
   onDestroy(
