@@ -21,7 +21,9 @@
     <!-- <div class="caption c-waterloo mrg-s mrg--t">Available metrics for asset: {metrics.length}</div> -->
   </section>
 
-  <section class="sidebar-content" on:scroll={() => window.__clearHoverItem?.()}>
+  <section
+    class="sidebar-content"
+    on:scroll={() => window.__clearHoverItem && window.__clearHoverItem()}>
     <Category category="Favorites" {isFiltering} isOpened class="favorites">
       <svelte:fragment slot="pre-title">
         <Svg id="star-filled" w="16" class="mrg-s mrg--r $style.star" />

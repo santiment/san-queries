@@ -39,7 +39,7 @@
     "monaco-editor": "^0.33.0",
     "san-studio": "https://github.com/santiment/san-studio#c9983e6",
     "san-webkit": "https://github.com/santiment/san-webkit#f530d26",
-    "monaco-clickhouse": "https://github.com/DmitriVanGuard/monaco-editor#3c06b5d3",
+    "monaco-clickhouse": "https://github.com/DmitriVanGuard/monaco-editor#92558250",
     "turndown": "^7.1.1",
     "@babel/core": "^7.18.9",
     "@babel/node": "^7.18.9",
