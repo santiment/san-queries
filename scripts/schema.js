@@ -1,7 +1,7 @@
-import fs from 'fs'
-import path from 'path'
-import { query } from 'san-webkit/lib/api'
-import { mkdir } from 'san-webkit/scripts/utils'
+const fs = require('fs')
+const path = require('path')
+const { query } = require('san-webkit/lib/api')
+const { mkdir } = require('san-webkit/scripts/utils')
 
 process.env.GQL_SERVER_URL = 'https://api-stage.santiment.net/graphiql'
 process.browser = false
@@ -13,13 +13,17 @@ const COLUMNS = 'table-columns'
 const TABLES = 'tables'
 const FUNCTIONS = 'functions'
 
-saveSchema(COLUMNS, [])
-saveSchema(TABLES, [])
-saveSchema(FUNCTIONS, [])
+function fetchSchema() {
+  saveSchema(COLUMNS, [])
+  saveSchema(TABLES, [])
+  saveSchema(FUNCTIONS, [])
 
-get('functions', 'n:name').then(saveFunctions)
-get('columns', 'n:name ta:table ty:type').then(saveTableColumns)
-get('tables', 'n:name e:engine').then(saveTables)
+  get('functions', 'n:name').then(saveFunctions)
+  get('columns', 'n:name ta:table ty:type').then(saveTableColumns)
+  get('tables', 'n:name e:engine').then(saveTables)
+}
+
+fetchSchema()
 
 // ---------------------------------------------
 
@@ -61,3 +65,5 @@ function saveSchema(filename, data) {
   mkdir(SCHEMA_DIR)
   fs.writeFileSync(path.resolve(SCHEMA_DIR, filename) + '.json', JSON.stringify(data))
 }
+
+exports.module = { fetchSchema }

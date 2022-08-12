@@ -26,10 +26,10 @@
     "validate:errors": "yarn validate --threshold error",
     "lib:prepare": "node scripts/prepare.js && tsc --p ./scripts/tsconfig.json && node scripts/cleanup.js",
     "lib": "npm run lib:prepare && node scripts/lib.js",
-    "-install": "npm run lib",
+    "install": "npm run lib",
     "webkit": "node scripts/webkit",
     "prepare": "husky install",
-    "postinstall": "patch-package && npm run webkit && npm run get-schema",
+    "postinstall": "patch-package && npm run webkit && npm run get-schema && npm run lib",
     "get-schema": "babel-node --presets @babel/preset-env -o scripts,node_modules/san-webkit scripts/schema.js"
   },
   "dependencies": {
