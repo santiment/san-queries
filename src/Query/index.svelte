@@ -76,7 +76,12 @@
   <Editor class="$style.editor" bind:editor value={query} {parameters} />
 
   {#if error}
-    <div class="error caption c-red">{error}</div>
+    <div class="error caption c-red row">
+      {error}
+      <button class="close btn mrg-m mrg--l" on:click={() => (error = '')}>
+        <Svg id="cross" w="12" />
+      </button>
+    </div>
   {/if}
 </div>
 
@@ -106,5 +111,10 @@
     background: var(--red-light-1);
     color: var(--red);
     width: 100%;
+  }
+
+  .close {
+    --fill: var(--waterloo);
+    align-self: flex-start;
   }
 </style>

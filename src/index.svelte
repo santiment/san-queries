@@ -78,7 +78,7 @@
   <main class="column">
     <Header {columns} {panel} bind:error bind:data />
 
-    <Query bind:data {panel} {error} />
+    <Query {panel} bind:data bind:error />
 
     <Result {data} {...data} {columns} />
   </main>

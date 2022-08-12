@@ -28,7 +28,7 @@
       loading = false
 
       const { message } = e[0] || e
-      const msgIndex = message.indexOf(':', message.indexOf('col')) + 1
+      const msgIndex = message.indexOf(' ', message.indexOf('JSONCompact')) + 1
       const msg = message.slice(msgIndex).trim()
 
       return onError(msg)
