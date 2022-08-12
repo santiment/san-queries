@@ -15,7 +15,8 @@
     "strictNullChecks": true,
     "declaration": true,
     "paths": {
-      "san-webkit/lib/*": ["../node_modules/san-webkit/lib/*"]
+      "san-webkit/lib/*": ["../node_modules/san-webkit/lib/*"],
+      "san-studio/lib/*": ["../node_modules/san-studio/lib/*"]
     }
   },
   "include": ["../lib/**/*.d.ts", "../lib/**/*.ts", "../lib/**/*.js", "../lib/**/*.svelte"],
