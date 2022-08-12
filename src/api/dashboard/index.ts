@@ -15,6 +15,8 @@ export const queryDashboard = (id: number) =>
 export const setQueryDashboardCache = (id: number, dashboard: any) =>
   Cache.set(DASHBOARD_QUERY(id), { dashboard })
 
+export const deleteQueryDashboardCache = (id: number) => Cache.delete(DASHBOARD_QUERY(id))
+
 // -------------------------
 
 export const RECENT_USER_DASHBOARDS_QUERY = `{
