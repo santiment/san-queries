@@ -39,10 +39,11 @@
     "monaco-editor": "^0.33.0",
     "san-studio": "https://github.com/santiment/san-studio#c9983e6",
     "san-webkit": "https://github.com/santiment/san-webkit#f530d26",
+    "monaco-clickhouse": "https://github.com/DmitriVanGuard/monaco-editor#3c06b5d3",
     "turndown": "^7.1.1"
   },
   "devDependencies": {
-    "monaco-clickhouse": "https://github.com/microsoft/monaco-editor#305b9db",
+    "monaco-editor-core": "0.33.0-dev.20220214",
     "@babel/core": "^7.18.9",
     "@babel/node": "^7.18.9",
     "@babel/plugin-proposal-optional-chaining": "^7.18.6",
