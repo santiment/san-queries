@@ -4,7 +4,7 @@ const cssModules = require('svelte-preprocess-cssmodules')
 const fs = require('fs')
 const path = require('path')
 const { forFile, mkdir } = require('san-webkit/scripts/utils')
-const { LIB, replaceModuleAliases } = require('./utils')
+const { SRC, LIB, replaceModuleAliases } = require('./utils')
 
 const preprocess = sveltePreprocess({
   babel: {
@@ -49,6 +49,18 @@ async function processSvelte() {
 
 function main() {
   processSvelte()
+
+  forFile(['lib/**/*.js.map'], async (entry) => {
+    const absolutePath = path.resolve(entry)
+    const relativeSrc = path.relative(path.dirname(entry), SRC)
+
+    const file = fs.readFileSync(absolutePath)
+
+    fs.writeFileSync(
+      absolutePath,
+      file.toString().replace(`"sourceRoot":"../src/"`, `"sourceRoot":"${relativeSrc}/"`),
+    )
+  })
 }
 main()
 
