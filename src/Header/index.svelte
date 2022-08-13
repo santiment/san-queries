@@ -13,12 +13,12 @@
 
   const { dashboard$ } = getAppContext()
 
-  export let columns
+  // export let columns
   export let data
   export let panel: SAN.Queries.Panel
   export let error = ''
 
-  let isCommentsShowed = false
+  // let isCommentsShowed = false
 
   $: dashboard = $dashboard$
   $: currentUser = $currentUser$

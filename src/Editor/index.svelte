@@ -31,7 +31,6 @@
   $: setValue(value)
 
   function setValue(value: string) {
-    console.log(value)
     editor?.setValue(value)
   }
 

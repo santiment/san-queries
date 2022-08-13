@@ -22,8 +22,6 @@
 
   $: columns = data ? data.headers.map(newColumn) : []
   $: columns.length && updateColumns(columns)
-  $: console.log(data)
-  $: console.log(panel)
 
   function newColumn(title, i) {
     const accessor = (data) => data[i]

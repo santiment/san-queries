@@ -4,7 +4,7 @@
 
   export let visualizations = [] as SAN.Queries.DashboardPanel[]
   export let visualization: SAN.Queries.DashboardPanel
-  export let onVisualizationDelete
+  // export let onVisualizationDelete
 
   let visualizationsNode
 
@@ -45,9 +45,11 @@
     border-color: var(--green);
   }
 
+  /* 
   .delete {
     margin-left: 10px;
     --fill-hover: var(--red);
     padding: 0 3px;
   }
+ */
 </style>

@@ -41,7 +41,6 @@
     if (!currentUser) return
 
     const handler = getState()
-    console.log({ handler })
 
     showSaveDashboardDialog({
       ...getState(),

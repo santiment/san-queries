@@ -32,8 +32,6 @@
   $: visibleColumns = getVisibleColumns(columns)
   $: visualization && dashboard$.set(dashboard)
 
-  $: console.log(visualization, columns)
-
   function normalizeVisualization(dateColumns) {
     if (visualization.settings.type !== PanelType.CHART) return
     if (dateColumns.has(visualization.xAxisKey)) return

@@ -11,7 +11,7 @@
   import Editor from '@/Editor/Async.svelte'
   import { updateThemeParameters } from '@/Editor/theme'
 
-  export let data: SAN.Queries.SQLResult
+  // export let data: SAN.Queries.SQLResult
   export let panel: SAN.Queries.Panel
   export let error: string
 

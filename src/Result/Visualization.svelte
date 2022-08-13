@@ -8,7 +8,7 @@
 
   export let visualization
   export let columns
-  export let dateColumns
+  // export let dateColumns
   export let rows
   export let visibleColumns
   export let onFullscreenClick = showFullscreenDialog

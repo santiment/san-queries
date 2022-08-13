@@ -11,8 +11,6 @@
   let lastRun
   let isOpened = false
 
-  $: console.log(stats)
-
   function onQueryExecute() {
     if (loading) return
 

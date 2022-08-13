@@ -11,7 +11,6 @@
   function onSelect(column) {
     visualization.xAxis = column
     visualization.xAxisKey = column.id
-    console.log(visualization)
   }
 
   const format = ({ id, title }) => `Column ${id}: ${title}`

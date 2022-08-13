@@ -29,7 +29,6 @@
   $: axesMetricKeys = metrics.map(({ key }) => key)
 
   function onMetricHover(metric) {
-    console.log(metric)
     colors = metric ? newHighlightedColors(rawColors, metric) : rawColors
   }
 

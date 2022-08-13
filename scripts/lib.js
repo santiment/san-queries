@@ -6,7 +6,12 @@ const path = require('path')
 const { forFile, mkdir } = require('san-webkit/scripts/utils')
 const { LIB, replaceModuleAliases } = require('./utils')
 
-const preprocess = sveltePreprocess()
+const preprocess = sveltePreprocess({
+  babel: {
+    assumptions: { noDocumentAll: true },
+    plugins: ['@babel/plugin-proposal-optional-chaining'],
+  },
+})
 
 const routesPreprocess = {
   script: ({ content, filename }) => {

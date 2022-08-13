@@ -38,7 +38,7 @@
 
 <ColorBorder
   draggable
-  class={'$style.parameter {className}'}
+  class="$style.parameter {className}"
   {color}
   on:click={() => showParameterDialog({ parameter, onSubmit: onUpdate })}
   on:dragstart={onDrag}
@@ -62,9 +62,9 @@
     padding-right: 5px !important;
   }
 
-  .settings {
-    margin: 0 19px;
-  }
+  // .settings {
+  // margin: 0 19px;
+  // }
 
   .delete {
     margin-left: 13px;

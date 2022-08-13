@@ -7,7 +7,7 @@
 
   export let searchTerm = ''
   export let isFiltering = false
-  export let onItemClick
+  // export let onItemClick
 
   // $: favorites = getFavorites($favoriteMetrics, searchTerm)
 

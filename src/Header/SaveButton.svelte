@@ -7,7 +7,7 @@
 
   let className = ''
   export { className as class }
-  export let user
+  // export let user
   export let isAuthor
 
   const { dashboard$ } = getAppContext()
