@@ -29,7 +29,7 @@
     "install": "npm run lib",
     "webkit": "node scripts/webkit",
     "prepare": "husky install",
-    "postinstall": "patch-package && npm run webkit && npm run get-schema && npm run lib",
+    "postinstall": "patch-package && npm run webkit && npm run get-schema",
     "get-schema": "babel-node --presets @babel/preset-env -o scripts,node_modules/san-webkit scripts/schema.js"
   },
   "dependencies": {
