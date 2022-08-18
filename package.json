@@ -30,16 +30,15 @@
     "webkit": "node scripts/webkit",
     "prepare": "husky install",
     "postinstall": "patch-package && npm run webkit && npm run get-schema",
-    "get-schema": "babel-node --presets @babel/preset-env -o scripts,node_modules/san-webkit scripts/schema.js"
+    "get-schema": "node scripts/schema.js"
   },
   "dependencies": {
-    "marked": "^4.0.18",
-    "medium-editor": "^5.23.3",
-    "monaco-editor": "^0.33.0",
-    "monaco-clickhouse": "https://github.com/DmitriVanGuard/monaco-editor#92558250",
     "@babel/core": "^7.18.9",
-    "@babel/node": "^7.18.9",
-    "@babel/preset-env": "^7.18.9"
+    "@babel/preset-env": "^7.18.9",
+    "@babel/register": "^7.18.9",
+    "medium-editor": "^5.23.3",
+    "monaco-clickhouse": "https://github.com/DmitriVanGuard/monaco-editor#92558250",
+    "monaco-editor": "^0.33.0"
   },
   "devDependencies": {
     "san-studio": "https://github.com/santiment/san-studio#1fb1fc7",
@@ -47,6 +46,7 @@
     "@santiment-network/chart": "^0.10.12",
     "sass": "^1.49.8",
     "turndown": "^7.1.1",
+    "marked": "^4.0.18",
     "monaco-editor-core": "0.33.0-dev.20220214",
     "@babel/plugin-proposal-optional-chaining": "^7.18.6",
     "@sveltejs/vite-plugin-svelte": "^1.0.1",

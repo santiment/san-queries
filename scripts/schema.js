@@ -1,3 +1,8 @@
+require('@babel/register')({
+  presets: ['@babel/preset-env'],
+  only: [/node_modules\/san-webkit/],
+})
+
 const fs = require('fs')
 const path = require('path')
 const { query } = require('san-webkit/lib/api')
