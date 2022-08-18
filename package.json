@@ -26,26 +26,26 @@
     "validate:errors": "yarn validate --threshold error",
     "lib:prepare": "node scripts/prepare.js && tsc --p ./scripts/tsconfig.json && node scripts/cleanup.js",
     "lib": "npm run lib:prepare && node scripts/lib.js",
-    "install": "npm run lib",
     "webkit": "node scripts/webkit",
     "prepare": "husky install",
     "postinstall": "patch-package && npm run webkit && npm run get-schema",
     "get-schema": "babel-node --presets @babel/preset-env -o scripts,node_modules/san-webkit scripts/schema.js"
   },
   "dependencies": {
-    "@santiment-network/chart": "^0.10.12",
     "marked": "^4.0.18",
     "medium-editor": "^5.23.3",
     "monaco-editor": "^0.33.0",
-    "san-studio": "https://github.com/santiment/san-studio#c9983e6",
-    "san-webkit": "https://github.com/santiment/san-webkit#f530d26",
     "monaco-clickhouse": "https://github.com/DmitriVanGuard/monaco-editor#92558250",
-    "turndown": "^7.1.1",
     "@babel/core": "^7.18.9",
     "@babel/node": "^7.18.9",
     "@babel/preset-env": "^7.18.9"
   },
   "devDependencies": {
+    "san-studio": "https://github.com/santiment/san-studio#1fb1fc7",
+    "san-webkit": "https://github.com/santiment/san-webkit#b57c553",
+    "@santiment-network/chart": "^0.10.12",
+    "sass": "^1.49.8",
+    "turndown": "^7.1.1",
     "monaco-editor-core": "0.33.0-dev.20220214",
     "@babel/plugin-proposal-optional-chaining": "^7.18.6",
     "@sveltejs/vite-plugin-svelte": "^1.0.1",
@@ -68,7 +68,8 @@
     "tsconfig-paths": "^4.0.0",
     "typescript": "^4.7.4",
     "vite": "^2.9.14",
-    "vite-plugin-ts-checker": "^0.1.5"
+    "vite-plugin-ts-checker": "^0.1.5",
+    "mathjs": "^9.4.4"
   },
   "peerDependencies": {
     "san-webkit": "https://github.com/santiment/san-webkit",

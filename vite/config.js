@@ -44,7 +44,16 @@ export default defineConfig({
     'process.env': isDev ? process.env : {},
   },
   optimizeDeps: {
-    exclude: ['svelte', 'webkit', 'san-webkit', 'studio', 'san-studio', 'canvas', 'node-fetch'],
+    exclude: [
+      'svelte',
+      'webkit',
+      'san-webkit',
+      'studio',
+      'san-studio',
+      'canvas',
+      'node-fetch',
+      'mathjs',
+    ],
   },
 
   build: {
