@@ -4,5 +4,8 @@
 .DS_Store
 .log/
 
+.husky/
+stories/
+
 public/webkit
 public/schema
