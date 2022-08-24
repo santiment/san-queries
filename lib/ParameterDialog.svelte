@@ -29,7 +29,7 @@ function onFormSubmit() {
   bind:closeDialog
   {...$$props}
   title={parameter ? 'Parameter Options' : 'Add Parameter'}
-  class="dialog-US9u4N">
+  class="dialog-yRqkHF">
   <form class="dialog-body" on:submit|preventDefault={onFormSubmit}>
     <Field
       bind:value={key}
@@ -66,7 +66,7 @@ function onFormSubmit() {
 </Dialog>
 
 <style>
-  :global(.dialog-US9u4N) {
+  :global(.dialog-yRqkHF) {
     width: 480px;
   }
 
