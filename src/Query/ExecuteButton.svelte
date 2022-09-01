@@ -25,9 +25,10 @@
     }).catch((e) => {
       loading = false
 
-      const { message } = e[0] || e
-      const msgIndex = message.indexOf(' ', message.indexOf('JSONCompact')) + 1
-      const msg = message.slice(msgIndex).trim()
+      const { message, details } = e[0] || e
+      const errorMessage = message || details || 'Error'
+      const msgIndex = errorMessage.indexOf(' ', errorMessage.indexOf('JSONCompact')) + 1
+      const msg = errorMessage.slice(msgIndex).trim()
 
       return onError(msg)
     })

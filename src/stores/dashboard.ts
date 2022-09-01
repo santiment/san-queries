@@ -7,7 +7,7 @@ function newPanel() {
     name: 'My table',
     settings: { type: PanelType.TABLE, columns: [] },
     sql: {
-      query: 'SELECT * FROM intraday_metrics LIMIT 20',
+      query: 'SHOW TABLES',
       parameters: [],
     },
   } as any as SAN.Queries.DashboardPanel
