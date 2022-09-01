@@ -24,6 +24,8 @@
   $: columns.length && updateColumns(columns)
 
   function newColumn(title, i) {
+    const { sql: { query } = {} } = panel
+
     const accessor = (data) => data[i]
 
     const column = {
@@ -34,7 +36,7 @@
       sortAccessor: accessor,
     }
 
-    if (data.dateColumns?.has(i)) {
+    if (data.dateColumns?.has(i) && !query?.startsWith('SHOW')) {
       const { id, fn } = Formatter[FormatType.DATE]
       column.format = (data) => fn(accessor(data))
       column.formatter = fn
