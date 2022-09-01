@@ -23,10 +23,12 @@ function onQueryExecute() {
   }).catch(e => {
     loading = false;
     const {
-      message
+      message,
+      details
     } = e[0] || e;
-    const msgIndex = message.indexOf(' ', message.indexOf('JSONCompact')) + 1;
-    const msg = message.slice(msgIndex).trim();
+    const errorMessage = message || details || 'Error';
+    const msgIndex = errorMessage.indexOf(' ', errorMessage.indexOf('JSONCompact')) + 1;
+    const msg = errorMessage.slice(msgIndex).trim();
     return onError(msg);
   });
 }</script>

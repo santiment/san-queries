@@ -25,6 +25,12 @@ $: columns.length && updateColumns(columns);
 function newColumn(title, i) {
   var _a;
 
+  const {
+    sql: {
+      query
+    } = {}
+  } = panel;
+
   const accessor = data => data[i];
 
   const column = {
@@ -35,7 +41,7 @@ function newColumn(title, i) {
     sortAccessor: accessor
   };
 
-  if ((_a = data.dateColumns) === null || _a === void 0 ? void 0 : _a.has(i)) {
+  if (((_a = data.dateColumns) === null || _a === void 0 ? void 0 : _a.has(i)) && !(query === null || query === void 0 ? void 0 : query.startsWith('SHOW'))) {
     const {
       id,
       fn
