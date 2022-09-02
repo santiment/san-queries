@@ -12,7 +12,7 @@ export let rows;
 export let visibleColumns;
 let closeDialog;</script>
 
-<Dialog bind:closeDialog {...$$props} noTitle animated={false} class="dialog-GUi+43">
+<Dialog bind:closeDialog {...$$props} noTitle animated={false} class="dialog-Fc3sq7">
   <Visualization
     {visualization}
     {columns}
@@ -23,7 +23,7 @@ let closeDialog;</script>
 </Dialog>
 
 <style>
-  :global(.dialog-GUi\+43) {
+  :global(.dialog-Fc3sq7) {
     width: 96%;
     height: 92%;
     padding: 16px;

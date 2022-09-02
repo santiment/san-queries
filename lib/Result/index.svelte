@@ -62,7 +62,7 @@ onDestroy(unsub);</script>
 </div>
 
 {#if visualization}
-  <RowPanels class="result-ldRPUS">
+  <RowPanels class="result-acW05Z">
     <svelte:fragment slot="left">
       {#if data}
         <Visualization {visualization} {columns} {rows} {dateColumns} {visibleColumns} />
@@ -86,7 +86,7 @@ onDestroy(unsub);</script>
 {/if}
 
 <style>
-  :global(.result-ldRPUS) {
+  :global(.result-acW05Z) {
     flex: 1;
     min-height: 0;
   }

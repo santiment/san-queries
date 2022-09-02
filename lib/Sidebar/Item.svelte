@@ -13,12 +13,12 @@ function onClick() {
   });
 }</script>
 
-<Item {item} {HoverItem} active={isActive} on:click={onClick} class="item-7ZrZnb">
+<Item {item} {HoverItem} active={isActive} on:click={onClick} class="item-LRpBF4">
   {item.title}
 </Item>
 
 <style>
-  :global(.item-7ZrZnb) {
+  :global(.item-LRpBF4) {
     --color-active-hover: var(--green) !important;
   }
 </style>

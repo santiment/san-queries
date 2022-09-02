@@ -37,7 +37,7 @@ function onDrop() {
 
 <ColorBorder
   draggable
-  class="parameter-pRXEkm {className}"
+  class="parameter-d2mA1g {className}"
   {color}
   on:click={() => showParameterDialog({ parameter, onSubmit: onUpdate })}
   on:dragstart={onDrag}
@@ -56,7 +56,7 @@ function onDrop() {
   </div>
 </ColorBorder>
 
-<style lang="scss">:global(.parameter-pRXEkm) {
+<style lang="scss">:global(.parameter-d2mA1g) {
   padding-right: 5px !important;
 }
 

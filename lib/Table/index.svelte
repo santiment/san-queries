@@ -2,19 +2,19 @@
 export let columns = [];
 export let data;</script>
 
-<Table items={data} {columns} class="table-j2k9wz" sticky />
+<Table items={data} {columns} class="table-L0Tuyl" sticky />
 
-<style lang="scss">:global(.table-j2k9wz) {
+<style lang="scss">:global(.table-L0Tuyl) {
   width: calc(100% + 32px) !important;
   border-top: 1px solid var(--porcelain);
   margin: 16px -16px 0;
   overflow: auto;
   flex: 1;
 }
-:global(.table-j2k9wz) :global(th) {
+:global(.table-L0Tuyl) :global(th) {
   padding: 0 15px !important;
 }
-:global(.table-j2k9wz) :global(td) {
+:global(.table-L0Tuyl) :global(td) {
   border-bottom: 1px solid var(--porcelain);
   white-space: pre !important;
 }</style>
