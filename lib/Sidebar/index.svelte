@@ -20,7 +20,7 @@ export let isFiltering = false; // export let onItemClick
     on:scroll={() => window.__clearHoverItem && window.__clearHoverItem()}>
     <Category category="Favorites" {isFiltering} isOpened class="favorites">
       <svelte:fragment slot="pre-title">
-        <Svg id="star-filled" w="16" class="mrg-s mrg--r star-kzjNPJ" />
+        <Svg id="star-filled" w="16" class="mrg-s mrg--r star-tZUiiv" />
       </svelte:fragment>
 
       <div class="c-waterloo mrg-s mrg--l">Save any dashboard to 'Favorites' for quick access</div>
@@ -30,7 +30,7 @@ export let isFiltering = false; // export let onItemClick
   </section>
 </Sidebar>
 
-<style lang="scss">:global(.star-kzjNPJ) {
+<style lang="scss">:global(.star-tZUiiv) {
   fill: var(--orange);
 }
 

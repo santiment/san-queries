@@ -21,7 +21,7 @@ function newVisualization(type, name) {
 }</script>
 
 <div class="relative {className}">
-  <Tooltip on="click" position="bottom" class="tooltip-5J5uWn" bind:isOpened>
+  <Tooltip on="click" position="bottom" class="tooltip-wYebW+" bind:isOpened>
     <button slot="trigger" class="btn-2"
       >Create new visualization
       <Svg id="arrow-down" w="8" h="5" class="mrg-xl mrg--l" />
@@ -42,7 +42,7 @@ function newVisualization(type, name) {
     text-align: left;
   }
 
-  :global(.tooltip-5J5uWn) {
+  :global(.tooltip-wYebW\+) {
     padding: 8px;
     width: 100%;
   }
