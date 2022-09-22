@@ -38,7 +38,8 @@
 
 <ColorBorder
   draggable
-  class="$style.parameter {className}"
+  explanation="Click to edit settings"
+  class="$style.parameter {className} expl-tooltip"
   {color}
   on:click={() => showParameterDialog({ parameter, onSubmit: onUpdate })}
   on:dragstart={onDrag}

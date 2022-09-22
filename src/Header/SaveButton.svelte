@@ -74,8 +74,10 @@
   </Tooltip>
 </div>
 
+<!-- <a href="/" class="bnt-0 mrg-l mrg--l">Documentation</a> -->
+
 <button
-  class="btn mrg-l mrg--l row v-center {className}"
+  class="btn mrg-xl mrg--l row v-center {className}"
   on:click={() => onClick(SaveType.SaveAsNew)}>
   <Svg id="copy" w="16" class="mrg-s mrg--r" />
   Duplicate

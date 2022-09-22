@@ -10,6 +10,7 @@
   import Parameter from './Parameter.svelte'
   import Editor from '@/Editor/Async.svelte'
   import { updateThemeParameters } from '@/Editor/theme'
+  import Info from './Info.svelte'
 
   // export let data: SAN.Queries.SQLResult
   export let panel: SAN.Queries.Panel
@@ -60,6 +61,8 @@
     Add parameter
     <Svg id="braces" w="16" class="mrg-s mrg--l" />
   </button>
+
+  <Info />
 
   {#each parameters as parameter, i}
     <Parameter

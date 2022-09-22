@@ -1,6 +1,7 @@
 <script>
   import Sidebar from 'studio/Sidebar/Sidebar.svelte'
   import Search from 'studio/Sidebar/Search.svelte'
+  import Category from 'studio/Sidebar/Category.svelte'
   import MyDashboards from './MyDashboards.svelte'
 
   export let searchTerm = ''
@@ -23,6 +24,10 @@
     class="sidebar-content"
     on:scroll={() => window.__clearHoverItem && window.__clearHoverItem()}>
     <MyDashboards {searchTerm} {isFiltering} />
+
+    <Category category="How to get started" {isFiltering} isOpened>
+      <div class="c-waterloo mrg-s mrg--l">Pre-made sample queries</div>
+    </Category>
   </section>
 </Sidebar>
 

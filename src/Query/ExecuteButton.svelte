@@ -1,5 +1,6 @@
 <script>
-  import Svg from 'webkit/ui/Svg/svelte'
+  import { onDestroy } from 'svelte'
+  import { newGlobalShortcut } from 'webkit/utils/events'
   import Tooltip from 'webkit/ui/Tooltip/svelte'
   import ExecutionStats from './ExecutionStats.svelte'
 
@@ -37,15 +38,16 @@
       return onError(msg)
     })
   }
+
+  onDestroy(newGlobalShortcut('CMD+E', onQueryExecute, false))
 </script>
 
 <Tooltip dark isEnabled={stats || loading} closeTimeout={0} bind:isOpened>
-  <button slot="trigger" class="btn-1 btn--s row v-center mrg-m mrg--r" on:click={onQueryExecute}>
+  <button slot="trigger" class="btn-1 btn--s row hv-center mrg-m mrg--r" on:click={onQueryExecute}>
     {#if loading}
       <div class="loading-spin mrg-s mrg--r" />
       Running
     {:else}
-      <Svg id="time" w="16" class="mrg-s mrg--r" />
       Execute
     {/if}
   </button>
@@ -57,7 +59,7 @@
 
 <style>
   button {
-    width: 99px;
+    width: 140px;
   }
 
   .loading-spin {
