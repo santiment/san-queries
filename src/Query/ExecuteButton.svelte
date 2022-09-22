@@ -28,7 +28,11 @@
       const { message, details } = e[0] || e
       const errorMessage = message || details || 'Error'
       const msgIndex = errorMessage.indexOf(' ', errorMessage.indexOf('JSONCompact')) + 1
-      const msg = errorMessage.slice(msgIndex).trim()
+      let msg = errorMessage.slice(msgIndex).trim()
+
+      if (msg === 'unauthorized') {
+        msg = 'Please sign in to run the query.'
+      }
 
       return onError(msg)
     })

@@ -7,7 +7,18 @@ function newPanel() {
     name: 'My table',
     settings: { type: PanelType.TABLE, columns: [] },
     sql: {
-      query: 'SHOW TABLES',
+      query: `SELECT
+    dt,
+    get_asset_name(asset_id) AS slug,
+    get_metric_name(metric_id) AS metric,
+    value
+FROM daily_metrics_v2 FINAL
+WHERE
+    asset_id = get_asset_id('bitcoin') AND
+    metric_id = get_metric_id('daily_active_addresses') AND
+    dt >= toDateTime('2022-01-01 00:00:00')
+ORDER BY dt ASC
+LIMIT 20`,
       parameters: [],
     },
   } as any as SAN.Queries.DashboardPanel

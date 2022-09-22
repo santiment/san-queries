@@ -1,8 +1,6 @@
 <script>
-  import Svg from 'webkit/ui/Svg/svelte'
   import Sidebar from 'studio/Sidebar/Sidebar.svelte'
   import Search from 'studio/Sidebar/Search.svelte'
-  import Category from 'studio/Sidebar/Category.svelte'
   import MyDashboards from './MyDashboards.svelte'
 
   export let searchTerm = ''
@@ -24,14 +22,6 @@
   <section
     class="sidebar-content"
     on:scroll={() => window.__clearHoverItem && window.__clearHoverItem()}>
-    <Category category="Favorites" {isFiltering} isOpened class="favorites">
-      <svelte:fragment slot="pre-title">
-        <Svg id="star-filled" w="16" class="mrg-s mrg--r $style.star" />
-      </svelte:fragment>
-
-      <div class="c-waterloo mrg-s mrg--l">Save any dashboard to 'Favorites' for quick access</div>
-    </Category>
-
     <MyDashboards {searchTerm} {isFiltering} />
   </section>
 </Sidebar>
