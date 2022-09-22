@@ -48,6 +48,11 @@
     panel.sql.query = editor.getValue()
   }
 
+  function setValue(value) {
+    editor.setValue(value)
+    panel.sql.query = value
+  }
+
   onMount(() => {
     showAddParameterWalkthrough()
   })
@@ -76,7 +81,7 @@
 </div>
 
 <div class="query border mrg-l mrg--b relative">
-  <Editor class="$style.editor" bind:editor value={query} {parameters} />
+  <Editor class="$style.editor" bind:editor value={query} {parameters} {setValue} />
 
   {#if error}
     <div class="error caption c-red row">

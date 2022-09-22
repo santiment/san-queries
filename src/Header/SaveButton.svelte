@@ -74,7 +74,11 @@
   </Tooltip>
 </div>
 
-<!-- <a href="/" class="bnt-0 mrg-l mrg--l">Documentation</a> -->
+<a
+  href="https://academy.santiment.net/sql-editor/"
+  class="bnt-0 mrg-l mrg--l"
+  target="_blank"
+  rel="noopener noreferrer">Documentation</a>
 
 <button
   class="btn mrg-xl mrg--l row v-center {className}"
