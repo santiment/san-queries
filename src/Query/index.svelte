@@ -7,7 +7,7 @@
     showAddParameterWalkthrough,
     showParameterOptionsWalkthrough,
   } from '@/walkthroughs/parameters'
-  import Parameter from './Parameter.svelte'
+  import Parameter, { getParameterSQL } from './Parameter.svelte'
   import Editor from '@/Editor/Async.svelte'
   import { updateThemeParameters } from '@/Editor/theme'
   import Info from './Info.svelte'
@@ -33,6 +33,8 @@
   function onNewParameter(parameter) {
     parameters.push(parameter)
     parameters = parameters
+
+    setValue(editor.getValue() + ' ' + getParameterSQL(parameter))
   }
 
   function onParameterUpdate() {

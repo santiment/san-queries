@@ -61,6 +61,8 @@
 <style lang="scss">
   .parameter {
     padding-right: 5px !important;
+    --expl-align-x: 50%;
+    --expl-right: 50%;
   }
 
   // .settings {
