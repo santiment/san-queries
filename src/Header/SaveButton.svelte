@@ -1,9 +1,11 @@
 <script lang="ts">
+  import { onMount } from 'svelte'
   import Svg from 'webkit/ui/Svg/svelte'
   import Tooltip from 'webkit/ui/Tooltip/svelte'
   import { showSaveDashboardDialog } from '@/SaveDashboardDialog.svelte'
   import { getAppContext } from '@/context'
   import { startDeleteDashboardFlow, startSaveFlow } from '@/flow/dashboard'
+  import { showWelcomeWalkthrough } from '@/walkthroughs/welcome'
 
   let className = ''
   export { className as class }
@@ -45,6 +47,8 @@
     isOpened = false
     dashboard$.set(dashboard)
   }
+
+  onMount(showWelcomeWalkthrough)
 </script>
 
 <div class="row mrg-a mrg--l border relative">
@@ -75,6 +79,7 @@
 </div>
 
 <a
+  id="fw-welcome"
   href="https://clickhouse.com/docs/en/sql-reference/"
   class="bnt-0 mrg-l mrg--l"
   target="_blank"

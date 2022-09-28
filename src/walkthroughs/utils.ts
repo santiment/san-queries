@@ -9,3 +9,5 @@ export function awaitChildren(parentNode, show, acessor) {
   })
   observer.observe(parentNode, config)
 }
+
+export const BR = `<br class="mrg-s mrg--b" />`
