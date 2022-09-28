@@ -38,7 +38,8 @@
 
 <ColorBorder
   draggable
-  class="$style.parameter {className}"
+  explanation="Click to edit settings"
+  class="$style.parameter {className} expl-tooltip"
   {color}
   on:click={() => showParameterDialog({ parameter, onSubmit: onUpdate })}
   on:dragstart={onDrag}
@@ -60,6 +61,8 @@
 <style lang="scss">
   .parameter {
     padding-right: 5px !important;
+    --expl-align-x: 50%;
+    --expl-right: 50%;
   }
 
   // .settings {

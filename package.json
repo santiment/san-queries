@@ -41,8 +41,8 @@
     "monaco-editor": "^0.33.0"
   },
   "devDependencies": {
-    "san-studio": "https://github.com/santiment/san-studio#1574d2f",
-    "san-webkit": "https://github.com/santiment/san-webkit#75a49a2",
+    "san-studio": "https://github.com/santiment/san-studio#63a95e6",
+    "san-webkit": "https://github.com/santiment/san-webkit#a80bcad",
     "@santiment-network/chart": "^0.10.12",
     "sass": "^1.49.8",
     "turndown": "^7.1.1",

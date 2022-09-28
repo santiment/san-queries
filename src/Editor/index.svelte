@@ -49,6 +49,8 @@
 
     editorNode.parentNode.ondragover = (e) => e.preventDefault()
     editorNode.parentNode.ondrop = (e) => {
+      e.preventDefault()
+
       const target = editor.getTargetAtClientPoint(e.clientX, e.clientY)
       const { startColumn, startLineNumber } = target.range
       editor.executeEdits('parameters', [

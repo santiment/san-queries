@@ -7,9 +7,10 @@
     showAddParameterWalkthrough,
     showParameterOptionsWalkthrough,
   } from '@/walkthroughs/parameters'
-  import Parameter from './Parameter.svelte'
+  import Parameter, { getParameterSQL } from './Parameter.svelte'
   import Editor from '@/Editor/Async.svelte'
   import { updateThemeParameters } from '@/Editor/theme'
+  import Info from './Info.svelte'
 
   // export let data: SAN.Queries.SQLResult
   export let panel: SAN.Queries.Panel
@@ -32,6 +33,8 @@
   function onNewParameter(parameter) {
     parameters.push(parameter)
     parameters = parameters
+
+    setValue(editor.getValue() + ' ' + getParameterSQL(parameter))
   }
 
   function onParameterUpdate() {
@@ -45,6 +48,11 @@
 
   function onBlur() {
     panel.sql.query = editor.getValue()
+  }
+
+  function setValue(value) {
+    editor.setValue(value)
+    panel.sql.query = value
   }
 
   onMount(() => {
@@ -61,6 +69,8 @@
     <Svg id="braces" w="16" class="mrg-s mrg--l" />
   </button>
 
+  <Info />
+
   {#each parameters as parameter, i}
     <Parameter
       class="parameter"
@@ -73,7 +83,7 @@
 </div>
 
 <div class="query border mrg-l mrg--b relative">
-  <Editor class="$style.editor" bind:editor value={query} {parameters} />
+  <Editor class="$style.editor" bind:editor value={query} {parameters} {setValue} />
 
   {#if error}
     <div class="error caption c-red row">
