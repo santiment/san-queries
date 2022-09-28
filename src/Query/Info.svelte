@@ -3,16 +3,20 @@
   import Tooltip from 'webkit/ui/Tooltip/svelte'
 </script>
 
-<Tooltip position="right" align="center" offsetX={12} closeTimeout={0}>
+<Tooltip position="right" align="start" offsetX={12} closeTimeout={0}>
   <div slot="trigger" class="info btn row hv-center mrg-l mrg--r">
     <Svg id="info" w="16" />
   </div>
   <div class="tooltip" slot="tooltip">
     <h3 class="txt-m mrg-m mrg--b">Add Parameter to ...</h3>
     <p class="c-waterloo">
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-      labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-      laboris nisi
+      A parameter is a placeholder for some value. Parameters allow the creation of more interactive
+      and dynamic dashboards. They provide an easy way to add and change values (e.g. dates,
+      metrics, assets, addresses) without hardcoding them in the SQL.
+      <br class="mrg-s mrg--b" />
+      A parameter has a name, type and value. In the query parameters are represented as
+      <span class="code caption c-black">{`{{<name>}}`}</span>. When the query is executed, the
+      parameter template is replaced by its value.
     </p>
   </div>
 </Tooltip>
@@ -26,5 +30,12 @@
   .tooltip {
     padding: 24px;
     max-width: 400px;
+  }
+
+  .code {
+    font-family: monospace;
+    background: var(--porcelain);
+    padding: 2px 4px;
+    border-radius: 4px;
   }
 </style>

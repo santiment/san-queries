@@ -75,7 +75,7 @@
 </div>
 
 <a
-  href="https://academy.santiment.net/sql-editor/"
+  href="https://clickhouse.com/docs/en/sql-reference/"
   class="bnt-0 mrg-l mrg--l"
   target="_blank"
   rel="noopener noreferrer">Documentation</a>
