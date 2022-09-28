@@ -1,8 +1,10 @@
-<script lang="ts">import Svg from 'san-webkit/lib/ui/Svg/svelte';
+<script lang="ts">import { onMount } from 'svelte';
+import Svg from 'san-webkit/lib/ui/Svg/svelte';
 import Tooltip from 'san-webkit/lib/ui/Tooltip/svelte';
 import { showSaveDashboardDialog } from './../../lib/SaveDashboardDialog.svelte';
 import { getAppContext } from './../../lib/context';
 import { startDeleteDashboardFlow, startSaveFlow } from './../../lib/flow/dashboard';
+import { showWelcomeWalkthrough } from './../../lib/walkthroughs/welcome';
 let className = '';
 export { className as class }; // export let user
 
@@ -42,7 +44,9 @@ function onDelete() {
   delete dashboard.user;
   isOpened = false;
   dashboard$.set(dashboard);
-}</script>
+}
+
+onMount(showWelcomeWalkthrough);</script>
 
 <div class="row mrg-a mrg--l border relative">
   <button class="save btn" on:click={() => onClick(isAuthor ? SaveType.Save : SaveType.SaveAsNew)}
@@ -72,6 +76,7 @@ function onDelete() {
 </div>
 
 <a
+  id="fw-welcome"
   href="https://clickhouse.com/docs/en/sql-reference/"
   class="bnt-0 mrg-l mrg--l"
   target="_blank"
