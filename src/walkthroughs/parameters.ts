@@ -1,11 +1,14 @@
 import { FeatureWalkthrough$ } from 'webkit/ui/FeatureWalkthrough/context'
-import { awaitChildren } from './utils'
+import { awaitChildren, BR } from './utils'
 
 export function showAddParameterWalkthrough() {
   FeatureWalkthrough$.show({
     id: 'fw-add-parameter',
-    title: 'Add parameter',
-    description: `<p class="mrg-l mrg--b">Add parameters to the query by opening the parameter's creation dialog</p>`,
+    title:
+      'Add dynamic parameters to define a value that can be changed on-the-fly without hardcoding it in the query',
+    description: `<p class="mrg-l mrg--b">Parameters are useful for reducing repetition and for creating dynamic dashboards.
+    ${BR}
+    Define the asset and the dates as parameters and change your dashboards with simple clicks without touching the code.</p>`,
   })
 }
 
@@ -21,8 +24,8 @@ export function showParameterOptionsWalkthrough(parentNode) {
     FeatureWalkthrough$.show({
       id: node.id,
       title: 'Parameter options',
-      description: `<p class="mrg-l mrg--b">Click on the parameter to open the options dialog
-      <br class="mrg-s mrg--b" />
+      description: `<p class="mrg-l mrg--b">Click on the parameter to open the options dialog.
+      ${BR}
       Drag and drop the parameter to the editor below to quickly add it to your SQL query
       </p>`,
     })
