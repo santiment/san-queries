@@ -25,11 +25,7 @@ export let isFiltering = false; // export let onItemClick
   </section>
 </Sidebar>
 
-<style lang="scss">.star {
-  fill: var(--orange);
-}
-
-.header {
+<style lang="scss">.header {
   padding: 16px;
   border-bottom: 1px solid var(--porcelain);
 }
