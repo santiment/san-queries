@@ -1,4 +1,6 @@
-<script>import Svg from 'san-webkit/lib/ui/Svg/svelte';
+<script>import { onDestroy } from 'svelte';
+import { CMD } from 'san-webkit/lib/utils/os';
+import { newGlobalShortcut } from 'san-webkit/lib/utils/events';
 import Tooltip from 'san-webkit/lib/ui/Tooltip/svelte';
 import ExecutionStats from './ExecutionStats.svelte';
 export let onClick;
@@ -28,18 +30,28 @@ function onQueryExecute() {
     } = e[0] || e;
     const errorMessage = message || details || 'Error';
     const msgIndex = errorMessage.indexOf(' ', errorMessage.indexOf('JSONCompact')) + 1;
-    const msg = errorMessage.slice(msgIndex).trim();
+    let msg = errorMessage.slice(msgIndex).trim();
+
+    if (msg === 'unauthorized') {
+      msg = 'Please sign in to run the query.';
+    }
+
     return onError(msg);
   });
-}</script>
+}
+
+onDestroy(newGlobalShortcut('CMD+ENTER', onQueryExecute, false));</script>
 
 <Tooltip dark isEnabled={stats || loading} closeTimeout={0} bind:isOpened>
-  <button slot="trigger" class="btn-1 btn--s row v-center mrg-m mrg--r" on:click={onQueryExecute}>
+  <button
+    slot="trigger"
+    class="btn-1 btn--s row hv-center mrg-m mrg--r expl-tooltip"
+    aria-label="{CMD} + Enter"
+    on:click={onQueryExecute}>
     {#if loading}
       <div class="loading-spin mrg-s mrg--r" />
       Running
     {:else}
-      <Svg id="time" w="16" class="mrg-s mrg--r" />
       Execute
     {/if}
   </button>
@@ -51,7 +63,7 @@ function onQueryExecute() {
 
 <style>
   button {
-    width: 99px;
+    width: 140px;
   }
 
   .loading-spin {

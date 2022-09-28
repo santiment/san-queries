@@ -93,7 +93,7 @@ function onShare() {
   <Comments bind:isCommentsShowed />
  -->
 
-  <SaveButton class="action-edCwlT" {user} {isAuthor} />
+  <SaveButton class="action-K9LTs1" {user} {isAuthor} />
 
   <button class="btn mrg-xl mrg--l row v-center" on:click={onShare}>
     <Svg id="share-dots" w="14" h="16" class="mrg-s mrg--r" />
@@ -102,7 +102,7 @@ function onShare() {
 
 <style>
   button,
-  :global(.action-edCwlT) {
+  :global(.action-K9LTs1) {
     --fill: var(--waterloo);
     --color-hover: var(--green);
   }

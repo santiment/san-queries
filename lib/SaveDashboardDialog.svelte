@@ -35,7 +35,7 @@ function onFormSubmit() {
   });
 }</script>
 
-<Dialog bind:closeDialog {...$$props} {title} class="dialog-+KuIyH">
+<Dialog bind:closeDialog {...$$props} {title} class="dialog-1SRmdB">
   <form class="dialog-body" on:submit|preventDefault={onFormSubmit}>
     <Field
       bind:value={name}
@@ -66,7 +66,7 @@ function onFormSubmit() {
 </Dialog>
 
 <style>
-  :global(.dialog-\+KuIyH) {
+  :global(.dialog-1SRmdB) {
     width: 480px;
   }
 

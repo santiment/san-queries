@@ -3,9 +3,10 @@ import Svg from 'san-webkit/lib/ui/Svg/svelte';
 import { newChartColors } from 'san-studio/lib/Chart/colors';
 import { showParameterDialog } from './../../lib/ParameterDialog.svelte';
 import { showAddParameterWalkthrough, showParameterOptionsWalkthrough } from './../../lib/walkthroughs/parameters';
-import Parameter from './Parameter.svelte';
+import Parameter, { getParameterSQL } from './Parameter.svelte';
 import Editor from './../../lib/Editor/Async.svelte';
-import { updateThemeParameters } from './../../lib/Editor/theme'; // export let data: SAN.Queries.SQLResult
+import { updateThemeParameters } from './../../lib/Editor/theme';
+import Info from './Info.svelte'; // export let data: SAN.Queries.SQLResult
 
 export let panel;
 export let error;
@@ -34,6 +35,7 @@ function updateParametersTheme(parameters) {
 function onNewParameter(parameter) {
   parameters.push(parameter);
   parameters = parameters;
+  setValue(editor.getValue() + ' ' + getParameterSQL(parameter));
 }
 
 function onParameterUpdate() {
@@ -49,6 +51,11 @@ function onBlur() {
   panel.sql.query = editor.getValue();
 }
 
+function setValue(value) {
+  editor.setValue(value);
+  panel.sql.query = value;
+}
+
 onMount(() => {
   showAddParameterWalkthrough();
 });</script>
@@ -62,6 +69,8 @@ onMount(() => {
     <Svg id="braces" w="16" class="mrg-s mrg--l" />
   </button>
 
+  <Info />
+
   {#each parameters as parameter, i}
     <Parameter
       class="parameter"
@@ -74,7 +83,7 @@ onMount(() => {
 </div>
 
 <div class="query border mrg-l mrg--b relative">
-  <Editor class="" bind:editor value={query} {parameters} />
+  <Editor class="" bind:editor value={query} {parameters} {setValue} />
 
   {#if error}
     <div class="error caption c-red row">

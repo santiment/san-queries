@@ -47,7 +47,7 @@ function onDelete() {
 <div class="row mrg-a mrg--l border relative">
   <button class="save btn" on:click={() => onClick(isAuthor ? SaveType.Save : SaveType.SaveAsNew)}
     >{isAuthor ? 'Save' : 'Save as'}</button>
-  <Tooltip on="click" duration={0} align="center" class="tooltip-HXYhc5" bind:isOpened>
+  <Tooltip on="click" duration={0} align="center" class="tooltip-tF2css" bind:isOpened>
     <button slot="trigger" class="more btn row hv-center">
       <Svg id="arrow-down" w="8" h="5" />
     </button>
@@ -71,8 +71,14 @@ function onDelete() {
   </Tooltip>
 </div>
 
+<a
+  href="https://clickhouse.com/docs/en/sql-reference/"
+  class="bnt-0 mrg-l mrg--l"
+  target="_blank"
+  rel="noopener noreferrer">Documentation</a>
+
 <button
-  class="btn mrg-l mrg--l row v-center {className}"
+  class="btn mrg-xl mrg--l row v-center {className}"
   on:click={() => onClick(SaveType.SaveAsNew)}>
   <Svg id="copy" w="16" class="mrg-s mrg--r" />
   Duplicate
@@ -94,7 +100,7 @@ function onDelete() {
   .more {
     --color-hover: var(--green);
   }
-  :global(.tooltip-HXYhc5) {
+  :global(.tooltip-tF2css) {
     left: 0px !important;
     width: 200px;
     padding: 8px;

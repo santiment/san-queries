@@ -1,5 +1,4 @@
-<script>import Svg from 'san-webkit/lib/ui/Svg/svelte';
-import Sidebar from 'san-studio/lib/Sidebar/Sidebar.svelte';
+<script>import Sidebar from 'san-studio/lib/Sidebar/Sidebar.svelte';
 import Search from 'san-studio/lib/Sidebar/Search.svelte';
 import Category from 'san-studio/lib/Sidebar/Category.svelte';
 import MyDashboards from './MyDashboards.svelte';
@@ -18,19 +17,15 @@ export let isFiltering = false; // export let onItemClick
   <section
     class="sidebar-content"
     on:scroll={() => window.__clearHoverItem && window.__clearHoverItem()}>
-    <Category category="Favorites" {isFiltering} isOpened class="favorites">
-      <svelte:fragment slot="pre-title">
-        <Svg id="star-filled" w="16" class="mrg-s mrg--r star-tZUiiv" />
-      </svelte:fragment>
-
-      <div class="c-waterloo mrg-s mrg--l">Save any dashboard to 'Favorites' for quick access</div>
-    </Category>
-
     <MyDashboards {searchTerm} {isFiltering} />
+
+    <Category category="How to get started" {isFiltering} isOpened>
+      <div class="c-waterloo mrg-s mrg--l">Pre-made sample queries</div>
+    </Category>
   </section>
 </Sidebar>
 
-<style lang="scss">:global(.star-tZUiiv) {
+<style lang="scss">.star {
   fill: var(--orange);
 }
 

@@ -37,7 +37,8 @@ function onDrop() {
 
 <ColorBorder
   draggable
-  class="parameter-pRXEkm {className}"
+  explanation="Click to edit settings"
+  class="parameter-lsYRFA {className} expl-tooltip"
   {color}
   on:click={() => showParameterDialog({ parameter, onSubmit: onUpdate })}
   on:dragstart={onDrag}
@@ -56,8 +57,10 @@ function onDrop() {
   </div>
 </ColorBorder>
 
-<style lang="scss">:global(.parameter-pRXEkm) {
+<style lang="scss">:global(.parameter-lsYRFA) {
   padding-right: 5px !important;
+  --expl-align-x: 50%;
+  --expl-right: 50%;
 }
 
 .delete {
