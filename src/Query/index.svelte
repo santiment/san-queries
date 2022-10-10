@@ -10,11 +10,15 @@
   import Parameter, { getParameterSQL } from './Parameter.svelte'
   import Editor from '@/Editor/Async.svelte'
   import { updateThemeParameters } from '@/Editor/theme'
+  import ExecuteButton from './ExecuteButton.svelte'
   import Info from './Info.svelte'
+  import { mutateComputeRawClickhouseQuery } from '@/api/rawQuery'
+  import { getParametersMap } from '@/utils/parameters'
 
   // export let data: SAN.Queries.SQLResult
   export let panel: SAN.Queries.Panel
   export let error: string
+  export let data
 
   let controlsNode
   let editor
@@ -58,9 +62,28 @@
   onMount(() => {
     showAddParameterWalkthrough()
   })
+
+  function onExecuteClick(resolve) {
+    const { query, parameters } = panel.sql
+    return mutateComputeRawClickhouseQuery(query, getParametersMap(parameters)).then(
+      (sqlResult) => {
+        data = sqlResult
+        error = ''
+        panel.__rows = sqlResult.rows
+
+        resolve()
+      },
+    )
+  }
+
+  function onQueryError(msg) {
+    error = msg
+  }
 </script>
 
 <div class="controls row mrg-m mrg--b" bind:this={controlsNode}>
+  <ExecuteButton onClick={onExecuteClick} onError={onQueryError} />
+
   <button
     id="fw-add-parameter"
     class="add btn-2 btn--s row v-center nowrap"

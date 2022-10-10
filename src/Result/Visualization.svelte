@@ -3,12 +3,12 @@
   import { downloadCsv } from 'webkit/utils/csv'
   import { PanelType } from '@/types'
   import Table from '@/Table/index.svelte'
-  // import Chart from '@/Chart/index.svelte'
+  import Chart from '@/Chart/index.svelte'
   import { showFullscreenDialog } from './FullscreenDialog.svelte'
 
   export let visualization
   export let columns
-  // export let dateColumns
+  export let dateColumns
   export let rows
   export let visibleColumns
   export let onFullscreenClick = showFullscreenDialog
@@ -38,21 +38,25 @@
 </div>
 
 {#if type === PanelType.TABLE}
-  <Table columns={visibleColumns} data={rows} />
+  <Table columns={visibleColumns} data={rows} class="$style.table" />
 {:else}
-  <!-- 
   <Chart
     columns={visibleColumns}
     data={rows}
     {dateColumns}
     xAxisKey={visualization.xAxisKey}
     bind:download={downloadChart} />
- -->
 {/if}
 
 <style>
   .action {
     --fill: var(--waterloo);
     margin-left: 8px;
+  }
+
+  .table {
+    margin: 16px -16px 0;
+    border-top: 1px solid var(--porcelain);
+    width: calc(100% + 32px) !important;
   }
 </style>

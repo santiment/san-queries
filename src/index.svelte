@@ -7,6 +7,7 @@
   import { setAppContext } from './context'
   import { Dashboard } from './stores/dashboard'
   import Header from './Header/index.svelte'
+  import Page from './Page.svelte'
 
   export let dashboard = null
 
@@ -19,6 +20,7 @@
   let panel = $dashboard$.panels[0]
   let columnsHash = ''
   let error = ''
+  let selectedPanel = undefined
 
   $: columns = data ? data.headers.map(newColumn) : []
   $: columns.length && updateColumns(columns)
@@ -76,11 +78,19 @@
   <Sidebar />
 
   <main class="column">
-    <Header {columns} {panel} bind:error bind:data />
+    <Header {columns} {panel} bind:error bind:data bind:selectedPanel />
 
-    <Query {panel} bind:data bind:error />
+    {#if selectedPanel}
+      <Query {panel} bind:data bind:error />
 
-    <Result {data} {...data} {columns} />
+      <Result {data} {...data} {columns} />
+    {:else}
+      <Page
+        dashboard={$dashboard$}
+        onPanelSelect={(panel) => {
+          selectedPanel = panel
+        }} />
+    {/if}
   </main>
 </div>
 

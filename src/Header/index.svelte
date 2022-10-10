@@ -2,8 +2,7 @@
   import Svg from 'webkit/ui/Svg/svelte'
   import { currentUser as currentUser$ } from 'studio/stores/user'
   import { getAppContext } from '@/context'
-  import ExecuteButton from '@/Query/ExecuteButton.svelte'
-  // import CreationInfo from './CreationInfo.svelte'
+  import CreationInfo from './CreationInfo.svelte'
   // import Comments from './Comments.svelte'
   import { showShareDialog } from '@/ShareDialog.svelte'
   import SaveButton from './SaveButton.svelte'
@@ -17,8 +16,9 @@
   export let data
   export let panel: SAN.Queries.Panel
   export let error = ''
+  export let selectedPanel
 
-  // let isCommentsShowed = false
+  let isCommentsShowed = false
 
   $: dashboard = $dashboard$
   $: currentUser = $currentUser$
@@ -62,18 +62,26 @@
 </script>
 
 <div class="row v-center mrg-m mrg--b">
-  <ExecuteButton onClick={onExecuteClick} onError={onQueryError} />
+  {#if selectedPanel}
+    <div class="row h4">
+      <button
+        class="btn-0 mrg-s mrg--r"
+        on:click={() => {
+          selectedPanel = null
+        }}>
+        {dashboard.title || 'Unsaved dashboard'} /
+      </button>
+      {selectedPanel.name}
+    </div>
+  {:else}
+    <CreationInfo
+      {currentUser}
+      {dashboard}
+      {isAuthor}
+      onCommentsClick={() => (isCommentsShowed = !isCommentsShowed)} />
+  {/if}
 
-  <!-- 
-  <CreationInfo
-    {currentUser}
-    {dashboard}
-    {columns}
-    {isAuthor}
-    onCommentsClick={() => (isCommentsShowed = !isCommentsShowed)} />
-
-  <Comments bind:isCommentsShowed />
- -->
+  <!-- <Comments bind:isCommentsShowed /> -->
 
   <SaveButton class="$style.action" {user} {isAuthor} />
 
