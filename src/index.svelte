@@ -83,7 +83,7 @@
     {#if selectedPanel}
       <Query {panel} bind:data bind:error />
 
-      <Result {data} {...data} {columns} />
+      <Result {data} {...data} {columns} bind:selectedPanel />
     {:else}
       <Page
         dashboard={$dashboard$}

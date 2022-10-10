@@ -15,10 +15,13 @@
   export let rows = []
   export let columns
   export let dateColumns
+  // export let selectedPanel
+  let visualization
+  export { visualization as selectedPanel }
 
   let dashboard = $dashboard$
   let visualizations = dashboard.panels
-  let visualization = visualizations[0]
+  // let visualization = visualizations[0]
   // NOTE: `$: visualization = dashboard?.panels[0]` doesn't allow to change `visualization` using bind:visualization [@vanguard]
   let unsub = dashboard$.subscribe((value) => {
     dashboard = value
