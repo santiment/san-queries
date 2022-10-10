@@ -12,7 +12,7 @@
   let chart
 
   $: metrics = columns
-    .filter(({ id }) => !dateColumns.has(id))
+    .filter(({ id }) => !dateColumns.has(id) && Number.isFinite(data[0][id]))
     .map(({ id, title, formatter, chartStyle }) => ({
       key: id.toString(),
       label: title,
