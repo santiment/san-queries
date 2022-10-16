@@ -5,6 +5,7 @@ const RAW_CLICKHOUSE_QUERY_MUTATION = `
     sql:computeRawClickhouseQuery(query:$query,parameters:$parameters) {
       headers:columns
       rows
+      types:columnTypes
     }
   }`
 
@@ -12,27 +13,11 @@ type Query = SAN.API.Query<'sql', SAN.Queries.SQLResult>
 
 function cacheModifier(data) {
   const { sql } = data
-  const row = sql.rows[0]
 
-  if (!row) return data
-
-  const dateColumns = [] as number[]
-  row.forEach((value, i) => {
-    if (typeof value !== 'string') return
-
-    const date = Date.parse(value)
-    if (date > 0) dateColumns.push(i)
+  data.sql.dateColumns = new Set<number>()
+  sql.types.forEach((type, i) => {
+    if (type === 'Date') sql.dateColumns.add(i)
   })
-
-  /* 
-  dateColumns.forEach((i) => {
-    sql.rows.forEach((row) => {
-      row[i] = Date.parse(row[i])
-    })
-  })
-*/
-
-  data.sql.dateColumns = new Set(dateColumns)
 
   return data
 }

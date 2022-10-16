@@ -6,16 +6,16 @@
   // import Comments from './Comments.svelte'
   import { showShareDialog } from '@/ShareDialog.svelte'
   import SaveButton from './SaveButton.svelte'
-  import { mutateComputeRawClickhouseQuery } from '@/api/rawQuery'
+  // import { mutateComputeRawClickhouseQuery } from '@/api/rawQuery'
   import { getParametersMap } from '@/utils/parameters'
   import { shareColumn } from '@/utils/columns'
 
   const { dashboard$ } = getAppContext()
 
   // export let columns
-  export let data
-  export let panel: SAN.Queries.Panel
-  export let error = ''
+  // export let data
+  // export let panel: SAN.Queries.Panel
+  // export let error = ''
   export let selectedPanel
 
   let isCommentsShowed = false
@@ -26,6 +26,7 @@
   $: ({ user } = dashboard)
   $: isAuthor = currentUser && user && +user.id === +currentUser.id
 
+  /*
   function onExecuteClick(resolve) {
     const { query, parameters } = panel.sql
     return mutateComputeRawClickhouseQuery(query, getParametersMap(parameters)).then(
@@ -40,6 +41,7 @@
   function onQueryError(msg) {
     error = msg
   }
+*/
 
   function onShare() {
     let link = window.location.href + '?shared='
@@ -64,11 +66,7 @@
 <div class="row v-center mrg-m mrg--b">
   {#if selectedPanel}
     <div class="row h4">
-      <button
-        class="btn-0 mrg-s mrg--r"
-        on:click={() => {
-          selectedPanel = null
-        }}>
+      <button class="btn-0 mrg-s mrg--r" on:click={() => (selectedPanel = null)}>
         {dashboard.title || 'Unsaved dashboard'} /
       </button>
       {selectedPanel.name}
