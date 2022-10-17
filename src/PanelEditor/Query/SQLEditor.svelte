@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from 'svelte'
   import Svg from 'webkit/ui/Svg/svelte'
   import SQLEditor from '@/SQLEditor/Async.svelte'
   import { updateThemeParameters } from '@/SQLEditor/theme'
@@ -9,6 +10,8 @@
   export let controller
 
   controller.setValue = setValue
+
+  let iframe
 
   $: ({ query, parameters } = panel.sql)
   $: if (editor) editor.onDidBlurEditorText(onBlur)
@@ -22,9 +25,20 @@
     editor.setValue(value)
     panel.sql.query = value
   }
+
+  function onResize() {
+    if (editor) {
+      const { offsetWidth: width, offsetHeight: height } = iframe
+      editor.layout({ width, height })
+    }
+  }
+
+  onMount(() => {
+    if (iframe.contentWindow) iframe.contentWindow.onresize = onResize
+  })
 </script>
 
-<div class="query border mrg-l mrg--b relative">
+<div class="editor border mrg-l mrg--b relative">
   <SQLEditor bind:editor value={query} {parameters} {setValue} />
 
   {#if error}
@@ -35,11 +49,16 @@
       </button>
     </div>
   {/if}
+
+  <iframe title="resizer" frameBorder="0" bind:this={iframe} />
 </div>
 
 <style>
-  .query {
+  .editor {
     min-height: 284px;
+    overflow: auto;
+    resize: vertical;
+    max-height: 80vh;
   }
 
   .error {
@@ -55,5 +74,14 @@
   .close {
     --fill: var(--waterloo);
     align-self: flex-start;
+  }
+
+  iframe {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    top: 0;
   }
 </style>
