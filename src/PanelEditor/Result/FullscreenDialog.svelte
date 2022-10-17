@@ -11,7 +11,7 @@
   import Dialog from 'webkit/ui/Dialog'
   import Visualization from './Visualization.svelte'
 
-  export let visualization
+  export let panel
   export let columns
   export let dateColumns
   export let rows
@@ -22,7 +22,7 @@
 
 <Dialog bind:closeDialog {...$$props} noTitle animated={false} class="$style.dialog">
   <Visualization
-    {visualization}
+    {panel}
     {columns}
     {rows}
     {dateColumns}

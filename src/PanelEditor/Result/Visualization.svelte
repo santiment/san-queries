@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
   import Svg from 'webkit/ui/Svg/svelte'
   import { downloadCsv } from 'webkit/utils/csv'
   import { PanelType } from '@/types'
@@ -6,28 +6,29 @@
   import Chart from '@/Chart/index.svelte'
   import { showFullscreenDialog } from './FullscreenDialog.svelte'
 
-  export let visualization
+  export let panel
   export let columns
   export let dateColumns
   export let rows
-  export let visibleColumns
   export let onFullscreenClick = showFullscreenDialog
 
   let downloadChart
 
-  $: ({ type } = visualization.settings)
+  $: console.log(panel)
+  $: ({ type } = panel.settings)
+  $: visibleColumns = columns.filter((c) => !c.isHidden)
 
   function onDownload() {
     if (type === PanelType.TABLE) {
-      downloadCsv(visualization.name, columns, rows)
+      downloadCsv(panel.name, columns, rows)
     } else if (type === PanelType.CHART) {
-      downloadChart(visualization.name)
+      downloadChart(panel.name)
     }
   }
 </script>
 
 <div class="row v-center">
-  <div class="body-2 mrg-a mrg--r">{visualization.name}</div>
+  <div class="body-2 mrg-a mrg--r">{panel.name}</div>
 
   <div class="row">
     <button class="action btn-3" on:click={onDownload}><Svg id="download" w="17" /></button>
@@ -44,7 +45,7 @@
     columns={visibleColumns}
     data={rows}
     {dateColumns}
-    xAxisKey={visualization.xAxisKey}
+    xAxisKey={panel.xAxisKey}
     bind:download={downloadChart} />
 {/if}
 

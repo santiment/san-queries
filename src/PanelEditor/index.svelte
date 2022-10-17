@@ -1,7 +1,7 @@
 <script lang="ts">
   import Header from './Query/Header.svelte'
   import SQLEditor from './Query/SQLEditor.svelte'
-  import Result from './_Result/index.svelte'
+  import Result from './Result/index.svelte'
 
   export let panel
 

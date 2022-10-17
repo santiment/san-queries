@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store'
 import { PanelType, ParameterType } from '@/types'
-import { Formatter } from '@/Result/Options/format'
+import { Formatter } from '@/PanelEditor/Result/Options/format'
 
 export function newPanel(name = 'My table', type = PanelType.TABLE) {
   return {

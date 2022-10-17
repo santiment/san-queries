@@ -7,21 +7,21 @@
   import ChartXAxisOption from './ChartXAxis.svelte'
   import ChartNodeStyleOption from './ChartNodeStyle.svelte'
 
-  export let visualization
+  export let panel
   export let headers
   export let columns
   export let dateColumns
 
-  $: isChartVisualization = visualization.type === PanelType.CHART
+  $: isChartVisualization = panel.type === PanelType.CHART
 </script>
 
 <h3 class="body-2">Options</h3>
 
 <div class="scroll">
-  <Field title="Visualization name" placeholder="My table" bind:value={visualization.name} />
+  <Field title="Visualization name" placeholder="My table" bind:value={panel.name} />
 
   {#if isChartVisualization && columns.length}
-    <ChartXAxisOption bind:visualization {columns} {dateColumns} />
+    <ChartXAxisOption bind:panel {columns} {dateColumns} />
   {/if}
 
   {#each columns as column, i}

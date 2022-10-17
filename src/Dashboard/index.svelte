@@ -2,8 +2,8 @@
   import Svg from 'webkit/ui/Svg/svelte'
   import Tooltip from 'webkit/ui/Tooltip/svelte'
   import { PanelType } from '@/types'
-  import Panel from './Panel.svelte'
   import { newPanel } from '@/stores/dashboard'
+  import Panel from './Panel.svelte'
 
   export let dashboard
   export let selectedPanel
