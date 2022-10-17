@@ -12,14 +12,16 @@
 
   $: xAxisKey = [...dateColumns][0]
 
-  $: metrics = columns
-    .filter(({ id }) => !dateColumns.has(id) && Number.isFinite(data[0][id]))
-    .map(({ id, title, formatter, chartStyle }) => ({
-      key: id.toString(),
-      label: title,
-      node: chartStyle || 'line',
-      formatter,
-    }))
+  $: metrics = data.length
+    ? columns
+        .filter(({ id }) => !dateColumns.has(id) && Number.isFinite(data[0][id]))
+        .map(({ id, title, formatter, chartStyle }) => ({
+          key: id.toString(),
+          label: title,
+          node: chartStyle || 'line',
+          formatter,
+        }))
+    : []
 
   $: chartData = data
     .map((row) => ({ ...row, datetime: Date.parse(row[xAxisKey]) }))

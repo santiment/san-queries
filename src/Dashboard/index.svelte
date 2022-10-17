@@ -15,6 +15,7 @@
   let isOpened = false
 
   $: ({ panels } = dashboard)
+  $: console.log(panels, dashboard)
   $: isSinglePanel = panels.length === 1
 
   function onSelect(type) {
@@ -28,6 +29,7 @@
 
   function onPanelDelete(panel) {
     panels = panels.filter((v) => v !== panel)
+    dashboard.removedPanels.push(panel)
   }
 
   function onGetDataClick() {

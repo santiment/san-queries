@@ -60,9 +60,11 @@ export function startSaveFlow(dashboard: SAN.Queries.Dashboard) {
   const isNewDashboard = !Number.isFinite(dashboard.id)
   return startSaveDashboardFlow(dashboard)
     .then(({ __normalized, ...dashboard }: NormalizedDashboard) => {
+      const removed = new Set(dashboard.removedPanels)
+      const panels = dashboard.panels.filter((panel) => !removed.has(panel))
+
       startRemoveDashboardPanelsFlow(dashboard)
 
-      const { panels } = dashboard
       return Promise.all(
         panels.map((panel) => startSavePanelFlow(panel as any, dashboard, isNewDashboard)),
       ).then((panels) => {

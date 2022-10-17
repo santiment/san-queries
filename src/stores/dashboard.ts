@@ -77,7 +77,7 @@ function normalizeDashboard(dashboard?: null | SAN.Queries.Dashboard) {
 
   return {
     ...dashboard,
-    panels: panels.slice(0, 1).map(normalizePanel),
+    panels: panels.map(normalizePanel),
     __normalized: true,
   }
 }
