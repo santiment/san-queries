@@ -16,7 +16,7 @@ function cacheModifier(data) {
 
   data.sql.dateColumns = new Set<number>()
   sql.types.forEach((type, i) => {
-    if (type === 'Date') sql.dateColumns.add(i)
+    if (type.startsWith('Date')) sql.dateColumns.add(i)
   })
 
   return data
