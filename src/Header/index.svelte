@@ -48,16 +48,18 @@
     const { name, sql, settings } = dashboard.panels[0]
     const { type, columns, xAxisKey } = settings
 
-    link += JSON.stringify({
-      name,
-      sql: { ...sql, parameters: getParametersMap(sql.parameters) },
-      settings: {
-        type,
-        xAxisKey,
-        columns: columns.map(shareColumn),
-        parameters: sql.parameters.map(({ type }) => ({ type })),
-      },
-    })
+    link += encodeURIComponent(
+      JSON.stringify({
+        name,
+        sql: { ...sql, parameters: getParametersMap(sql.parameters) },
+        settings: {
+          type,
+          xAxisKey,
+          columns: columns.map(shareColumn),
+          parameters: sql.parameters.map(({ type }) => ({ type })),
+        },
+      }),
+    )
 
     showShareDialog({ title: 'Share dashboard', data: { link } })
   }

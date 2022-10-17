@@ -47,7 +47,6 @@
   } = data
   const encodedTitle = encodeURIComponent(shareTitle)
   const encodedText = encodeURIComponent(text)
-  const encodedLink = encodeURIComponent(link)
 
   let isPublic = false
   let closeDialog
@@ -66,7 +65,7 @@
   <div class="dialog">
     {#if disabled}
       <div class="note c-orange txt-m mrg-l mrg--b">
-        Your watchlist is private. Please, switch it to "Public" first.
+        Your dashboard is private. Please, switch it to "Public" first.
       </div>
     {/if}
 
@@ -79,7 +78,7 @@
     <div class="bottom row mrg-l mrg--t">
       {#each SOCIALS as { id, href }}
         <a
-          href={href(encodedLink, encodedTitle, encodedText)}
+          href={href(link, encodedTitle, encodedText)}
           class="social btn-3 btn-2"
           class:disabled
           target="_blank"
