@@ -8,12 +8,13 @@
   const controller = { onNewParameter }
 
   let editor
-  let computedSql = { headers: [], rows: [], dateColumns: new Set() }
+  let computedSql = panel.__computedSql || { headers: [], rows: [], dateColumns: new Set() }
   let error = ''
 
   function onData(data) {
     computedSql = data
     panel.__rows = data.rows
+    panel.__computedSql = data
   }
 
   function onNewParameter(parameter: string) {

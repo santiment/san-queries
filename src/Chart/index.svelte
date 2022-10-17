@@ -7,9 +7,10 @@
   export let columns
   export let dateColumns
   export let data
-  export let xAxisKey = [...dateColumns][0]
 
   let chart
+
+  $: xAxisKey = [...dateColumns][0]
 
   $: metrics = columns
     .filter(({ id }) => !dateColumns.has(id) && Number.isFinite(data[0][id]))

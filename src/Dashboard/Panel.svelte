@@ -3,14 +3,17 @@
   import Svg from 'webkit/ui/Svg/svelte'
   import { PanelType } from '@/types'
   import Table from '@/Table/index.svelte'
+  import Chart from '@/Chart/index.svelte'
 
   export let panel
   export let onDelete
 
   let node
 
-  $: ({ settings, __rows = [] } = panel)
+  $: ({ settings, __rows = [], __computedSql } = panel)
   $: ({ columns, type } = settings)
+  $: visibleColumns = columns.filter((c) => !c.isHidden)
+  $: ({ dateColumns = new Set() } = __computedSql || {})
 
   onMount(() => {
     if (panel.__scrollOnMount) {
@@ -34,7 +37,9 @@
 
   <div class="widget column c-black relative">
     {#if type === PanelType.TABLE}
-      <Table class="$style.table" columns={columns.filter((c) => !c.isHidden)} data={__rows} />
+      <Table class="$style.table" columns={visibleColumns} data={__rows} />
+    {:else if type === PanelType.CHART}
+      <Chart columns={visibleColumns} data={__rows} {dateColumns} xAxisKey={panel.xAxisKey} />
     {/if}
 
     {#if !__rows || !__rows.length}
