@@ -76,7 +76,9 @@
 <style>
   .result {
     flex: 1;
-    min-height: 0;
+    /* min-height: 0; */
+    min-height: 500px;
+    max-height: 500px;
   }
 
   .column {

@@ -47,6 +47,6 @@
     min-height: 100vh;
     min-width: 0;
     flex: 1;
-    max-height: calc(100vh + calc(1035px - 100vh));
+    /* max-height: calc(100vh + calc(1035px - 100vh)); */
   }
 </style>

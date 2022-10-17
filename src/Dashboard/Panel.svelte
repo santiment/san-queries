@@ -1,16 +1,35 @@
 <script lang="ts">
+  import { onMount } from 'svelte'
+  import Svg from 'webkit/ui/Svg/svelte'
   import { PanelType } from '@/types'
   import Table from '@/Table/index.svelte'
 
   export let panel
+  export let onDelete
+
+  let node
 
   $: ({ settings, __rows = [] } = panel)
   $: ({ columns, type } = settings)
+
+  onMount(() => {
+    if (panel.__scrollOnMount) {
+      node.scrollIntoView({ behavior: 'smooth' })
+      delete panel.__scrollOnMount
+    }
+  })
 </script>
 
-<div class="panel border column">
-  <h3 class="btn body-2 txt-center single-line" on:click>
+<div class="panel border column" bind:this={node}>
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <h3 class="btn row body-2 hv-center single-line relative" on:click>
     {panel.name}
+
+    {#if onDelete}
+      <button class="close btn mrg-a mrg--l" on:click|stopPropagation={onDelete}>
+        <Svg id="close" w="11" />
+      </button>
+    {/if}
   </h3>
 
   <div class="widget column c-black relative">
@@ -56,5 +75,12 @@
     background: var(--athens);
     transform: translate3d(-50%, -60%, 0);
     border-radius: 4px;
+  }
+
+  .close {
+    position: absolute;
+    right: 12px;
+    --fill: var(--waterloo);
+    --fill-hover: var(--red);
   }
 </style>

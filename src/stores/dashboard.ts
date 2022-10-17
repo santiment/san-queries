@@ -2,10 +2,10 @@ import { writable } from 'svelte/store'
 import { PanelType, ParameterType } from '@/types'
 import { Formatter } from '@/Result/Options/format'
 
-function newPanel() {
+export function newPanel(name = 'My table', type = PanelType.TABLE) {
   return {
-    name: 'My table',
-    settings: { type: PanelType.TABLE, columns: [] },
+    name,
+    settings: { type, columns: [] },
     sql: {
       query: `SELECT
     dt,
