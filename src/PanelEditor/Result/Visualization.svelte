@@ -4,6 +4,7 @@
   import { PanelType } from '@/types'
   import Table from '@/Table/index.svelte'
   import Chart from '@/Chart/index.svelte'
+  import Text from '@/visualizations/Text.svelte'
   import { showFullscreenDialog } from './FullscreenDialog.svelte'
 
   export let panel
@@ -40,6 +41,8 @@
 
 {#if type === PanelType.TABLE}
   <Table columns={visibleColumns} data={rows} class="$style.table" />
+{:else if type === PanelType.TEXT}
+  <Text column={panel.textValueColumn} data={rows} {columns} />
 {:else}
   <Chart
     columns={visibleColumns}

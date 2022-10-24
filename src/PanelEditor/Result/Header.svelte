@@ -26,6 +26,8 @@
       <div slot="tooltip" class="column">
         <button class="btn-ghost" on:click={() => onSelect(PanelType.TABLE)}>Table</button>
         <button class="btn-ghost" on:click={() => onSelect(PanelType.CHART)}>Chart</button>
+
+        <button class="btn-ghost" on:click={() => onSelect(PanelType.TEXT)}>Text</button>
       </div>
     </Tooltip>
   </div>

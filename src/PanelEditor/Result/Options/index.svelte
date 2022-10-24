@@ -6,13 +6,15 @@
   import VisibilityOption from './Visibility.svelte'
   import ChartXAxisOption from './ChartXAxis.svelte'
   import ChartNodeStyleOption from './ChartNodeStyle.svelte'
+  import TextValueOption from './TextValueOption.svelte'
 
   export let panel
   export let headers
   export let columns
   export let dateColumns
 
-  $: isChartVisualization = panel.type === PanelType.CHART
+  $: isChartVisualization = panel.settings.type === PanelType.CHART
+  $: isTextVisualization = panel.settings.type === PanelType.TEXT
 </script>
 
 <h3 class="body-2">Options</h3>
@@ -22,6 +24,10 @@
 
   {#if isChartVisualization && columns.length}
     <ChartXAxisOption bind:panel {columns} {dateColumns} />
+  {/if}
+
+  {#if isTextVisualization && columns.length}
+    <TextValueOption bind:panel {columns} />
   {/if}
 
   {#each columns as column, i}

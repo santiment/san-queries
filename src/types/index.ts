@@ -1,5 +1,6 @@
 export enum PanelType {
   TABLE = 'TABLE',
+  TEXT = 'TEXT',
   CHART = 'CHART',
 }
 
