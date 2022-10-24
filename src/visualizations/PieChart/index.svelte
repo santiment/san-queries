@@ -71,7 +71,7 @@
     {#each valueColumns as { key, title, format }}
       <div class="row v-center">
         <div class="color mrg-s mrg--r" style="background:{colors[key]}" />
-        {title}: <span class="c-rhino mrg-xs mrg--l">{format(rawData)}</span>
+        {title}: <span class="c-waterloo mrg-xs mrg--l">{format(rawData)}</span>
       </div>
     {/each}
   </div>
