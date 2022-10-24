@@ -5,6 +5,7 @@
   import Table from '@/Table/index.svelte'
   import Text from '@/visualizations/Text.svelte'
   import Chart from '@/Chart/index.svelte'
+  import PieChart from '@/visualizations/PieChart/index.svelte'
 
   export let panel
   export let onDelete
@@ -43,6 +44,8 @@
       <Text column={panel.textValueColumn} data={__rows} {columns} />
     {:else if type === PanelType.CHART}
       <Chart columns={visibleColumns} data={__rows} {dateColumns} xAxisKey={panel.xAxisKey} />
+    {:else if type === PanelType.PIE_CHART}
+      <PieChart columns={visibleColumns} data={__rows} />
     {/if}
 
     {#if !__rows || !__rows.length}
