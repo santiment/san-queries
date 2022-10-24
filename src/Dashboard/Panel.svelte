@@ -3,6 +3,7 @@
   import Svg from 'webkit/ui/Svg/svelte'
   import { PanelType } from '@/types'
   import Table from '@/Table/index.svelte'
+  import Text from '@/visualizations/Text.svelte'
   import Chart from '@/Chart/index.svelte'
 
   export let panel
@@ -23,7 +24,7 @@
   })
 </script>
 
-<div class="panel border column" bind:this={node}>
+<div class="panel border column" class:panel_text={type === PanelType.TEXT} bind:this={node}>
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <h3 class="btn row body-2 hv-center single-line relative" on:click>
     {panel.name}
@@ -38,6 +39,8 @@
   <div class="widget column c-black relative">
     {#if type === PanelType.TABLE}
       <Table class="$style.table" columns={visibleColumns} data={__rows} />
+    {:else if type === PanelType.TEXT}
+      <Text column={panel.textValueColumn} data={__rows} {columns} />
     {:else if type === PanelType.CHART}
       <Chart columns={visibleColumns} data={__rows} {dateColumns} xAxisKey={panel.xAxisKey} />
     {/if}
@@ -48,11 +51,16 @@
   </div>
 </div>
 
-<style>
+<style lang="scss">
   .panel {
     height: 400px;
     background: var(--white);
     --color-hover: var(--green);
+
+    &_text {
+      height: auto;
+      min-height: 200px;
+    }
   }
 
   h3 {
