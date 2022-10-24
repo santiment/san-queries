@@ -93,6 +93,7 @@
         <button class="btn-ghost" on:click={() => onSelect(PanelType.TABLE)}>Table</button>
         <button class="btn-ghost" on:click={() => onSelect(PanelType.TEXT)}>Text</button>
         <button class="btn-ghost" on:click={() => onSelect(PanelType.CHART)}>Chart</button>
+        <button class="btn-ghost" on:click={() => onSelect(PanelType.PIE_CHART)}>Pie Chart</button>
       </div>
     </Tooltip>
   </div>

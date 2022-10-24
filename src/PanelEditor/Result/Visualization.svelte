@@ -5,6 +5,7 @@
   import Table from '@/Table/index.svelte'
   import Chart from '@/Chart/index.svelte'
   import Text from '@/visualizations/Text.svelte'
+  import PieChart from '@/visualizations/PieChart/index.svelte'
   import { showFullscreenDialog } from './FullscreenDialog.svelte'
 
   export let panel
@@ -43,13 +44,15 @@
   <Table columns={visibleColumns} data={rows} class="$style.table" />
 {:else if type === PanelType.TEXT}
   <Text column={panel.textValueColumn} data={rows} {columns} placeholder="No column selected" />
-{:else}
+{:else if type === PanelType.CHART}
   <Chart
     columns={visibleColumns}
     data={rows}
     {dateColumns}
     xAxisKey={panel.xAxisKey}
     bind:download={downloadChart} />
+{:else if type === PanelType.PIE_CHART}
+  <PieChart columns={visibleColumns} data={rows} />
 {/if}
 
 <style>
