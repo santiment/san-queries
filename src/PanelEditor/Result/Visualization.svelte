@@ -42,7 +42,7 @@
 {#if type === PanelType.TABLE}
   <Table columns={visibleColumns} data={rows} class="$style.table" />
 {:else if type === PanelType.TEXT}
-  <Text column={panel.textValueColumn} data={rows} {columns} />
+  <Text column={panel.textValueColumn} data={rows} {columns} placeholder="No column selected" />
 {:else}
   <Chart
     columns={visibleColumns}

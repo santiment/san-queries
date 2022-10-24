@@ -29,7 +29,7 @@
 
   function onPanelDelete(panel) {
     panels = panels.filter((v) => v !== panel)
-    dashboard.removedPanels.push(panel)
+    if (panel.id) dashboard.removedPanels.push(panel)
   }
 
   function onGetDataClick() {
@@ -91,6 +91,7 @@
 
       <div slot="tooltip" class="column">
         <button class="btn-ghost" on:click={() => onSelect(PanelType.TABLE)}>Table</button>
+        <button class="btn-ghost" on:click={() => onSelect(PanelType.TEXT)}>Text</button>
         <button class="btn-ghost" on:click={() => onSelect(PanelType.CHART)}>Chart</button>
       </div>
     </Tooltip>

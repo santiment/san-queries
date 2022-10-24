@@ -66,6 +66,7 @@ function normalizeDashboard(dashboard?: null | SAN.Queries.Dashboard) {
   if (!dashboard) {
     return {
       panels: [normalizePanel(newPanel())],
+      removedPanels: [],
       __normalized: true,
     }
   }
@@ -78,6 +79,7 @@ function normalizeDashboard(dashboard?: null | SAN.Queries.Dashboard) {
   return {
     ...dashboard,
     panels: panels.map(normalizePanel),
+    removedPanels: [],
     __normalized: true,
   }
 }

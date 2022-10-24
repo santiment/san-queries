@@ -33,7 +33,10 @@
   {#each columns as column, i}
     <TitleOption bind:column {i} {headers} />
     <FormatOption bind:column {i} />
-    <VisibilityOption bind:column {i} {dateColumns} {isChartVisualization} />
+
+    {#if !isTextVisualization}
+      <VisibilityOption bind:column {i} {dateColumns} {isChartVisualization} />
+    {/if}
 
     {#if isChartVisualization && !dateColumns.has(column)}
       <ChartNodeStyleOption bind:column {columns} {i} />
