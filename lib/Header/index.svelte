@@ -55,7 +55,7 @@ function onShare() {
     columns,
     xAxisKey
   } = settings;
-  link += JSON.stringify({
+  link += encodeURIComponent(JSON.stringify({
     name,
     sql: Object.assign(Object.assign({}, sql), {
       parameters: getParametersMap(sql.parameters)
@@ -70,7 +70,7 @@ function onShare() {
         type
       }))
     }
-  });
+  }));
   showShareDialog({
     title: 'Share dashboard',
     data: {
