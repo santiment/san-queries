@@ -7,7 +7,8 @@
   import { mutateComputeRawClickhouseQuery } from '@/api/rawQuery'
   import { getParametersMap } from '@/utils/parameters'
   import { Formatter, FormatType } from '@/PanelEditor/Result/Options/format'
-  import { notifications$ } from 'san-webkit/lib/ui/Notifications'
+  import { notifications$ } from 'webkit/ui/Notifications'
+  import Grid from 'webkit/ui/SnapGrid/Grid.svelte'
 
   export let dashboard
   export let selectedPanel
@@ -77,6 +78,16 @@
 
     return column
   }
+
+  $: layout = panels.map((panel, i) => {
+    return [0, 3 * i, 6, 3]
+    // const info = panel.info || [0, 3 * i, 6, 3]
+    // panel.info = info
+
+    // return info
+  })
+
+  $: console.log(layout)
 </script>
 
 <div class="row mrg-l mrg--b justify">
@@ -99,6 +110,7 @@
   </div>
 </div>
 
+<!-- 
 <section>
   {#each panels as panel}
     <Panel
@@ -107,6 +119,29 @@
       onDelete={isSinglePanel ? null : () => onPanelDelete(panel)} />
   {/each}
 </section>
+ -->
+
+<Grid
+  tag="section"
+  {layout}
+  cols={6}
+  rowSize={100}
+  minCols={2}
+  minRows={2}
+  let:class={className}
+  let:i
+  let:onMouseDown
+  let:style>
+  {@const panel = panels[i]}
+
+  <Panel
+    {panel}
+    {style}
+    class={className}
+    on:click={() => (selectedPanel = panel)}
+    onDelete={isSinglePanel ? null : () => onPanelDelete(panel)}
+    onDrag={onMouseDown} />
+</Grid>
 
 <style>
   section {
