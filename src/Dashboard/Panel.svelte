@@ -14,8 +14,6 @@
   export let style
   export let onDelete
   export let onDrag
-  export let snapGrid
-  export let width
 
   let node
 
@@ -65,7 +63,7 @@
     {/if}
   </div>
 
-  <Resizer {snapGrid} />
+  <Resizer />
 </div>
 
 <style lang="scss">

@@ -1,6 +1,7 @@
 <script lang="ts">
   import Svg from 'webkit/ui/Svg/svelte'
   import Tooltip from 'webkit/ui/Tooltip/svelte'
+  import { normalizeGrid, sortLayout } from 'webkit/ui/SnapGrid/layout'
   import { PanelType } from '@/types'
   import { newPanel } from '@/stores/dashboard'
   import Panel from './Panel.svelte'
@@ -14,10 +15,12 @@
   export let selectedPanel
 
   let isOpened = false
+  let isDragging = false
 
   $: ({ panels } = dashboard)
   $: console.log(panels, dashboard)
   $: isSinglePanel = panels.length === 1
+  $: layout = buildLayout(panels)
 
   function onSelect(type) {
     const panel = newPanel(`My panel (${type.toLowerCase()})`, type)
@@ -30,6 +33,7 @@
 
   function onPanelDelete(panel) {
     panels = panels.filter((v) => v !== panel)
+    dashboard.panels = panels
     if (panel.id) dashboard.removedPanels.push(panel)
   }
 
@@ -79,15 +83,23 @@
     return column
   }
 
-  $: layout = panels.map((panel, i) => {
-    return [0, 3 * i, 6, 3]
-    // const info = panel.info || [0, 3 * i, 6, 3]
-    // panel.info = info
+  function onPanelSelect(panel) {
+    if (isDragging) return
+    selectedPanel = panel
+  }
 
-    // return info
-  })
+  function buildLayout(panels: SAN.Queries.Panel[]) {
+    const layout = panels.map((panel, i) => {
+      const item = panel.settings.layout?.slice() || [0, 1000 + i, 6, 3]
+      panel.settings.layout = item
 
-  $: console.log(layout)
+      return item
+    })
+
+    normalizeGrid(sortLayout(layout), new Set())
+
+    return layout
+  }
 </script>
 
 <div class="row mrg-l mrg--b justify">
@@ -110,17 +122,6 @@
   </div>
 </div>
 
-<!-- 
-<section>
-  {#each panels as panel}
-    <Panel
-      {panel}
-      on:click={() => (selectedPanel = panel)}
-      onDelete={isSinglePanel ? null : () => onPanelDelete(panel)} />
-  {/each}
-</section>
- -->
-
 <Grid
   tag="section"
   {layout}
@@ -128,6 +129,7 @@
   rowSize={100}
   minCols={2}
   minRows={2}
+  bind:isDragging
   let:class={className}
   let:i
   let:onMouseDown
@@ -138,12 +140,17 @@
     {panel}
     {style}
     class={className}
-    on:click={() => (selectedPanel = panel)}
     onDelete={isSinglePanel ? null : () => onPanelDelete(panel)}
-    onDrag={onMouseDown} />
+    onDrag={onMouseDown}
+    on:click={() => onPanelSelect(panel)} />
 </Grid>
 
 <style>
+  /* TODO: remove */
+  :global(body) {
+    overflow: scroll;
+  }
+
   section {
     gap: 24px;
     display: grid;
