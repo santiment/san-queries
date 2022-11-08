@@ -10,7 +10,7 @@
 
   $: rawData = data[data.length - 1]
   $: valueColumns = columns
-    .filter(({ id }) => Number.isFinite(data[0][id]))
+    .filter(({ id }) => data[0] && Number.isFinite(data[0][id]))
     .map(({ id, title, accessor, format }) => ({
       key: id.toString(),
       title,
