@@ -23,7 +23,7 @@ export function startSavePanelFlow(
 ) {
   const { id: dashboardId } = dashboard
   const { id, name, settings, sql } = panel
-  const { type, columns, xAxisKey } = settings
+  const { type, columns, xAxisKey, layout } = settings
 
   const mutation = !isNewDashboard && id ? mutateUpdateDashboardPanel : mutateCreateDashboardPanel
   return mutation({
@@ -37,6 +37,7 @@ export function startSavePanelFlow(
     settings: JSON.stringify({
       type,
       xAxisKey,
+      layout: layout?.slice(0, 4),
       columns: columns.map(shareColumn),
       parameters: sql.parameters.map(({ type }) => ({ type })),
     }),

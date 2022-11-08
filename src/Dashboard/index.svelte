@@ -148,7 +148,7 @@
 <style>
   /* TODO: remove */
   :global(body) {
-    overflow: scroll;
+    overflow-y: scroll;
   }
 
   section {
