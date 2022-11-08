@@ -1,15 +1,15 @@
 <script lang="ts">
   import Svg from 'webkit/ui/Svg/svelte'
   import Tooltip from 'webkit/ui/Tooltip/svelte'
+  import { notifications$ } from 'webkit/ui/Notifications'
   import { normalizeGrid, sortLayout } from 'webkit/ui/SnapGrid/layout'
+  import Grid from 'webkit/ui/SnapGrid/Grid.svelte'
   import { PanelType } from '@/types'
   import { newPanel } from '@/stores/dashboard'
   import Panel from './Panel.svelte'
   import { mutateComputeRawClickhouseQuery } from '@/api/rawQuery'
   import { getParametersMap } from '@/utils/parameters'
   import { Formatter, FormatType } from '@/PanelEditor/Result/Options/format'
-  import { notifications$ } from 'webkit/ui/Notifications'
-  import Grid from 'webkit/ui/SnapGrid/Grid.svelte'
 
   export let dashboard
   export let selectedPanel
