@@ -46,7 +46,7 @@
   function onShare() {
     let link = window.location.href + '?shared='
     const { name, sql, settings } = dashboard.panels[0]
-    const { type, columns, xAxisKey } = settings
+    const { type, columns, xAxisKey, layout } = settings
 
     link += encodeURIComponent(
       JSON.stringify({
@@ -55,6 +55,7 @@
         settings: {
           type,
           xAxisKey,
+          layout: layout?.slice(0, 4),
           columns: columns.map(shareColumn),
           parameters: sql.parameters.map(({ type }) => ({ type })),
         },

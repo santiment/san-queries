@@ -49,6 +49,7 @@ declare namespace SAN {
       columns: any[]
       xAxisKey?: number
       parameters?: { type: ParameterType }[]
+      layout?: number[]
     }
 
     type PanelParameter = { key: string; value: ParameterValue; type: ParameterType }

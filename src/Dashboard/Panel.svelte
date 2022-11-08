@@ -1,14 +1,19 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import Svg from 'webkit/ui/Svg/svelte'
+  import Resizer from 'webkit/ui/SnapGrid/Resizer.svelte'
   import { PanelType } from '@/types'
   import Table from '@/Table/index.svelte'
   import Text from '@/visualizations/Text.svelte'
   import Chart from '@/Chart/index.svelte'
   import PieChart from '@/visualizations/PieChart/index.svelte'
 
+  let className
+  export { className as class }
   export let panel
+  export let style
   export let onDelete
+  export let onDrag
 
   let node
 
@@ -25,7 +30,12 @@
   })
 </script>
 
-<div class="panel border column" class:panel_text={type === PanelType.TEXT} bind:this={node}>
+<div
+  {style}
+  on:mousedown={onDrag}
+  class="panel border column {className}"
+  class:panel_text={type === PanelType.TEXT}
+  bind:this={node}>
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <h3 class="btn row body-2 hv-center single-line relative" on:click>
     {panel.name}
@@ -52,17 +62,19 @@
       <div class="empty c-waterloo body-2">No data</div>
     {/if}
   </div>
+
+  <Resizer />
 </div>
 
 <style lang="scss">
   .panel {
-    height: 400px;
+    // height: 400px;
     background: var(--white);
     --color-hover: var(--green);
 
     &_text {
       height: auto;
-      min-height: 200px;
+      // min-height: 200px;
     }
   }
 

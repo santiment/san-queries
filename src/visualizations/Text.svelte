@@ -7,15 +7,17 @@
   $: targetColumn = column || columns[0]
 </script>
 
-<div class="column hv-center">
-  <h2 class="h3">
-    {#if targetColumn}
-      {targetColumn.format(data[data.length - 1])}
-    {:else}
-      {placeholder}
-    {/if}
-  </h2>
-</div>
+{#if data.length}
+  <div class="column hv-center">
+    <h2 class="h3">
+      {#if targetColumn}
+        {targetColumn.format(data[data.length - 1] || [])}
+      {:else}
+        {placeholder}
+      {/if}
+    </h2>
+  </div>
+{/if}
 
 <style>
   div {
