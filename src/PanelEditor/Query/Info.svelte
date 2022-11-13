@@ -3,7 +3,7 @@
   import Tooltip from 'webkit/ui/Tooltip/svelte'
 </script>
 
-<Tooltip position="right" align="start" offsetX={12} closeTimeout={0}>
+<Tooltip position="bottom" align="end" offsetX={-42} closeTimeout={0}>
   <div slot="trigger" class="info btn row hv-center mrg-l mrg--r">
     <Svg id="info" w="16" />
   </div>

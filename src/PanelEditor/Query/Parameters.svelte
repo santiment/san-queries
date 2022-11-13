@@ -36,7 +36,7 @@
 
 <button
   id="fw-add-parameter"
-  class="btn-2 btn--s row v-center nowrap"
+  class="btn-2 btn--s row v-center nowrap mrg-s mrg--r"
   on:click={() => showParameterDialog({ onSubmit: onNewParameter })}>
   Add parameter
   <Svg id="braces" w="16" class="mrg-s mrg--l" />
@@ -44,6 +44,7 @@
 
 <Info />
 
+<!-- 
 {#each parameters as parameter, i}
   <Parameter
     class="parameter"
@@ -53,7 +54,7 @@
     onUpdate={onParameterUpdate}
     onDelete={onParameterDelete} />
 {/each}
-
+ -->
 <style>
   button {
     --fill: var(--waterloo);

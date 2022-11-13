@@ -53,9 +53,9 @@
   </div>
  -->
 
-  <div class="delete btn" on:click|stopPropagation={() => onDelete(i)}>
+  <button class="delete btn mrg-a mrg--l" on:click|stopPropagation={() => onDelete(i)}>
     <Svg id="cross" w="8" />
-  </div>
+  </button>
 </ColorBorder>
 
 <style lang="scss">

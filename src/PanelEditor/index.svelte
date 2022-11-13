@@ -1,11 +1,11 @@
 <script lang="ts">
   import Header from './Query/Header.svelte'
-  import SQLEditor from './Query/SQLEditor.svelte'
+  import SQLEditor from './Query/index.svelte'
   import Result from './Result/index.svelte'
 
   export let panel
 
-  const controller = { onNewParameter }
+  const controller = { onNewParameter, onData }
 
   let editor
   let computedSql = panel.__computedSql || { headers: [], rows: [], dateColumns: new Set() }
@@ -22,7 +22,7 @@
   }
 </script>
 
-<Header bind:panel bind:error {controller} {onData} />
+<!-- <Header bind:panel bind:error {controller} {onData} /> -->
 
 <SQLEditor bind:panel bind:editor bind:error {controller} />
 

@@ -38,7 +38,7 @@
   })
 </script>
 
-<div class="editor border mrg-l mrg--b relative">
+<div class="editor border relative">
   <SQLEditor bind:editor value={query} {parameters} {setValue} />
 
   {#if error}
@@ -59,6 +59,7 @@
     overflow: auto;
     resize: vertical;
     max-height: 80vh;
+    flex: 1;
   }
 
   .error {

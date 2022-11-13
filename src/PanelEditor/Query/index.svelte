@@ -1,0 +1,108 @@
+<script lang="ts">
+  import RowPanels from '@/RowPanels.svelte'
+  import SQLEditor from './SQLEditor.svelte'
+  import ExecuteButton from './ExecuteButton.svelte'
+  import Parameters from './Parameters.svelte'
+  import { mutateComputeRawClickhouseQuery } from '@/api/rawQuery'
+  import { getParametersMap } from '@/utils/parameters'
+  import { onMount } from 'svelte'
+  import {
+    showAddParameterWalkthrough,
+    showParameterOptionsWalkthrough,
+  } from '@/walkthroughs/parameters'
+  import Parameter, { getParameterSQL } from './Parameter.svelte'
+  import { newChartColors } from 'san-studio/lib/Chart/colors'
+
+  export let panel
+  export let editor
+  export let error
+  export let controller
+
+  let controlsNode
+
+  $: ({ parameters } = panel.sql)
+  $: colors = newChartColors(parameters)
+
+  function onExecuteClick(resolve) {
+    const { query, parameters } = panel.sql
+
+    return mutateComputeRawClickhouseQuery(query, getParametersMap(parameters)).then(
+      (sqlResult) => {
+        controller.onData(sqlResult)
+
+        error = ''
+        resolve()
+      },
+    )
+  }
+
+  function onQueryError(msg) {
+    error = msg
+  }
+
+  onMount(() => {
+    showAddParameterWalkthrough()
+    showParameterOptionsWalkthrough(controlsNode)
+  })
+
+  function onParameterUpdate() {
+    parameters = parameters
+  }
+
+  function onParameterDelete(i) {
+    parameters.splice(i, 1)
+    parameters = parameters
+  }
+</script>
+
+<!-- 
+<RowPanels class="$style.result">
+  <svelte:fragment slot="left">
+    <SQLEditor bind:panel bind:editor bind:error {controller} />
+  </svelte:fragment>
+
+  <svelte:fragment slot="right">123</svelte:fragment>
+</RowPanels>
+ -->
+
+<div class="row fluid mrg-xl mrg--b">
+  <SQLEditor bind:panel bind:editor bind:error {controller} />
+
+  <div class="right border mrg-s mrg--l relative">
+    <div class="top row mrg-xxl mrg--b" bind:this={controlsNode}>
+      <ExecuteButton onClick={onExecuteClick} onError={onQueryError} />
+
+      <Parameters bind:panel {controller} />
+    </div>
+
+    <div class="parameters column fluid">
+      {#each parameters as parameter, i}
+        <Parameter
+          class="parameter mrg-s mrg--b"
+          {i}
+          {parameter}
+          color={colors[parameter.key]}
+          onUpdate={onParameterUpdate}
+          onDelete={onParameterDelete} />
+      {/each}
+    </div>
+  </div>
+</div>
+
+<style>
+  .right {
+    min-width: 320px;
+  }
+
+  .top {
+    padding: 16px 16px 0;
+  }
+
+  .parameters {
+    position: absolute;
+    top: 80px;
+    bottom: 0;
+    padding: 0 16px 16px;
+    overflow: auto;
+  }
+</style>

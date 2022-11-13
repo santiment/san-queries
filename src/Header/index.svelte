@@ -69,11 +69,13 @@
 
 <div class="header row border v-center mrg-l mrg--b">
   {#if selectedPanel}
-    <div class="row h4">
-      <button class="btn-0 mrg-s mrg--r" on:click={() => (selectedPanel = null)}>
-        {dashboard.title || 'Unsaved dashboard'} /
+    <div class="row body-2 v-center">
+      <button class="link btn-0 body-1 txt-m mrg-s mrg--r" on:click={() => (selectedPanel = null)}>
+        <Svg id="pointer" w="14" h="10" class="$style.pointer" />
+
+        {dashboard.title || 'Unsaved dashboard'}
       </button>
-      {selectedPanel.name}
+      / {selectedPanel.name}
     </div>
   {:else}
     <CreationInfo
@@ -103,5 +105,14 @@
   .action {
     --fill: var(--waterloo);
     --color-hover: var(--green);
+  }
+
+  .link {
+    --color: var(--black);
+  }
+
+  .pointer {
+    transform: rotate(180deg);
+    margin: -3px 8px 0 0;
   }
 </style>
