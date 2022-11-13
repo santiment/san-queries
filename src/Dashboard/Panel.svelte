@@ -41,9 +41,15 @@
     {panel.name}
 
     {#if onDelete}
-      <button class="close btn mrg-a mrg--l" on:click|stopPropagation={onDelete}>
-        <Svg id="close" w="11" />
-      </button>
+      <div class="actions row v-center">
+        <button class="reload btn mrg-a mrg--l" on:click|stopPropagation={onDelete}>
+          <Svg id="refresh" w="16" />
+        </button>
+
+        <button class="close btn mrg-xxl mrg--l" on:click|stopPropagation={onDelete}>
+          <Svg id="close" w="12" />
+        </button>
+      </div>
     {/if}
   </h3>
 
@@ -81,7 +87,7 @@
   h3 {
     border-radius: 0;
     border-bottom: 1px solid var(--porcelain);
-    padding: 3px;
+    padding: 8px;
   }
 
   .widget {
@@ -105,10 +111,13 @@
     border-radius: 4px;
   }
 
-  .close {
+  .actions {
     position: absolute;
-    right: 12px;
+    right: 18px;
     --fill: var(--waterloo);
+  }
+
+  .close {
     --fill-hover: var(--red);
   }
 </style>

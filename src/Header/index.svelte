@@ -9,6 +9,7 @@
   // import { mutateComputeRawClickhouseQuery } from '@/api/rawQuery'
   import { getParametersMap } from '@/utils/parameters'
   import { shareColumn } from '@/utils/columns'
+  import NewPanelButton from './NewPanelButton.svelte'
 
   const { dashboard$ } = getAppContext()
 
@@ -66,7 +67,7 @@
   }
 </script>
 
-<div class="row v-center mrg-m mrg--b">
+<div class="header row border v-center mrg-l mrg--b">
   {#if selectedPanel}
     <div class="row h4">
       <button class="btn-0 mrg-s mrg--r" on:click={() => (selectedPanel = null)}>
@@ -84,6 +85,8 @@
 
   <!-- <Comments bind:isCommentsShowed /> -->
 
+  <NewPanelButton />
+
   <SaveButton class="$style.action" {user} {isAuthor} />
 
   <button class="btn mrg-xl mrg--l row v-center" on:click={onShare}>
@@ -92,6 +95,10 @@
 </div>
 
 <style>
+  .header {
+    padding: 16px;
+  }
+
   button,
   .action {
     --fill: var(--waterloo);

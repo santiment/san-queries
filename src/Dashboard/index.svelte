@@ -22,15 +22,6 @@
   $: isSinglePanel = panels.length === 1
   $: layout = buildLayout(panels)
 
-  function onSelect(type) {
-    const panel = newPanel(`My panel (${type.toLowerCase()})`, type)
-    panel.__scrollOnMount = true
-
-    panels.push(panel)
-    panels = panels
-    isOpened = false
-  }
-
   function onPanelDelete(panel) {
     panels = panels.filter((v) => v !== panel)
     dashboard.panels = panels
@@ -102,26 +93,6 @@
   }
 </script>
 
-<div class="row mrg-l mrg--b justify">
-  <button class="btn-1" on:click={onGetDataClick}>Get data</button>
-
-  <div class="relative mrg-a mrg--l">
-    <Tooltip on="click" position="bottom" class="$style.tooltip" bind:isOpened>
-      <button slot="trigger" class="new btn-2">
-        New panel
-        <Svg id="arrow-down" w="8" h="5" class="mrg-xl mrg--l" />
-      </button>
-
-      <div slot="tooltip" class="column">
-        <button class="btn-ghost" on:click={() => onSelect(PanelType.TABLE)}>Table</button>
-        <button class="btn-ghost" on:click={() => onSelect(PanelType.TEXT)}>Text</button>
-        <button class="btn-ghost" on:click={() => onSelect(PanelType.CHART)}>Chart</button>
-        <button class="btn-ghost" on:click={() => onSelect(PanelType.PIE_CHART)}>Pie Chart</button>
-      </div>
-    </Tooltip>
-  </div>
-</div>
-
 <Grid
   tag="section"
   {layout}
@@ -149,19 +120,5 @@
   /* TODO: remove */
   :global(body) {
     overflow-y: scroll;
-  }
-
-  section {
-    gap: 24px;
-    display: grid;
-  }
-
-  .new {
-    background: var(--white);
-  }
-
-  .tooltip {
-    padding: 8px;
-    width: 100%;
   }
 </style>
