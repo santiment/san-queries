@@ -53,21 +53,31 @@
   function onVote() {}
 </script>
 
-<CreationInfo
-  fallback="Unsaved dashboard"
-  type={CreationType.Dashboard}
-  {id}
-  {title}
-  {user}
-  {votes}
-  {currentUser}
-  editLabel={isAuthor ? 'Edit dashboard' : 'Save as'}
-  comments={{
-    count: commentsCount,
-    active: false, // $Sidewidget === SidewidgetType.LAYOUT_COMMENTS,
-    onClick: onCommentsClick,
-  }}
-  {onEditClick}
-  {onVote}>
-  <svelte:fragment slot="info">{description}</svelte:fragment>
-</CreationInfo>
+<div>
+  <CreationInfo
+    fallback="Unsaved dashboard"
+    type={CreationType.Dashboard}
+    {id}
+    {title}
+    {user}
+    {votes}
+    {currentUser}
+    editLabel={isAuthor ? 'Edit dashboard' : 'Save as'}
+    comments={{
+      count: commentsCount,
+      active: false, // $Sidewidget === SidewidgetType.LAYOUT_COMMENTS,
+      onClick: onCommentsClick,
+    }}
+    hasInfo={description}
+    {onEditClick}
+    {onVote}>
+    <svelte:fragment slot="info">{description}</svelte:fragment>
+  </CreationInfo>
+</div>
+
+<style>
+  /*  TODO: remove div after supporting comments and votes */
+  div > :global(button) {
+    display: none;
+  }
+</style>
