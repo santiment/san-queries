@@ -116,12 +116,17 @@
 
     showShareDialog({ title: 'Share dashboard', data: { link } })
   }
+
+  function onBackClick() {
+    selectedPanel = null
+    window.__selectSidebarPanel(null)
+  }
 </script>
 
 <div class="header row border v-center mrg-l mrg--b">
   {#if selectedPanel}
     <div class="row body-2 v-center">
-      <button class="link btn-0 body-1 txt-m mrg-s mrg--r" on:click={() => (selectedPanel = null)}>
+      <button class="link btn-0 body-1 txt-m mrg-s mrg--r" on:click={onBackClick}>
         <Svg id="pointer" w="14" h="10" class="$style.pointer" />
 
         {dashboard.title || 'Unsaved dashboard'}

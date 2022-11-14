@@ -53,7 +53,7 @@
   function onVote() {}
 </script>
 
-<div>
+<div class="row">
   <CreationInfo
     fallback="Unsaved dashboard"
     type={CreationType.Dashboard}

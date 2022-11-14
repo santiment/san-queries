@@ -31,6 +31,7 @@
   function onPanelSelect(panel) {
     if (isDragging) return
     selectedPanel = panel
+    window.__selectSidebarPanel(panel)
   }
 
   function buildLayout(panels: SAN.Queries.Panel[]) {

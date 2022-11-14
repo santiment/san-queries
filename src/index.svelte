@@ -16,6 +16,12 @@
   let id = $dashboard$.id
   let selectedPanel = null
 
+  if (process.browser) {
+    window.__selectPanel = (panel) => {
+      selectedPanel = panel
+    }
+  }
+
   onDestroy(
     dashboard$.subscribe((dashboard) => {
       if (dashboard.id === id) return
