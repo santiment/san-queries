@@ -2,11 +2,15 @@
   import { onMount } from 'svelte'
   import Svg from 'webkit/ui/Svg/svelte'
   import Resizer from 'webkit/ui/SnapGrid/Resizer.svelte'
+  import { notifications$ } from 'webkit/ui/Notifications'
   import { PanelType } from '@/types'
   import Table from '@/Table/index.svelte'
   import Text from '@/visualizations/Text.svelte'
   import Chart from '@/Chart/index.svelte'
   import PieChart from '@/visualizations/PieChart/index.svelte'
+  import { Formatter, FormatType } from '@/PanelEditor/Result/Options/format'
+  import { mutateComputeRawClickhouseQuery } from '@/api/rawQuery'
+  import { getParametersMap } from '@/utils/parameters'
 
   let className
   export { className as class }
@@ -21,6 +25,51 @@
   $: ({ columns, type } = settings)
   $: visibleColumns = columns.filter((c) => !c.isHidden)
   $: ({ dateColumns = new Set() } = __computedSql || {})
+
+  function onUpdateClick() {
+    const { query, parameters } = panel.sql
+
+    return mutateComputeRawClickhouseQuery(query, getParametersMap(parameters))
+      .then((data) => {
+        const { rows, headers, dateColumns } = data
+
+        panel.__rows = rows
+        panel.__computedSql = data
+        panel.settings.columns = headers.map((title, i) => newColumn(title, i, dateColumns))
+
+        panel = panel
+      })
+      .catch((e) => {
+        console.log(e)
+        notifications$.show({
+          title: 'Error during data load',
+          type: 'error',
+        })
+      })
+  }
+
+  // TODO: refactor. Move to utils. Same for PanelEditor/Result/index.svelte
+  function newColumn(title, i, dateColumns) {
+    const accessor = (data) => data[i]
+
+    const column = {
+      id: i,
+      title,
+      accessor,
+      format: accessor,
+      sortAccessor: accessor,
+    }
+
+    if (dateColumns.has(i)) {
+      const { id, fn } = Formatter[FormatType.DATE]
+      column.format = (data) => fn(accessor(data))
+      column.formatter = fn
+      column.formatterId = id
+      column.sortAccessor = (data) => Date.parse(data[i])
+    }
+
+    return column
+  }
 
   onMount(() => {
     if (panel.__scrollOnMount) {
@@ -40,17 +89,17 @@
   <h3 class="btn row body-2 hv-center single-line relative" on:click>
     {panel.name}
 
-    {#if onDelete}
-      <div class="actions row v-center">
-        <button class="reload btn mrg-a mrg--l" on:click|stopPropagation={onDelete}>
-          <Svg id="refresh" w="16" />
-        </button>
+    <div class="actions row v-center">
+      <button class="reload btn mrg-a mrg--l" on:click|stopPropagation={onUpdateClick}>
+        <Svg id="refresh" w="16" />
+      </button>
 
+      {#if onDelete}
         <button class="close btn mrg-xxl mrg--l" on:click|stopPropagation={onDelete}>
           <Svg id="close" w="12" />
         </button>
-      </div>
-    {/if}
+      {/if}
+    </div>
   </h3>
 
   <div class="widget column c-black relative">

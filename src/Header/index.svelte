@@ -1,5 +1,6 @@
 <script lang="ts">
   import Svg from 'webkit/ui/Svg/svelte'
+  import { notifications$ } from 'webkit/ui/Notifications'
   import { currentUser as currentUser$ } from 'studio/stores/user'
   import { getAppContext } from '@/context'
   import CreationInfo from './CreationInfo.svelte'
@@ -10,6 +11,8 @@
   import { getParametersMap } from '@/utils/parameters'
   import { shareColumn } from '@/utils/columns'
   import NewPanelButton from './NewPanelButton.svelte'
+  import { mutateComputeRawClickhouseQuery } from '@/api/rawQuery'
+  import { Formatter, FormatType } from '@/PanelEditor/Result/Options/format'
 
   const { dashboard$ } = getAppContext()
 
@@ -43,6 +46,54 @@
     error = msg
   }
 */
+
+  function onUpdateClick() {
+    dashboard.panels.forEach((panel) => {
+      const { query, parameters } = panel.sql
+
+      return mutateComputeRawClickhouseQuery(query, getParametersMap(parameters))
+        .then((data) => {
+          const { rows, headers, dateColumns } = data
+
+          panel.__rows = rows
+          panel.__computedSql = data
+          panel.settings.columns = headers.map((title, i) => newColumn(title, i, dateColumns))
+
+          // panels = panels
+          dashboard$.set(dashboard)
+        })
+        .catch((e) => {
+          console.log(e)
+          notifications$.show({
+            title: 'Error during data load',
+            type: 'error',
+          })
+        })
+    })
+  }
+
+  // TODO: refactor. Move to utils. Same for PanelEditor/Result/index.svelte
+  function newColumn(title, i, dateColumns) {
+    const accessor = (data) => data[i]
+
+    const column = {
+      id: i,
+      title,
+      accessor,
+      format: accessor,
+      sortAccessor: accessor,
+    }
+
+    if (dateColumns.has(i)) {
+      const { id, fn } = Formatter[FormatType.DATE]
+      column.format = (data) => fn(accessor(data))
+      column.formatter = fn
+      column.formatterId = id
+      column.sortAccessor = (data) => Date.parse(data[i])
+    }
+
+    return column
+  }
 
   function onShare() {
     let link = window.location.href + '?shared='
@@ -89,7 +140,7 @@
 
   <NewPanelButton />
 
-  <SaveButton class="$style.action" {user} {isAuthor} />
+  <SaveButton class="$style.action" {user} {isAuthor} {onUpdateClick} />
 
   <button class="btn mrg-xl mrg--l row v-center" on:click={onShare}>
     <Svg id="share-dots" w="14" h="16" class="mrg-s mrg--r" />

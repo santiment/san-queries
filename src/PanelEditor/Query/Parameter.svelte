@@ -70,7 +70,7 @@
   // }
 
   .delete {
-    margin-left: 13px;
+    // margin-left: 13px;
     --fill-hover: var(--red);
     padding: 0 5px;
   }

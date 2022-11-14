@@ -11,6 +11,7 @@
   export { className as class }
   // export let user
   export let isAuthor
+  export let onUpdateClick
 
   const { dashboard$ } = getAppContext()
 
@@ -81,13 +82,13 @@
 <a
   id="fw-welcome"
   href="https://clickhouse.com/docs/en/sql-reference/"
-  class="bnt-0 mrg-l mrg--l"
+  class="btn row v-center mrg-l mrg--l"
   target="_blank"
-  rel="noopener noreferrer">Documentation</a>
+  rel="noopener noreferrer">
+  <Svg id="description" w="12" h="14" class="mrg-s mrg--r" />
+  Documentation</a>
 
-<button
-  class="btn mrg-xl mrg--l row v-center {className}"
-  on:click={() => onClick(SaveType.SaveAsNew)}>
+<button class="btn mrg-xl mrg--l row v-center {className}" on:click={onUpdateClick}>
   <Svg id="refresh" w="16" class="mrg-s mrg--r" />
   Update
 </button>
@@ -132,5 +133,10 @@
   .delete {
     --color: var(--red);
     --color-hover: var(--red-hover);
+  }
+
+  a {
+    --fill: var(--waterloo);
+    --color-hover: var(--green);
   }
 </style>
