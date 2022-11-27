@@ -10,6 +10,7 @@
   let className = ''
   export { className as class }
   // export let user
+  export let selectedPanel
   export let isAuthor
   export let onUpdateClick
 
@@ -88,10 +89,12 @@
   <Svg id="description" w="12" h="14" class="mrg-s mrg--r" />
   Documentation</a>
 
-<button class="btn mrg-xl mrg--l row v-center {className}" on:click={onUpdateClick}>
-  <Svg id="refresh" w="16" class="mrg-s mrg--r" />
-  Update
-</button>
+{#if !selectedPanel}
+  <button class="btn mrg-xl mrg--l row v-center {className}" on:click={onUpdateClick}>
+    <Svg id="refresh" w="16" class="mrg-s mrg--r" />
+    Update
+  </button>
+{/if}
 
 <button
   class="btn mrg-xl mrg--l row v-center {className}"

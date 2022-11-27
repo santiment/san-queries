@@ -1,16 +1,40 @@
-<script>
+<script lang="ts">
   import Sidebar from 'studio/Sidebar/Sidebar.svelte'
   import Search from 'studio/Sidebar/Search.svelte'
   import Category from 'studio/Sidebar/Category.svelte'
+  import { getAppContext } from '@/context'
   import MyDashboards from './MyDashboards.svelte'
+  import { PremadeDashboards } from './queries'
+  import Item from './Item.svelte'
+
+  const { dashboard$ } = getAppContext()
 
   export let searchTerm = ''
   export let isFiltering = false
   // export let onItemClick
 
+  let selected = null
+  let selectedPanel: undefined | SAN.Queries.Panel
+
   // $: favorites = getFavorites($favoriteMetrics, searchTerm)
 
   // function getFavorites(favoritesSet, searchTerm: string) {}
+
+  function onDashboardSelect(dashboard) {
+    selected = dashboard
+  }
+
+  function selectPanel(panel) {
+    window.__selectPanel(panel)
+    selectedPanel = panel
+    if (window.__clearHoverItem) window.__clearHoverItem()
+  }
+
+  if (process.browser) {
+    window.__selectSidebarPanel = (panel) => {
+      selectedPanel = panel
+    }
+  }
 </script>
 
 <Sidebar isOpened isLocked>
@@ -23,10 +47,18 @@
   <section
     class="sidebar-content"
     on:scroll={() => window.__clearHoverItem && window.__clearHoverItem()}>
-    <MyDashboards {searchTerm} {isFiltering} />
+    <MyDashboards {selectedPanel} {searchTerm} {isFiltering} {selectPanel} {onDashboardSelect} />
 
     <Category category="How to get started" {isFiltering} isOpened>
-      <div class="c-waterloo mrg-s mrg--l">Pre-made sample queries</div>
+      {#each PremadeDashboards as item}
+        <Item
+          {item}
+          {dashboard$}
+          {selectedPanel}
+          {selectPanel}
+          {selected}
+          onSelect={onDashboardSelect} />
+      {/each}
     </Category>
   </section>
 </Sidebar>

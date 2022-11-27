@@ -1,5 +1,4 @@
 <script lang="ts">
-  import Header from './Query/Header.svelte'
   import SQLEditor from './Query/index.svelte'
   import Result from './Result/index.svelte'
 
@@ -8,8 +7,9 @@
   const controller = { onNewParameter, onData }
 
   let editor
-  let computedSql = panel.__computedSql || { headers: [], rows: [], dateColumns: new Set() }
   let error = ''
+
+  $: computedSql = panel.__computedSql || { headers: [], rows: [], dateColumns: new Set() }
 
   function onData(data) {
     computedSql = data

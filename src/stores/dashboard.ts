@@ -2,12 +2,12 @@ import { writable } from 'svelte/store'
 import { PanelType, ParameterType } from '@/types'
 import { Formatter } from '@/PanelEditor/Result/Options/format'
 
-export function newPanel(name = 'Default panel title', type = PanelType.TABLE) {
+export function newPanel(name = 'Default panel title', type = PanelType.TABLE, query = '') {
   return {
     name,
     settings: { type, columns: [] },
     sql: {
-      query: '',
+      query,
       parameters: [],
     },
   } as any as SAN.Queries.DashboardPanel

@@ -1,11 +1,8 @@
 <script lang="ts">
-  import { notifications$ } from 'webkit/ui/Notifications'
   import CreationInfo from 'webkit/ui/CreationInfo/svelte'
   import { CreationType } from 'webkit/ui/Profile/types'
   import { getAppContext } from '@/context'
   import { showSaveDashboardDialog } from '@/SaveDashboardDialog.svelte'
-  import { mutateCreateDashboard, mutateCreateDashboardPanel } from '@/api/dashboard/create'
-  import { mutateUpdateDashboard, mutateUpdateDashboardPanel } from '@/api/dashboard/update'
 
   export let dashboard
   export let currentUser
@@ -14,7 +11,7 @@
 
   const { dashboard$ } = getAppContext()
 
-  $: ({ id, title, user, commentsCount, votes, description } = dashboard)
+  $: ({ id, title, user, commentsCount, votes, description = '' } = dashboard)
 
   function getState() {
     if (!dashboard.user) {
@@ -53,7 +50,7 @@
   function onVote() {}
 </script>
 
-<div class="row">
+<div class="row mrg-a mrg--r">
   <CreationInfo
     fallback="Unsaved dashboard"
     type={CreationType.Dashboard}

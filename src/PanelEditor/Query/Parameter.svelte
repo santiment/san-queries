@@ -45,7 +45,7 @@
   on:dragstart={onDrag}
   on:dragend={onDrop}>
   {key}
-  <span class="c-waterloo mrg-s mrg--l">{value}</span>
+  <span class="single-line c-waterloo mrg-s mrg--l">{value}</span>
 
   <!-- 
   <div class="settings btn">

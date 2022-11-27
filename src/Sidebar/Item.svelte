@@ -1,7 +1,6 @@
 <script lang="ts">
   import type { Dashboard$ } from '@/stores/dashboard'
 
-  import Svg from 'webkit/ui/Svg/svelte'
   import { queryDashboard } from '@/api/dashboard'
   import Item from 'studio/Sidebar/Item.svelte'
   import HoverItem from './HoverItem.svelte'
@@ -12,12 +11,17 @@
   export let dashboard$: Dashboard$
   export let selectedPanel
   export let selectPanel
+  export let onSelect
 
-  $: isActive = selected === item.id
-  // $: panels = isActive
-  // $: console.log(isActive, item)
+  $: isActive = selected === item.id || selected === item
 
   function onClick() {
+    if (item.id == undefined) {
+      selectPanel(null)
+      dashboard$.set(item)
+      if (window.__clearHoverItem) window.__clearHoverItem()
+    }
+
     queryDashboard(item.id).then((dashboard) => {
       dashboard.panels.forEach((panel) => {
         panel.submetricOf = 1
@@ -28,6 +32,8 @@
 
       if (window.__clearHoverItem) window.__clearHoverItem()
     })
+
+    if (onSelect) onSelect(item)
   }
 </script>
 

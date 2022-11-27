@@ -30,23 +30,6 @@
   $: ({ user } = dashboard)
   $: isAuthor = currentUser && user && +user.id === +currentUser.id
 
-  /*
-  function onExecuteClick(resolve) {
-    const { query, parameters } = panel.sql
-    return mutateComputeRawClickhouseQuery(query, getParametersMap(parameters)).then(
-      (sqlResult) => {
-        data = sqlResult
-        error = ''
-        resolve()
-      },
-    )
-  }
-
-  function onQueryError(msg) {
-    error = msg
-  }
-*/
-
   function onUpdateClick() {
     dashboard.panels.forEach((panel) => {
       const { query, parameters } = panel.sql
@@ -125,7 +108,7 @@
 
 <div class="header row border v-center mrg-l mrg--b">
   {#if selectedPanel}
-    <div class="row body-2 v-center">
+    <div class="row body-2 v-center mrg-a mrg--r">
       <button class="link btn-0 body-1 txt-m mrg-s mrg--r" on:click={onBackClick}>
         <Svg id="pointer" w="14" h="10" class="$style.pointer" />
 
@@ -139,13 +122,13 @@
       {dashboard}
       {isAuthor}
       onCommentsClick={() => (isCommentsShowed = !isCommentsShowed)} />
+
+    <NewPanelButton />
   {/if}
 
   <!-- <Comments bind:isCommentsShowed /> -->
 
-  <NewPanelButton />
-
-  <SaveButton class="$style.action" {user} {isAuthor} {onUpdateClick} />
+  <SaveButton class="$style.action" {user} {isAuthor} {selectedPanel} {onUpdateClick} />
 
   <button class="btn mrg-xl mrg--l row v-center" on:click={onShare}>
     <Svg id="share-dots" w="14" h="16" class="mrg-s mrg--r" />

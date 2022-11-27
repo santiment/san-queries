@@ -21,7 +21,7 @@
   }
 </script>
 
-<div class="relative mrg-a mrg--l">
+<div class="relative">
   <Tooltip on="click" position="bottom" class="$style.tooltip" bind:isOpened>
     <button slot="trigger" class="new btn-2 relative">
       New panel
