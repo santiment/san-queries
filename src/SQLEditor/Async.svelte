@@ -21,6 +21,8 @@
   <button class="fullscreen btn-3" on:click={() => onFullscreenClick($$props)}>
     <Svg id={onFullscreenClick === showFullscreenDialog ? 'fullscreen' : 'close'} w="14" />
   </button>
+
+  <slot />
 {:else}
   <div />
 {/if}

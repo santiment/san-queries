@@ -14,8 +14,8 @@
 
   let className
   export { className as class }
-  export let panel
-  export let style
+  export let panel: SAN.Queries.Panel
+  export let style: string
   export let onDelete
   export let onDrag
 
@@ -103,18 +103,22 @@
   </h3>
 
   <div class="widget column c-black relative">
-    {#if type === PanelType.TABLE}
-      <Table class="$style.table" columns={visibleColumns} data={__rows} />
-    {:else if type === PanelType.TEXT}
-      <Text column={panel.textValueColumn} data={__rows} {columns} />
-    {:else if type === PanelType.CHART}
-      <Chart columns={visibleColumns} data={__rows} {dateColumns} xAxisKey={panel.xAxisKey} />
-    {:else if type === PanelType.PIE_CHART}
-      <PieChart columns={visibleColumns} data={__rows} />
-    {/if}
+    {#if panel.sql.query}
+      {#if type === PanelType.TABLE}
+        <Table class="$style.table" columns={visibleColumns} data={__rows} />
+      {:else if type === PanelType.TEXT}
+        <Text column={panel.textValueColumn} data={__rows} {columns} />
+      {:else if type === PanelType.CHART}
+        <Chart columns={visibleColumns} data={__rows} {dateColumns} xAxisKey={panel.xAxisKey} />
+      {:else if type === PanelType.PIE_CHART}
+        <PieChart columns={visibleColumns} data={__rows} />
+      {/if}
 
-    {#if !__rows || !__rows.length}
-      <div class="empty c-waterloo body-2">No data</div>
+      {#if !__rows || !__rows.length}
+        <div class="empty c-waterloo body-2">No data</div>
+      {/if}
+    {:else}
+      <button class="query btn-1" on:click>Add query</button>
     {/if}
   </div>
 
@@ -168,5 +172,13 @@
 
   .close {
     --fill-hover: var(--red);
+  }
+
+  .query {
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+    --h-padding: 32px;
   }
 </style>

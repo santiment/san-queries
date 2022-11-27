@@ -12,13 +12,22 @@
   controller.setValue = setValue
 
   let iframe
+  let isFocused = false
 
   $: ({ query, parameters } = panel.sql)
-  $: if (editor) editor.onDidBlurEditorText(onBlur)
+  $: if (editor) {
+    editor.onDidBlurEditorText(onBlur)
+    editor.onDidFocusEditorWidget(onFocus)
+  }
   $: updateThemeParameters(parameters)
 
   function onBlur() {
     panel.sql.query = editor.getValue()
+    isFocused = false
+  }
+
+  function onFocus() {
+    isFocused = true
   }
 
   function setValue(value) {
@@ -39,7 +48,11 @@
 </script>
 
 <div class="editor border relative">
-  <SQLEditor bind:editor value={query} {parameters} {setValue} />
+  <SQLEditor bind:editor value={query} {parameters} {setValue}>
+    {#if !panel.sql.query && !isFocused}
+      <div class="placeholder c-green">Write your SQL here...</div>
+    {/if}
+  </SQLEditor>
 
   {#if error}
     <div class="error caption c-red row">
@@ -84,5 +97,12 @@
     pointer-events: none;
     z-index: -1;
     top: 0;
+  }
+
+  .placeholder {
+    position: absolute;
+    left: 62px;
+    top: 14px;
+    pointer-events: none;
   }
 </style>

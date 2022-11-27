@@ -75,6 +75,10 @@
       <Parameters bind:panel {controller} />
     </div>
 
+    {#if !parameters.length}
+      <div class="empty body-2 txt-center c-waterloo">No parameters added</div>
+    {/if}
+
     <div class="parameters column fluid">
       {#each parameters as parameter, i}
         <Parameter
@@ -104,5 +108,12 @@
     bottom: 0;
     padding: 0 16px 16px;
     overflow: auto;
+  }
+
+  .empty {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 </style>
