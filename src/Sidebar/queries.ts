@@ -11,6 +11,7 @@ export const Dashbaord = (
     if (parameters) panel.sql.parameters = parameters
     return panel
   }),
+  votes: {},
 })
 
 export const PremadeDashboards = [

@@ -20,7 +20,7 @@
   $: colors = newChartColors(valueColumns)
 
   $: if (canvasNode) setup(canvasNode)
-  $: if (chart) draw(chart, rawData)
+  $: if (chart && rawData) draw(chart, rawData)
 
   const DOUBLE_PI = 2 * Math.PI
 
