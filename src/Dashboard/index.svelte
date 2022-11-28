@@ -2,6 +2,9 @@
   import { normalizeGrid, sortLayout } from 'webkit/ui/SnapGrid/layout'
   import Grid from 'webkit/ui/SnapGrid/Grid.svelte'
   import Panel from './Panel.svelte'
+  import { getAppContext } from '@/context'
+
+  const { dashboard$ } = getAppContext()
 
   export let dashboard
   export let selectedPanel
@@ -18,6 +21,7 @@
     panels = panels.filter((v) => v !== panel)
     dashboard.panels = panels
     if (panel.id) dashboard.removedPanels.push(panel)
+    dashboard$.set(dashboard)
   }
 
   function onPanelSelect(panel) {

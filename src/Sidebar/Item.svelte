@@ -16,22 +16,27 @@
   $: isActive = selected === item.id || selected === item
 
   function onClick() {
-    if (item.id == undefined) {
+    if (isActive) {
+      selectPanel(null)
+      return
+    }
+
+    if (item.id === undefined) {
       selectPanel(null)
       dashboard$.set(item)
       if (window.__clearHoverItem) window.__clearHoverItem()
-    }
+    } else {
+      queryDashboard(item.id).then((dashboard) => {
+        dashboard.panels.forEach((panel) => {
+          panel.submetricOf = 1
+        })
 
-    queryDashboard(item.id).then((dashboard) => {
-      dashboard.panels.forEach((panel) => {
-        panel.submetricOf = 1
+        selectPanel(null)
+        dashboard$.set(dashboard)
+
+        if (window.__clearHoverItem) window.__clearHoverItem()
       })
-
-      selectPanel(null)
-      dashboard$.set(dashboard)
-
-      if (window.__clearHoverItem) window.__clearHoverItem()
-    })
+    }
 
     if (onSelect) onSelect(item)
   }
@@ -48,6 +53,7 @@
   {@const dashboard = $dashboard$}
 
   {#each dashboard.panels as panel}
+    {@const _ = panel.submetricOf = 1}
     <Item
       item={panel}
       {HoverItem}

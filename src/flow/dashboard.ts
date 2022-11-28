@@ -1,3 +1,4 @@
+import { noop } from 'webkit/utils'
 import { notifications$ } from 'webkit/ui/Notifications'
 import { deleteQueryDashboardCache, setQueryDashboardCache } from '@/api/dashboard'
 import { mutateCreateDashboard, mutateCreateDashboardPanel } from '@/api/dashboard/create'
@@ -44,7 +45,7 @@ export function startSavePanelFlow(
     }),
   } as any).then((updated) => {
     panel.id = updated.id
-    mutateComputeAndStorePanel(dashboardId, panel.id)
+    mutateComputeAndStorePanel(dashboardId, panel.id).catch(noop)
     return updated
   })
 }

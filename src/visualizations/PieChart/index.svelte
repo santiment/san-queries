@@ -30,21 +30,13 @@
 
   function draw(chart, data) {
     const { ctx, canvasHeight } = chart
-    console.log(data, chart, valueColumns)
 
     const center = canvasHeight / 2
     const padding = 30
     const size = center - padding
 
-    const results = [
-      { mood: 'Angry', total: 1499, shade: '#FF5B5B' },
-      { mood: 'Happy', total: 478, shade: '#FFCB47' },
-      { mood: 'Melancholic', total: 332, shade: '#5275FF' },
-      { mood: 'Gloomy', total: 195, shade: '#F47BF7' },
-    ]
-
     let total = 0
-    for (let i = 0; i < results.length; i++) total += results[i].total
+    for (let i = 0; i < rawData.length; i++) total += rawData[i]
 
     let angle = 0
     for (let i = 0; i < valueColumns.length; i++) {
