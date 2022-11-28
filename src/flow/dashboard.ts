@@ -7,6 +7,7 @@ import { getParametersMap } from '@/utils/parameters'
 import { myDashboards$ } from '@/stores/dashboards'
 import { shareColumn } from '@/utils/columns'
 import { mutateDeleteDashboard } from '@/api/dashboard/delete'
+import { mutateComputeAndStorePanel } from '@/api/query/store'
 
 export function startSaveDashboardFlow(dashboard: SAN.Queries.Dashboard) {
   const mutation = dashboard.id ? mutateUpdateDashboard : mutateCreateDashboard
@@ -43,6 +44,7 @@ export function startSavePanelFlow(
     }),
   } as any).then((updated) => {
     panel.id = updated.id
+    mutateComputeAndStorePanel(dashboardId, panel.id)
     return updated
   })
 }

@@ -4,7 +4,7 @@
     showAddParameterWalkthrough,
     showParameterOptionsWalkthrough,
   } from '@/walkthroughs/parameters'
-  import { mutateComputeRawClickhouseQuery } from '@/api/rawQuery'
+  import { mutateComputeRawClickhouseQuery } from '@/api/query/raw'
   import { getParametersMap } from '@/utils/parameters'
   import ExecuteButton from './ExecuteButton.svelte'
   import Parameters from './Parameters.svelte'

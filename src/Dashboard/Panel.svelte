@@ -9,7 +9,7 @@
   import Chart from '@/Chart/index.svelte'
   import PieChart from '@/visualizations/PieChart/index.svelte'
   import { Formatter, FormatType } from '@/PanelEditor/Result/Options/format'
-  import { mutateComputeRawClickhouseQuery } from '@/api/rawQuery'
+  import { mutateComputeRawClickhouseQuery } from '@/api/query/raw'
   import { getParametersMap } from '@/utils/parameters'
 
   let className

@@ -1,11 +1,15 @@
 import { mutate } from 'webkit/api'
 
+export const PANEL_DATA_FRAGMENT = `
+  headers:columns
+  rows
+  types:columnTypes
+`
+
 const RAW_CLICKHOUSE_QUERY_MUTATION = `
   mutation($query: String!, $parameters: json!="{}") {
     sql:computeRawClickhouseQuery(query:$query,parameters:$parameters) {
-      headers:columns
-      rows
-      types:columnTypes
+      ${PANEL_DATA_FRAGMENT}
     }
   }`
 

@@ -3,7 +3,7 @@
   import SQLEditor from './SQLEditor.svelte'
   import ExecuteButton from './ExecuteButton.svelte'
   import Parameters from './Parameters.svelte'
-  import { mutateComputeRawClickhouseQuery } from '@/api/rawQuery'
+  import { mutateComputeRawClickhouseQuery } from '@/api/query/raw'
   import { getParametersMap } from '@/utils/parameters'
   import { onMount } from 'svelte'
   import {

@@ -11,7 +11,7 @@
   import { getParametersMap } from '@/utils/parameters'
   import { shareColumn } from '@/utils/columns'
   import NewPanelButton from './NewPanelButton.svelte'
-  import { mutateComputeRawClickhouseQuery } from '@/api/rawQuery'
+  import { mutateComputeRawClickhouseQuery } from '@/api/query/raw'
   import { Formatter, FormatType } from '@/PanelEditor/Result/Options/format'
 
   const { dashboard$ } = getAppContext()
