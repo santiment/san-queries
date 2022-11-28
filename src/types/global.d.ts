@@ -64,6 +64,7 @@ declare namespace SAN {
     }
 
     type DashboardPanel = {
+      submetricOf: any
       id: string
       dashboardId: number
       name: string
