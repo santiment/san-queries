@@ -4,6 +4,7 @@
   import Visualization from './Visualization.svelte'
   import Header from './Header.svelte'
   import { Formatter, FormatType } from './Options/format'
+  import imgSrc from './no-data.svg'
 
   export let panel
   export let computedSql
@@ -58,10 +59,11 @@
 
 <RowPanels class="$style.result">
   <svelte:fragment slot="left">
-    {#if rows}
+    {#if rows && columns.length}
       <Visualization {panel} {columns} {rows} {dateColumns} />
     {:else}
       <div class="column hv-center">
+        <img src={imgSrc} alt="No data" class="mrg-xl mrg--b" />
         <h2 class="body-2 txt-b">No data</h2>
         <p class="mrg-xs mrg--t">Run your query first</p>
       </div>
