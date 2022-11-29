@@ -7,6 +7,7 @@
   import PanelEditor from './PanelEditor/index.svelte'
   import Dashboard from './Dashboard/index.svelte'
   import { queryGetDashboardCache } from './api/query/cache'
+  import { applyPanelData } from './utils/columns'
 
   export let dashboard = null
 
@@ -31,13 +32,23 @@
       selectedPanel = null
 
       if (id) {
-        queryGetDashboardCache(id).then((panels) =>
-          panels.forEach((data) => {
-            // const { rows, headers, dateColumns } = data
-            // panel.__rows = rows
-            // panel.__computedSql = data
-          }),
-        )
+        const Panel = {}
+        dashboard.panels.forEach((panel) => (Panel[panel.id] = panel))
+
+        queryGetDashboardCache(id)
+          .then((panels) =>
+            panels.forEach((data) => {
+              const panel = Panel[data.id]
+              if (!panel) return
+
+              applyPanelData(panel, data)
+            }),
+          )
+          .finally(() => {
+            if (id === dashboard.id) {
+              dashboard$.set(dashboard)
+            }
+          })
       }
     }),
   )

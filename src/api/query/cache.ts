@@ -5,6 +5,7 @@ const GET_DASHBOARD_CACHE_QUERY = (id) => `
 {
   cache:getDashboardCache(id:${id}) {
     panels {
+      id
 ${PANEL_DATA_FRAGMENT}
     }
   }

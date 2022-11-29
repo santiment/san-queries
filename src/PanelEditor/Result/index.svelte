@@ -5,6 +5,7 @@
   import Header from './Header.svelte'
   import { Formatter, FormatType } from './Options/format'
   import imgSrc from './no-data.svg'
+  import { newColumn } from '@/utils/columns'
 
   export let panel
   export let computedSql
@@ -16,28 +17,8 @@
   $: newColumns(headers)
   $: columns.length && updateColumns(columns)
 
-  const newColumns = (headers) => (columns = headers.map(newColumn))
-  function newColumn(title, i) {
-    const accessor = (data) => data[i]
-
-    const column = {
-      id: i,
-      title,
-      accessor,
-      format: accessor,
-      sortAccessor: accessor,
-    }
-
-    if (dateColumns.has(i)) {
-      const { id, fn } = Formatter[FormatType.DATE]
-      column.format = (data) => fn(accessor(data))
-      column.formatter = fn
-      column.formatterId = id
-      column.sortAccessor = (data) => Date.parse(data[i])
-    }
-
-    return column
-  }
+  const newColumns = (headers) =>
+    (columns = headers.map((title, i) => newColumn(title, i, dateColumns)))
 
   function updateColumns(columns) {
     const { settings } = panel
