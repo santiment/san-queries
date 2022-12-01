@@ -73,9 +73,4 @@ onDestroy(newGlobalShortcut('CMD+ENTER', onQueryExecute, false));</script>
   .loading {
     pointer-events: all;
   }
-
-  .loading-spin {
-    border-color: #fff;
-    border-right-color: #d2d6e7;
-  }
 </style>

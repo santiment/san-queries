@@ -4,7 +4,6 @@ import Active from './Active.svelte';
 export let item;
 export let node;
 export let hoverNode;
-export let active = false;
 let timer;
 
 const showPreview = () => false; // queryLayout(item.id).then((data) => destroyed || (layout = data))

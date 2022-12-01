@@ -8,7 +8,6 @@ import { showWelcomeWalkthrough } from './../../lib/walkthroughs/welcome';
 let className = '';
 export { className as class }; // export let user
 
-export let selectedPanel;
 export let isAuthor;
 const {
   dashboard$
@@ -53,10 +52,10 @@ function onResetLayout() {
 
 onMount(showWelcomeWalkthrough);</script>
 
-<div class="row mrg-s mrg--l border relative">
+<div class="row mrg-s mrg--l border relative {className}">
   <button class="save btn" on:click={() => onClick(isAuthor ? SaveType.Save : SaveType.SaveAsNew)}
     >{isAuthor ? 'Save' : 'Save as'}</button>
-  <Tooltip on="click" duration={0} align="center" class="tooltip-suQTv2" bind:isOpened>
+  <Tooltip on="click" duration={0} align="center" class="tooltip-PxCanH" bind:isOpened>
     <button slot="trigger" class="more btn row hv-center">
       <Svg id="arrow-down" w="8" h="5" />
     </button>
@@ -98,7 +97,7 @@ onMount(showWelcomeWalkthrough);</script>
   .more {
     --color-hover: var(--green);
   }
-  :global(.tooltip-suQTv2) {
+  :global(.tooltip-PxCanH) {
     left: 0px !important;
     width: 200px;
     padding: 8px;
@@ -115,10 +114,5 @@ onMount(showWelcomeWalkthrough);</script>
   .delete {
     --color: var(--red);
     --color-hover: var(--red-hover);
-  }
-
-  a {
-    --fill: var(--waterloo);
-    --color-hover: var(--green);
   }
 </style>
