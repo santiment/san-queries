@@ -14,7 +14,7 @@ import { mutateComputeRawClickhouseQuery } from './../../lib/api/query/raw';
 import { showSaveDashboardDialog } from './../../lib/SaveDashboardDialog.svelte';
 import { noop } from 'svelte/internal';
 import { mutateComputeAndStorePanel } from './../../lib/api/query/store';
-import { getDashboardPath, getQueryString } from './../../lib/sharing/url';
+import { getQueryString } from './../../lib/sharing/url';
 const {
   dashboard$
 } = getAppContext(); // export let columns
@@ -64,13 +64,9 @@ function onUpdateClick() {
 }
 
 function onShare() {
-  var _a;
+  let link = window.location.href;
 
-  let link = window.location.href + (((_a = window.__getShareBase) === null || _a === void 0 ? void 0 : _a.call(window)) || '');
-
-  if (dashboard.id) {
-    link += getDashboardPath(dashboard, selectedPanel);
-  } else {
+  if (!dashboard.id) {
     link += getQueryString(dashboard, selectedPanel);
   }
 
