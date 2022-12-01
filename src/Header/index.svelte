@@ -15,7 +15,7 @@
   import { showSaveDashboardDialog } from '@/SaveDashboardDialog.svelte'
   import { noop } from 'svelte/internal'
   import { mutateComputeAndStorePanel } from '@/api/query/store'
-  import { getDashboardPath, getQueryString } from '@/sharing/url'
+  import { getQueryString } from '@/sharing/url'
 
   const { dashboard$ } = getAppContext()
 
@@ -59,11 +59,9 @@
   }
 
   function onShare() {
-    let link = window.location.href + (window.__getShareBase?.() || '')
+    let link = window.location.href
 
-    if (dashboard.id) {
-      link += getDashboardPath(dashboard, selectedPanel)
-    } else {
+    if (!dashboard.id) {
       link += getQueryString(dashboard, selectedPanel)
     }
 
