@@ -1,10 +1,12 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte'
   import HoverItem from 'studio/Sidebar/HoverItem.svelte'
+  import Active from './Active.svelte'
 
   export let item: any
   export let node: HTMLElement
   export let hoverNode: HTMLElement
+  export let active = false
 
   let timer
 
@@ -23,5 +25,17 @@
 </script>
 
 <HoverItem {node} {hoverNode}>
-  {item.title}
+  <Active class="$style.circle" />
+
+  {item.title || item.name}
 </HoverItem>
+
+<style>
+  .circle {
+    display: none;
+  }
+
+  :global(.item.active) .circle {
+    display: flex;
+  }
+</style>

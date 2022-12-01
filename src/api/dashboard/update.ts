@@ -3,8 +3,8 @@ import type { CreateDashboardVariables, CreatePanelVariables } from './create'
 import { PANEL_FRAGMENT, SHORT_DASHBOARD_FRAGMENT } from './fragments'
 
 const UPDATE_DASHBOARD_MUTATION = `
-  mutation($id:Int!, $title:String!, $description:String, $isPublic:Boolean, $settings:json) {
-    updateDashboard(id:$id, name:$title, description:$description, isPublic:$isPublic, tempJson:$settings) {
+  mutation($id:Int!, $title:String!, $description:String, $isPublic:Boolean) {
+    updateDashboard(id:$id, name:$title, description:$description, isPublic:$isPublic) {
       ${SHORT_DASHBOARD_FRAGMENT}
     }
   }`

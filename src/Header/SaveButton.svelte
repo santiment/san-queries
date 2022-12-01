@@ -10,6 +10,7 @@
   let className = ''
   export { className as class }
   // export let user
+  export let selectedPanel
   export let isAuthor
 
   const { dashboard$ } = getAppContext()
@@ -48,10 +49,14 @@
     dashboard$.set(dashboard)
   }
 
+  function onResetLayout() {
+    dashboard$.set(null)
+  }
+
   onMount(showWelcomeWalkthrough)
 </script>
 
-<div class="row mrg-a mrg--l border relative">
+<div class="row mrg-s mrg--l border relative">
   <button class="save btn" on:click={() => onClick(isAuthor ? SaveType.Save : SaveType.SaveAsNew)}
     >{isAuthor ? 'Save' : 'Save as'}</button>
   <Tooltip on="click" duration={0} align="center" class="$style.tooltip" bind:isOpened>
@@ -59,6 +64,8 @@
       <Svg id="arrow-down" w="8" h="5" />
     </button>
     <div slot="tooltip">
+      <button class="btn-ghost" on:click={onResetLayout}>Reset dashboard</button>
+
       <button
         class="btn-ghost"
         on:click={() => onClick(isAuthor ? SaveType.Save : SaveType.SaveAsNew)}>Save</button>
@@ -78,23 +85,9 @@
   </Tooltip>
 </div>
 
-<a
-  id="fw-welcome"
-  href="https://clickhouse.com/docs/en/sql-reference/"
-  class="bnt-0 mrg-l mrg--l"
-  target="_blank"
-  rel="noopener noreferrer">Documentation</a>
-
-<button
-  class="btn mrg-xl mrg--l row v-center {className}"
-  on:click={() => onClick(SaveType.SaveAsNew)}>
-  <Svg id="copy" w="16" class="mrg-s mrg--r" />
-  Duplicate
-</button>
-
 <style>
   .save {
-    padding: 6px 14px;
+    padding: 5px 14px;
     border-right: 1px solid var(--porcelain);
     border-radius: 0;
   }
@@ -125,5 +118,10 @@
   .delete {
     --color: var(--red);
     --color-hover: var(--red-hover);
+  }
+
+  a {
+    --fill: var(--waterloo);
+    --color-hover: var(--green);
   }
 </style>

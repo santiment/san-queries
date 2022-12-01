@@ -1,24 +1,13 @@
 import { writable } from 'svelte/store'
 import { PanelType, ParameterType } from '@/types'
-import { Formatter } from '@/Result/Options/format'
+import { Formatter } from '@/PanelEditor/Result/Options/format'
 
-function newPanel() {
+export function newPanel(name = 'Default panel title', type = PanelType.TABLE, query = '') {
   return {
-    name: 'My table',
-    settings: { type: PanelType.TABLE, columns: [] },
+    name,
+    settings: { type, columns: [] },
     sql: {
-      query: `SELECT
-    dt,
-    get_asset_name(asset_id) AS slug,
-    get_metric_name(metric_id) AS metric,
-    value
-FROM daily_metrics_v2 FINAL
-WHERE
-    asset_id = get_asset_id('bitcoin') AND
-    metric_id = get_metric_id('daily_active_addresses') AND
-    dt >= toDateTime('2022-01-01 00:00:00')
-ORDER BY dt ASC
-LIMIT 20`,
+      query,
       parameters: [],
     },
   } as any as SAN.Queries.DashboardPanel
@@ -38,7 +27,7 @@ function normalizeColumn({ title, formatterId }, id) {
   return column
 }
 
-function normalizePanel(panel: SAN.Queries.DashboardPanel): SAN.Queries.Panel {
+export function normalizePanel(panel: SAN.Queries.DashboardPanel): SAN.Queries.Panel {
   const { sql } = panel
   const { query, parameters } = sql
 
@@ -66,6 +55,7 @@ function normalizeDashboard(dashboard?: null | SAN.Queries.Dashboard) {
   if (!dashboard) {
     return {
       panels: [normalizePanel(newPanel())],
+      removedPanels: [],
       __normalized: true,
     }
   }
@@ -77,7 +67,8 @@ function normalizeDashboard(dashboard?: null | SAN.Queries.Dashboard) {
 
   return {
     ...dashboard,
-    panels: panels.slice(0, 1).map(normalizePanel),
+    panels: panels.map(normalizePanel),
+    removedPanels: [],
     __normalized: true,
   }
 }
@@ -112,7 +103,7 @@ export const Dashboard = (defaultValue?: null | SAN.Queries.Dashboard) => {
       })
       */
 
-      if (!dashboard.removedPanels) {
+      if (dashboard && !dashboard.removedPanels) {
         dashboard.removedPanels = []
       }
 

@@ -1,3 +1,4 @@
+import { noop } from 'webkit/utils'
 import { notifications$ } from 'webkit/ui/Notifications'
 import { deleteQueryDashboardCache, setQueryDashboardCache } from '@/api/dashboard'
 import { mutateCreateDashboard, mutateCreateDashboardPanel } from '@/api/dashboard/create'
@@ -5,8 +6,9 @@ import { mutateRemoveDashboardPanel } from '@/api/dashboard/remove'
 import { mutateUpdateDashboard, mutateUpdateDashboardPanel } from '@/api/dashboard/update'
 import { getParametersMap } from '@/utils/parameters'
 import { myDashboards$ } from '@/stores/dashboards'
-import { shareColumn } from '@/utils/columns'
 import { mutateDeleteDashboard } from '@/api/dashboard/delete'
+import { mutateComputeAndStorePanel } from '@/api/query/store'
+import { sharePanelSettings } from '@/sharing'
 
 export function startSaveDashboardFlow(dashboard: SAN.Queries.Dashboard) {
   const mutation = dashboard.id ? mutateUpdateDashboard : mutateCreateDashboard
@@ -23,7 +25,6 @@ export function startSavePanelFlow(
 ) {
   const { id: dashboardId } = dashboard
   const { id, name, settings, sql } = panel
-  const { type, columns, xAxisKey } = settings
 
   const mutation = !isNewDashboard && id ? mutateUpdateDashboardPanel : mutateCreateDashboardPanel
   return mutation({
@@ -34,14 +35,10 @@ export function startSavePanelFlow(
       query: sql.query,
       parameters: JSON.stringify(getParametersMap(sql.parameters)),
     },
-    settings: JSON.stringify({
-      type,
-      xAxisKey,
-      columns: columns.map(shareColumn),
-      parameters: sql.parameters.map(({ type }) => ({ type })),
-    }),
+    settings: JSON.stringify(sharePanelSettings(settings, sql)),
   } as any).then((updated) => {
     panel.id = updated.id
+    mutateComputeAndStorePanel(dashboardId, panel.id).catch(noop)
     return updated
   })
 }
@@ -60,9 +57,11 @@ export function startSaveFlow(dashboard: SAN.Queries.Dashboard) {
   const isNewDashboard = !Number.isFinite(dashboard.id)
   return startSaveDashboardFlow(dashboard)
     .then(({ __normalized, ...dashboard }: NormalizedDashboard) => {
+      const removed = new Set(dashboard.removedPanels)
+      const panels = dashboard.panels.filter((panel) => !removed.has(panel))
+
       startRemoveDashboardPanelsFlow(dashboard)
 
-      const { panels } = dashboard
       return Promise.all(
         panels.map((panel) => startSavePanelFlow(panel as any, dashboard, isNewDashboard)),
       ).then((panels) => {

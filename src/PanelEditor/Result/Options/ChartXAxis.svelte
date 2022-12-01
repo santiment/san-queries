@@ -1,16 +1,16 @@
 <script lang="ts">
   import Field from 'webkit/ui/Field/Select.svelte'
 
+  export let panel
   export let columns
-  export let visualization
   export let dateColumns
 
   $: selected = selected || columns[[...dateColumns][0] || 0]
   $: options = columns.filter(({ id }) => dateColumns.has(id))
 
   function onSelect(column) {
-    visualization.xAxis = column
-    visualization.xAxisKey = column.id
+    panel.xAxis = column
+    panel.xAxisKey = column.id
   }
 
   const format = ({ id, title }) => `Column ${id}: ${title}`

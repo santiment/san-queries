@@ -1,73 +1,78 @@
 <script lang="ts">
   import { onDestroy } from 'svelte'
-  import Query from './Query/index.svelte'
-  import Result from './Result/index.svelte'
   import Sidebar from './Sidebar/index.svelte'
-  import { Formatter, FormatType } from './Result/Options/format'
   import { setAppContext } from './context'
-  import { Dashboard } from './stores/dashboard'
+  import { Dashboard as NewDashboard } from './stores/dashboard'
   import Header from './Header/index.svelte'
+  import PanelEditor from './PanelEditor/index.svelte'
+  import Dashboard from './Dashboard/index.svelte'
+  import { queryGetDashboardCache } from './api/query/cache'
+  import { applyPanelData } from './utils/columns'
+  import { getDashboardPath, getQueryString } from './sharing/url'
 
   export let dashboard = null
+  export let selectedPanelId = undefined
 
   const { dashboard$ } = setAppContext({
-    dashboard$: Dashboard(dashboard),
+    dashboard$: NewDashboard(dashboard),
   })
 
-  let data
   let id = $dashboard$.id
-  let panel = $dashboard$.panels[0]
-  let columnsHash = ''
-  let error = ''
+  let selectedPanel =
+    selectedPanelId !== undefined
+      ? $dashboard$.panels.find(({ id }, i) => id === selectedPanelId || i == selectedPanelId)
+      : null
 
-  $: columns = data ? data.headers.map(newColumn) : []
-  $: columns.length && updateColumns(columns)
+  if (process.browser) {
+    if (id) getDashboarCache($dashboard$)
 
-  function newColumn(title, i) {
-    const { sql: { query } = {} } = panel
-
-    const accessor = (data) => data[i]
-
-    const column = {
-      id: i,
-      title,
-      accessor,
-      format: accessor,
-      sortAccessor: accessor,
+    window.__selectPanel = (panel) => {
+      selectedPanel = panel
     }
-
-    if (data.dateColumns?.has(i) && !query?.startsWith('SHOW')) {
-      const { id, fn } = Formatter[FormatType.DATE]
-      column.format = (data) => fn(accessor(data))
-      column.formatter = fn
-      column.formatterId = id
-    }
-
-    return column
   }
 
-  function updateColumns(columns) {
-    const { settings } = panel
-    const hash = data?.headers.toString() || ''
-    const isOldHash = !columnsHash || columnsHash === hash
+  $: process.browser && updatePathname($dashboard$, selectedPanel)
 
-    if (isOldHash && settings.columns.length === columns.length) {
-      settings.columns.forEach((column, i) => {
-        Object.assign(columns[i], column)
-      })
+  function updatePathname(dashboard, selectedPanel) {
+    let path: string = window.__getShareBase?.() || '/'
+
+    if (dashboard.id) {
+      path += getDashboardPath(dashboard, selectedPanel)
+    } else {
+      path += getQueryString(dashboard, selectedPanel)
     }
 
-    columnsHash = hash
-    settings.columns = columns
+    window.history.replaceState({}, '', path)
+  }
+
+  function getDashboarCache(dashboard) {
+    const Panel = {}
+    dashboard.panels.forEach((panel) => (Panel[panel.id] = panel))
+
+    queryGetDashboardCache(id)
+      .then((panels) =>
+        panels.forEach((data) => {
+          const panel = Panel[data.id]
+          if (!panel) return
+
+          applyPanelData(panel, data)
+        }),
+      )
+      .finally(() => {
+        if (id === dashboard.id) {
+          dashboard$.set(dashboard)
+        }
+      })
   }
 
   onDestroy(
     dashboard$.subscribe((dashboard) => {
       if (dashboard.id === id) return
 
-      data = undefined
       id = dashboard.id
-      panel = dashboard.panels[0]
+      selectedPanel = null
+
+      if (id) getDashboarCache(dashboard)
     }),
   )
 </script>
@@ -76,11 +81,13 @@
   <Sidebar />
 
   <main class="column">
-    <Header {columns} {panel} bind:error bind:data />
+    <Header bind:selectedPanel />
 
-    <Query {panel} bind:data bind:error />
-
-    <Result {data} {...data} {columns} />
+    {#if selectedPanel}
+      <PanelEditor panel={selectedPanel} />
+    {:else}
+      <Dashboard dashboard={$dashboard$} bind:selectedPanel />
+    {/if}
   </main>
 </div>
 
@@ -91,6 +98,6 @@
     min-height: 100vh;
     min-width: 0;
     flex: 1;
-    max-height: calc(100vh + calc(1035px - 100vh));
+    /* max-height: calc(100vh + calc(1035px - 100vh)); */
   }
 </style>

@@ -46,15 +46,18 @@
 <Tooltip dark isEnabled={stats || loading} closeTimeout={0} bind:isOpened>
   <button
     slot="trigger"
-    class="btn-1 btn--s row hv-center mrg-m mrg--r expl-tooltip"
+    class="btn-1 btn--s row hv-center mrg-l mrg--r expl-tooltip"
+    class:loading
     aria-label="{CMD} + Enter"
     on:click={onQueryExecute}>
+    <!-- 
     {#if loading}
       <div class="loading-spin mrg-s mrg--r" />
       Running
     {:else}
-      Execute
-    {/if}
+ -->
+    Execute
+    <!-- {/if} -->
   </button>
 
   <div slot="tooltip" class="caption">
@@ -64,7 +67,12 @@
 
 <style>
   button {
-    width: 140px;
+    /* width: 140px; */
+    padding: 6px 30px;
+  }
+
+  .loading {
+    pointer-events: all;
   }
 
   .loading-spin {

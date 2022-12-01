@@ -45,7 +45,7 @@
   on:dragstart={onDrag}
   on:dragend={onDrop}>
   {key}
-  <span class="c-waterloo mrg-s mrg--l">{value}</span>
+  <span class="single-line c-waterloo mrg-s mrg--l">{value}</span>
 
   <!-- 
   <div class="settings btn">
@@ -53,9 +53,9 @@
   </div>
  -->
 
-  <div class="delete btn" on:click|stopPropagation={() => onDelete(i)}>
+  <button class="delete btn mrg-a mrg--l" on:click|stopPropagation={() => onDelete(i)}>
     <Svg id="cross" w="8" />
-  </div>
+  </button>
 </ColorBorder>
 
 <style lang="scss">
@@ -70,7 +70,7 @@
   // }
 
   .delete {
-    margin-left: 13px;
+    // margin-left: 13px;
     --fill-hover: var(--red);
     padding: 0 5px;
   }

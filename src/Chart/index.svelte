@@ -1,24 +1,27 @@
 <script>
   import { newChartColors, newHighlightedColors } from 'studio/Chart/colors'
-  import { downloadPng } from '@/Result/downloadPng'
+  import { downloadPng } from '@/PanelEditor/Result/downloadPng'
   import Chart from './Chart.svelte'
   import Metrics from './Metrics.svelte'
 
   export let columns
   export let dateColumns
   export let data
-  export let xAxisKey = [...dateColumns][0]
 
   let chart
 
-  $: metrics = columns
-    .filter(({ id }) => !dateColumns.has(id))
-    .map(({ id, title, formatter, chartStyle }) => ({
-      key: id.toString(),
-      label: title,
-      node: chartStyle || 'line',
-      formatter,
-    }))
+  $: xAxisKey = [...dateColumns][0]
+
+  $: metrics = data.length
+    ? columns
+        .filter(({ id }) => !dateColumns.has(id) && Number.isFinite(data[0][id]))
+        .map(({ id, title, formatter, chartStyle }) => ({
+          key: id.toString(),
+          label: title,
+          node: chartStyle || 'line',
+          formatter,
+        }))
+    : []
 
   $: chartData = data
     .map((row) => ({ ...row, datetime: Date.parse(row[xAxisKey]) }))
