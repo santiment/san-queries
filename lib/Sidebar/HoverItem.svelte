@@ -1,8 +1,10 @@
 <script lang="ts">import { onMount, onDestroy } from 'svelte';
 import HoverItem from 'san-studio/lib/Sidebar/HoverItem.svelte';
+import Active from './Active.svelte';
 export let item;
 export let node;
 export let hoverNode;
+export let active = false;
 let timer;
 
 const showPreview = () => false; // queryLayout(item.id).then((data) => destroyed || (layout = data))
@@ -21,5 +23,17 @@ onMount(startPreviewTimer);
 onDestroy(closePreview);</script>
 
 <HoverItem {node} {hoverNode}>
-  {item.title}
+  <Active class="circle-InSAZ6" />
+
+  {item.title || item.name}
 </HoverItem>
+
+<style>
+  :global(.circle-InSAZ6) {
+    display: none;
+  }
+
+  :global(.item.active) :global(.circle-InSAZ6) {
+    display: flex;
+  }
+</style>

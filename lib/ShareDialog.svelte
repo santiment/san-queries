@@ -33,7 +33,6 @@ const {
 } = data;
 const encodedTitle = encodeURIComponent(shareTitle);
 const encodedText = encodeURIComponent(text);
-
 let isPublic = false;
 let closeDialog;
 let inputNode;

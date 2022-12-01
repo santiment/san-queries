@@ -24,8 +24,11 @@ function onLeave() {
 }</script>
 
 <div class="metrics row mrg-xs mrg--t">
-  {#each metrics as metric, i (metric)}
-    <ColorBorder color={colors[i]} on:mouseenter={() => onEnter(metric)} on:mouseleave={onLeave}>
+  {#each metrics as metric (metric)}
+    <ColorBorder
+      color={colors[metric.key]}
+      on:mouseenter={() => onEnter(metric)}
+      on:mouseleave={onLeave}>
       {metric.label}
     </ColorBorder>
   {/each}

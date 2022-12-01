@@ -1,16 +1,17 @@
 <script>import { newChartColors, newHighlightedColors } from 'san-studio/lib/Chart/colors';
-import { downloadPng } from './../../lib/Result/downloadPng';
+import { downloadPng } from './../../lib/PanelEditor/Result/downloadPng';
 import Chart from './Chart.svelte';
 import Metrics from './Metrics.svelte';
 export let columns;
 export let dateColumns;
 export let data;
-export let xAxisKey = [...dateColumns][0];
 let chart;
 
-$: metrics = columns.filter(({
+$: xAxisKey = [...dateColumns][0];
+
+$: metrics = data.length ? columns.filter(({
   id
-}) => !dateColumns.has(id)).map(({
+}) => !dateColumns.has(id) && Number.isFinite(data[0][id])).map(({
   id,
   title,
   formatter,
@@ -20,7 +21,7 @@ $: metrics = columns.filter(({
   label: title,
   node: chartStyle || 'line',
   formatter
-}));
+})) : [];
 
 $: chartData = data.map(row => ({ ...row,
   datetime: Date.parse(row[xAxisKey])

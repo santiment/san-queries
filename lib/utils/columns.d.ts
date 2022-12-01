@@ -1,3 +1,2 @@
-declare type SharedColumn = Pick<SAN.Queries.Column, 'title' | 'formatterId' | 'isHidden' | 'chartStyle'>;
-export declare function shareColumn({ title, formatterId, chartStyle, isHidden, }: SAN.Queries.Column): SharedColumn;
-export {};
+export declare function newColumn(title: string, i: number, dateColumns: Set<number>): any;
+export declare function applyPanelData(panel: any, data: any): any;

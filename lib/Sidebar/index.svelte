@@ -1,11 +1,40 @@
-<script>import Sidebar from 'san-studio/lib/Sidebar/Sidebar.svelte';
+<script lang="ts">import Sidebar from 'san-studio/lib/Sidebar/Sidebar.svelte';
 import Search from 'san-studio/lib/Sidebar/Search.svelte';
 import Category from 'san-studio/lib/Sidebar/Category.svelte';
+import { currentUser as currentUser$ } from 'san-studio/lib/stores/user';
+import { getAppContext } from './../../lib/context';
 import MyDashboards from './MyDashboards.svelte';
+import { PremadeDashboards } from './queries';
+import Item from './Item.svelte';
+const {
+  dashboard$
+} = getAppContext();
 export let searchTerm = '';
 export let isFiltering = false; // export let onItemClick
-// $: favorites = getFavorites($favoriteMetrics, searchTerm)
-// function getFavorites(favoritesSet, searchTerm: string) {}</script>
+
+let selected = null;
+let selectedPanel;
+
+$: currentUser = $currentUser$; // $: favorites = getFavorites($favoriteMetrics, searchTerm)
+// function getFavorites(favoritesSet, searchTerm: string) {}
+
+
+function onDashboardSelect(dashboard) {
+  selected = dashboard;
+}
+
+function selectPanel(panel) {
+  window.__selectPanel(panel);
+
+  selectedPanel = panel;
+  if (window.__clearHoverItem) window.__clearHoverItem();
+}
+
+if (process.browser) {
+  window.__selectSidebarPanel = panel => {
+    selectedPanel = panel;
+  };
+}</script>
 
 <Sidebar isOpened isLocked>
   <section class="header">
@@ -17,10 +46,24 @@ export let isFiltering = false; // export let onItemClick
   <section
     class="sidebar-content"
     on:scroll={() => window.__clearHoverItem && window.__clearHoverItem()}>
-    <MyDashboards {searchTerm} {isFiltering} />
+    <MyDashboards
+      {currentUser}
+      {selectedPanel}
+      {searchTerm}
+      {isFiltering}
+      {selectPanel}
+      {onDashboardSelect} />
 
     <Category category="How to get started" {isFiltering} isOpened>
-      <div class="c-waterloo mrg-s mrg--l">Pre-made sample queries</div>
+      {#each PremadeDashboards as item}
+        <Item
+          {item}
+          {dashboard$}
+          {selectedPanel}
+          {selectPanel}
+          {selected}
+          onSelect={onDashboardSelect} />
+      {/each}
     </Category>
   </section>
 </Sidebar>
