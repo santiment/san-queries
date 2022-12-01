@@ -103,7 +103,7 @@
   <a
     id="fw-welcome"
     href="https://clickhouse.com/docs/en/sql-reference/"
-    class="btn row v-center mrg-l mrg--l"
+    class="documentation btn row v-center mrg-l mrg--l"
     target="_blank"
     rel="noopener noreferrer">
     <Svg id="description" w="12" h="14" class="mrg-s mrg--r" />
@@ -141,7 +141,8 @@
   }
 
   button,
-  .action {
+  .action,
+  .documentation {
     --fill: var(--waterloo);
     --color-hover: var(--green);
   }

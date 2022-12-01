@@ -16,12 +16,23 @@
 
   let editor
   let error = ''
+  let { __computedSql } = panel
 
   $: computedSql = panel.__computedSql || { headers: [], rows: [], dateColumns: new Set() }
   $: triggerDashboardUpdate(panel)
 
   if (process.browser) {
     window.scroll(0, 0)
+  }
+
+  let unsubscribe
+  if (!__computedSql) {
+    unsubscribe = dashboard$.subscribe(() => {
+      if (!panel.__computedSql) return
+
+      panel = panel
+      unsubscribe()
+    })
   }
 
   function onData(data) {
@@ -34,7 +45,10 @@
     controller.setValue(editor.getValue() + ' ' + parameter)
   }
 
-  onDestroy(clearTimeout)
+  onDestroy(() => {
+    clearTimeout()
+    unsubscribe()
+  })
 </script>
 
 <!-- <Header bind:panel bind:error {controller} {onData} /> -->

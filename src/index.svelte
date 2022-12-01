@@ -11,13 +11,17 @@
   import { getDashboardPath, getQueryString } from './sharing/url'
 
   export let dashboard = null
-  export let selectedPanel = null
+  export let selectedPanelId = undefined
 
   const { dashboard$ } = setAppContext({
     dashboard$: NewDashboard(dashboard),
   })
 
   let id = $dashboard$.id
+  let selectedPanel =
+    selectedPanelId !== undefined
+      ? $dashboard$.panels.find(({ id }, i) => id === selectedPanelId || i == selectedPanelId)
+      : null
 
   if (process.browser) {
     if (id) getDashboarCache($dashboard$)

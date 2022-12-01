@@ -16,20 +16,19 @@ const id = getIdFromSEOLink(dashboardRoute)
 
 if (Number.isFinite(id)) {
   queryDashboard(id).then((dashboard) => {
-    const selectedPanel = dashboard.panels.find(({ id }) => id === panelRoute)
-    start(dashboard, selectedPanel)
+    start(dashboard, panelRoute)
   })
 } else {
-  const { panels, selectedPanel } = parseSharedUrl(window.location.search)
-  start(panels && { panels }, selectedPanel)
+  const { panels, selectedPanelId } = parseSharedUrl(window.location.search)
+  start(panels && { panels }, selectedPanelId)
 }
 
-function start(dashboard, selectedPanel) {
+function start(dashboard, selectedPanelId) {
   new App({
     target: document.querySelector('#app'),
     props: {
       dashboard,
-      selectedPanel: selectedPanel && normalizePanel(selectedPanel),
+      selectedPanelId,
     },
   })
 

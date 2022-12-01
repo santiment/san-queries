@@ -26,15 +26,14 @@ export function getDashboardPath(
 
 export function parseSharedUrl(queryString: string): {
   panels?: SAN.Queries.DashboardPanel[]
-  selectedPanel?: SAN.Queries.DashboardPanel
+  selectedPanelId?: number
 } {
   const shared = parse(queryString) as { panels?: string; selected?: string }
 
   try {
     const panels = shared.panels ? JSON.parse(shared.panels) : undefined
-    const selectedPanel = panels && shared.selected && panels[shared.selected]
 
-    return { panels, selectedPanel }
+    return { panels, selectedPanelId: +(shared.selected as string) }
   } catch (e) {
     console.error(e)
     return {}

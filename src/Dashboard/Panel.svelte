@@ -8,10 +8,9 @@
   import Text from '@/visualizations/Text.svelte'
   import Chart from '@/Chart/index.svelte'
   import PieChart from '@/visualizations/PieChart/index.svelte'
-  import { Formatter, FormatType } from '@/PanelEditor/Result/Options/format'
   import { mutateComputeRawClickhouseQuery } from '@/api/query/raw'
   import { getParametersMap } from '@/utils/parameters'
-  import { applyPanelData, newColumn } from '@/utils/columns'
+  import { applyPanelData } from '@/utils/columns'
   import { noop } from 'svelte/internal'
   import { mutateComputeAndStorePanel } from '@/api/query/store'
 
