@@ -3,12 +3,10 @@
   import Options from './Options/index.svelte'
   import Visualization from './Visualization.svelte'
   import Header from './Header.svelte'
-  import { Formatter, FormatType } from './Options/format'
   import imgSrc from './no-data.svg'
   import { newColumn } from '@/utils/columns'
 
   export let panel
-  export let computedSql
   export let rows, headers, dateColumns
 
   let columnsHash = ''

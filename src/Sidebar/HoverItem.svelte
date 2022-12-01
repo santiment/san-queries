@@ -6,7 +6,6 @@
   export let item: any
   export let node: HTMLElement
   export let hoverNode: HTMLElement
-  export let active = false
 
   let timer
 
