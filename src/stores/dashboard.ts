@@ -103,7 +103,7 @@ export const Dashboard = (defaultValue?: null | SAN.Queries.Dashboard) => {
       })
       */
 
-      if (!dashboard.removedPanels) {
+      if (dashboard && !dashboard.removedPanels) {
         dashboard.removedPanels = []
       }
 

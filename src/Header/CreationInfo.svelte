@@ -37,8 +37,6 @@
   function onEditClick() {
     if (!currentUser) return
 
-    const handler = getState()
-
     showSaveDashboardDialog({
       ...getState(),
       dashboard,

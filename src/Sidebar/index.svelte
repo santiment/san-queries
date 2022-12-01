@@ -2,6 +2,7 @@
   import Sidebar from 'studio/Sidebar/Sidebar.svelte'
   import Search from 'studio/Sidebar/Search.svelte'
   import Category from 'studio/Sidebar/Category.svelte'
+  import { currentUser as currentUser$ } from 'studio/stores/user'
   import { getAppContext } from '@/context'
   import MyDashboards from './MyDashboards.svelte'
   import { PremadeDashboards } from './queries'
@@ -15,6 +16,8 @@
 
   let selected = null
   let selectedPanel: undefined | SAN.Queries.Panel
+
+  $: currentUser = $currentUser$
 
   // $: favorites = getFavorites($favoriteMetrics, searchTerm)
 
@@ -47,7 +50,13 @@
   <section
     class="sidebar-content"
     on:scroll={() => window.__clearHoverItem && window.__clearHoverItem()}>
-    <MyDashboards {selectedPanel} {searchTerm} {isFiltering} {selectPanel} {onDashboardSelect} />
+    <MyDashboards
+      {currentUser}
+      {selectedPanel}
+      {searchTerm}
+      {isFiltering}
+      {selectPanel}
+      {onDashboardSelect} />
 
     <Category category="How to get started" {isFiltering} isOpened>
       {#each PremadeDashboards as item}

@@ -8,4 +8,4 @@ const COMPUTE_AND_STORE_MUTATION = (dashboardId: number, panelId: string) => `
   }`
 
 export const mutateComputeAndStorePanel = (dashboardId: number, panelId: string) =>
-  mutate<any>(COMPUTE_AND_STORE_MUTATION(dashboardId, panelId)).then(console.log)
+  mutate<any>(COMPUTE_AND_STORE_MUTATION(dashboardId, panelId))

@@ -15,7 +15,7 @@ export function shareColumn({
   return column
 }
 
-export function newColumn(title: string, i: number, dateColumns: Set<string>) {
+export function newColumn(title: string, i: number, dateColumns: Set<number>) {
   const accessor = (data) => data[i]
 
   const column = {
@@ -24,7 +24,7 @@ export function newColumn(title: string, i: number, dateColumns: Set<string>) {
     accessor,
     format: accessor,
     sortAccessor: accessor,
-  }
+  } as any
 
   if (dateColumns.has(i)) {
     const { id, fn } = Formatter[FormatType.DATE]

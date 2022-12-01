@@ -50,6 +50,10 @@
     dashboard$.set(dashboard)
   }
 
+  function onResetLayout() {
+    dashboard$.set(null)
+  }
+
   onMount(showWelcomeWalkthrough)
 </script>
 
@@ -61,6 +65,8 @@
       <Svg id="arrow-down" w="8" h="5" />
     </button>
     <div slot="tooltip">
+      <button class="btn-ghost" on:click={onResetLayout}>Reset dashboard</button>
+
       <button
         class="btn-ghost"
         on:click={() => onClick(isAuthor ? SaveType.Save : SaveType.SaveAsNew)}>Save</button>
