@@ -38,7 +38,7 @@ if (!__computedSql) {
   unsubscribe = dashboard$.subscribe(() => {
     if (!panel.__computedSql) return;
     panel = panel;
-    unsubscribe();
+    if (unsubscribe) unsubscribe();
   });
 }
 
@@ -54,7 +54,7 @@ function onNewParameter(parameter) {
 
 onDestroy(() => {
   clearTimeout();
-  unsubscribe();
+  if (unsubscribe) unsubscribe();
 });</script>
 
 <!-- <Header bind:panel bind:error {controller} {onData} /> -->
