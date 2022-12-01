@@ -4,6 +4,7 @@ import { awaitChildren, BR } from './utils'
 export function showAddParameterWalkthrough() {
   FeatureWalkthrough$.show({
     id: 'fw-add-parameter',
+    align: 'right',
     title:
       'Add dynamic parameters to define a value that can be changed on-the-fly without hardcoding it in the query',
     description: `<p class="mrg-l mrg--b">Parameters are useful for reducing repetition and for creating dynamic dashboards.
@@ -23,6 +24,7 @@ export function showParameterOptionsWalkthrough(parentNode) {
 
     FeatureWalkthrough$.show({
       id: node.id,
+      align: 'right',
       title: 'Parameter options',
       description: `<p class="mrg-l mrg--b">Click on the parameter to open the options dialog.
       ${BR}

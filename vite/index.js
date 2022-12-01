@@ -5,7 +5,6 @@ import Notifications from 'webkit/ui/Notifications'
 import { startResponsiveController } from 'webkit/responsive'
 import { getIdFromSEOLink } from 'webkit/utils/url'
 import App from '../src/index.svelte'
-import { normalizePanel } from '../src/stores/dashboard'
 import { parseSharedUrl } from '../src/sharing/url'
 import { queryDashboard } from '../src/api/dashboard'
 

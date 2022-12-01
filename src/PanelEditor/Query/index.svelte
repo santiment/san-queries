@@ -5,10 +5,7 @@
   import { mutateComputeRawClickhouseQuery } from '@/api/query/raw'
   import { getParametersMap } from '@/utils/parameters'
   import { onMount } from 'svelte'
-  import {
-    showAddParameterWalkthrough,
-    showParameterOptionsWalkthrough,
-  } from '@/walkthroughs/parameters'
+  import { showParameterOptionsWalkthrough } from '@/walkthroughs/parameters'
   import Parameter from './Parameter.svelte'
   import { newChartColors } from 'san-studio/lib/Chart/colors'
 
@@ -40,7 +37,6 @@
   }
 
   onMount(() => {
-    showAddParameterWalkthrough()
     showParameterOptionsWalkthrough(controlsNode)
   })
 
@@ -68,7 +64,7 @@
   <SQLEditor bind:panel bind:editor bind:error {controller} />
 
   <div class="right border mrg-s mrg--l relative">
-    <div class="top row mrg-xxl mrg--b" bind:this={controlsNode}>
+    <div class="top row mrg-xxl mrg--b">
       <ExecuteButton onClick={onExecuteClick} onError={onQueryError} />
 
       <Parameters bind:panel {controller} />
@@ -78,7 +74,7 @@
       <div class="empty body-2 txt-center c-waterloo">No parameters added</div>
     {/if}
 
-    <div class="parameters column fluid">
+    <div class="parameters column fluid" bind:this={controlsNode}>
       {#each parameters as parameter, i}
         <Parameter
           class="parameter mrg-s mrg--b"
