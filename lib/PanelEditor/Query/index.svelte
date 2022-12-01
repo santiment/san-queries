@@ -4,7 +4,7 @@ import Parameters from './Parameters.svelte';
 import { mutateComputeRawClickhouseQuery } from './../../../lib/api/query/raw';
 import { getParametersMap } from './../../../lib/utils/parameters';
 import { onMount } from 'svelte';
-import { showAddParameterWalkthrough, showParameterOptionsWalkthrough } from './../../../lib/walkthroughs/parameters';
+import { showParameterOptionsWalkthrough } from './../../../lib/walkthroughs/parameters';
 import Parameter from './Parameter.svelte';
 import { newChartColors } from 'san-studio/lib/Chart/colors';
 export let panel;
@@ -36,7 +36,6 @@ function onQueryError(msg) {
 }
 
 onMount(() => {
-  showAddParameterWalkthrough();
   showParameterOptionsWalkthrough(controlsNode);
 });
 
@@ -63,7 +62,7 @@ function onParameterDelete(i) {
   <SQLEditor bind:panel bind:editor bind:error {controller} />
 
   <div class="right border mrg-s mrg--l relative">
-    <div class="top row mrg-xxl mrg--b" bind:this={controlsNode}>
+    <div class="top row mrg-xxl mrg--b">
       <ExecuteButton onClick={onExecuteClick} onError={onQueryError} />
 
       <Parameters bind:panel {controller} />
@@ -73,7 +72,7 @@ function onParameterDelete(i) {
       <div class="empty body-2 txt-center c-waterloo">No parameters added</div>
     {/if}
 
-    <div class="parameters column fluid">
+    <div class="parameters column fluid" bind:this={controlsNode}>
       {#each parameters as parameter, i}
         <Parameter
           class="parameter mrg-s mrg--b"

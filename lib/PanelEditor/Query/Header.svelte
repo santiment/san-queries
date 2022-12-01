@@ -1,5 +1,5 @@
 <script lang="ts">import { onMount } from 'svelte';
-import { showAddParameterWalkthrough, showParameterOptionsWalkthrough } from './../../../lib/walkthroughs/parameters';
+import { showParameterOptionsWalkthrough } from './../../../lib/walkthroughs/parameters';
 import { mutateComputeRawClickhouseQuery } from './../../../lib/api/query/raw';
 import { getParametersMap } from './../../../lib/utils/parameters';
 import ExecuteButton from './ExecuteButton.svelte';
@@ -27,7 +27,6 @@ function onQueryError(msg) {
 }
 
 onMount(() => {
-  showAddParameterWalkthrough();
   showParameterOptionsWalkthrough(controlsNode);
 });</script>
 
