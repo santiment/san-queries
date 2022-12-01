@@ -27,7 +27,7 @@ function normalizeColumn({ title, formatterId }, id) {
   return column
 }
 
-function normalizePanel(panel: SAN.Queries.DashboardPanel): SAN.Queries.Panel {
+export function normalizePanel(panel: SAN.Queries.DashboardPanel): SAN.Queries.Panel {
   const { sql } = panel
   const { query, parameters } = sql
 

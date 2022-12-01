@@ -8,20 +8,57 @@
   import Dashboard from './Dashboard/index.svelte'
   import { queryGetDashboardCache } from './api/query/cache'
   import { applyPanelData } from './utils/columns'
+  import { getDashboardPath, getQueryString } from './sharing/url'
 
   export let dashboard = null
+  export let selectedPanel = null
 
   const { dashboard$ } = setAppContext({
     dashboard$: NewDashboard(dashboard),
   })
 
   let id = $dashboard$.id
-  let selectedPanel = null
 
   if (process.browser) {
+    if (id) getDashboarCache($dashboard$)
+
     window.__selectPanel = (panel) => {
       selectedPanel = panel
     }
+  }
+
+  $: process.browser && updatePathname($dashboard$, selectedPanel)
+
+  function updatePathname(dashboard, selectedPanel) {
+    let path: string = window.__getShareBase?.() || '/'
+
+    if (dashboard.id) {
+      path += getDashboardPath(dashboard, selectedPanel)
+    } else {
+      path += getQueryString(dashboard, selectedPanel)
+    }
+
+    window.history.replaceState({}, '', path)
+  }
+
+  function getDashboarCache(dashboard) {
+    const Panel = {}
+    dashboard.panels.forEach((panel) => (Panel[panel.id] = panel))
+
+    queryGetDashboardCache(id)
+      .then((panels) =>
+        panels.forEach((data) => {
+          const panel = Panel[data.id]
+          if (!panel) return
+
+          applyPanelData(panel, data)
+        }),
+      )
+      .finally(() => {
+        if (id === dashboard.id) {
+          dashboard$.set(dashboard)
+        }
+      })
   }
 
   onDestroy(
@@ -31,25 +68,7 @@
       id = dashboard.id
       selectedPanel = null
 
-      if (id) {
-        const Panel = {}
-        dashboard.panels.forEach((panel) => (Panel[panel.id] = panel))
-
-        queryGetDashboardCache(id)
-          .then((panels) =>
-            panels.forEach((data) => {
-              const panel = Panel[data.id]
-              if (!panel) return
-
-              applyPanelData(panel, data)
-            }),
-          )
-          .finally(() => {
-            if (id === dashboard.id) {
-              dashboard$.set(dashboard)
-            }
-          })
-      }
+      if (id) getDashboarCache(dashboard)
     }),
   )
 </script>

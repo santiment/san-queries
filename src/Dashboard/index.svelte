@@ -42,11 +42,16 @@
 
     return layout
   }
+
+  function onLayoutChange() {
+    dashboard$.set($dashboard$)
+  }
 </script>
 
 <Grid
   tag="section"
   {layout}
+  {onLayoutChange}
   cols={6}
   rowSize={100}
   minCols={2}
@@ -65,6 +70,7 @@
     class={className}
     onDelete={isSinglePanel ? null : () => onPanelDelete(panel)}
     onDrag={onMouseDown}
+    onResizeEnd={onLayoutChange}
     on:click={() => onPanelSelect(panel)} />
 </Grid>
 

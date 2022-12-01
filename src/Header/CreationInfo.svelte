@@ -11,7 +11,7 @@
 
   const { dashboard$ } = getAppContext()
 
-  $: ({ id, title, user, commentsCount, votes, description = '' } = dashboard)
+  $: ({ id, title, user, commentsCount, description = '' } = dashboard)
 
   function getState() {
     if (!dashboard.user) {
@@ -55,7 +55,6 @@
     {id}
     {title}
     {user}
-    {votes}
     {currentUser}
     editLabel={isAuthor ? 'Edit dashboard' : 'Save as'}
     comments={{

@@ -22,6 +22,7 @@
   export let style: string
   export let onDelete
   export let onDrag
+  export let onResizeEnd
 
   let node
 
@@ -104,7 +105,7 @@
     {/if}
   </div>
 
-  <Resizer />
+  <Resizer onEnd={onResizeEnd} />
 </div>
 
 <style lang="scss">

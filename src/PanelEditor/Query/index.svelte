@@ -1,5 +1,4 @@
 <script lang="ts">
-  import RowPanels from '@/RowPanels.svelte'
   import SQLEditor from './SQLEditor.svelte'
   import ExecuteButton from './ExecuteButton.svelte'
   import Parameters from './Parameters.svelte'
@@ -10,7 +9,7 @@
     showAddParameterWalkthrough,
     showParameterOptionsWalkthrough,
   } from '@/walkthroughs/parameters'
-  import Parameter, { getParameterSQL } from './Parameter.svelte'
+  import Parameter from './Parameter.svelte'
   import { newChartColors } from 'san-studio/lib/Chart/colors'
 
   export let panel

@@ -15,8 +15,7 @@
   import { showSaveDashboardDialog } from '@/SaveDashboardDialog.svelte'
   import { noop } from 'svelte/internal'
   import { mutateComputeAndStorePanel } from '@/api/query/store'
-  import { getSEOLinkFromIdAndTitle } from 'san-webkit/lib/utils/url'
-  import { shareDashboard } from '@/sharing'
+  import { getDashboardPath, getQueryString } from '@/sharing/url'
 
   const { dashboard$ } = getAppContext()
 
@@ -60,19 +59,12 @@
   }
 
   function onShare() {
-    const { id, title } = dashboard
     let link = window.location.href + (window.__getShareBase?.() || '')
 
-    if (id) {
-      const dashboardLink = getSEOLinkFromIdAndTitle(id, title) + '/'
-      const panelLink = selectedPanel?.id || ''
-
-      link += dashboardLink + panelLink
+    if (dashboard.id) {
+      link += getDashboardPath(dashboard, selectedPanel)
     } else {
-      link += '?panels=' + encodeURIComponent(JSON.stringify(shareDashboard(dashboard)))
-      if (selectedPanel) {
-        link += '&selected=' + dashboard.panels.findIndex((panel) => panel === selectedPanel)
-      }
+      link += getQueryString(dashboard, selectedPanel)
     }
 
     showShareDialog({ title: 'Share dashboard', data: { link } })

@@ -1,28 +1,43 @@
 import 'webkit/styles/main.css'
-import { parse } from 'webkit/utils/url'
 import Dialogs from 'webkit/ui/Dialog/Dialogs.svelte'
 import FeatureWalkthrough from 'webkit/ui/FeatureWalkthrough/svelte'
 import Notifications from 'webkit/ui/Notifications'
 import { startResponsiveController } from 'webkit/responsive'
+import { getIdFromSEOLink } from 'webkit/utils/url'
 import App from '../src/index.svelte'
+import { normalizePanel } from '../src/stores/dashboard'
+import { parseSharedUrl } from '../src/sharing/url'
+import { queryDashboard } from '../src/api/dashboard'
 
 startResponsiveController()
 
-const { shared } = parse(window.location.search)
-const panel = shared ? JSON.parse(shared) : undefined
-history.pushState(null, '', '/')
+const [dashboardRoute, panelRoute] = window.location.pathname.slice(1).split('/')
+const id = getIdFromSEOLink(dashboardRoute)
 
-new App({
-  target: document.querySelector('#app'),
-  props: {
-    dashboard: panel && { panels: [panel] },
-  },
-})
+if (Number.isFinite(id)) {
+  queryDashboard(id).then((dashboard) => {
+    const selectedPanel = dashboard.panels.find(({ id }) => id === panelRoute)
+    start(dashboard, selectedPanel)
+  })
+} else {
+  const { panels, selectedPanel } = parseSharedUrl(window.location.search)
+  start(panels && { panels }, selectedPanel)
+}
 
-new Dialogs({ target: document.body })
+function start(dashboard, selectedPanel) {
+  new App({
+    target: document.querySelector('#app'),
+    props: {
+      dashboard,
+      selectedPanel: selectedPanel && normalizePanel(selectedPanel),
+    },
+  })
 
-new FeatureWalkthrough({ target: document.body })
+  new Dialogs({ target: document.body })
 
-new Notifications({ target: document.body })
+  new FeatureWalkthrough({ target: document.body })
+
+  new Notifications({ target: document.body })
+}
 
 window.toggleNight = () => document.body.classList.toggle('night-mode')
