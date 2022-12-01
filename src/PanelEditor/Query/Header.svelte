@@ -1,9 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import {
-    showAddParameterWalkthrough,
-    showParameterOptionsWalkthrough,
-  } from '@/walkthroughs/parameters'
+  import { showParameterOptionsWalkthrough } from '@/walkthroughs/parameters'
   import { mutateComputeRawClickhouseQuery } from '@/api/query/raw'
   import { getParametersMap } from '@/utils/parameters'
   import ExecuteButton from './ExecuteButton.svelte'
@@ -34,7 +31,6 @@
   }
 
   onMount(() => {
-    showAddParameterWalkthrough()
     showParameterOptionsWalkthrough(controlsNode)
   })
 </script>
