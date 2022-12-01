@@ -10,7 +10,6 @@
   let className = ''
   export { className as class }
   // export let user
-  export let selectedPanel
   export let isAuthor
 
   const { dashboard$ } = getAppContext()
@@ -56,7 +55,7 @@
   onMount(showWelcomeWalkthrough)
 </script>
 
-<div class="row mrg-s mrg--l border relative">
+<div class="row mrg-s mrg--l border relative {className}">
   <button class="save btn" on:click={() => onClick(isAuthor ? SaveType.Save : SaveType.SaveAsNew)}
     >{isAuthor ? 'Save' : 'Save as'}</button>
   <Tooltip on="click" duration={0} align="center" class="$style.tooltip" bind:isOpened>
@@ -118,10 +117,5 @@
   .delete {
     --color: var(--red);
     --color-hover: var(--red-hover);
-  }
-
-  a {
-    --fill: var(--waterloo);
-    --color-hover: var(--green);
   }
 </style>
