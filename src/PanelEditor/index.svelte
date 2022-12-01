@@ -31,7 +31,7 @@
       if (!panel.__computedSql) return
 
       panel = panel
-      unsubscribe()
+      if (unsubscribe) unsubscribe()
     })
   }
 
@@ -47,7 +47,7 @@
 
   onDestroy(() => {
     clearTimeout()
-    unsubscribe()
+    if (unsubscribe) unsubscribe()
   })
 </script>
 
