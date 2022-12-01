@@ -6,9 +6,9 @@ import { mutateRemoveDashboardPanel } from '@/api/dashboard/remove'
 import { mutateUpdateDashboard, mutateUpdateDashboardPanel } from '@/api/dashboard/update'
 import { getParametersMap } from '@/utils/parameters'
 import { myDashboards$ } from '@/stores/dashboards'
-import { shareColumn } from '@/utils/columns'
 import { mutateDeleteDashboard } from '@/api/dashboard/delete'
 import { mutateComputeAndStorePanel } from '@/api/query/store'
+import { sharePanelSettings } from '@/sharing'
 
 export function startSaveDashboardFlow(dashboard: SAN.Queries.Dashboard) {
   const mutation = dashboard.id ? mutateUpdateDashboard : mutateCreateDashboard
@@ -25,7 +25,6 @@ export function startSavePanelFlow(
 ) {
   const { id: dashboardId } = dashboard
   const { id, name, settings, sql } = panel
-  const { type, columns, xAxisKey, layout } = settings
 
   const mutation = !isNewDashboard && id ? mutateUpdateDashboardPanel : mutateCreateDashboardPanel
   return mutation({
@@ -36,13 +35,7 @@ export function startSavePanelFlow(
       query: sql.query,
       parameters: JSON.stringify(getParametersMap(sql.parameters)),
     },
-    settings: JSON.stringify({
-      type,
-      xAxisKey,
-      layout: layout?.slice(0, 4),
-      columns: columns.map(shareColumn),
-      parameters: sql.parameters.map(({ type }) => ({ type })),
-    }),
+    settings: JSON.stringify(sharePanelSettings(settings, sql)),
   } as any).then((updated) => {
     panel.id = updated.id
     mutateComputeAndStorePanel(dashboardId, panel.id).catch(noop)

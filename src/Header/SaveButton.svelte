@@ -12,7 +12,6 @@
   // export let user
   export let selectedPanel
   export let isAuthor
-  export let onUpdateClick
 
   const { dashboard$ } = getAppContext()
 
@@ -85,29 +84,6 @@
     </div>
   </Tooltip>
 </div>
-
-<a
-  id="fw-welcome"
-  href="https://clickhouse.com/docs/en/sql-reference/"
-  class="btn row v-center mrg-l mrg--l"
-  target="_blank"
-  rel="noopener noreferrer">
-  <Svg id="description" w="12" h="14" class="mrg-s mrg--r" />
-  Documentation</a>
-
-{#if !selectedPanel}
-  <button class="btn mrg-xl mrg--l row v-center {className}" on:click={onUpdateClick}>
-    <Svg id="refresh" w="16" class="mrg-s mrg--r" />
-    Update
-  </button>
-{/if}
-
-<button
-  class="btn mrg-xl mrg--l row v-center {className}"
-  on:click={() => onClick(SaveType.SaveAsNew)}>
-  <Svg id="copy" w="16" class="mrg-s mrg--r" />
-  Duplicate
-</button>
 
 <style>
   .save {

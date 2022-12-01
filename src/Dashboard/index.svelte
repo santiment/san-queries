@@ -59,6 +59,7 @@
   {@const panel = panels[i]}
 
   <Panel
+    {dashboard}
     {panel}
     {style}
     class={className}

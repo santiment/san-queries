@@ -11,10 +11,13 @@
   import { Formatter, FormatType } from '@/PanelEditor/Result/Options/format'
   import { mutateComputeRawClickhouseQuery } from '@/api/query/raw'
   import { getParametersMap } from '@/utils/parameters'
-  import { newColumn } from '@/utils/columns'
+  import { applyPanelData, newColumn } from '@/utils/columns'
+  import { noop } from 'svelte/internal'
+  import { mutateComputeAndStorePanel } from '@/api/query/store'
 
   let className
   export { className as class }
+  export let dashboard
   export let panel: SAN.Queries.Panel
   export let style: string
   export let onDelete
@@ -28,15 +31,16 @@
   $: ({ dateColumns = new Set() } = __computedSql || {})
 
   function onUpdateClick() {
-    const { query, parameters } = panel.sql
+    const { id, sql } = panel
+    const { query, parameters } = sql
+
+    if (id) {
+      mutateComputeAndStorePanel(dashboard.id, id).catch(noop)
+    }
 
     return mutateComputeRawClickhouseQuery(query, getParametersMap(parameters))
       .then((data) => {
-        const { rows, headers, dateColumns } = data
-
-        panel.__rows = rows
-        panel.__computedSql = data
-        panel.settings.columns = headers.map((title, i) => newColumn(title, i, dateColumns))
+        applyPanelData(panel, data)
 
         panel = panel
       })
@@ -64,8 +68,8 @@
   class:panel_text={type === PanelType.TEXT}
   bind:this={node}>
   <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <h3 class="btn row body-2 hv-center single-line relative" on:click>
-    {panel.name}
+  <h3 class="btn row body-2 v-center relative" on:click>
+    <span class="single-line mrg-a mrg--l mrg--r">{panel.name}</span>
 
     <div class="actions row v-center">
       <button class="reload btn mrg-a mrg--l" on:click|stopPropagation={onUpdateClick}>
@@ -143,8 +147,7 @@
   }
 
   .actions {
-    position: absolute;
-    right: 18px;
+    margin-right: 10px;
     --fill: var(--waterloo);
   }
 

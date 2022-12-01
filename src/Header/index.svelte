@@ -9,10 +9,14 @@
   import SaveButton from './SaveButton.svelte'
   // import { mutateComputeRawClickhouseQuery } from '@/api/rawQuery'
   import { getParametersMap } from '@/utils/parameters'
-  import { newColumn, shareColumn } from '@/utils/columns'
+  import { applyPanelData } from '@/utils/columns'
   import NewPanelButton from './NewPanelButton.svelte'
   import { mutateComputeRawClickhouseQuery } from '@/api/query/raw'
-  import { Formatter, FormatType } from '@/PanelEditor/Result/Options/format'
+  import { showSaveDashboardDialog } from '@/SaveDashboardDialog.svelte'
+  import { noop } from 'svelte/internal'
+  import { mutateComputeAndStorePanel } from '@/api/query/store'
+  import { getSEOLinkFromIdAndTitle } from 'san-webkit/lib/utils/url'
+  import { shareDashboard } from '@/sharing'
 
   const { dashboard$ } = getAppContext()
 
@@ -32,17 +36,17 @@
 
   function onUpdateClick() {
     dashboard.panels.forEach((panel) => {
-      const { query, parameters } = panel.sql
+      const { id, sql } = panel
+      const { query, parameters } = sql
+
+      if (id) {
+        mutateComputeAndStorePanel(dashboard.id, id).catch(noop)
+      }
 
       return mutateComputeRawClickhouseQuery(query, getParametersMap(parameters))
         .then((data) => {
-          const { rows, headers, dateColumns } = data
+          applyPanelData(panel, data)
 
-          panel.__rows = rows
-          panel.__computedSql = data
-          panel.settings.columns = headers.map((title, i) => newColumn(title, i, dateColumns))
-
-          // panels = panels
           dashboard$.set(dashboard)
         })
         .catch((e) => {
@@ -56,23 +60,20 @@
   }
 
   function onShare() {
-    let link = window.location.href + '?shared='
-    const { name, sql, settings } = dashboard.panels[0]
-    const { type, columns, xAxisKey, layout } = settings
+    const { id, title } = dashboard
+    let link = window.location.href + (window.__getShareBase?.() || '')
 
-    link += encodeURIComponent(
-      JSON.stringify({
-        name,
-        sql: { ...sql, parameters: getParametersMap(sql.parameters) },
-        settings: {
-          type,
-          xAxisKey,
-          layout: layout?.slice(0, 4),
-          columns: columns.map(shareColumn),
-          parameters: sql.parameters.map(({ type }) => ({ type })),
-        },
-      }),
-    )
+    if (id) {
+      const dashboardLink = getSEOLinkFromIdAndTitle(id, title) + '/'
+      const panelLink = selectedPanel?.id || ''
+
+      link += dashboardLink + panelLink
+    } else {
+      link += '?panels=' + encodeURIComponent(JSON.stringify(shareDashboard(dashboard)))
+      if (selectedPanel) {
+        link += '&selected=' + dashboard.panels.findIndex((panel) => panel === selectedPanel)
+      }
+    }
 
     showShareDialog({ title: 'Share dashboard', data: { link } })
   }
@@ -105,7 +106,37 @@
 
   <!-- <Comments bind:isCommentsShowed /> -->
 
-  <SaveButton class="$style.action" {user} {isAuthor} {selectedPanel} {onUpdateClick} />
+  <SaveButton class="$style.action" {user} {isAuthor} {selectedPanel} />
+
+  <a
+    id="fw-welcome"
+    href="https://clickhouse.com/docs/en/sql-reference/"
+    class="btn row v-center mrg-l mrg--l"
+    target="_blank"
+    rel="noopener noreferrer">
+    <Svg id="description" w="12" h="14" class="mrg-s mrg--r" />
+    Documentation</a>
+
+  {#if !selectedPanel}
+    <button class="action btn mrg-xl mrg--l row v-center " on:click={onUpdateClick}>
+      <Svg id="refresh" w="16" class="mrg-s mrg--r" />
+      Update
+    </button>
+  {/if}
+
+  {#if dashboard.id}
+    <button
+      class="action btn mrg-xl mrg--l row v-center"
+      on:click={() =>
+        showSaveDashboardDialog({
+          title: 'Save dashboard',
+          action: 'Save',
+          dashboard: { ...dashboard, id: undefined },
+        })}>
+      <Svg id="copy" w="16" class="mrg-s mrg--r" />
+      Duplicate
+    </button>
+  {/if}
 
   <button class="btn mrg-xl mrg--l row v-center" on:click={onShare}>
     <Svg id="share-dots" w="14" h="16" class="mrg-s mrg--r" />

@@ -2,7 +2,7 @@
   import { dialogs } from 'webkit/ui/Dialog'
   import ShareDialog from './ShareDialog.svelte'
 
-  export const showShareDialog = (props): Promise<unknown> => dialogs.showOnce(ShareDialog, props)
+  export const showShareDialog = (props) => dialogs.showOnce(ShareDialog, props)
 
   const SOCIALS = [
     {
