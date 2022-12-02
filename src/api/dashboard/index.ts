@@ -20,13 +20,12 @@ export const deleteQueryDashboardCache = (id: number) => Cache.delete(DASHBOARD_
 // -------------------------
 
 export const RECENT_USER_DASHBOARDS_QUERY = `{
-  getMostRecent(types: [DASHBOARD], page: 1, pageSize: 30, currentUserDataOnly: true) {
-    data {
-      dashboard {
-        id
-        title:name
-        description
-      }
+  currentUser {
+    dashboards {
+      id
+      title:name
+      description
+      updatedAt
     }
   }
 }`
@@ -34,20 +33,33 @@ export const RECENT_USER_DASHBOARDS_QUERY = `{
 export type ShortDashboard = {
   id: number
   title: string
-  description
+  description?: string
+  updatedAt: string
 }
 
 type RecentDashboardsQuery = SAN.API.Query<
-  'getMostRecent',
-  {
-    data: {
-      dashboard: ShortDashboard
-    }[]
+  'currentUser',
+  null | {
+    dashboards: ShortDashboard[]
   }
 >
 
-const itemAccessor = ({ dashboard }) => dashboard
-const userDashboardsAccessor = ({ getMostRecent }: RecentDashboardsQuery) =>
-  getMostRecent.data.map(itemAccessor) as ShortDashboard[]
+const sorter = (a: ShortDashboard, b: ShortDashboard) =>
+  Date.parse(b.updatedAt) - Date.parse(a.updatedAt)
+
+function precacheCurrentUserDashboards(data: RecentDashboardsQuery) {
+  if (data.currentUser) {
+    data.currentUser.dashboards.sort(sorter)
+  }
+
+  return data
+}
+
+const precacher = () => precacheCurrentUserDashboards
+
+const userDashboardsAccessor = ({ currentUser }: RecentDashboardsQuery) =>
+  (currentUser?.dashboards || []) as ShortDashboard[]
 export const queryUserDashboards = () =>
-  query<RecentDashboardsQuery>(RECENT_USER_DASHBOARDS_QUERY).then(userDashboardsAccessor)
+  query<RecentDashboardsQuery>(RECENT_USER_DASHBOARDS_QUERY, {
+    precacher,
+  }).then(userDashboardsAccessor)
