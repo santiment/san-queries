@@ -1,21 +1,8 @@
 import { newPanel } from '@/stores/dashboard'
-
-export const Dashbaord = (
-  title: string,
-  panels: { name: string; query: string; parameters?: SAN.Queries.SQL['parameters'] }[],
-) => ({
-  title,
-  panels: panels.map(({ name, query, parameters }) => {
-    const panel = newPanel(name, undefined, query)
-    panel.submetricOf = 1
-    if (parameters) panel.sql.parameters = parameters
-    return panel
-  }),
-  votes: {},
-})
+import { PanelType } from '@/types'
 
 export const PremadeDashboards = [
-  Dashbaord('Exploring dataset (SQL tutorial)', [
+  Dashboard('Exploring dataset (SQL tutorial)', [
     {
       name: 'Step 1',
       query: `/*
@@ -103,7 +90,7 @@ SELECT count(), toDate(dt) as countedDay FROM btc_balances WHERE countedDay > no
     },
   ]),
 
-  Dashbaord('Balances', [
+  Dashboard('Balances', [
     {
       name: 'Check my current BTC balance using btc_balances',
       query: `/* To use the query properly add a parameter of type text 
@@ -134,7 +121,7 @@ LIMIT 1`,
     },
   ]),
 
-  Dashbaord('NFT Trades', [
+  Dashboard('NFT Trades', [
     {
       name: 'Check the number of unique wallets that have owned an NFT last 7 days.',
       query: `SELECT countDistinct(buyer_address) AS uniqueBuyers
@@ -234,10 +221,23 @@ ORDER BY sum_amount DESC`,
   ]),
 ]
 
-/*
-
-    {
-      name: '',
-      query: ``,
-    },
-*/
+export function Dashboard(
+  title: string,
+  panels: {
+    name: string
+    query: string
+    type?: PanelType
+    parameters?: SAN.Queries.SQL['parameters']
+  }[],
+) {
+  return {
+    title,
+    panels: panels.map(({ name, query, type = PanelType.TABLE, parameters }) => {
+      const panel = newPanel(name, type, query)
+      panel.submetricOf = 1
+      if (parameters) panel.sql.parameters = parameters
+      return panel
+    }),
+    votes: {},
+  }
+}
