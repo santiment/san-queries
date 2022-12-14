@@ -85,6 +85,7 @@
       scrollbar-width: thin;
       padding-bottom: 30vh;
       max-width: 258px;
+      z-index: 1;
 
       &:hover {
         overflow-y: auto;

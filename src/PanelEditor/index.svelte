@@ -32,6 +32,7 @@
 
       panel = panel
       if (unsubscribe) unsubscribe()
+      unsubscribe = null
     })
   }
 
