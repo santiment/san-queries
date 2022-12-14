@@ -100,12 +100,23 @@
 
   <a
     id="fw-welcome"
+    href="https://academy.santiment.net/sql-editor/"
+    class="documentation btn row v-center mrg-l mrg--l"
+    target="_blank"
+    rel="noopener noreferrer">
+    <Svg id="description" w="12" h="14" class="mrg-s mrg--r" />
+    Documentation
+  </a>
+
+  <a
+    id="fw-welcome"
     href="https://clickhouse.com/docs/en/sql-reference/"
     class="documentation btn row v-center mrg-l mrg--l"
     target="_blank"
     rel="noopener noreferrer">
     <Svg id="description" w="12" h="14" class="mrg-s mrg--r" />
-    Documentation</a>
+    SQL Reference
+  </a>
 
   {#if !selectedPanel}
     <button class="action btn mrg-xl mrg--l row v-center " on:click={onUpdateClick}>
