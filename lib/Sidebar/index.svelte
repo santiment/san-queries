@@ -79,6 +79,7 @@ if (process.browser) {
   scrollbar-width: thin;
   padding-bottom: 30vh;
   max-width: 258px;
+  z-index: 1;
 }
 :global(.sidebar-content:hover) {
   overflow-y: auto;

@@ -39,6 +39,7 @@ if (!__computedSql) {
     if (!panel.__computedSql) return;
     panel = panel;
     if (unsubscribe) unsubscribe();
+    unsubscribe = null;
   });
 }
 
