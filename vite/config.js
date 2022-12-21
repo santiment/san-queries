@@ -41,6 +41,8 @@ export default defineConfig({
     'process.env.ICONS_PATH': JSON.stringify(process.env.ICONS_PATH),
     'process.env.IS_DEV_MODE': JSON.stringify(process.env.IS_DEV_MODE),
 
+    'process.env.SERVER_FETCH': 'require("node-fetch")',
+
     'process.env': isDev ? process.env : {},
   },
   optimizeDeps: {
