@@ -3,6 +3,8 @@ require('@babel/register')({
   only: [/node_modules\/san-webkit/],
 })
 
+process.env.SERVER_FETCH = require('node-fetch')
+
 const fs = require('fs')
 const path = require('path')
 const { query } = require('san-webkit/lib/api')
