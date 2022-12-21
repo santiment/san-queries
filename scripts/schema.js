@@ -4,6 +4,7 @@ require('@babel/register')({
 })
 
 process.env.SERVER_FETCH = require('node-fetch')
+globalThis.fetch = require('node-fetch')
 
 const fs = require('fs')
 const path = require('path')

@@ -38,7 +38,8 @@
     "@babel/register": "^7.18.9",
     "medium-editor": "^5.23.3",
     "monaco-clickhouse": "https://github.com/DmitriVanGuard/monaco-editor#92558250",
-    "monaco-editor": "^0.33.0"
+    "monaco-editor": "^0.33.0",
+    "node-fetch": "^2.6.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "^7.18.6",
@@ -56,7 +57,6 @@
     "marked": "^4.0.18",
     "mathjs": "^9.4.4",
     "monaco-editor-core": "0.33.0-dev.20220214",
-    "node-fetch": "^2.6.1",
     "prettier": "^2.7.1",
     "prettier-plugin-svelte": "^2.7.0",
     "san-studio": "https://github.com/santiment/san-studio#d22bbbd",
