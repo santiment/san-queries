@@ -3,7 +3,7 @@ import { PANEL_FRAGMENT, SHORT_DASHBOARD_FRAGMENT } from './fragments'
 
 const CREATE_DASHBOARD_MUTATION = `
   mutation($title:String!, $description:String, $isPublic:Boolean, $settings:json) {
-    createDashboard(name:$title, description:$description, isPublic:$isPublic, tempJson:$settings) {
+    createDashboard(name:$title, description:$description, isPublic:$isPublic) {
       ${SHORT_DASHBOARD_FRAGMENT}
     }
   }`
