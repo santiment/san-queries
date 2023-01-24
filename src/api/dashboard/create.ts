@@ -2,7 +2,7 @@ import { mutate } from 'webkit/api'
 import { PANEL_FRAGMENT, SHORT_DASHBOARD_FRAGMENT } from './fragments'
 
 const CREATE_DASHBOARD_MUTATION = `
-  mutation($title:String!, $description:String, $isPublic:Boolean, $settings:json) {
+  mutation($title:String!, $description:String, $isPublic:Boolean) {
     createDashboard(name:$title, description:$description, isPublic:$isPublic) {
       ${SHORT_DASHBOARD_FRAGMENT}
     }
