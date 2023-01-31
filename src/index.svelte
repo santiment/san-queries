@@ -33,6 +33,7 @@
 
   $: process.browser && updatePathname($dashboard$, selectedPanel)
 
+  if (process.browser) window.__updatePathname = () => updatePathname($dashboard$, selectedPanel)
   function updatePathname(dashboard, selectedPanel) {
     let path: string = window.__getShareBase?.() || '/'
 
@@ -42,7 +43,7 @@
       path += getQueryString(dashboard, selectedPanel)
     }
 
-    window.history.replaceState({}, '', path)
+    window.history.replaceState(window.history.state, '', path)
   }
 
   function getDashboarCache(dashboard) {
