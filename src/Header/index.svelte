@@ -59,12 +59,9 @@
   }
 
   function onShare() {
-    let link = window.location.href
+    if (window.__updatePathname) window.__updatePathname()
 
-    if (!dashboard.id) {
-      link += getQueryString(dashboard, selectedPanel)
-    }
-
+    const link = window.location.href
     showShareDialog({ title: 'Share dashboard', data: { link } })
   }
 
