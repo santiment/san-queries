@@ -30,6 +30,8 @@ if (process.browser) {
 
 $: process.browser && updatePathname($dashboard$, selectedPanel);
 
+if (process.browser) window.__updatePathname = () => updatePathname($dashboard$, selectedPanel);
+
 function updatePathname(dashboard, selectedPanel) {
   var _a;
 
@@ -41,7 +43,7 @@ function updatePathname(dashboard, selectedPanel) {
     path += getQueryString(dashboard, selectedPanel);
   }
 
-  window.history.replaceState({}, '', path);
+  window.history.replaceState(window.history.state, '', path);
 }
 
 function getDashboarCache(dashboard) {
