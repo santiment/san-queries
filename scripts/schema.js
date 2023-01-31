@@ -11,7 +11,7 @@ const path = require('path')
 const { query } = require('san-webkit/lib/api')
 const { mkdir } = require('san-webkit/scripts/utils')
 
-process.env.GQL_SERVER_URL = 'https://api-stage.santiment.net/graphiql'
+process.env.GQL_SERVER_URL = 'https://api.santiment.net/graphiql'
 process.browser = false
 
 const ROOT = path.resolve(__dirname, '..')
@@ -26,23 +26,30 @@ function fetchSchema() {
   saveSchema(TABLES, [])
   saveSchema(FUNCTIONS, [])
 
-  get('functions', 'n:name').then(saveFunctions)
-  get('columns', 'n:name ta:table ty:type').then(saveTableColumns)
-  get('tables', 'n:name e:engine').then(saveTables)
+  return Promise.all([
+    get('functions', 'n:name').then(saveFunctions),
+    get('columns', 'n:name ta:table ty:type').then(saveTableColumns),
+    get('tables', 'n:name e:engine').then(saveTables),
+  ]).then(([fns, columns, tables]) => {
+    return {
+      hasData: Boolean(fns.length && columns.length && tables.length),
+      fns,
+      columns,
+      tables,
+    }
+  })
 }
-
-fetchSchema()
 
 // ---------------------------------------------
 
 function saveFunctions(data) {
   const result = data.map(({ n: name }) => name)
-  saveSchema(FUNCTIONS, result)
+  return saveSchema(FUNCTIONS, result)
 }
 
 function saveTables(data) {
   const result = data.map(({ n: name, e: engine }) => [name, engine])
-  saveSchema(TABLES, result)
+  return saveSchema(TABLES, result)
 }
 
 function saveTableColumns(data) {
@@ -59,7 +66,8 @@ function saveTableColumns(data) {
     }
     columns.push([name, type])
   })
-  saveSchema(COLUMNS, result)
+
+  return saveSchema(COLUMNS, result)
 }
 
 // ---------------------------------------------
@@ -72,6 +80,8 @@ function get(field, data) {
 function saveSchema(filename, data) {
   mkdir(SCHEMA_DIR)
   fs.writeFileSync(path.resolve(SCHEMA_DIR, filename) + '.json', JSON.stringify(data))
+
+  return data
 }
 
 exports.module = { fetchSchema }
