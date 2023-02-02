@@ -4,14 +4,12 @@
   import { currentUser as currentUser$ } from 'studio/stores/user'
   import { getAppContext } from '@/context'
   import CreationInfo from './CreationInfo.svelte'
-  // import Comments from './Comments.svelte'
   import { showShareDialog } from '@/ShareDialog.svelte'
   import SaveButton from './SaveButton.svelte'
-  // import { mutateComputeRawClickhouseQuery } from '@/api/rawQuery'
   import { getParametersMap } from '@/utils/parameters'
   import { applyPanelData } from '@/utils/columns'
   import NewPanelButton from './NewPanelButton.svelte'
-  import { mutateComputeRawClickhouseQuery } from '@/api/query/raw'
+  import { queryComputeRawClickhouse } from '@/api/query/raw'
   import { showSaveDashboardDialog } from '@/SaveDashboardDialog.svelte'
   import { noop } from 'svelte/internal'
   import { mutateComputeAndStorePanel } from '@/api/query/store'
@@ -42,7 +40,7 @@
         mutateComputeAndStorePanel(dashboard.id, id).catch(noop)
       }
 
-      return mutateComputeRawClickhouseQuery(query, getParametersMap(parameters))
+      return queryComputeRawClickhouse(query, getParametersMap(parameters))
         .then((data) => {
           applyPanelData(panel, data)
 
