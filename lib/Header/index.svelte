@@ -2,15 +2,13 @@
 import { notifications$ } from 'san-webkit/lib/ui/Notifications';
 import { currentUser as currentUser$ } from 'san-studio/lib/stores/user';
 import { getAppContext } from './../../lib/context';
-import CreationInfo from './CreationInfo.svelte'; // import Comments from './Comments.svelte'
-
+import CreationInfo from './CreationInfo.svelte';
 import { showShareDialog } from './../../lib/ShareDialog.svelte';
-import SaveButton from './SaveButton.svelte'; // import { mutateComputeRawClickhouseQuery } from './../../lib/api/rawQuery'
-
+import SaveButton from './SaveButton.svelte';
 import { getParametersMap } from './../../lib/utils/parameters';
 import { applyPanelData } from './../../lib/utils/columns';
 import NewPanelButton from './NewPanelButton.svelte';
-import { mutateComputeRawClickhouseQuery } from './../../lib/api/query/raw';
+import { queryComputeRawClickhouse } from './../../lib/api/query/raw';
 import { showSaveDashboardDialog } from './../../lib/SaveDashboardDialog.svelte';
 import { noop } from 'svelte/internal';
 import { mutateComputeAndStorePanel } from './../../lib/api/query/store';
@@ -50,7 +48,7 @@ function onUpdateClick() {
       mutateComputeAndStorePanel(dashboard.id, id).catch(noop);
     }
 
-    return mutateComputeRawClickhouseQuery(query, getParametersMap(parameters)).then(data => {
+    return queryComputeRawClickhouse(query, getParametersMap(parameters)).then(data => {
       applyPanelData(panel, data);
       dashboard$.set(dashboard);
     }).catch(e => {

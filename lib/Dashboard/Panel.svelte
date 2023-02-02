@@ -7,7 +7,7 @@ import Table from './../../lib/Table/index.svelte';
 import Text from './../../lib/visualizations/Text.svelte';
 import Chart from './../../lib/Chart/index.svelte';
 import PieChart from './../../lib/visualizations/PieChart/index.svelte';
-import { mutateComputeRawClickhouseQuery } from './../../lib/api/query/raw';
+import { queryComputeRawClickhouse } from './../../lib/api/query/raw';
 import { getParametersMap } from './../../lib/utils/parameters';
 import { applyPanelData } from './../../lib/utils/columns';
 import { noop } from 'svelte/internal';
@@ -53,7 +53,7 @@ function onUpdateClick() {
     mutateComputeAndStorePanel(dashboard.id, id).catch(noop);
   }
 
-  return mutateComputeRawClickhouseQuery(query, getParametersMap(parameters)).then(data => {
+  return queryComputeRawClickhouse(query, getParametersMap(parameters)).then(data => {
     applyPanelData(panel, data);
     panel = panel;
   }).catch(e => {
