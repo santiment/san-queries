@@ -2,7 +2,7 @@
   import SQLEditor from './SQLEditor.svelte'
   import ExecuteButton from './ExecuteButton.svelte'
   import Parameters from './Parameters.svelte'
-  import { mutateComputeRawClickhouseQuery } from '@/api/query/raw'
+  import { queryComputeRawClickhouse } from '@/api/query/raw'
   import { getParametersMap } from '@/utils/parameters'
   import { onMount } from 'svelte'
   import { showParameterOptionsWalkthrough } from '@/walkthroughs/parameters'
@@ -20,16 +20,15 @@
   $: colors = newChartColors(parameters)
 
   function onExecuteClick(resolve) {
-    const { query, parameters } = panel.sql
+    const query = editor.getValue()
+    const { parameters } = panel.sql
 
-    return mutateComputeRawClickhouseQuery(query, getParametersMap(parameters)).then(
-      (sqlResult) => {
-        controller.onData(sqlResult)
+    return queryComputeRawClickhouse(query, getParametersMap(parameters)).then((sqlResult) => {
+      controller.onData(sqlResult)
 
-        error = ''
-        resolve()
-      },
-    )
+      error = ''
+      resolve()
+    })
   }
 
   function onQueryError(msg) {

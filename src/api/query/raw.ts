@@ -6,8 +6,8 @@ export const PANEL_DATA_FRAGMENT = `
   types:columnTypes
 `
 
-const RAW_CLICKHOUSE_QUERY_MUTATION = `
-  mutation($query: String!, $parameters: json!="{}") {
+const RAW_CLICKHOUSE_QUERY = `
+  query ($query: String!, $parameters: json!="{}") {
     sql:computeRawClickhouseQuery(query:$query,parameters:$parameters) {
       ${PANEL_DATA_FRAGMENT}
     }
@@ -28,13 +28,13 @@ function cacheModifier(data) {
 const precacher = () => cacheModifier
 
 const accessor = ({ sql }) => sql
-export const mutateComputeRawClickhouseQuery = (
+export const queryComputeRawClickhouse = (
   query: string,
   parameters?: { [key: string]: string | number },
   requestOptions?: SAN.API.RequestOptions,
 ) =>
   mutate<Query>(
-    RAW_CLICKHOUSE_QUERY_MUTATION,
+    RAW_CLICKHOUSE_QUERY,
     {
       precacher,
       variables: {

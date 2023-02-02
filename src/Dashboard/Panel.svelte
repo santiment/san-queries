@@ -8,7 +8,7 @@
   import Text from '@/visualizations/Text.svelte'
   import Chart from '@/Chart/index.svelte'
   import PieChart from '@/visualizations/PieChart/index.svelte'
-  import { mutateComputeRawClickhouseQuery } from '@/api/query/raw'
+  import { queryComputeRawClickhouse } from '@/api/query/raw'
   import { getParametersMap } from '@/utils/parameters'
   import { applyPanelData } from '@/utils/columns'
   import { noop } from 'svelte/internal'
@@ -38,7 +38,7 @@
       mutateComputeAndStorePanel(dashboard.id, id).catch(noop)
     }
 
-    return mutateComputeRawClickhouseQuery(query, getParametersMap(parameters))
+    return queryComputeRawClickhouse(query, getParametersMap(parameters))
       .then((data) => {
         applyPanelData(panel, data)
 

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import { showParameterOptionsWalkthrough } from '@/walkthroughs/parameters'
-  import { mutateComputeRawClickhouseQuery } from '@/api/query/raw'
+  import { queryComputeRawClickhouse } from '@/api/query/raw'
   import { getParametersMap } from '@/utils/parameters'
   import ExecuteButton from './ExecuteButton.svelte'
   import Parameters from './Parameters.svelte'
@@ -16,14 +16,12 @@
   function onExecuteClick(resolve) {
     const { query, parameters } = panel.sql
 
-    return mutateComputeRawClickhouseQuery(query, getParametersMap(parameters)).then(
-      (sqlResult) => {
-        onData(sqlResult)
+    return queryComputeRawClickhouse(query, getParametersMap(parameters)).then((sqlResult) => {
+      onData(sqlResult)
 
-        error = ''
-        resolve()
-      },
-    )
+      error = ''
+      resolve()
+    })
   }
 
   function onQueryError(msg) {
