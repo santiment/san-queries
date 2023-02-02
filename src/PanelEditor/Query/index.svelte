@@ -20,7 +20,8 @@
   $: colors = newChartColors(parameters)
 
   function onExecuteClick(resolve) {
-    const { query, parameters } = panel.sql
+    const query = editor.getValue()
+    const { parameters } = panel.sql
 
     return mutateComputeRawClickhouseQuery(query, getParametersMap(parameters)).then(
       (sqlResult) => {
