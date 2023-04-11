@@ -3,9 +3,6 @@
   "version": "0.0.1",
   "author": "DmitriVanGuard <dimavanguard@gmail.com>",
   "private": true,
-  "engines": {
-    "node": "<=14"
-  },
   "lint-staged": {
     "*.{js,ts,svelte,css,md,mdx}": [
       "prettier --write"
@@ -38,7 +35,7 @@
     "@babel/register": "^7.18.9",
     "medium-editor": "^5.23.3",
     "monaco-clickhouse": "https://github.com/DmitriVanGuard/monaco-editor#92558250",
-    "monaco-editor": "^0.33.0",
+    "monaco-editor": "0.33.0",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {

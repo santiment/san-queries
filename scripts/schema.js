@@ -11,7 +11,7 @@ const path = require('path')
 const { query } = require('san-webkit/lib/api')
 const { mkdir } = require('san-webkit/scripts/utils')
 
-process.env.GQL_SERVER_URL = 'https://api.santiment.net/graphiql'
+process.env.GQL_SERVER_URL = 'https://api.santiment.net/graphql'
 process.browser = false
 
 const ROOT = path.resolve(__dirname, '..')
