@@ -35,7 +35,7 @@
     "@babel/preset-env": "^7.18.9",
     "@babel/register": "^7.18.9",
     "medium-editor": "^5.23.3",
-    "monaco-clickhouse": "https://github.com/DmitriVanGuard/monaco-editor#92558250",
+    "monaco-clickhouse": "https://github.com/DmitriVanGuard/monaco-clickhouse#69d0cda",
     "monaco-editor": "0.33.0",
     "node-fetch": "^2.6.1"
   },
@@ -71,8 +71,12 @@
     "vite-plugin-ts-checker": "^0.1.5"
   },
   "peerDependencies": {
-    "san-webkit": "https://github.com/santiment/san-webkit",
     "san-studio": "https://github.com/santiment/san-studio",
-    "monaco-clickhouse": "https://github.com/microsoft/monaco-editor#305b9db"
+    "san-webkit": "https://github.com/santiment/san-webkit"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "monaco-editor@0.33.0": "patches/monaco-editor@0.33.0.patch"
+    }
   }
 }
