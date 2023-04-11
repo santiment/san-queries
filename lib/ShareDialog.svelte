@@ -1,4 +1,4 @@
-<script context="module" lang="ts">import { dialogs } from 'san-webkit/lib/ui/Dialog';
+<script context="module">import { dialogs } from 'san-webkit/lib/ui/Dialog';
 import ShareDialog from './ShareDialog.svelte';
 export const showShareDialog = props => dialogs.showOnce(ShareDialog, props);
 const SOCIALS = [{
@@ -18,7 +18,7 @@ const SOCIALS = [{
   href: (link, text) => `https://reddit.com/submit?title=${text}&url=${link}`
 }];</script>
 
-<script lang="ts">import { copy } from 'san-webkit/lib/utils';
+<script>import { copy } from 'san-webkit/lib/utils';
 import 'san-webkit/lib/analytics';
 import Dialog from 'san-webkit/lib/ui/Dialog';
 import Svg from 'san-webkit/lib/ui/Svg/svelte';

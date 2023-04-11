@@ -1,7 +1,7 @@
-<script lang="ts">import CreationInfo from 'san-webkit/lib/ui/CreationInfo/svelte';
+<script>import CreationInfo from 'san-webkit/lib/ui/CreationInfo/svelte';
 import { CreationType } from 'san-webkit/lib/ui/Profile/types';
-import { getAppContext } from './../../lib/context';
-import { showSaveDashboardDialog } from './../../lib/SaveDashboardDialog.svelte';
+import { getAppContext } from './../context';
+import { showSaveDashboardDialog } from './../SaveDashboardDialog.svelte';
 export let dashboard;
 export let currentUser;
 export let isAuthor;

@@ -1,17 +1,17 @@
-<script lang="ts">import { onMount } from 'svelte';
+<script>import { onMount } from 'svelte';
 import Svg from 'san-webkit/lib/ui/Svg/svelte';
 import Resizer from 'san-webkit/lib/ui/SnapGrid/Resizer.svelte';
 import { notifications$ } from 'san-webkit/lib/ui/Notifications';
-import { PanelType } from './../../lib/types';
-import Table from './../../lib/Table/index.svelte';
-import Text from './../../lib/visualizations/Text.svelte';
-import Chart from './../../lib/Chart/index.svelte';
-import PieChart from './../../lib/visualizations/PieChart/index.svelte';
-import { queryComputeRawClickhouse } from './../../lib/api/query/raw';
-import { getParametersMap } from './../../lib/utils/parameters';
-import { applyPanelData } from './../../lib/utils/columns';
+import { PanelType } from './../types';
+import Table from './../Table/index.svelte';
+import Text from './../visualizations/Text.svelte';
+import Chart from './../Chart/index.svelte';
+import PieChart from './../visualizations/PieChart/index.svelte';
+import { queryComputeRawClickhouse } from './../api/query/raw';
+import { getParametersMap } from './../utils/parameters';
+import { applyPanelData } from './../utils/columns';
 import { noop } from 'svelte/internal';
-import { mutateComputeAndStorePanel } from './../../lib/api/query/store';
+import { mutateComputeAndStorePanel } from './../api/query/store';
 let className;
 export { className as class };
 export let dashboard;
@@ -100,7 +100,7 @@ onMount(() => {
   <div class="widget column c-black relative">
     {#if panel.sql.query}
       {#if type === PanelType.TABLE}
-        <Table class="table-3EwFMl" columns={visibleColumns} data={__rows} />
+        <Table class="table-+QB5QE" columns={visibleColumns} data={__rows} />
       {:else if type === PanelType.TEXT}
         <Text column={panel.textValueColumn} data={__rows} {columns} />
       {:else if type === PanelType.CHART}
@@ -120,7 +120,7 @@ onMount(() => {
   <Resizer onEnd={onResizeEnd} />
 </div>
 
-<style lang="scss">.panel {
+<style >.panel {
   background: var(--white);
   --color-hover: var(--green);
 }
@@ -141,7 +141,7 @@ h3 {
   overflow: auto;
 }
 
-:global(.table-3EwFMl) {
+:global(.table-\+QB5QE) {
   margin: 0 -10px;
 }
 

@@ -1,8 +1,8 @@
-<script context="module" lang="ts">import { dialogs } from 'san-webkit/lib/ui/Dialog';
+<script context="module">import { dialogs } from 'san-webkit/lib/ui/Dialog';
 import SaveDashboardDialog from './SaveDashboardDialog.svelte';
 export const showSaveDashboardDialog = props => dialogs.showOnce(SaveDashboardDialog, props);</script>
 
-<script lang="ts">import 'san-webkit/lib/analytics';
+<script>import 'san-webkit/lib/analytics';
 import Dialog from 'san-webkit/lib/ui/Dialog';
 import Field from 'san-webkit/lib/ui/Field/svelte';
 import Toggle from 'san-webkit/lib/ui/Toggle.svelte';
@@ -35,7 +35,7 @@ function onFormSubmit() {
   });
 }</script>
 
-<Dialog bind:closeDialog {...$$props} {title} class="dialog-1SRmdB">
+<Dialog bind:closeDialog {...$$props} {title} class="dialog-sK6WJ0">
   <form class="dialog-body" on:submit|preventDefault={onFormSubmit}>
     <Field
       bind:value={name}
@@ -66,7 +66,7 @@ function onFormSubmit() {
 </Dialog>
 
 <style>
-  :global(.dialog-1SRmdB) {
+  :global(.dialog-sK6WJ0) {
     width: 480px;
   }
 

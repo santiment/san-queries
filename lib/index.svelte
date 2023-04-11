@@ -1,4 +1,4 @@
-<script lang="ts">import { onDestroy } from 'svelte';
+<script>import { onDestroy } from 'svelte';
 import Sidebar from './Sidebar/index.svelte';
 import { setAppContext } from './context';
 import { Dashboard as NewDashboard } from './stores/dashboard';

@@ -1,5 +1,5 @@
 <script>import { newChartColors, newHighlightedColors } from 'san-studio/lib/Chart/colors';
-import { downloadPng } from './../../lib/PanelEditor/Result/downloadPng';
+import { downloadPng } from './../PanelEditor/Result/downloadPng';
 import Chart from './Chart.svelte';
 import Metrics from './Metrics.svelte';
 export let columns;

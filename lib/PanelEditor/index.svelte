@@ -1,5 +1,5 @@
-<script lang="ts">import { debounce } from 'san-webkit/lib/utils/fn';
-import { getAppContext } from './../../lib/context';
+<script>import { debounce } from 'san-webkit/lib/utils/fn';
+import { getAppContext } from './../context';
 import SQLEditor from './Query/index.svelte';
 import Result from './Result/index.svelte';
 import { onDestroy } from 'svelte';

@@ -1,4 +1,4 @@
-<script lang="ts">import Svg from 'san-webkit/lib/ui/Svg/svelte';
+<script>import Svg from 'san-webkit/lib/ui/Svg/svelte';
 import Tooltip from 'san-webkit/lib/ui/Tooltip/svelte';</script>
 
 <Tooltip position="bottom" align="end" offsetX={-42} closeTimeout={0}>

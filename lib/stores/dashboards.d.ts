@@ -1,4 +1,4 @@
-import type { ShortDashboard } from './../../lib/api/dashboard';
+import type { ShortDashboard } from './../api/dashboard';
 export declare const myDashboards$: {
     DEFAULT: ShortDashboard[];
     fetched: boolean;

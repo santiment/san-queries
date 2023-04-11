@@ -1,7 +1,7 @@
 <script>import Comments from 'san-webkit/lib/ui/Comments/svelte';
 import { CommentsType } from 'san-webkit/lib/api/comments';
 import { currentUser as currentUser$ } from 'san-studio/lib/stores/user';
-import { getAppContext } from './../../lib/context';
+import { getAppContext } from './../context';
 export let isCommentsShowed = false;
 const ctx = getAppContext();
 const {

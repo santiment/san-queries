@@ -17,7 +17,7 @@ export let explanation = '';</script>
   <slot />
 </button>
 
-<style lang="scss">button {
+<style >button {
   --bg: var(--white);
   padding: 6px 12px 6px 8px;
   box-shadow: inset 0px 0px 0px 1px var(---border, var(--porcelain));

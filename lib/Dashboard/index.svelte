@@ -1,7 +1,7 @@
-<script lang="ts">import { normalizeGrid, sortLayout } from 'san-webkit/lib/ui/SnapGrid/layout';
+<script>import { normalizeGrid, sortLayout } from 'san-webkit/lib/ui/SnapGrid/layout';
 import Grid from 'san-webkit/lib/ui/SnapGrid/Grid.svelte';
 import Panel from './Panel.svelte';
-import { getAppContext } from './../../lib/context';
+import { getAppContext } from './../context';
 const {
   dashboard$
 } = getAppContext();

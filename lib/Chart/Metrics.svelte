@@ -1,4 +1,4 @@
-<script>import ColorBorder from './../../lib/ColorBorder.svelte';
+<script>import ColorBorder from './../ColorBorder.svelte';
 export let metrics;
 export let colors;
 export let onMetricHover;

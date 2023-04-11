@@ -1,8 +1,8 @@
-<script lang="ts">import Svg from 'san-webkit/lib/ui/Svg/svelte';
+<script>import Svg from 'san-webkit/lib/ui/Svg/svelte';
 import Tooltip from 'san-webkit/lib/ui/Tooltip/svelte';
-import { newPanel } from './../../lib/stores/dashboard';
-import { PanelData } from './../../lib/types';
-import { getAppContext } from './../../lib/context';
+import { newPanel } from './../stores/dashboard';
+import { PanelData } from './../types';
+import { getAppContext } from './../context';
 const {
   dashboard$
 } = getAppContext();
@@ -21,7 +21,7 @@ function onSelect({
 }</script>
 
 <div class="relative">
-  <Tooltip on="click" position="bottom" class="tooltip-jDyMfi" bind:isOpened>
+  <Tooltip on="click" position="bottom" class="tooltip-h7bb0k" bind:isOpened>
     <button slot="trigger" class="new btn-2 relative">
       New panel
       <Svg id="arrow-down" w="8" h="5" class="mrg-xl mrg--l" />
@@ -35,7 +35,7 @@ function onSelect({
   </Tooltip>
 </div>
 
-<style lang="scss">.new {
+<style >.new {
   padding: 5px 12px 5px 14px;
 }
 .new::after {
@@ -47,7 +47,7 @@ function onSelect({
   content: "";
 }
 
-:global(.tooltip-jDyMfi) {
+:global(.tooltip-h7bb0k) {
   padding: 8px;
   width: 100%;
 }</style>

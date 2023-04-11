@@ -1,8 +1,8 @@
-<script context="module" lang="ts">import { dialogs } from 'san-webkit/lib/ui/Dialog';
+<script context="module">import { dialogs } from 'san-webkit/lib/ui/Dialog';
 import FullscreenDialog from './FullscreenDialog.svelte';
 export const showFullscreenDialog = props => dialogs.showOnce(FullscreenDialog, props);</script>
 
-<script lang="ts">import 'san-webkit/lib/analytics';
+<script>import 'san-webkit/lib/analytics';
 import Dialog from 'san-webkit/lib/ui/Dialog'; // import Visualization from './Visualization.svelte'
 
 import Editor from './Async.svelte';
@@ -20,12 +20,12 @@ function onBeforeDialogClose() {
   {onBeforeDialogClose}
   noTitle
   animated={false}
-  class="dialog-YAQBlI">
+  class="dialog-2yokat">
   <Editor bind:editor {...$$props} onFullscreenClick={closeDialog} />
 </Dialog>
 
 <style>
-  :global(.dialog-YAQBlI) {
+  :global(.dialog-2yokat) {
     width: 96%;
     height: 92%;
     padding: 16px;

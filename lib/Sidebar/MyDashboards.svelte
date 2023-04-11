@@ -1,10 +1,10 @@
-<script lang="ts">import Svg from 'san-webkit/lib/ui/Svg/svelte';
+<script>import Svg from 'san-webkit/lib/ui/Svg/svelte';
 import Category from 'san-studio/lib/Sidebar/Category.svelte';
 import { checkIsFilterMatch } from 'san-studio/lib/metrics/selector/utils';
 import Item from './Item.svelte';
-import { myDashboards$ } from './../../lib/stores/dashboards';
-import { getAppContext } from './../../lib/context';
-import { showSaveDashboardDialog } from './../../lib/SaveDashboardDialog.svelte';
+import { myDashboards$ } from './../stores/dashboards';
+import { getAppContext } from './../context';
+import { showSaveDashboardDialog } from './../SaveDashboardDialog.svelte';
 export let currentUser;
 export let searchTerm;
 export let selectedPanel;
@@ -56,7 +56,7 @@ function onAdd() {
   </svelte:fragment>
 </Category>
 
-<style lang="scss">.btn {
+<style >.btn {
   --fill: var(--waterloo);
   --fill-hover: var(--green);
 }

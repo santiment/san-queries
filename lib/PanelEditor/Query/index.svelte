@@ -1,10 +1,10 @@
-<script lang="ts">import SQLEditor from './SQLEditor.svelte';
+<script>import SQLEditor from './SQLEditor.svelte';
 import ExecuteButton from './ExecuteButton.svelte';
 import Parameters from './Parameters.svelte';
-import { queryComputeRawClickhouse } from './../../../lib/api/query/raw';
-import { getParametersMap } from './../../../lib/utils/parameters';
+import { queryComputeRawClickhouse } from './../../api/query/raw';
+import { getParametersMap } from './../../utils/parameters';
 import { onMount } from 'svelte';
-import { showParameterOptionsWalkthrough } from './../../../lib/walkthroughs/parameters';
+import { showParameterOptionsWalkthrough } from './../../walkthroughs/parameters';
 import Parameter from './Parameter.svelte';
 import { newChartColors } from 'san-studio/lib/Chart/colors';
 export let panel;

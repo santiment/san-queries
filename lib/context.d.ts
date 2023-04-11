@@ -1,4 +1,4 @@
-import type { Dashboard$ } from './../lib/stores/dashboard';
+import type { Dashboard$ } from './stores/dashboard';
 export declare const APP_CTX = "APP_CTX";
 export declare type Context = {
     dashboard$: Dashboard$;

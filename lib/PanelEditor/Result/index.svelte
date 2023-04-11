@@ -1,9 +1,9 @@
-<script lang="ts">import RowPanels from './../../../lib/RowPanels.svelte';
+<script>import RowPanels from './../../RowPanels.svelte';
 import Options from './Options/index.svelte';
 import Visualization from './Visualization.svelte';
 import Header from './Header.svelte';
 import imgSrc from './no-data.svg';
-import { newColumn } from './../../../lib/utils/columns';
+import { newColumn } from './../../utils/columns';
 export let panel;
 export let rows, headers, dateColumns;
 let columnsHash = '';
@@ -34,7 +34,7 @@ function updateColumns(columns) {
 
 <Header bind:panel />
 
-<RowPanels class="result-Lk83OS">
+<RowPanels class="result-OkAxX6">
   <svelte:fragment slot="left">
     {#if rows && columns.length}
       <Visualization {panel} {columns} {rows} {dateColumns} />
@@ -53,7 +53,7 @@ function updateColumns(columns) {
 </RowPanels>
 
 <style>
-  :global(.result-Lk83OS) {
+  :global(.result-OkAxX6) {
     flex: 1;
     /* min-height: 0; */
     min-height: 500px;

@@ -1,7 +1,7 @@
-<script lang="ts">import { onMount } from 'svelte';
-import { showParameterOptionsWalkthrough } from './../../../lib/walkthroughs/parameters';
-import { queryComputeRawClickhouse } from './../../../lib/api/query/raw';
-import { getParametersMap } from './../../../lib/utils/parameters';
+<script>import { onMount } from 'svelte';
+import { showParameterOptionsWalkthrough } from './../../walkthroughs/parameters';
+import { queryComputeRawClickhouse } from './../../api/query/raw';
+import { getParametersMap } from './../../utils/parameters';
 import ExecuteButton from './ExecuteButton.svelte';
 import Parameters from './Parameters.svelte';
 export let panel;

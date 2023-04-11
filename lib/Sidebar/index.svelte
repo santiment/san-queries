@@ -1,8 +1,8 @@
-<script lang="ts">import Sidebar from 'san-studio/lib/Sidebar/Sidebar.svelte';
+<script>import Sidebar from 'san-studio/lib/Sidebar/Sidebar.svelte';
 import Search from 'san-studio/lib/Sidebar/Search.svelte';
 import Category from 'san-studio/lib/Sidebar/Category.svelte';
 import { currentUser as currentUser$ } from 'san-studio/lib/stores/user';
-import { getAppContext } from './../../lib/context';
+import { getAppContext } from './../context';
 import MyDashboards from './MyDashboards.svelte';
 import { PremadeDashboards } from './queries';
 import Item from './Item.svelte';
@@ -68,7 +68,7 @@ if (process.browser) {
   </section>
 </Sidebar>
 
-<style lang="scss">.header {
+<style >.header {
   padding: 16px;
   border-bottom: 1px solid var(--porcelain);
 }

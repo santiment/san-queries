@@ -4,16 +4,16 @@ export { className as class };
 export let columns = [];
 export let data;</script>
 
-<Table items={data} {columns} class="table-24vALn {className}" sticky />
+<Table items={data} {columns} class="table-0u8qjM {className}" sticky />
 
-<style lang="scss">:global(.table-24vALn) {
+<style >:global(.table-0u8qjM) {
   overflow: auto;
   flex: 1;
 }
-:global(.table-24vALn) :global(th) {
+:global(.table-0u8qjM) :global(th) {
   padding: 0 15px !important;
 }
-:global(.table-24vALn) :global(td) {
+:global(.table-0u8qjM) :global(td) {
   border-bottom: 1px solid var(--porcelain);
   white-space: pre !important;
 }</style>

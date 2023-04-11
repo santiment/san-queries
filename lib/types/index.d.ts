@@ -1,3 +1,4 @@
+/// <reference types="./global" />
 export declare enum PanelType {
     TABLE = "TABLE",
     TEXT = "TEXT",

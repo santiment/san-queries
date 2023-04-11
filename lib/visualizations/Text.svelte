@@ -1,4 +1,4 @@
-<script lang="ts">export let data;
+<script>export let data;
 export let columns;
 export let column;
 export let placeholder = '';

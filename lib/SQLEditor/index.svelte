@@ -1,4 +1,4 @@
-<script lang="ts">import { onMount } from 'svelte';
+<script>import { onMount } from 'svelte';
 import { editor as monacoEditor, languages } from 'monaco-editor';
 import { getColumnsSchema, getFunsctionsSchema, getKeywordsSchema, getParametersSchema, getTablesSchema } from './schema';
 import { THEME } from './theme';
@@ -99,7 +99,7 @@ onMount(() => {
 
 <div bind:this={editorNode} class={className} />
 
-<style lang="scss">div {
+<style >div {
   height: 100%;
 }
 div :global(.monaco-editor-background),

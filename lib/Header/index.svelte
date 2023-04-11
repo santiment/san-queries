@@ -1,18 +1,18 @@
-<script lang="ts">import Svg from 'san-webkit/lib/ui/Svg/svelte';
+<script>import Svg from 'san-webkit/lib/ui/Svg/svelte';
 import { notifications$ } from 'san-webkit/lib/ui/Notifications';
 import { currentUser as currentUser$ } from 'san-studio/lib/stores/user';
-import { getAppContext } from './../../lib/context';
+import { getAppContext } from './../context';
 import CreationInfo from './CreationInfo.svelte';
-import { showShareDialog } from './../../lib/ShareDialog.svelte';
+import { showShareDialog } from './../ShareDialog.svelte';
 import SaveButton from './SaveButton.svelte';
-import { getParametersMap } from './../../lib/utils/parameters';
-import { applyPanelData } from './../../lib/utils/columns';
+import { getParametersMap } from './../utils/parameters';
+import { applyPanelData } from './../utils/columns';
 import NewPanelButton from './NewPanelButton.svelte';
-import { queryComputeRawClickhouse } from './../../lib/api/query/raw';
-import { showSaveDashboardDialog } from './../../lib/SaveDashboardDialog.svelte';
+import { queryComputeRawClickhouse } from './../api/query/raw';
+import { showSaveDashboardDialog } from './../SaveDashboardDialog.svelte';
 import { noop } from 'svelte/internal';
-import { mutateComputeAndStorePanel } from './../../lib/api/query/store';
-import './../../lib/sharing/url';
+import { mutateComputeAndStorePanel } from './../api/query/store';
+import './../sharing/url';
 const {
   dashboard$
 } = getAppContext(); // export let columns
@@ -82,7 +82,7 @@ function onBackClick() {
   {#if selectedPanel}
     <div class="row body-2 v-center mrg-a mrg--r">
       <button class="link btn-0 body-1 txt-m mrg-s mrg--r" on:click={onBackClick}>
-        <Svg id="pointer" w="14" h="10" class="pointer-L4tRxv" />
+        <Svg id="pointer" w="14" h="10" class="pointer-F+xyRB" />
 
         {dashboard.title || 'Unsaved dashboard'}
       </button>
@@ -100,7 +100,7 @@ function onBackClick() {
 
   <!-- <Comments bind:isCommentsShowed /> -->
 
-  <SaveButton class="action-Yl_q7b" {user} {isAuthor} {selectedPanel} />
+  <SaveButton class="action-W19016" {user} {isAuthor} {selectedPanel} />
 
   <a
     id="fw-welcome"
@@ -154,7 +154,7 @@ function onBackClick() {
   }
 
   button,
-  :global(.action-Yl_q7b),
+  :global(.action-W19016),
   .documentation {
     --fill: var(--waterloo);
     --color-hover: var(--green);
@@ -164,7 +164,7 @@ function onBackClick() {
     --color: var(--black);
   }
 
-  :global(.pointer-L4tRxv) {
+  :global(.pointer-F\+xyRB) {
     transform: rotate(180deg);
     margin: -3px 8px 0 0;
   }

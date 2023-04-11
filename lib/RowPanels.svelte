@@ -13,7 +13,7 @@ export { className as class };</script>
   {/if}
 </div>
 
-<style lang="scss">.border {
+<style >.border {
   padding: 16px;
   min-width: 320px;
   min-height: 284px;

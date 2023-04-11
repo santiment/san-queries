@@ -1,10 +1,10 @@
-<script lang="ts">import Svg from 'san-webkit/lib/ui/Svg/svelte';
+<script>import Svg from 'san-webkit/lib/ui/Svg/svelte';
 import { downloadCsv } from 'san-webkit/lib/utils/csv';
-import { PanelType } from './../../../lib/types';
-import Table from './../../../lib/Table/index.svelte';
-import Chart from './../../../lib/Chart/index.svelte';
-import Text from './../../../lib/visualizations/Text.svelte';
-import PieChart from './../../../lib/visualizations/PieChart/index.svelte';
+import { PanelType } from './../../types';
+import Table from './../../Table/index.svelte';
+import Chart from './../../Chart/index.svelte';
+import Text from './../../visualizations/Text.svelte';
+import PieChart from './../../visualizations/PieChart/index.svelte';
 import { showFullscreenDialog } from './FullscreenDialog.svelte';
 export let panel;
 export let columns;
@@ -41,7 +41,7 @@ function onDownload() {
 </div>
 
 {#if type === PanelType.TABLE}
-  <Table columns={visibleColumns} data={rows} class="table-MKSuiB" />
+  <Table columns={visibleColumns} data={rows} class="table-AChixz" />
 {:else if type === PanelType.TEXT}
   <Text column={panel.textValueColumn} data={rows} {columns} placeholder="No column selected" />
 {:else if type === PanelType.CHART}
@@ -61,7 +61,7 @@ function onDownload() {
     margin-left: 8px;
   }
 
-  :global(.table-MKSuiB) {
+  :global(.table-AChixz) {
     margin: 16px -16px 0;
     border-top: 1px solid var(--porcelain);
     width: calc(100% + 32px) !important;

@@ -1,5 +1,5 @@
 <script>import Field from 'san-webkit/lib/ui/Field/svelte';
-import { PanelType } from './../../../../lib/types';
+import { PanelType } from './../../../types';
 import TitleOption from './Title.svelte';
 import FormatOption from './Format.svelte';
 import VisibilityOption from './Visibility.svelte';

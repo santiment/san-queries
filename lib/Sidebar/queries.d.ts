@@ -1,4 +1,4 @@
-import { PanelType } from './../../lib/types';
+import { PanelType } from './../types';
 export declare const PremadeDashboards: {
     title: string;
     panels: SAN.Queries.DashboardPanel[];

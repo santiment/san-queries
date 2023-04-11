@@ -2,9 +2,9 @@
   key
 }) => `{{${key}}}`;</script>
 
-<script lang="ts">import Svg from 'san-webkit/lib/ui/Svg/svelte';
-import ColorBorder from './../../../lib/ColorBorder.svelte';
-import { showParameterDialog } from './../../../lib/ParameterDialog.svelte';
+<script>import Svg from 'san-webkit/lib/ui/Svg/svelte';
+import ColorBorder from './../../ColorBorder.svelte';
+import { showParameterDialog } from './../../ParameterDialog.svelte';
 let className = '';
 export let i;
 export { className as class };
@@ -38,7 +38,7 @@ function onDrop() {
 <ColorBorder
   draggable
   explanation="Click to edit settings"
-  class="parameter-gJs9_Y {className} expl-tooltip"
+  class="parameter-+5q1H5 {className} expl-tooltip"
   {color}
   on:click={() => showParameterDialog({ parameter, onSubmit: onUpdate })}
   on:dragstart={onDrag}
@@ -57,7 +57,7 @@ function onDrop() {
   </button>
 </ColorBorder>
 
-<style lang="scss">:global(.parameter-gJs9_Y) {
+<style >:global(.parameter-\+5q1H5) {
   padding-right: 5px !important;
   --expl-align-x: 50%;
   --expl-right: 50%;

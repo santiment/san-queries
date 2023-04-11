@@ -1,4 +1,4 @@
-<script lang="ts">import Field from 'san-webkit/lib/ui/Field/Select.svelte';
+<script>import Field from 'san-webkit/lib/ui/Field/Select.svelte';
 export let panel;
 export let columns;
 

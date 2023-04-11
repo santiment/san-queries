@@ -1,4 +1,4 @@
-import { PanelType } from './../../lib/types';
+import { PanelType } from './../types';
 export declare function newPanel(name?: string, type?: PanelType, query?: string): SAN.Queries.DashboardPanel;
 export declare function normalizePanel(panel: SAN.Queries.DashboardPanel): SAN.Queries.Panel;
 export declare type Dashboard$ = ReturnType<typeof Dashboard>;

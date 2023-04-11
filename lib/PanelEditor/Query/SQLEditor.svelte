@@ -1,7 +1,7 @@
-<script lang="ts">import { onMount } from 'svelte';
+<script>import { onMount } from 'svelte';
 import Svg from 'san-webkit/lib/ui/Svg/svelte';
-import SQLEditor from './../../../lib/SQLEditor/Async.svelte';
-import { updateThemeParameters } from './../../../lib/SQLEditor/theme';
+import SQLEditor from './../../SQLEditor/Async.svelte';
+import { updateThemeParameters } from './../../SQLEditor/theme';
 export let panel;
 export let editor;
 export let error = '';

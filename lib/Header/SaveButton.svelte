@@ -1,10 +1,10 @@
-<script lang="ts">import { onMount } from 'svelte';
+<script>import { onMount } from 'svelte';
 import Svg from 'san-webkit/lib/ui/Svg/svelte';
 import Tooltip from 'san-webkit/lib/ui/Tooltip/svelte';
-import { showSaveDashboardDialog } from './../../lib/SaveDashboardDialog.svelte';
-import { getAppContext } from './../../lib/context';
-import { startDeleteDashboardFlow, startSaveFlow } from './../../lib/flow/dashboard';
-import { showWelcomeWalkthrough } from './../../lib/walkthroughs/welcome';
+import { showSaveDashboardDialog } from './../SaveDashboardDialog.svelte';
+import { getAppContext } from './../context';
+import { startDeleteDashboardFlow, startSaveFlow } from './../flow/dashboard';
+import { showWelcomeWalkthrough } from './../walkthroughs/welcome';
 let className = '';
 export { className as class }; // export let user
 
@@ -55,7 +55,7 @@ onMount(showWelcomeWalkthrough);</script>
 <div class="row mrg-s mrg--l border relative {className}">
   <button class="save btn" on:click={() => onClick(isAuthor ? SaveType.Save : SaveType.SaveAsNew)}
     >{isAuthor ? 'Save' : 'Save as'}</button>
-  <Tooltip on="click" duration={0} align="center" class="tooltip-PxCanH" bind:isOpened>
+  <Tooltip on="click" duration={0} align="center" class="tooltip-Re0bGH" bind:isOpened>
     <button slot="trigger" class="more btn row hv-center">
       <Svg id="arrow-down" w="8" h="5" />
     </button>
@@ -97,7 +97,7 @@ onMount(showWelcomeWalkthrough);</script>
   .more {
     --color-hover: var(--green);
   }
-  :global(.tooltip-PxCanH) {
+  :global(.tooltip-Re0bGH) {
     left: 0px !important;
     width: 200px;
     padding: 8px;

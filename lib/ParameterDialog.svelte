@@ -1,8 +1,8 @@
-<script context="module" lang="ts">import { dialogs } from 'san-webkit/lib/ui/Dialog';
+<script context="module">import { dialogs } from 'san-webkit/lib/ui/Dialog';
 import ParameterDialog from './ParameterDialog.svelte';
 export const showParameterDialog = props => dialogs.showOnce(ParameterDialog, props);</script>
 
-<script lang="ts">import 'san-webkit/lib/analytics';
+<script>import 'san-webkit/lib/analytics';
 import Dialog from 'san-webkit/lib/ui/Dialog';
 import Field from 'san-webkit/lib/ui/Field/svelte';
 import FieldSelector from 'san-webkit/lib/ui/Field/Select.svelte';
@@ -29,7 +29,7 @@ function onFormSubmit() {
   bind:closeDialog
   {...$$props}
   title={parameter ? 'Parameter Options' : 'Add Parameter'}
-  class="dialog-US9u4N">
+  class="dialog-QLT24c">
   <form class="dialog-body" on:submit|preventDefault={onFormSubmit}>
     <Field
       bind:value={key}
@@ -66,7 +66,7 @@ function onFormSubmit() {
 </Dialog>
 
 <style>
-  :global(.dialog-US9u4N) {
+  :global(.dialog-QLT24c) {
     width: 480px;
   }
 

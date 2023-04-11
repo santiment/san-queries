@@ -1,4 +1,4 @@
-<script lang="ts">import { queryDashboard } from './../../lib/api/dashboard';
+<script>import { queryDashboard } from './../api/dashboard';
 import Item from 'san-studio/lib/Sidebar/Item.svelte';
 import HoverItem from './HoverItem.svelte';
 import Active from './Active.svelte';
@@ -35,7 +35,7 @@ function onClick() {
   if (onSelect) onSelect(item);
 }</script>
 
-<Item {item} {HoverItem} active={isActive} on:click={onClick} class="item-hp0pge">
+<Item {item} {HoverItem} active={isActive} on:click={onClick} class="item-uoJxPL">
   {#if isActive}
     <Active />
   {/if}
@@ -52,7 +52,7 @@ function onClick() {
       {HoverItem}
       active={selectedPanel === panel}
       on:click={() => selectPanel(panel)}
-      class="item-hp0pge">
+      class="item-uoJxPL">
       {#if selectedPanel === panel}
         <Active />
       {/if}
@@ -62,7 +62,7 @@ function onClick() {
 {/if}
 
 <style>
-  :global(.item-hp0pge) {
+  :global(.item-uoJxPL) {
     color: var(--black) !important;
   }
 </style>

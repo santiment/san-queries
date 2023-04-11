@@ -1,4 +1,4 @@
-<script context="module" lang="ts">import { Node } from 'san-studio/lib/Chart/nodes';
+<script context="module">import { Node } from 'san-studio/lib/Chart/nodes';
 const NodeLabel = {
   [Node.AREA]: 'Area',
   [Node.LINE]: 'Line',

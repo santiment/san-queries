@@ -1,4 +1,4 @@
-<script lang="ts">import { initChart } from '@santiment-network/chart';
+<script>import { initChart } from '@santiment-network/chart';
 import { newChartColors } from 'san-studio/lib/Chart/colors';
 export let data;
 export let columns;

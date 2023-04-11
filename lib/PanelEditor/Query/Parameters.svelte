@@ -1,8 +1,8 @@
-<script lang="ts">import { onMount } from 'svelte';
+<script>import { onMount } from 'svelte';
 import Svg from 'san-webkit/lib/ui/Svg/svelte';
 import { newChartColors } from 'san-studio/lib/Chart/colors';
-import { showParameterDialog } from './../../../lib/ParameterDialog.svelte';
-import { showAddParameterWalkthrough } from './../../../lib/walkthroughs/parameters';
+import { showParameterDialog } from './../../ParameterDialog.svelte';
+import { showAddParameterWalkthrough } from './../../walkthroughs/parameters';
 import { getParameterSQL } from './Parameter.svelte';
 import Info from './Info.svelte';
 export let panel;

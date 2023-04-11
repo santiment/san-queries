@@ -1,6 +1,6 @@
-<script lang="ts">import Svg from 'san-webkit/lib/ui/Svg/svelte';
+<script>import Svg from 'san-webkit/lib/ui/Svg/svelte';
 import Tooltip from 'san-webkit/lib/ui/Tooltip/svelte';
-import { PanelType } from './../../../lib/types';
+import { PanelType } from './../../types';
 export let panel;
 let isOpened = false;
 
@@ -13,7 +13,7 @@ function onSelect(result) {
   <h2 class="body-2 mrg-xl mrg--r">Query results</h2>
 
   <div class="relative mrg-a mrg--l">
-    <Tooltip on="click" position="bottom" class="tooltip-hTbhuO" bind:isOpened>
+    <Tooltip on="click" position="bottom" class="tooltip-D7zQGR" bind:isOpened>
       <button slot="trigger" class="btn-2">
         Change visualization type
         <Svg id="arrow-down" w="8" h="5" class="mrg-xl mrg--l" />
@@ -38,7 +38,7 @@ function onSelect(result) {
     text-align: left;
   }
 
-  :global(.tooltip-hTbhuO) {
+  :global(.tooltip-D7zQGR) {
     padding: 8px;
     width: 100%;
   }
