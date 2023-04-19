@@ -27,10 +27,11 @@
   function onAdd() {
     if (!currentUser) return
 
+    const dashboard = $dashboard$
     showSaveDashboardDialog({
       title: 'Save new dashboard',
       action: 'Save',
-      dashboard: $dashboard$,
+      dashboard: { ...dashboard, id: undefined },
     }).then((dashboard?: SAN.Queries.Dashboard) => {
       if (dashboard) dashboard$.set(dashboard)
     })
