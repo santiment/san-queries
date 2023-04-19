@@ -27,10 +27,13 @@ function filterDashboards(items, searchTerm) {
 
 function onAdd() {
   if (!currentUser) return;
+  const dashboard = $dashboard$;
   showSaveDashboardDialog({
     title: 'Save new dashboard',
     action: 'Save',
-    dashboard: $dashboard$
+    dashboard: Object.assign(Object.assign({}, dashboard), {
+      id: undefined
+    })
   }).then(dashboard => {
     if (dashboard) dashboard$.set(dashboard);
   });
