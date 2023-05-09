@@ -73,9 +73,13 @@ function saveTableColumns(data) {
 // ---------------------------------------------
 
 function get(field, data) {
-  return query(`{ data: getClickhouseDatabaseMetadata { ${field} { ${data} } } }`).then(
-    ({ data }) => data[field],
-  )
+  return query(`{ data: getClickhouseDatabaseMetadata { ${field} { ${data} } } }`)
+    .then(({ data }) => data[field])
+    .catch((e) => {
+      console.log('Field error: ', { field })
+      console.error(e)
+      return []
+    })
 }
 function saveSchema(filename, data) {
   mkdir(SCHEMA_DIR)
