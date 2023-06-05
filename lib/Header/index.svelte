@@ -104,7 +104,7 @@ function onBackClick() {
 
   <a
     id="fw-welcome"
-    href="https://academy.santiment.net/sql-editor/"
+    href="https://academy.santiment.net/santiment-queries/"
     class="documentation btn row v-center mrg-l mrg--l"
     target="_blank"
     rel="noopener noreferrer">
