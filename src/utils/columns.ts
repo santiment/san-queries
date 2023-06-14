@@ -1,9 +1,10 @@
 import { Formatter, FormatType } from '@/PanelEditor/Result/Options/format'
 
-export function newColumn(title: string, i: number, dateColumns: Set<number>) {
+export function newColumn(title: string, i: number, dateColumns: Set<number>, settings = {}) {
   const accessor = (data) => data[i]
 
   const column = {
+    ...settings,
     id: i,
     title,
     accessor,
@@ -25,9 +26,11 @@ export function newColumn(title: string, i: number, dateColumns: Set<number>) {
 export function applyPanelData(panel, data) {
   const { rows, headers, dateColumns } = data
 
+  const { columns } = panel.settings
+
   panel.__rows = rows
   panel.__computedSql = data
-  panel.settings.columns = headers.map((title, i) => newColumn(title, i, dateColumns))
+  panel.settings.columns = headers.map((title, i) => newColumn(title, i, dateColumns, columns[i]))
 
   return panel
 }
