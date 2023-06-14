@@ -1,4 +1,4 @@
-<script>import { ui$ } from 'san-webkit/lib/stores/ui';
+<script>import { getUI$Ctx } from 'san-webkit/lib/stores/ui';
 import { getDateFormats, getTimeFormats } from 'san-webkit/lib/utils/dates';
 import { themes } from 'san-studio/lib/Chart/theme';
 import { getMetricNodes } from 'san-studio/lib/Chart/nodes';
@@ -14,6 +14,9 @@ export let metrics;
 export let colors;
 export let axesMetricKeys;
 export let onChart;
+const {
+  ui$
+} = getUI$Ctx();
 
 $: theme = themes[+$ui$.nightMode]; // +$globals.isNightMode]
 

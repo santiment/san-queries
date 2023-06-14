@@ -1,4 +1,5 @@
 <script context="module">import { Node } from 'san-studio/lib/Chart/nodes';
+import { tick } from 'svelte';
 const NodeLabel = {
   [Node.AREA]: 'Area',
   [Node.LINE]: 'Line',
@@ -15,6 +16,9 @@ let selected = column.chartStyle || Node.LINE;
 
 function onSelect(style) {
   column.chartStyle = style;
+  tick().then(() => {
+    column.chartStyle = style;
+  });
 }</script>
 
 <Field title={`Column ${i}: Chart style`} bind:selected {options} {onSelect} class="mrg-xl mrg--b">
