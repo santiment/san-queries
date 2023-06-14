@@ -1,5 +1,6 @@
 <script context="module" lang="ts">
   import { Node } from 'studio/Chart/nodes'
+  import { tick } from 'svelte'
 
   const NodeLabel = {
     [Node.AREA]: 'Area',
@@ -22,6 +23,9 @@
 
   function onSelect(style) {
     column.chartStyle = style
+    tick().then(() => {
+      column.chartStyle = style
+    })
   }
 </script>
 

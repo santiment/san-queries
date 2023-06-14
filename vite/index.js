@@ -7,6 +7,7 @@ import { getIdFromSEOLink } from 'webkit/utils/url'
 import App from '../src/index.svelte'
 import { parseSharedUrl } from '../src/sharing/url'
 import { queryDashboard } from '../src/api/dashboard'
+import { writable } from 'svelte/store'
 
 startResponsiveController()
 
@@ -29,6 +30,14 @@ function start(dashboard, selectedPanelId) {
       dashboard,
       selectedPanelId,
     },
+    context: new Map([
+      [
+        'UI$$',
+        {
+          ui$: writable({ isNightMode: false }),
+        },
+      ],
+    ]),
   })
 
   new Dialogs({ target: document.body })

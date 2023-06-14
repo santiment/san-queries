@@ -13,8 +13,11 @@ export function newPanel(name = 'Default panel title', type = PanelType.TABLE, q
   } as any as SAN.Queries.DashboardPanel
 }
 
-function normalizeColumn({ title, formatterId }, id) {
+function normalizeColumn({ title, formatterId, chartStyle }, id) {
   const column = { title, formatterId } as any
+  if (chartStyle) {
+    column.chartStyle = chartStyle
+  }
 
   const { fn } = Formatter[formatterId || 0]
 

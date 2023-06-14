@@ -1,5 +1,5 @@
 <script>
-  import { ui$ } from 'webkit/stores/ui'
+  import { getUI$Ctx } from 'webkit/stores/ui'
   import { getDateFormats, getTimeFormats } from 'webkit/utils/dates'
   import { themes } from 'studio/Chart/theme'
   import { getMetricNodes } from 'studio/Chart/nodes'
@@ -16,6 +16,8 @@
   export let colors
   export let axesMetricKeys
   export let onChart
+
+  const { ui$ } = getUI$Ctx()
 
   $: theme = themes[+$ui$.nightMode] // +$globals.isNightMode]
   $: categories = getMetricNodes(metrics, {})
