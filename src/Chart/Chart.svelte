@@ -19,7 +19,7 @@
 
   const { ui$ } = getUI$Ctx()
 
-  $: theme = themes[+$ui$.nightMode] // +$globals.isNightMode]
+  $: theme = themes[+$ui$.isNightMode] // +$globals.isNightMode]
   $: categories = getMetricNodes(metrics, {})
   $: metricSettings = getTooltipSettings(metrics)
 
