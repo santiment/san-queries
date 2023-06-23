@@ -1,5 +1,5 @@
 import { formatUsd, millify } from 'webkit/utils/formatting'
-import { getDateFormats } from 'webkit/utils/dates'
+import { getDateFormats, getTimeFormats } from 'webkit/utils/dates'
 
 export const FormatType = {
   // NOTE: Values should not be changed!!! [@vanguard]
@@ -21,7 +21,10 @@ export const Formatter = Object.assign(
 
 export const options = Object.values(Formatter)
 
-export function dateFormatter(date) {
-  const { D, MMM, YY } = getDateFormats(new Date(date))
-  return `${D} ${MMM}, ${YY}`
+export function dateFormatter(timestamp) {
+  const date = new Date(timestamp)
+  const { D, MMM, YY } = getDateFormats(date)
+  const { HH, mm } = getTimeFormats(date)
+
+  return `${D} ${MMM}, ${YY} | ${HH}:${mm}`
 }
