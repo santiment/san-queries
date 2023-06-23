@@ -16,4 +16,4 @@ export declare const options: {
     title: string;
     fn: any;
 }[];
-export declare function dateFormatter(date: any): string;
+export declare function dateFormatter(timestamp: any): string;
