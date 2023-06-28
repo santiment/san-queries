@@ -25,6 +25,13 @@ function updateColumns(columns) {
   if (isOldHash && settings.columns.length === columns.length) {
     settings.columns.forEach((column, i) => {
       Object.assign(columns[i], column);
+      const _column = columns[i];
+
+      _column.format = data => {
+        const value = _column.accessor(data);
+
+        return column.formatter ? column.formatter(value) : value;
+      };
     });
   }
 
