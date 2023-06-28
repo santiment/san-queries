@@ -16,7 +16,7 @@ export const Formatter = Object.assign(
   Format(FormatType.NO_FORMATTER, 'No formatting'),
   Format(FormatType.DATE, 'Date', dateFormatter),
   Format(FormatType.MILLLIFY, 'Millify', millify),
-  Format(FormatType.USD, 'USD', formatUsd),
+  Format(FormatType.USD, 'USD', (value: number) => formatUsd(value * 100)),
 )
 
 export const options = Object.values(Formatter)
