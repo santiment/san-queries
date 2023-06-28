@@ -12,6 +12,11 @@ export function newColumn(title: string, i: number, dateColumns: Set<number>, se
     sortAccessor: accessor,
   } as any
 
+  const { formatter } = settings || ({} as any)
+  if (formatter) {
+    column.format = (data) => formatter(accessor(data))
+  }
+
   if (dateColumns.has(i)) {
     const { id, fn } = Formatter[FormatType.DATE]
     column.format = (data) => fn(accessor(data))
