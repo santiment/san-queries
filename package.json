@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build",
+    "build": "npm run webkit && vite build",
     "preview": "vite preview",
     "test": "npm run test:integration && npm run test:unit",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
@@ -14,9 +14,12 @@
     "test:integration": "playwright test",
     "test:unit": "vitest",
     "storybook": "storybook dev -p 4000 --ci",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "webkit": "node scripts/webkit",
+    "prepare": "npm run webkit"
   },
   "devDependencies": {
+    "san-webkit": "https://github.com/santiment/san-webkit#7336fe6",
     "@playwright/test": "^1.35.1",
     "@storybook/addon-essentials": "^7.0.26",
     "@storybook/addon-interactions": "^7.0.26",

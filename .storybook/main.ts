@@ -12,6 +12,11 @@ const config: StorybookConfig = {
 	},
 	docs: {
 		autodocs: 'tag'
+	},
+	async viteFinal(config) {
+		// @ts-ignore
+		config.server.fs.allow = ['../'];
+		return config;
 	}
 };
 export default config;
