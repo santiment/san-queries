@@ -1,24 +1,24 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
-import Header from './Header.svelte'
+import NavHeader from './index.svelte'
 
 const meta = {
-  title: 'Example/Header',
-  component: Header,
+  title: 'Example/NavHeader',
+  component: NavHeader,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/svelte/configure/story-layout
     layout: 'fullscreen',
   },
-} satisfies Meta<Header>
+} satisfies Meta<NavHeader>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
 export const LoggedIn: Story = {
   args: {
-    user: {
-      name: 'Jane Doe',
+    currentUser: {
+      username: 'Tester',
     },
   },
 }

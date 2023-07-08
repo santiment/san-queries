@@ -1,17 +1,20 @@
-import type { Preview } from '@storybook/svelte';
+import type { Preview } from '@storybook/svelte'
 
-import '../static/webkit/styles/main.css';
+import '../static/webkit/styles/main.css'
+import Decorator from './Decorator.svelte'
 
 const preview: Preview = {
-	parameters: {
-		actions: { argTypesRegex: '^on[A-Z].*' },
-		controls: {
-			matchers: {
-				color: /(background|color)$/i,
-				date: /Date$/
-			}
-		}
-	}
-};
+  parameters: {
+    actions: { argTypesRegex: '^on[A-Z].*' },
+    controls: {
+      matchers: {
+        color: /(background|color)$/i,
+        date: /Date$/,
+      },
+    },
+  },
 
-export default preview;
+  decorators: [(_, { args }) => ({ Component: Decorator, props: args })],
+}
+
+export default preview
