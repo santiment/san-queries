@@ -14,6 +14,8 @@
   Customer$$(customer)
   UI$$()
   const { device$ } = Device$$(getDeviceInfo(Device.Desktop))
+
+  document.body.classList.add(Device.Desktop)
 </script>
 
 <svelte:window on:resize={device$.onResize} />
@@ -21,6 +23,3 @@
 <slot />
 
 <Dialogs />
-
-<style>
-</style>

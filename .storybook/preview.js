@@ -1,9 +1,8 @@
-import type { Preview } from '@storybook/svelte'
-
 import '../static/webkit/styles/main.css'
 import Decorator from './Decorator.svelte'
 
-const preview: Preview = {
+/** @type {import('@storybook/svelte').Preview} */
+const preview = {
   parameters: {
     actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {

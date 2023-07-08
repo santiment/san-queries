@@ -28,4 +28,12 @@ export default defineConfig({
     'process.env.NODE_ENV':
       process.env.NODE_ENV === 'production' ? '"production"' : '"development"',
   },
+
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@import 'san-webkit/lib/styles/fn.scss';`,
+      },
+    },
+  },
 })

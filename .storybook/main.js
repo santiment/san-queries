@@ -1,6 +1,5 @@
-import type { StorybookConfig } from '@storybook/sveltekit'
-
-const config: StorybookConfig = {
+/** @type {import('@storybook/sveltekit').StorybookConfig} */
+const config = {
   stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: [
     '@storybook/addon-links',
@@ -15,7 +14,6 @@ const config: StorybookConfig = {
     autodocs: 'tag',
   },
   async viteFinal(config) {
-    // @ts-ignore
     config.server.fs.allow = ['../']
 
     Object.assign(config.define, {

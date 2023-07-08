@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
+
 import NavHeader from './index.svelte'
 
 const meta = {
@@ -11,9 +12,9 @@ const meta = {
     layout: 'fullscreen',
   },
 } satisfies Meta<NavHeader>
+type Story = StoryObj<typeof meta>
 
 export default meta
-type Story = StoryObj<typeof meta>
 
 export const LoggedIn: Story = {
   args: {
