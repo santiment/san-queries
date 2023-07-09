@@ -11,12 +11,9 @@
 </script>
 
 <header class="row v-center gap-s">
-  <Product title="Queries" class="test" />
+  <Product title="Queries" />
 
-  <a href="/" class="btn-ghost"
-    >Community
-    <span />
-  </a>
+  <a href="/" class="btn-ghost">Community</a>
   <a href="/" class="btn-ghost">Explorer</a>
   <a href="/" class="btn-ghost">Create</a>
 
@@ -25,8 +22,8 @@
 
   <div class="br mrg-l mrg--l mrg--r" />
 
-  <AccountStatus currentUser={null} />
-  <AccountDropdown currentUser={null} {onLogoutClick} version={process.env.VERSION || '2.0'} />
+  <AccountStatus {currentUser} />
+  <AccountDropdown {currentUser} {onLogoutClick} version={process.env.VERSION || '2.0'} />
 </header>
 
 <style lang="scss">
