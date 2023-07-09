@@ -17,7 +17,8 @@
     "storybook": "storybook dev -p 4000 --ci",
     "build-storybook": "storybook build",
     "webkit": "node scripts/webkit",
-    "prepare": "npm run webkit"
+    "prepare": "npm run webkit",
+    "patch:svelte-kit": "node scripts/patch"
   },
   "devDependencies": {
     "@playwright/test": "^1.35.1",
@@ -55,5 +56,10 @@
     "sass": "^1.63.6",
     "svelte-preprocess": "^5.0.4",
     "svelte-preprocess-cssmodules": "^2.2.4"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@sveltejs/kit@1.22.1": "patches/@sveltejs__kit@1.22.1.patch"
+    }
   }
 }
