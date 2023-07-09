@@ -1,5 +1,6 @@
 import adapter from '@sveltejs/adapter-node'
-import { vitePreprocess } from '@sveltejs/kit/vite'
+import { styleChildComponent } from 'svelte-preprocess-style-child-component'
+import preprocess from 'svelte-preprocess'
 import cssModules from 'svelte-preprocess-cssmodules'
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -7,11 +8,15 @@ const config = {
   // Consult https://kit.svelte.dev/docs/integrations#preprocessors
   // for more information about preprocessors
   preprocess: [
-    vitePreprocess(),
-    cssModules({
-      useAsDefaultScoping: true,
-      includePaths: ['./src'],
+    preprocess({
+      scss: {
+        prependData: `@import '~san-webkit/lib/styles/fn.scss';`,
+      },
     }),
+
+    styleChildComponent(),
+
+    cssModules(),
   ],
 
   kit: {

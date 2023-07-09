@@ -1,0 +1,75 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index e024f4b2e4a00b711185122d7d6e7ace47512e70..d0f3c1b3932f5b64b52988435e8b89a24fda8dce 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -13,6 +13,9 @@ function hash(str) {
+ const styleChildComponent = () => {
+   return {
+     markup: ({ content, filename }) => {
++      if(filename.includes('/node_modules/')) {
++        return
++      }
+       const s = new MagicString(content);
+       const scriptlessContent = content.replace(
+         /<!--[^]*?-->|<script(\s[^]*?)?(?:>([^]*?)<\/script>|\/>)/gi,
+@@ -37,7 +40,7 @@ const styleChildComponent = () => {
+               enter(childNode) {
+                 if (childNode.type === "Attribute" && childNode.name === "class") {
+                   const value = childNode.value?.[0];
+-                  if (value) {
++                  if (value && value.data) {
+                     componentInstance.classSelectors = value.data.split(/\s+/);
+                     s.remove(childNode.start, childNode.end);
+                   }
+@@ -147,15 +150,11 @@ const styleChildComponent = () => {
+                               return match;
+                             });
+                             break;
+-                          case "PseudoElementSelector":
+-                            removeChildren.push(child);
+-                            const value = child.children?.[0].value;
+-                            if (value) {
+-                              part = value;
+-                            }
+-                            break;
+                         }
+                       });
++
++                      className = `s-${hash(removeChildren.map(({name}) => name).join('.'))}`
++
+                       return {
+                         start: childChunk2[0].start,
+                         end: childChunk2[childChunk2.length - 1].end,
+@@ -172,15 +171,15 @@ const styleChildComponent = () => {
+                     selectors.push(...result);
+                   }
+                   if (node2.type === "Block") {
+-                    const blockContent = s.slice(node2.start, node2.end);
+-                    className = `svelte-child-${hash(blockContent)}`;
++                    // const blockContent = s.slice(node2.start, node2.end);
++                    // className = `svelte-child-${hash(blockContent)}`;
+                     this.skip();
+                   }
+                 }
+               });
+               for (const selector of selectors) {
+-                s.appendLeft(selector.start, `:global(.${className}`);
+-                s.appendRight(selector.end, `)`);
++                s.appendLeft(selector.removeChildren[0].start, `:global(.${className})`);
++                
+                 for (const instance of selector.instances) {
+                   if (!instance.parts[selector.part]) {
+                     instance.parts[selector.part] = [];
+@@ -199,10 +198,8 @@ const styleChildComponent = () => {
+           for (const part in parts) {
+             result[part] = [...new Set(parts[part])].join(" ");
+           }
+-          s.appendLeft(
+-            componentInstance.insertFinalClassesAt,
+-            ` parts$$={${JSON.stringify(result)}}`
+-          );
++          const classes = componentInstance.classSelectors.concat(result.default$$).join(' ')
++          s.appendLeft(componentInstance.insertFinalClassesAt, ` class="${classes}"`)
+         }
+       }
+       return {

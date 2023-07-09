@@ -23,3 +23,9 @@
 <slot />
 
 <Dialogs />
+
+<style>
+  :global(#storybook-root) {
+    min-height: 100vh;
+  }
+</style>

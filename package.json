@@ -20,6 +20,9 @@
     "prepare": "npm run webkit",
     "patch:svelte-kit": "node scripts/patch"
   },
+  "dependencies": {
+    "@sveltejs/adapter-node": "^1.3.1"
+  },
   "devDependencies": {
     "@playwright/test": "^1.35.1",
     "@storybook/addon-essentials": "^7.0.26",
@@ -42,24 +45,23 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "san-webkit": "https://github.com/santiment/san-webkit#a4779ef",
+    "sass": "^1.63.6",
     "storybook": "^7.0.26",
     "svelte": "^4.0.5",
     "svelte-check": "^3.4.5",
+    "svelte-preprocess": "^5.0.4",
+    "svelte-preprocess-style-child-component": "^0.1.7",
+    "svelte-preprocess-cssmodules": "https://github.com/DmitriVanGuard/svelte-preprocess-cssmodules#3b24f22",
     "tslib": "^2.6.0",
     "typescript": "^5.1.6",
     "vite": "^4.4.2",
     "vitest": "^0.33.0"
   },
   "type": "module",
-  "dependencies": {
-    "@sveltejs/adapter-node": "^1.3.1",
-    "sass": "^1.63.6",
-    "svelte-preprocess": "^5.0.4",
-    "svelte-preprocess-cssmodules": "^2.2.4"
-  },
   "pnpm": {
     "patchedDependencies": {
-      "@sveltejs/kit@1.22.1": "patches/@sveltejs__kit@1.22.1.patch"
+      "@sveltejs/kit@1.22.1": "patches/@sveltejs__kit@1.22.1.patch",
+      "svelte-preprocess-style-child-component@0.1.7": "patches/svelte-preprocess-style-child-component@0.1.7.patch"
     }
   }
 }

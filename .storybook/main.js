@@ -13,12 +13,17 @@ const config = {
   docs: {
     autodocs: 'tag',
   },
+
+  staticDirs: ['../static'],
+
   async viteFinal(config) {
     config.server.fs.allow = ['../']
 
     Object.assign(config.define, {
       'process.browser': true,
     })
+
+    config.optimizeDeps.exclude = ['san-webkit']
 
     return config
   },
