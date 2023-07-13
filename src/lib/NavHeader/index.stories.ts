@@ -22,6 +22,12 @@ export const LoggedIn: Story = {
       username: 'Tester',
     },
   },
+  parameters: {
+    mockApi: (story) => ({
+      'query currentUser': story.args.currentUser,
+      'query checkAnnualDiscountEligibility': { test: true },
+    }),
+  },
 }
 
 export const LoggedOut: Story = {}

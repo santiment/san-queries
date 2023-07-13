@@ -14,7 +14,7 @@ const config = {
     autodocs: 'tag',
   },
 
-  staticDirs: ['../static'],
+  staticDirs: ['../static', '../.storybook/'],
 
   async viteFinal(config) {
     config.server.fs.allow = ['../']

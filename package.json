@@ -49,8 +49,11 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-storybook": "^0.6.12",
     "eslint-plugin-svelte": "^2.32.2",
+    "graphql": "^16.7.1",
     "husky": "^8.0.3",
     "lint-staged": "^13.2.3",
+    "msw": "^1.2.2",
+    "msw-storybook-addon": "^1.8.0",
     "prettier": "^2.8.8",
     "prettier-plugin-svelte": "^2.10.1",
     "react": "^18.2.0",
@@ -74,5 +77,8 @@
       "@sveltejs/kit@1.22.1": "patches/@sveltejs__kit@1.22.1.patch",
       "svelte-preprocess-style-child-component@0.1.7": "patches/svelte-preprocess-style-child-component@0.1.7.patch"
     }
+  },
+  "msw": {
+    "workerDirectory": ".storybook"
   }
 }
