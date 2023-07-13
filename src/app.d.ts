@@ -13,7 +13,7 @@ declare global {
 
 declare module '@storybook/svelte' {
   export interface Parameters {
-    mockApi?: (story: any) => Record<string, any>
+    mockApi?: (story?: any) => Record<string, any>
   }
 }
 

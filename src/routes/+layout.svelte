@@ -1,18 +1,17 @@
 <script lang="ts">
   import type { LayoutData } from './$types'
 
-  import { Device } from 'webkit/responsive'
   import { Customer$$ } from 'webkit/stores/customer'
   import { CurrentUser$$ } from 'webkit/stores/user'
-  import { Device$$, getDeviceInfo } from 'webkit/stores/responsive'
+  import { Device$$ } from 'webkit/stores/responsive'
   import { UI$$ } from 'webkit/stores/ui'
 
   export let data: LayoutData
 
-  CurrentUser$$()
-  Customer$$()
+  CurrentUser$$(data.session.currentUser)
+  Customer$$(data.session.customer)
   UI$$()
-  const { device$ } = Device$$(getDeviceInfo(Device.Desktop))
+  const { device$ } = Device$$(data.session.device)
 </script>
 
 <svelte:window on:resize={device$.onResize} />

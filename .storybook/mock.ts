@@ -5,7 +5,6 @@ export function ApiMock(schema: Record<string, any>) {
   return {
     handlers: [
       rest.post(process.env.GQL_SERVER_URL, (req, res, ctx) => {
-        console.log({ req, res, ctx })
         const { query, variables } = req.body
         const operation = parse(query).definitions[0]
 

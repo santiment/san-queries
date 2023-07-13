@@ -4,6 +4,8 @@ import { Cache } from 'webkit/api/cache'
 import Decorator from './Decorator.svelte'
 import { ApiMock } from './mock'
 
+Cache.getInFlightQuery = () => null
+
 // Initialize MSW
 initialize()
 

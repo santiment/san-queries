@@ -21,7 +21,7 @@ export const LoggedIn: Story = {
     currentUser: {
       username: 'Tester',
     },
-  },
+  } as any,
   parameters: {
     mockApi: (story) => ({
       'query currentUser': story.args.currentUser,
