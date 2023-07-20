@@ -1,1 +1,2 @@
-require('san-webkit/scripts/publish').publish()
+import { publish } from 'san-webkit/scripts/publish.js'
+publish()
