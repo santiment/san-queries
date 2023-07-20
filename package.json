@@ -14,6 +14,7 @@
   "prepush": [
     "test"
   ],
+  "type": "module",
   "scripts": {
     "dev": "vite --config vite/config.js",
     "build": "npm run webkit && npm run get-schema && vite build --config vite/config.js",
@@ -28,7 +29,7 @@
     "lib:publish": "node scripts/publish",
     "webkit": "node scripts/webkit",
     "prepare": "husky install && patch-package && npm run webkit",
-    "get-schema": "node scripts/schema.js"
+    "get-schema": "node scripts/schema.js --run"
   },
   "dependencies": {
     "@babel/core": "^7.18.9",
@@ -58,7 +59,7 @@
     "prettier": "^2.7.1",
     "prettier-plugin-svelte": "^2.7.0",
     "san-studio": "https://github.com/santiment/san-studio#d009d11",
-    "san-webkit": "https://github.com/santiment/san-webkit#c066109",
+    "san-webkit": "https://github.com/santiment/san-webkit#af0121d",
     "sass": "^1.49.8",
     "svelte": "^3.52.0",
     "svelte-preprocess": "^4.7.4",

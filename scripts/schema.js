@@ -1,27 +1,19 @@
-require('@babel/register')({
-  presets: ['@babel/preset-env'],
-  only: [/node_modules\/san-webkit/],
-})
+import './env.js'
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import {query} from 'san-webkit/lib/api/index.js'
+import { mkdir } from 'san-webkit/scripts/utils.js'
 
-process.env.SERVER_FETCH = require('node-fetch')
-globalThis.fetch = require('node-fetch')
-
-const fs = require('fs')
-const path = require('path')
-const { query } = require('san-webkit/lib/api')
-const { mkdir } = require('san-webkit/scripts/utils')
-
-process.env.GQL_SERVER_URL = 'https://api.santiment.net/graphql'
-process.browser = false
-
-const ROOT = path.resolve(__dirname, '..')
+let ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const SCHEMA_DIR = path.resolve(ROOT, 'public', 'schema')
 
 const COLUMNS = 'table-columns'
 const TABLES = 'tables'
 const FUNCTIONS = 'functions'
 
-function fetchSchema() {
+export function fetchSchema() {
+  console.log('fetching')
   saveSchema(COLUMNS, [])
   saveSchema(TABLES, [])
   saveSchema(FUNCTIONS, [])
@@ -88,4 +80,4 @@ function saveSchema(filename, data) {
   return data
 }
 
-exports.module = { fetchSchema }
+if (process.argv[2] === '--run') fetchSchema()
