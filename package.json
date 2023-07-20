@@ -28,7 +28,6 @@
     "lib:clean": "node scripts/clean.js",
     "lib:publish": "node scripts/publish",
     "webkit": "node scripts/webkit",
-    "prepare": "husky install && patch-package && npm run webkit",
     "get-schema": "node scripts/schema.js --run"
   },
   "dependencies": {
