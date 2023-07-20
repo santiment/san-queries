@@ -59,7 +59,7 @@
     "prettier": "^2.7.1",
     "prettier-plugin-svelte": "^2.7.0",
     "san-studio": "https://github.com/santiment/san-studio#d009d11",
-    "san-webkit": "https://github.com/santiment/san-webkit#af0121d",
+    "san-webkit": "https://github.com/santiment/san-webkit#7cd3ed1",
     "sass": "^1.49.8",
     "svelte": "^3.52.0",
     "svelte-preprocess": "^4.7.4",
