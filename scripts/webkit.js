@@ -1,4 +1,4 @@
-const path = require('path')
-const { copyWebkitAssets } = require('san-webkit/scripts/assets')
+import path from 'path'
+import { copyWebkitAssets } from 'san-webkit/scripts/assets.js'
 
 copyWebkitAssets(path.resolve('public/webkit'))
