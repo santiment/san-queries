@@ -1,6 +1,6 @@
 /** @type {import('@storybook/sveltekit').StorybookConfig} */
 const config = {
-  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|ts|tsx)'],
+  stories: ['../stories/**/*.mdx', '../stories/**/*.stories.@(js|jsx|ts|tsx)'],
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
@@ -14,16 +14,20 @@ const config = {
     autodocs: 'tag',
   },
 
-  staticDirs: ['../static', '../.storybook/'],
+  staticDirs: ['../static'],
 
   async viteFinal(config) {
     config.server.fs.allow = ['../']
 
     Object.assign(config.define, {
       'process.browser': true,
+      'globalThis.fetch': `((() => {
+        const fetch = window.fetch
+        return (...args) => (window.fetch.polyfill ? window.fetch : fetch)(...args)
+      })())`,
     })
 
-    config.optimizeDeps.exclude = ['san-webkit']
+    config.optimizeDeps.exclude = ['webkit', 'san-webkit']
 
     return config
   },

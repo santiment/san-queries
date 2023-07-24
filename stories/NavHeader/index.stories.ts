@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 
-import NavHeader from './index.svelte'
+import NavHeader from '$lib/NavHeader/index.svelte'
 
 const meta = {
-  title: 'Example/NavHeader',
   component: NavHeader,
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   tags: ['autodocs'],
@@ -17,17 +16,17 @@ type Story = StoryObj<typeof meta>
 export default meta
 
 export const LoggedIn: Story = {
-  args: {
-    currentUser: {
-      username: 'Tester',
-    },
-  } as any,
   parameters: {
-    mockApi: (story) => ({
-      'query currentUser': story.args.currentUser,
-      'query checkAnnualDiscountEligibility': { test: true },
+    mockApi: () => ({
+      currentUser: {},
     }),
   },
 }
 
-export const LoggedOut: Story = {}
+export const LoggedOut: Story = {
+  parameters: {
+    mockApi: () => ({
+      currentUser: null,
+    }),
+  },
+}

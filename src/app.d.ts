@@ -1,4 +1,5 @@
 /// <reference types="san-webkit" />
+/// <reference types="san-webkit/.storybook/mock/index" />
 
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
