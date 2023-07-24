@@ -83,8 +83,8 @@ devDependencies:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
   san-webkit:
-    specifier: https://github.com/santiment/san-webkit#37074ae
-    version: github.com/santiment/san-webkit/37074ae(@types/gtag.js@0.0.4)(@types/marked@4.3.1)(@types/medium-editor@5.0.5)(@types/node@15.14.9)(@types/react@16.14.43)(@types/stripe-v3@3.1.29)(@types/turndown@5.0.1)(ethers@5.7.2)(marked@4.3.0)(medium-editor@5.23.3)(node-fetch@2.6.12)(react-dom@18.2.0)(react@18.2.0)(svelte@4.1.1)(turndown@7.1.2)
+    specifier: https://github.com/santiment/san-webkit#17f283a
+    version: github.com/santiment/san-webkit/17f283a(@types/gtag.js@0.0.4)(@types/marked@4.3.1)(@types/medium-editor@5.0.5)(@types/node@15.14.9)(@types/react@16.14.43)(@types/stripe-v3@3.1.29)(@types/turndown@5.0.1)(ethers@5.7.2)(marked@4.3.0)(medium-editor@5.23.3)(node-fetch@2.6.12)(react-dom@18.2.0)(react@18.2.0)(svelte@4.1.1)(turndown@7.1.2)
   sass:
     specifier: ^1.64.1
     version: 1.64.1
@@ -9463,9 +9463,9 @@ packages:
       typescript: 5.1.6
     dev: true
 
-  github.com/santiment/san-webkit/37074ae(@types/gtag.js@0.0.4)(@types/marked@4.3.1)(@types/medium-editor@5.0.5)(@types/node@15.14.9)(@types/react@16.14.43)(@types/stripe-v3@3.1.29)(@types/turndown@5.0.1)(ethers@5.7.2)(marked@4.3.0)(medium-editor@5.23.3)(node-fetch@2.6.12)(react-dom@18.2.0)(react@18.2.0)(svelte@4.1.1)(turndown@7.1.2):
-    resolution: {tarball: https://codeload.github.com/santiment/san-webkit/tar.gz/37074ae}
-    id: github.com/santiment/san-webkit/37074ae
+  github.com/santiment/san-webkit/17f283a(@types/gtag.js@0.0.4)(@types/marked@4.3.1)(@types/medium-editor@5.0.5)(@types/node@15.14.9)(@types/react@16.14.43)(@types/stripe-v3@3.1.29)(@types/turndown@5.0.1)(ethers@5.7.2)(marked@4.3.0)(medium-editor@5.23.3)(node-fetch@2.6.12)(react-dom@18.2.0)(react@18.2.0)(svelte@4.1.1)(turndown@7.1.2):
+    resolution: {tarball: https://codeload.github.com/santiment/san-webkit/tar.gz/17f283a}
+    id: github.com/santiment/san-webkit/17f283a
     name: san-webkit
     version: 0.0.1
     peerDependencies:
