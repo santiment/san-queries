@@ -23,6 +23,10 @@ module.exports = {
     {
       files: ['*.svelte'],
       parser: 'svelte-eslint-parser',
+      globals: {
+        SAN: true,
+        App: true,
+      },
       parserOptions: {
         parser: '@typescript-eslint/parser',
       },
