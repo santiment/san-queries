@@ -1,6 +1,7 @@
 <script>
   import Svg from 'webkit/ui/Svg/svelte'
   import Search from 'webkit/ui/Search.svelte'
+  import WorkTab from './Work/index.svelte'
 </script>
 
 <aside class="column">
@@ -11,6 +12,10 @@
   </tabs>
 
   <Search placeholder="Search for tables, metrics, functions" />
+
+  <section class="column">
+    <WorkTab />
+  </section>
 
   <div class="credits row justify">
     Credits left: 4567
@@ -23,6 +28,7 @@
     width: 348px;
     background: var(--athens);
     padding: 0 24px;
+    height: 100vh;
   }
 
   tabs {
@@ -52,6 +58,17 @@
       right: 0;
       background: var(--green);
     }
+  }
+
+  Search {
+    margin: 0;
+  }
+
+  section {
+    flex: 1;
+    overflow: auto;
+    margin-right: -24px;
+    padding: 24px 24px 24px 0;
   }
 
   .credits {
