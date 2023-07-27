@@ -2,10 +2,10 @@ module.exports = {
   root: true,
   extends: [
     'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
+    // 'plugin:@typescript-eslint/recommended',
     'plugin:svelte/recommended',
     'prettier',
-    'plugin:storybook/recommended',
+    // 'plugin:storybook/recommended',
   ],
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
@@ -30,10 +30,16 @@ module.exports = {
       parserOptions: {
         parser: '@typescript-eslint/parser',
       },
+
+      rules: {
+        'css-unused-selector': 'off',
+        'svelte/valid-compile': 'off',
+      },
     },
   ],
 
   rules: {
+    'css-unused-selector': 'off',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': [
       'error',

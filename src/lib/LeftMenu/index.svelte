@@ -1,33 +1,90 @@
-<script>
+<script lang="ts">
   import Svg from 'webkit/ui/Svg/svelte'
   import Search from 'webkit/ui/Search.svelte'
   import WorkTab from './Work/index.svelte'
+  import MyCredits from './MyCredits.svelte'
+
+  const TABS = [
+    {
+      title: 'Data',
+      icon: ['queries', 16],
+      Component: WorkTab,
+    },
+    {
+      title: 'Work',
+      icon: ['folder', 16, 14],
+      Component: WorkTab,
+    },
+    {
+      title: 'Use cases',
+      icon: ['insight', 14, 16],
+      Component: WorkTab,
+    },
+  ] as const
+
+  let tab = TABS[0] as (typeof TABS)[number]
+  let scrollNode: HTMLElement
+
+  function slideIn(_node: HTMLElement) {
+    scrollNode.style.overflow = 'hidden'
+    return { duration: 300 }
+  }
+
+  function slideOut(node: HTMLElement) {
+    node.classList.add('$style.out')
+    return { duration: 300 }
+  }
+
+  function onTabClick(item: (typeof TABS)[number]) {
+    const isNewTab = tab !== item
+
+    scrollNode.scroll({ top: 0, behavior: isNewTab ? undefined : 'smooth' })
+
+    if (isNewTab) tab = item
+  }
 </script>
 
 <aside class="column">
+  <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <!-- svelte-ignore a11y-no-static-element-interactions -->
   <tabs class="row gap-s mrg-l mrg--b">
-    <tab class="btn" class:active={true}><Svg id="queries" w="16" /> Data</tab>
-    <tab class="btn"><Svg id="folder" w="16" h="14" /> Work</tab>
-    <tab class="btn"><Svg id="insight" w="14" h="16" /> Use cases</tab>
+    {#each TABS as item}
+      {@const {
+        title,
+        icon: [id, w, h],
+      } = item}
+      <tab class="btn" class:active={tab === item} on:click={() => onTabClick(item)}>
+        <Svg {id} {w} {h} />
+        {title}
+      </tab>
+    {/each}
   </tabs>
 
   <Search placeholder="Search for tables, metrics, functions" />
 
-  <section class="column">
-    <WorkTab />
+  <section bind:this={scrollNode}>
+    <main class="column relative">
+      {#key tab}
+        <div
+          class="slide"
+          in:slideIn
+          out:slideOut
+          on:introend={() => (scrollNode.style.overflow = '')}
+        >
+          <svelte:component this={tab.Component} />
+        </div>
+      {/key}
+    </main>
   </section>
 
-  <div class="credits row justify">
-    Credits left: 4567
-    <button class="my-credits">My credits</button>
-  </div>
+  <MyCredits />
 </aside>
 
 <style lang="scss">
   aside {
     width: 348px;
     background: var(--athens);
-    padding: 0 24px;
+    padding: 24px 24px 0;
     height: 100vh;
   }
 
@@ -71,13 +128,28 @@
     padding: 24px 24px 24px 0;
   }
 
-  .credits {
-    background: var(--porcelain);
-    margin: 0 -24px;
-    padding: 6px 24px;
+  .slide {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    animation: slideIn 300ms;
   }
 
-  .my-credits {
-    padding: 0 10px;
+  .out {
+    animation: slideOut 300ms !important;
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes slideOut {
+    to {
+      opacity: 0;
+      transform: translateX(100%);
+    }
   }
 </style>
