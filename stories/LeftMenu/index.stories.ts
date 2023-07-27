@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 
-import Component from '$lib/LeftMenu/index.svelte'
+import Component from './index.svelte'
 
 const meta = {
   component: Component,
@@ -9,13 +9,34 @@ const meta = {
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/svelte/configure/story-layout
     layout: 'fullscreen',
+
+    docs: { story: { height: 500 } },
   },
 } satisfies Meta<Component>
 type Story = StoryObj<typeof meta>
 
 export default meta
 
-export const LoggedIn: Story = {
+export const DataTab: Story = {
+  args: { tab: 0 },
+  parameters: {
+    mockApi: () => ({
+      currentUser: {},
+    }),
+  },
+}
+
+export const WorkTab: Story = {
+  args: { tab: 1 },
+  parameters: {
+    mockApi: () => ({
+      currentUser: {},
+    }),
+  },
+}
+
+export const UseCasesTab: Story = {
+  args: { tab: 2 },
   parameters: {
     mockApi: () => ({
       currentUser: {},

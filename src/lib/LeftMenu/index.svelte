@@ -1,28 +1,11 @@
 <script lang="ts">
   import Svg from 'webkit/ui/Svg/svelte'
   import Search from 'webkit/ui/Search.svelte'
-  import WorkTab from './Work/index.svelte'
   import MyCredits from './MyCredits.svelte'
+  import { TABS } from './tabs'
 
-  const TABS = [
-    {
-      title: 'Data',
-      icon: ['queries', 16],
-      Component: WorkTab,
-    },
-    {
-      title: 'Work',
-      icon: ['folder', 16, 14],
-      Component: WorkTab,
-    },
-    {
-      title: 'Use cases',
-      icon: ['insight', 14, 16],
-      Component: WorkTab,
-    },
-  ] as const
+  export let tab = TABS[0] as (typeof TABS)[number]
 
-  let tab = TABS[0] as (typeof TABS)[number]
   let scrollNode: HTMLElement
 
   function slideIn(node: HTMLElement) {
