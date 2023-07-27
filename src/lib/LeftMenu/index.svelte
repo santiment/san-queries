@@ -46,19 +46,17 @@
 
   <Search placeholder="Search for tables, metrics, functions" />
 
-  <section bind:this={scrollNode}>
-    <main class="column relative">
-      {#key tab}
-        <div
-          class="slide"
-          in:slideIn
-          out:slideOut
-          on:introend={() => (scrollNode.style.overflow = '')}
-        >
-          <svelte:component this={tab.Component} />
-        </div>
-      {/key}
-    </main>
+  <section bind:this={scrollNode} class="column relative">
+    {#key tab}
+      <main
+        class="slide"
+        in:slideIn
+        out:slideOut
+        on:introend={() => (scrollNode.style.overflow = '')}
+      >
+        <svelte:component this={tab.Component} />
+      </main>
+    {/key}
   </section>
 
   <MyCredits />
@@ -109,13 +107,13 @@
     flex: 1;
     overflow: auto;
     margin-right: -24px;
-    padding: 24px 24px 24px 0;
   }
 
   .slide {
     position: absolute;
     top: 0;
     width: 100%;
+    padding: 24px 24px 24px 0;
   }
 
   .in {
