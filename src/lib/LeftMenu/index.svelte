@@ -25,7 +25,8 @@
   let tab = TABS[0] as (typeof TABS)[number]
   let scrollNode: HTMLElement
 
-  function slideIn(_node: HTMLElement) {
+  function slideIn(node: HTMLElement) {
+    node.classList.add('$style.in')
     scrollNode.style.overflow = 'hidden'
     return { duration: 300 }
   }
@@ -132,11 +133,14 @@
     position: absolute;
     top: 0;
     width: 100%;
+  }
+
+  .in {
     animation: slideIn 300ms;
   }
 
   .out {
-    animation: slideOut 300ms !important;
+    animation: slideOut 300ms;
   }
 
   @keyframes slideIn {
