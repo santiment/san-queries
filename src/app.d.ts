@@ -12,12 +12,6 @@ declare global {
   }
 }
 
-declare module '@storybook/svelte' {
-  export interface Parameters {
-    mockApi?: (story?: any) => Record<string, any>
-  }
-}
-
 declare module 'vitest/config' {
   export interface UserConfig {
     clientDefines?: Record<string, any>
