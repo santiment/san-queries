@@ -1,5 +1,12 @@
 <script>
   import Svg from 'webkit/ui/Svg/svelte'
+  import { getDashboardEditor$Ctx } from './ctx'
+
+  const { dashboardEditor$ } = getDashboardEditor$Ctx()
+
+  function onTextClick() {
+    dashboardEditor$.addWidget()
+  }
 </script>
 
 <actions class="row gap-l caption">
@@ -19,7 +26,7 @@
     <Svg id="editor/title" w="16" />
     Heading
   </button>
-  <button class="btn">
+  <button class="btn" on:click={onTextClick}>
     <Svg id="editor/title" w="16" />
     Text
   </button>

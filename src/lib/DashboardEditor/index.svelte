@@ -1,28 +1,36 @@
 <script lang="ts">
   import Actions from './Actions.svelte'
+  import ContentEditable from './ContentEditable.svelte'
+  import { DashboardEditor$$ } from './ctx'
+  import TextWidget from './TextWidget/index.svelte'
+
+  const { dashboardEditor$ } = DashboardEditor$$()
 
   let title = ''
 
-  function onBlur(e: Event) {
-    const node = e.currentTarget as HTMLElement
-    const text = (node.textContent || '').trim()
-    node.innerText = text
-  }
+  $: ({ widgets } = $dashboardEditor$)
 </script>
 
-<main class="column">
-  <h1
-    class="h4 txt-m mrg-s mrg--b"
-    contenteditable="true"
-    placeholder="Add your title here..."
-    on:blur={onBlur}
-  >
-    {title}
-  </h1>
+<main class="column gap-m">
+  <header>
+    <ContentEditable
+      element="h1"
+      class="h4 txt-m mrg-s mrg--b"
+      placeholder="Add your title here..."
+    >
+      {title}
+    </ContentEditable>
 
-  <p class="body-2" contenteditable="true" placeholder="Add description here..." on:blur={onBlur}>
-    {title}
-  </p>
+    <ContentEditable element="h1" class="body-2" placeholder="Add description here...">
+      {title}
+    </ContentEditable>
+  </header>
+
+  {#each widgets as widget}
+    {#if widget.type === 'TEXT'}
+      <TextWidget />
+    {/if}
+  {/each}
 
   <Actions />
 </main>
@@ -30,16 +38,5 @@
 <style lang="scss">
   main {
     padding: 24px 24px 80px;
-  }
-
-  [contenteditable] {
-    outline: none;
-
-    &:empty::before {
-      content: attr(placeholder);
-      display: block;
-      height: 100%;
-      color: var(--waterloo);
-    }
   }
 </style>
