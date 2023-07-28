@@ -12,22 +12,27 @@
   }
 </script>
 
-<text-widget class="border body-2 relative">
-  <ContentEditable placeholder="Add text here" />
+<heading-widget class="h4 txt-m relative">
+  <ContentEditable as="h2" placeholder="Add heading here" />
 
   <button class="close btn-3" on:click={onCloseClick}>
     <Svg id="close" w="12" />
   </button>
-</text-widget>
+</heading-widget>
 
 <style>
+  heading-widget {
+    background: var(--athens);
+    border-radius: 6px;
+  }
+
   ContentEditable {
     padding: 16px 48px 16px 24px;
   }
 
   .close {
     position: absolute;
-    top: 10px;
+    top: 16px;
     right: 16px;
   }
 </style>

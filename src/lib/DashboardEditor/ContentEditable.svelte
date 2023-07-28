@@ -2,7 +2,7 @@
   let className = ''
   export { className as class }
 
-  export let element = 'p'
+  export let as = 'p'
   export let placeholder = 'Add your text here...'
 
   function onBlur(e: Event) {
@@ -14,7 +14,7 @@
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <svelte:element
-  this={element}
+  this={as}
   class={className}
   contenteditable="true"
   {placeholder}
@@ -36,6 +36,7 @@
       display: block;
       height: 100%;
       color: var(--waterloo);
+      pointer-events: none;
     }
   }
 </style>

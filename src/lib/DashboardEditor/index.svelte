@@ -3,6 +3,7 @@
   import ContentEditable from './ContentEditable.svelte'
   import { DashboardEditor$$ } from './ctx'
   import TextWidget from './TextWidget/index.svelte'
+  import HeadingWidget from './HeadingWidget/index.svelte'
 
   const { dashboardEditor$ } = DashboardEditor$$()
 
@@ -13,22 +14,20 @@
 
 <main class="column gap-m">
   <header>
-    <ContentEditable
-      element="h1"
-      class="h4 txt-m mrg-s mrg--b"
-      placeholder="Add your title here..."
-    >
+    <ContentEditable as="h1" class="h4 txt-m mrg-s mrg--b" placeholder="Add your title here...">
       {title}
     </ContentEditable>
 
-    <ContentEditable element="h1" class="body-2" placeholder="Add description here...">
+    <ContentEditable class="body-2" placeholder="Add description here...">
       {title}
     </ContentEditable>
   </header>
 
   {#each widgets as widget}
     {#if widget.type === 'TEXT'}
-      <TextWidget />
+      <TextWidget {widget} />
+    {:else if widget.type === 'HEADING'}
+      <HeadingWidget {widget} />
     {/if}
   {/each}
 

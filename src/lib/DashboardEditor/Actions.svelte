@@ -4,6 +4,10 @@
 
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
 
+  function onHeadingClick() {
+    dashboardEditor$.addWidget('HEADING')
+  }
+
   function onTextClick() {
     dashboardEditor$.addWidget()
   }
@@ -22,7 +26,7 @@
     <Svg id="image" w="16" />
     Image
   </button>
-  <button class="btn">
+  <button class="btn" on:click={onHeadingClick}>
     <Svg id="editor/title" w="16" />
     Heading
   </button>

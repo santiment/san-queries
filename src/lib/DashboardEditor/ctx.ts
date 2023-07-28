@@ -10,8 +10,12 @@ export function DashboardEditor$$() {
   return setContext(CTX, {
     dashboardEditor$: {
       ...store,
-      addWidget() {
-        state.widgets.push({ type: 'TEXT' })
+      addWidget(type = 'TEXT') {
+        state.widgets.push({ type })
+        store.set(state)
+      },
+      removeWidget(widget: any) {
+        state.widgets = state.widgets.filter((item) => item !== widget)
         store.set(state)
       },
     },
