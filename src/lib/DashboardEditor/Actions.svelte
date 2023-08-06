@@ -15,7 +15,7 @@
 
 <actions class="row gap-l caption">
   <button class="btn">
-    <Svg id="chart" w="16" />
+    <Svg id="query" w="16" />
     Query
   </button>
   <button class="btn">
@@ -27,7 +27,7 @@
     Image
   </button>
   <button class="btn" on:click={onHeadingClick}>
-    <Svg id="editor/title" w="16" />
+    <Svg id="editor/heading" w="16" />
     Heading
   </button>
   <button class="btn" on:click={onTextClick}>
