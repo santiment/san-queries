@@ -31,7 +31,7 @@
 <aside class="column">
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <!-- svelte-ignore a11y-no-static-element-interactions -->
-  <tabs class="row gap-s mrg-l mrg--b">
+  <tabs class="row gap-s mrg-l mrg--b v-center">
     {#each TABS as item}
       {@const {
         title,
@@ -42,6 +42,10 @@
         {title}
       </tab>
     {/each}
+
+    <button class="btn mrg-a mrg--l">
+      <Svg id="collapse" w="12" />
+    </button>
   </tabs>
 
   <Search placeholder="Search for tables, metrics, functions" />
@@ -78,7 +82,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 4px 8px;
+    padding: 6px 8px;
     border-radius: 0;
     position: relative;
   }
