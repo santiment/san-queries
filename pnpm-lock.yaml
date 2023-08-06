@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@popsql/monaco-sql-languages':
+    specifier: ^0.0.3
+    version: 0.0.3(monaco-editor@0.41.0)
   '@sveltejs/adapter-node':
     specifier: ^1.3.1
     version: 1.3.1(@sveltejs/kit@1.22.3)
@@ -14,6 +17,9 @@ dependencies:
   medium-editor:
     specifier: ^5.23.3
     version: 5.23.3
+  monaco-editor:
+    specifier: ^0.41.0
+    version: 0.41.0
   turndown:
     specifier: ^7.1.2
     version: 7.1.2
@@ -2420,6 +2426,14 @@ packages:
 
   /@polka/url@1.0.0-next.21:
     resolution: {integrity: sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==}
+
+  /@popsql/monaco-sql-languages@0.0.3(monaco-editor@0.41.0):
+    resolution: {integrity: sha512-CIsaaUGXQWhBBRHxWhMn1lmnEbvXu/HIQ/iPNBSsi8u5uGO7t7X+YCz2h9zUtxZIgh6fR5YuZVotb0RpbP/vIg==}
+    peerDependencies:
+      monaco-editor: '*'
+    dependencies:
+      monaco-editor: 0.41.0
+    dev: false
 
   /@rollup/plugin-commonjs@25.0.3(rollup@3.26.3):
     resolution: {integrity: sha512-uBdtWr/H3BVcgm97MUdq2oJmqBR23ny1hOrWe2PKo9FTbjsGqg32jfasJUKYAI5ouqacjRnj65mBB/S79F+GQA==}
@@ -7264,6 +7278,10 @@ packages:
       pkg-types: 1.0.3
       ufo: 1.1.2
     dev: true
+
+  /monaco-editor@0.41.0:
+    resolution: {integrity: sha512-1o4olnZJsiLmv5pwLEAmzHTE/5geLKQ07BrGxlF4Ri/AXAc2yyDGZwHjiTqD8D/ROKUZmwMA28A+yEowLNOEcA==}
+    dev: false
 
   /mri@1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
