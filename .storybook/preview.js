@@ -1,4 +1,9 @@
 import 'miragejs'
 import preview from 'san-webkit/.storybook/preview'
 
-export default preview
+const config = {
+  ...preview,
+}
+delete config.parameters.options
+
+export default config

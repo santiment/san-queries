@@ -30,7 +30,10 @@
     "patch:svelte-kit": "node scripts/patch"
   },
   "dependencies": {
-    "@sveltejs/adapter-node": "^1.3.1"
+    "@sveltejs/adapter-node": "^1.3.1",
+    "marked": "^6.0.0",
+    "medium-editor": "^5.23.3",
+    "turndown": "^7.1.2"
   },
   "devDependencies": {
     "@playwright/test": "^1.35.1",
@@ -56,10 +59,10 @@
     "prettier-plugin-svelte": "^2.10.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "san-webkit": "https://github.com/santiment/san-webkit#efbb990",
+    "san-webkit": "https://github.com/santiment/san-webkit#2cda5e8",
     "sass": "^1.64.1",
     "storybook": "^7.1.0",
-    "svelte": "^4.1.1",
+    "svelte": "^4.1.2",
     "svelte-check": "^3.4.6",
     "svelte-preprocess": "^5.0.4",
     "svelte-preprocess-cssmodules": "https://github.com/DmitriVanGuard/svelte-preprocess-cssmodules#3b24f22",
