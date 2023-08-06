@@ -28,6 +28,7 @@
 
   ContentEditable {
     padding: 16px 48px 16px 24px;
+    height: 100%;
   }
 
   .close {
