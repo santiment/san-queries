@@ -16,7 +16,7 @@ export function getKeywordsSchema(language: monaco.languages.IMonarchLanguage) {
 export function getTablesSchema() {
   return import('$static/schema/tables.json').then(({ default: data }) => {
     let sort = 0
-    return data.map(([name, engine]) => ({
+    return (data as [string, string][]).map(([name, engine]) => ({
       label: name,
       insertText: name,
       detail: engine,
@@ -30,7 +30,7 @@ export function getTablesSchema() {
 export function getColumnsSchema() {
   return import('$static/schema/table-columns.json').then(({ default: data }) => {
     let sort = 0
-    return data
+    return (data as [string, [string, string][]][])
       .map(([table, columns]) =>
         columns.map(([name, type]) => ({
           label: name,
@@ -47,7 +47,8 @@ export function getColumnsSchema() {
 export function getFunctionsSchema() {
   return import('$static/schema/functions.json').then(({ default: data }) => {
     let sort = 0
-    return data.map((name) => ({
+
+    return (data as string[]).map((name) => ({
       label: name,
       insertText: name + '($0)',
       detail: 'Function',
