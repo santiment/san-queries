@@ -9,6 +9,7 @@ const meta = {
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/svelte/configure/story-layout
     layout: 'fullscreen',
+    docs: { story: { height: 200 } },
   },
 } satisfies Meta<NavHeader>
 type Story = StoryObj<typeof meta>

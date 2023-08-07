@@ -37,6 +37,14 @@
     <Editor style="height:400px" value={builtinFunctions.join(' ')} {options} />
   {/key}
 </p>
+<h2 class="h4">Parameters</h2>
+<p>
+  <Editor
+    style="height:100px"
+    value={`{{arg1}} {{arg2}} {{arg3}}`}
+    parameters={[{ key: 'arg1' }, { key: 'arg2' }, { key: 'arg3' }]}
+  />
+</p>
 
 <style>
   p {

@@ -1,53 +1,72 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
+  import { onDestroy, onMount } from 'svelte'
   import { editor as monacoEditor, languages } from 'monaco-editor'
-  import { clickhouseLanguageDefinition as clickhouse } from '@popsql/monaco-sql-languages'
   import { getKeywordsSchema } from './schema'
+  import { createEditor } from './editor'
 
   let className = ''
   export { className as class }
   export let style = ''
   export let value = ''
   export let options: monacoEditor.IStandaloneEditorConstructionOptions | undefined
+  export let parameters = [] as { key: string }[]
 
   const KEYWORDS = getKeywordsSchema()
 
   let editorNode: HTMLElement
   let editor: monacoEditor.IStandaloneCodeEditor
+  let EditorCtx: Awaited<ReturnType<typeof createEditor>>
 
   $: schema = KEYWORDS
+  $: EditorCtx?.updateParameters(parameters)
 
   onMount(() => {
-    languages.register(clickhouse)
-    languages.onLanguage(clickhouse.id, () => {
-      clickhouse.loader().then(({ conf, language }) => {
-        console.log(language)
-        languages.setMonarchTokensProvider(clickhouse.id, language)
-        languages.setLanguageConfiguration(clickhouse.id, conf)
-      })
+    createEditor(editorNode, value, options).then((ctx) => {
+      EditorCtx = ctx
     })
+  })
 
-    editor = monacoEditor.create(editorNode, {
-      ...options,
-      value,
-      // theme: THEME,
-      language: 'clickhouse',
-      scrollBeyondLastLine: false,
-      minimap: { enabled: false },
-      renderLineHighlight: 'none',
-      overviewRulerLanes: 0,
-      scrollbar: { verticalScrollbarSize: 2, alwaysConsumeMouseWheel: false },
-      padding: { top: 15, bottom: 15 },
-      wordWrap: 'on',
-    })
+  onDestroy(() => {
+    if (process.browser && EditorCtx) {
+      EditorCtx.destroy()
+    }
   })
 </script>
 
 <sql-editor bind:this={editorNode} {style} class={className} />
 
-<style>
+<style lang="scss">
   sql-editor {
     height: 100%;
     flex: 1;
+
+    :global {
+      .monaco-editor-background,
+      .margin {
+        background: var(--white);
+      }
+
+      .mtk1 {
+        color: var(--black);
+      }
+
+      .line-numbers {
+        color: var(--waterloo);
+      }
+
+      .active-line-number {
+        color: var(--black) !important;
+      }
+      .cursors-layer .cursor {
+        background-color: var(--black);
+        border-color: var(--black);
+      }
+
+      .suggest-widget {
+        border-radius: 4px;
+        background: var(--white);
+        --vscode-editorSuggestWidget-foreground: var(--black);
+      }
+    }
   }
 </style>
