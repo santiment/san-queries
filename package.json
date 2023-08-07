@@ -27,7 +27,8 @@
     "build-storybook": "storybook build",
     "webkit": "node scripts/webkit",
     "prepare": "husky install && npm run webkit",
-    "patch:svelte-kit": "node scripts/patch"
+    "patch:svelte-kit": "node scripts/patch",
+    "get-schema": "node scripts/schema.js --run"
   },
   "dependencies": {
     "@popsql/monaco-sql-languages": "^0.0.3",

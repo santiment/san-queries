@@ -19,6 +19,9 @@
       "$routes/*": [
         "./src/routes/*"
       ],
+      "$static/*": [
+        "./static/*"
+      ],
       "webkit": [
         "./node_modules/san-webkit/lib"
       ],

@@ -10,6 +10,7 @@ yarn-error.log
 static/webkit
 static/vendors
 static/~partytown
+static/schema
 
 .env
 .env.*

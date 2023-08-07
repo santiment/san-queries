@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte'
-  import { editor as monacoEditor, languages } from 'monaco-editor'
-  import { getKeywordsSchema } from './schema'
+  import { editor as monacoEditor } from 'monaco-editor'
   import { createEditor } from './editor'
 
   let className = ''
@@ -11,13 +10,10 @@
   export let options: monacoEditor.IStandaloneEditorConstructionOptions | undefined
   export let parameters = [] as { key: string }[]
 
-  const KEYWORDS = getKeywordsSchema()
-
   let editorNode: HTMLElement
   let editor: monacoEditor.IStandaloneCodeEditor
   let EditorCtx: Awaited<ReturnType<typeof createEditor>>
 
-  $: schema = KEYWORDS
   $: EditorCtx?.updateParameters(parameters)
 
   onMount(() => {

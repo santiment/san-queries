@@ -1,5 +1,6 @@
 import { editor as monacoEditor, languages } from 'monaco-editor'
 import { clickhouseLanguageDefinition as clickhouse } from '@popsql/monaco-sql-languages'
+import { registerSuggestions } from './suggestions'
 
 clickhouse.loader().then(({ language }) => {
   language.tokenizer.root.unshift({ include: '@annotations' })
@@ -83,19 +84,26 @@ export async function createEditor(
     tokenizer: { ...language.tokenizer },
   } as languages.IMonarchLanguage
 
+  const { getSuggestions, updateParameterSuggestions } = registerSuggestions(_language)
+
+  const suggestionsDisposal = languages.registerCompletionItemProvider(languageId, {
+    provideCompletionItems: getSuggestions,
+  })
   const confDisposal = languages.setLanguageConfiguration(languageId, conf)
-  const monarchDisposal = languages.setMonarchTokensProvider(languageId, _language)
+  let monarchDisposal = languages.setMonarchTokensProvider(languageId, _language)
 
   function updateParameters(parameters: { key: string }[]) {
-    console.log(_language, languageId)
+    updateParameterSuggestions(parameters)
+
     if (parameters.length === 0) return
 
     _language.tokenizer.annotations = parameters.map(({ key }, i) => [
       new RegExp(`{{${key}}}`),
       'annotation.' + i,
     ])
+    monarchDisposal.dispose()
 
-    languages.setMonarchTokensProvider(languageId, _language)
+    monarchDisposal = languages.setMonarchTokensProvider(languageId, _language)
   }
 
   const editor = monacoEditor.create(node, {
@@ -117,6 +125,7 @@ export async function createEditor(
   function destroy() {
     confDisposal.dispose()
     monarchDisposal.dispose()
+    suggestionsDisposal.dispose()
     editor.dispose()
   }
 
