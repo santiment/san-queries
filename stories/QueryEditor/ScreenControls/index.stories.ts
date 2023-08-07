@@ -9,7 +9,7 @@ const meta = {
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/svelte/configure/story-layout
     layout: 'fullscreen',
-    docs: { story: { height: 100 } },
+    docs: { story: { height: 140 } },
   },
 } satisfies Meta<Component>
 type Story = StoryObj<typeof meta>
@@ -18,4 +18,20 @@ export default meta
 
 export const EditorTab: Story = {}
 
-export const VisualisationTab: Story = {}
+export const VisualisationTab: Story = {
+  args: {
+    tab: 1,
+  },
+}
+
+export const MultipleParameters: Story = {
+  args: {
+    parameters: [
+      { key: 'WETH', value: 'Ox12...659' },
+      { key: 'WETH', value: 'Ox12...659' },
+      { key: 'WETH', value: 'Ox12...659' },
+      { key: 'WETH', value: 'Ox12...659' },
+      { key: 'WETH', value: 'Ox12...659' },
+    ],
+  },
+}
