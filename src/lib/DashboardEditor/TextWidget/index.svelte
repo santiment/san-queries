@@ -1,10 +1,8 @@
 <script lang="ts">
   import Svg from 'webkit/ui/Svg/svelte'
   import Editor from 'webkit/ui/Editor'
-  // import ContentEditable from '../ContentEditable.svelte'
+  import { markdownToHTML } from 'webkit/ui/Editor/markdown'
   import { getDashboardEditor$Ctx } from '../ctx'
-  // import { default as MD } from 'medium-editor'
-  // console.log(MD)
 
   export let widget: any
 
@@ -16,7 +14,10 @@
 </script>
 
 <text-widget class="row border body-2 relative">
-  <Editor placeholder="Add your text here..." />
+  <Editor
+    placeholder="Add your text here..."
+    html={widget.value ? markdownToHTML(widget.value) : undefined}
+  />
   <!-- <ContentEditable /> -->
 
   <button class="close btn-3" on:click={onCloseClick}>
@@ -25,7 +26,6 @@
 </text-widget>
 
 <style>
-  ContentEditable,
   Editor {
     padding: 16px 48px 16px 24px;
     overflow: auto;

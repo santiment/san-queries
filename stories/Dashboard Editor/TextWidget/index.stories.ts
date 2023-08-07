@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 
-import Component from '$lib/DashboardEditor/HeadingWidget/index.svelte'
+import Component from '$lib/DashboardEditor/TextWidget/index.svelte'
 import Decorator from '../DashboardDecorator.svelte'
 
 const meta = {
@@ -22,7 +22,7 @@ type Story = StoryObj<typeof meta>
 export default meta
 
 const Widget = (value: string) => ({
-  type: 'HEADING',
+  type: 'TEXT',
   value,
 })
 
@@ -34,7 +34,9 @@ export const Empty: Story = {
 
 export const WithValue: Story = {
   args: {
-    widget: Widget('Hello! This is heading widget'),
+    widget: Widget(
+      'Hello! This is **text** widget with a [markdown](https://app.santiment.net/) _support_',
+    ),
   },
 }
 
