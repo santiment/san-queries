@@ -112,3 +112,5 @@ export async function createEditor(
     updateParameters,
   }
 }
+
+export type EditorCtxType = Awaited<ReturnType<typeof createEditor>>

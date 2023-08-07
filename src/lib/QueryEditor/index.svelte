@@ -1,6 +1,7 @@
 <script lang="ts">
   // import Svg from 'webkit/ui/Svg/svelte'
   import ScreenControls from './ScreenControls.svelte'
+  import SQLEditor from '$lib/SQLEditor/index.svelte'
 </script>
 
 <tabs class="row gap-l mrg-xxl mrg--l">
@@ -10,6 +11,8 @@
 
 <section class="column gap-s">
   <ScreenControls />
+
+  <SQLEditor />
 </section>
 
 <style>
@@ -28,5 +31,10 @@
     border-radius: 6px;
     padding: 20px 24px;
     background: var(--athens);
+    flex: 1;
+  }
+
+  SQLEditor {
+    --border-radius: 6px;
   }
 </style>

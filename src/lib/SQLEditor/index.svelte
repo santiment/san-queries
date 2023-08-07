@@ -1,7 +1,8 @@
 <script lang="ts">
+  import type { editor as monacoEditor } from 'monaco-editor'
+  import type { EditorCtxType } from './editor'
+
   import { onDestroy, onMount } from 'svelte'
-  import { editor as monacoEditor } from 'monaco-editor'
-  import { createEditor } from './editor'
 
   let className = ''
   export { className as class }
@@ -12,14 +13,16 @@
   export let editor: monacoEditor.IStandaloneCodeEditor
 
   let editorNode: HTMLElement
-  let EditorCtx: Awaited<ReturnType<typeof createEditor>>
+  let EditorCtx: EditorCtxType
 
   $: EditorCtx?.updateParameters(parameters)
 
   onMount(() => {
-    createEditor(editorNode, value, options).then((ctx) => {
-      EditorCtx = ctx
-      editor = ctx.editor
+    import('./editor').then(({ createEditor }) => {
+      createEditor(editorNode, value, options).then((ctx) => {
+        EditorCtx = ctx
+        editor = ctx.editor
+      })
     })
   })
 
@@ -34,13 +37,16 @@
 
 <style lang="scss">
   sql-editor {
-    height: 100%;
     flex: 1;
+    background: var(--white);
+    border-radius: var(--border-radius, 0);
 
     :global {
-      .monaco-editor-background,
-      .margin {
+      .monaco-editor {
+        border-radius: var(--border-radius, 0);
         background: var(--white);
+        --vscode-editor-background: transparent;
+        --vscode-editorGutter-background: transparent;
       }
 
       .mtk1 {
