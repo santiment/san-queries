@@ -9,9 +9,9 @@
   export let value = ''
   export let options: monacoEditor.IStandaloneEditorConstructionOptions | undefined
   export let parameters = [] as { key: string }[]
+  export let editor: monacoEditor.IStandaloneCodeEditor
 
   let editorNode: HTMLElement
-  let editor: monacoEditor.IStandaloneCodeEditor
   let EditorCtx: Awaited<ReturnType<typeof createEditor>>
 
   $: EditorCtx?.updateParameters(parameters)
@@ -19,6 +19,7 @@
   onMount(() => {
     createEditor(editorNode, value, options).then((ctx) => {
       EditorCtx = ctx
+      editor = ctx.editor
     })
   })
 
