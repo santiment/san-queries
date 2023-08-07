@@ -3,8 +3,8 @@ import { writable } from 'svelte/store'
 
 export const CTX = 'DashboardEditor$$'
 
-export function DashboardEditor$$() {
-  const state = { widgets: [] } as App.DashboardEditor
+export function DashboardEditor$$(defaultWidgets = []) {
+  const state = { widgets: defaultWidgets } as App.DashboardEditor
   const store = writable(state)
 
   return setContext(CTX, {

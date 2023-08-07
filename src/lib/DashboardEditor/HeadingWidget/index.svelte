@@ -13,7 +13,9 @@
 </script>
 
 <heading-widget class="h4 txt-m relative">
-  <ContentEditable as="h2" placeholder="Add heading here" />
+  <ContentEditable as="h2" placeholder="Add heading here">
+    {widget.value || ''}
+  </ContentEditable>
 
   <button class="close btn-3" on:click={onCloseClick}>
     <Svg id="close" w="12" />
@@ -29,6 +31,7 @@
   ContentEditable {
     padding: 16px 48px 16px 24px;
     height: 100%;
+    overflow: auto;
   }
 
   .close {
