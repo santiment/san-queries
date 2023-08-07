@@ -8,9 +8,9 @@
   export { className as class }
   export let style = ''
   export let value = ''
-  export let options: monacoEditor.IStandaloneEditorConstructionOptions | undefined
+  export let options = undefined as monacoEditor.IStandaloneEditorConstructionOptions | undefined
   export let parameters = [] as { key: string }[]
-  export let editor: monacoEditor.IStandaloneCodeEditor
+  export let editor = null as null | monacoEditor.IStandaloneCodeEditor
 
   let editorNode: HTMLElement
   let EditorCtx: EditorCtxType
@@ -47,6 +47,7 @@
         background: var(--white);
         --vscode-editor-background: transparent;
         --vscode-editorGutter-background: transparent;
+        --vscode-list-hoverBackground: var(--mystic);
       }
 
       .mtk1 {

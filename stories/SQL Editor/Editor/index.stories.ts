@@ -17,4 +17,4 @@ type Story = StoryObj<typeof meta>
 
 export default meta
 
-export const SQLEditor: Story = {}
+export const Editor: Story = {}
