@@ -20,7 +20,7 @@ export const EditorTab: Story = {}
 
 export const VisualisationTab: Story = {
   args: {
-    tab: 1,
+    tab: 'Visualisation',
   },
 }
 

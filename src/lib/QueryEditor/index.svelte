@@ -1,18 +1,32 @@
+<script lang="ts" context="module">
+  export const TABS = ['Editor', 'Visualisation'] as const
+</script>
+
 <script lang="ts">
   // import Svg from 'webkit/ui/Svg/svelte'
   import ScreenControls from './ScreenControls.svelte'
   import SQLEditor from '$lib/SQLEditor/index.svelte'
+  import Visualisation from './Visualisation/index.svelte'
+
+  export let tab = TABS[0] as (typeof TABS)[number]
 </script>
 
 <tabs class="row gap-l mrg-xxl mrg--l">
-  <tab class="btn active">Editor</tab>
-  <tab class="btn">Visualisation</tab>
+  {#each TABS as item}
+    <!-- svelte-ignore a11y-click-events-have-key-events -->
+    <!-- svelte-ignore a11y-no-static-element-interactions -->
+    <tab class="btn" class:active={tab === item} on:click={() => (tab = item)}>{item}</tab>
+  {/each}
 </tabs>
 
-<section class="column gap-s">
-  <ScreenControls />
+<section class="column gap-m">
+  <ScreenControls {tab} />
 
-  <SQLEditor />
+  {#if tab === 'Editor'}
+    <SQLEditor />
+  {:else}
+    <Visualisation />
+  {/if}
 </section>
 
 <style>

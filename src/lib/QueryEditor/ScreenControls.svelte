@@ -1,8 +1,9 @@
 <script lang="ts">
   import Svg from 'webkit/ui/Svg/svelte'
   import Parameter, { COLORS } from '$lib/Parameter'
+  import { TABS } from './index.svelte'
 
-  export let tab = 0
+  export let tab = TABS[0]
   export let parameters = [] as any[]
 </script>
 
@@ -23,7 +24,7 @@
   </parameters>
 
   <actions class="row gap-s c-waterloo nowrap">
-    {#if tab === 0}
+    {#if tab === TABS[0]}
       <button class="btn-3">
         <Svg id="report" w="16" />
       </button>
