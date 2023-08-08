@@ -14,14 +14,26 @@
 
   let editorNode: HTMLElement
   let EditorCtx: EditorCtxType
+  let isFocused = false
 
   $: EditorCtx?.updateParameters(parameters)
+
+  function onFocus() {
+    isFocused = true
+  }
+
+  function onBlur() {
+    isFocused = false
+  }
 
   onMount(() => {
     import('./editor').then(({ createEditor }) => {
       createEditor(editorNode, value, options).then((ctx) => {
         EditorCtx = ctx
         editor = ctx.editor
+
+        editor.onDidBlurEditorText(onBlur)
+        editor.onDidFocusEditorWidget(onFocus)
       })
     })
   })
@@ -33,7 +45,11 @@
   })
 </script>
 
-<sql-editor bind:this={editorNode} {style} class={className} />
+<sql-editor bind:this={editorNode} {style} class="relative {className}">
+  {#if !value && !isFocused}
+    <placeholder class="c-green">Write your SQL here...</placeholder>
+  {/if}
+</sql-editor>
 
 <style lang="scss">
   sql-editor {
@@ -72,5 +88,13 @@
         --vscode-editorSuggestWidget-foreground: var(--black);
       }
     }
+  }
+
+  placeholder {
+    position: absolute;
+    left: 62px;
+    top: 14px;
+    pointer-events: none;
+    z-index: 1;
   }
 </style>
