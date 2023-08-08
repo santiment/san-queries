@@ -15,6 +15,7 @@
   let editorNode: HTMLElement
   let EditorCtx: EditorCtxType
   let isFocused = false
+  let resizerNode: HTMLIFrameElement
 
   $: EditorCtx?.updateParameters(parameters)
 
@@ -26,7 +27,16 @@
     isFocused = false
   }
 
+  function onResize() {
+    if (editor) {
+      const { offsetWidth: width, offsetHeight: height } = resizerNode
+      editor.layout({ width, height })
+    }
+  }
+
   onMount(() => {
+    if (resizerNode.contentWindow) resizerNode.contentWindow.onresize = onResize
+
     import('./editor').then(({ createEditor }) => {
       createEditor(editorNode, value, options).then((ctx) => {
         EditorCtx = ctx
@@ -49,6 +59,10 @@
   {#if !value && !isFocused}
     <placeholder class="c-green">Write your SQL here...</placeholder>
   {/if}
+
+  <iframe title="resizer" frameBorder="0" bind:this={resizerNode} />
+
+  <slot />
 </sql-editor>
 
 <style lang="scss">
@@ -96,5 +110,14 @@
     top: 14px;
     pointer-events: none;
     z-index: 1;
+  }
+
+  iframe {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    top: 0;
   }
 </style>

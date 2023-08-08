@@ -4,6 +4,7 @@
 
   export let widget
 
+  // @ts-ignore
   DashboardEditor$$([widget])
 </script>
 
@@ -14,9 +15,5 @@
 <style>
   main {
     padding: 30px;
-  }
-
-  widget > :global(*) {
-    height: 100%;
   }
 </style>
