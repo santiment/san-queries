@@ -1,11 +1,22 @@
 <script>
+  import Control from './Control.svelte'
+
+  let value = 'Table'
 </script>
 
 <main class="row gap-m">
-  <section class="options border">
+  <section class="options border column">
     <h2 class="body-2">Options</h2>
 
-    <controls class="column gap-xl"> 123 </controls>
+    <controls class="column gap-xl">
+      <Control
+        name="Visualization type"
+        options={['Table', 'Chart']}
+        {value}
+        onUpdate={(updated) => (value = updated)}
+      />
+      <Control name="Column 0: Title" />
+    </controls>
   </section>
 </main>
 
@@ -30,5 +41,6 @@
   controls {
     padding: 24px 16px;
     overflow: auto;
+    flex: 1;
   }
 </style>

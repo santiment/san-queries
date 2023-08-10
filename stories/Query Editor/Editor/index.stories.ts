@@ -14,4 +14,9 @@ type Story = StoryObj<typeof meta>
 
 export default meta
 
-export const Editor: Story = {}
+export const EditorTab: Story = {}
+export const VisualisationTab: Story = {
+  args: {
+    tab: 'Visualisation',
+  },
+}

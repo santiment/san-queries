@@ -6,7 +6,7 @@
   // import Svg from 'webkit/ui/Svg/svelte'
   import ScreenControls from './ScreenControls.svelte'
   import SQLEditor from '$lib/SQLEditor/index.svelte'
-  import Visualisation from './Visualisation/index.svelte'
+  import VisualisationTab from './Visualisation/index.svelte'
 
   export let tab = TABS[0] as (typeof TABS)[number]
 </script>
@@ -25,7 +25,7 @@
   {#if tab === 'Editor'}
     <SQLEditor />
   {:else}
-    <Visualisation />
+    <VisualisationTab />
   {/if}
 </section>
 
