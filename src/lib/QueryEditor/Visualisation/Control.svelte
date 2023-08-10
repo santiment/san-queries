@@ -6,6 +6,19 @@
   export let options = [] as any[]
   export let value: any
   export let onUpdate: (value: any) => void
+  export let placeholder = ''
+
+  function onInput(e: Event) {
+    const inputNode = e.currentTarget as HTMLInputElement
+
+    onUpdate(inputNode.value.trim())
+  }
+
+  function onInputBlur(e: Event) {
+    const inputNode = e.currentTarget as HTMLInputElement
+
+    inputNode.value = inputNode.value.trim()
+  }
 </script>
 
 <control class="column gap-s relative">
@@ -35,7 +48,7 @@
       </svelte:fragment>
     </Tooltip>
   {:else}
-    <input type="text" class="input" />
+    <input type="text" class="input" {placeholder} on:input={onInput} on:blur={onInputBlur} />
   {/if}
 </control>
 

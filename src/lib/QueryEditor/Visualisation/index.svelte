@@ -7,6 +7,7 @@
 
   let table = {
     columns: [] as {
+      key: string
       title: string
       valueKey: number
       format: (row: [], i: number, value: any) => any
@@ -14,22 +15,38 @@
     data: [] as (string | number | null)[][],
   }
 
+  let sqlData = { headers: [], rows: [], types: [] } as {
+    headers: string[]
+    rows: (string | number | null)[][]
+    types: string[]
+  }
+
+  let controls = {
+    visualisation: 'Table',
+  }
+
+  let ColumnSettings = {} as Record<string, Partial<{ title: string }>>
+
   $: if (process.browser) {
     getData()
   }
 
+  $: table.columns = sqlData.headers.map((key, i) => {
+    const settings = ColumnSettings[key] || {}
+
+    return {
+      key,
+      title: settings.title || key,
+      valueKey: i,
+      format: (row: any, i: number, value: any) => value,
+    }
+  })
+
+  $: table.data = sqlData.rows
+
   function getData() {
     queryComputeRawClickhouseQuery().then((data) => {
-      table.columns = data.headers.map((title, i) => {
-        return {
-          title: title,
-          valueKey: i,
-          format: (row: any, i: number, value: any) => value,
-        }
-      })
-
-      table.data = data.rows
-
+      sqlData = data
       table = table
     })
   }
@@ -46,9 +63,25 @@
         name="Visualization type"
         options={['Table', 'Chart']}
         {value}
-        onUpdate={(updated) => (value = updated)}
+        onUpdate={(updated) => {
+          controls.visualisation = updated
+          controls = controls
+        }}
       />
-      <Control name="Column 0: Title" />
+
+      {#each sqlData.headers as column, i}
+        {@const settings = ColumnSettings[column] || {}}
+
+        <Control
+          name="Column {i}: Title - {column}"
+          value={settings.title}
+          placeholder={column}
+          onUpdate={(updated) => {
+            ColumnSettings[column] = { ...ColumnSettings[column] }
+            ColumnSettings[column].title = updated.trim()
+          }}
+        />
+      {/each}
     </controls>
   </section>
 </main>
