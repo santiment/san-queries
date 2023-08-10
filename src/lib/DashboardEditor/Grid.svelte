@@ -13,11 +13,13 @@
 
   function generateLayout(widgets: any[]) {
     const layout = widgets.map((_, i) => [0, 1000 + i, 6, 2])
+    // @ts-ignore
     normalizeGrid(sortLayout(layout))
     return layout
   }
 </script>
 
+<!-- @ts-ignore -->
 <Grid tag="widgets" {layout} let:i let:gridItem rowSize={26}>
   {@const widget = widgets[i]}
 

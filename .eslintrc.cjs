@@ -19,6 +19,10 @@ module.exports = {
     es2017: true,
     node: true,
   },
+  globals: {
+    SAN: true,
+    App: true,
+  },
   overrides: [
     {
       files: ['*.svelte'],
