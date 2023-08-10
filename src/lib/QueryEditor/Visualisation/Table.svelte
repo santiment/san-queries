@@ -3,12 +3,32 @@
 
   let className = ''
   export { className as class }
-  export let columns = [] as any[]
-  export let data = [] as any[]
+  export let sqlData = [] as any
+  export let ColumnSettings: any
+
+  $: columns = sqlData.headers.map((key, i) => {
+    const settings = ColumnSettings[key] || {}
+    let sortAccessor
+
+    const type = sqlData.types[i]
+    if (type === 'DateTime') {
+      sortAccessor = (item: any) => Date.parse(item[i])
+    } else if (type.includes('Int')) {
+      sortAccessor = (item: any) => +item[i]
+    }
+
+    return {
+      key,
+      title: settings.title || key,
+      valueKey: i,
+      format: (row: any, i: number, value: any) => value,
+      sortAccessor,
+    }
+  })
 </script>
 
 <table-widget class="column border">
-  <Table items={data} {columns} class={className} sticky />
+  <Table items={sqlData.rows} {columns} class={className} sticky />
 </table-widget>
 
 <style lang="scss">

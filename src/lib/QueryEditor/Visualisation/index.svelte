@@ -5,16 +5,6 @@
 
   let value = 'Table'
 
-  let table = {
-    columns: [] as {
-      key: string
-      title: string
-      valueKey: number
-      format: (row: [], i: number, value: any) => any
-    }[],
-    data: [] as (string | number | null)[][],
-  }
-
   let sqlData = { headers: [], rows: [], types: [] } as {
     headers: string[]
     rows: (string | number | null)[][]
@@ -31,29 +21,16 @@
     getData()
   }
 
-  $: table.columns = sqlData.headers.map((key, i) => {
-    const settings = ColumnSettings[key] || {}
-
-    return {
-      key,
-      title: settings.title || key,
-      valueKey: i,
-      format: (row: any, i: number, value: any) => value,
-    }
-  })
-
-  $: table.data = sqlData.rows
-
   function getData() {
     queryComputeRawClickhouseQuery().then((data) => {
       sqlData = data
-      table = table
+      console.log(sqlData)
     })
   }
 </script>
 
 <main class="row gap-m">
-  <Table {...table} />
+  <Table {sqlData} {ColumnSettings} />
 
   <section class="options border column">
     <h2 class="body-2">Options</h2>
