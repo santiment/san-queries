@@ -33,7 +33,7 @@ export const LoggedIn: Story = {
 
 export const LoggedInAuthor: Story = {
   args: {
-    author: { ...author, id: 42 },
+    author: { ...author, id: 0 },
   },
   parameters: {
     mockApi: () => ({
