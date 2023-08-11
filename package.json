@@ -48,7 +48,7 @@
     "@storybook/svelte": "^7.2.2",
     "@storybook/sveltekit": "^7.2.2",
     "@storybook/testing-library": "^0.2.0",
-    "@sveltejs/kit": "^1.22.4",
+    "@sveltejs/kit": "^1.22.5",
     "@types/ua-parser-js": "^0.7.36",
     "@typescript-eslint/eslint-plugin": "^6.3.0",
     "@typescript-eslint/parser": "^6.3.0",
@@ -78,7 +78,9 @@
   },
   "type": "module",
   "pnpm": {
-    "patchedDependencies": {}
+    "patchedDependencies": {
+      "@sveltejs/kit@1.22.5": "patches/@sveltejs__kit@1.22.5.patch"
+    }
   },
   "msw": {
     "workerDirectory": ".storybook"

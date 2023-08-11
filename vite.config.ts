@@ -51,6 +51,8 @@ export default defineConfig({
 
     'process.env.IS_STAGE_BACKEND': IS_STAGE_BACKEND,
     'process.env.IS_PROD_BACKEND': IS_PROD_BACKEND,
+
+    'process.env.API_FETCH_ORIGIN': JSON.stringify('https://app.santiment.net'),
   },
 
   clientDefines: {
