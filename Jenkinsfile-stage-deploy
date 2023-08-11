@@ -38,7 +38,7 @@ podTemplate(label: 'sanqueries-staging-deploy', containers: [
 
         container('kubectl') {
           sh "kubectl version"
-          sh "kubectl rollout restart deployment/san-queries san-queries=${taggedSource} -n default"
+          sh "kubectl rollout restart deployment/san-queries -n default"
         }
       }
     }
