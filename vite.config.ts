@@ -58,4 +58,8 @@ export default defineConfig({
   clientDefines: {
     'process.browser': true,
   },
+
+  serverDefines: {
+    'process.env.GQL_SERVER_URL': JSON.stringify(process.env.GQL_SERVER_URL || GQL_SERVER_FALLBACK),
+  },
 })
