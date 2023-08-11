@@ -9,6 +9,6 @@ export const load: LayoutLoad = ({ data }) => {
   }
 
   return {
-    session: data as any,
+    session: data,
   }
 }

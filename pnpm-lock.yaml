@@ -23,6 +23,9 @@ dependencies:
   turndown:
     specifier: ^7.1.2
     version: 7.1.2
+  ua-parser-js:
+    specifier: ^1.0.35
+    version: 1.0.35
 
 devDependencies:
   '@playwright/test':
@@ -52,6 +55,9 @@ devDependencies:
   '@sveltejs/kit':
     specifier: ^1.22.4
     version: 1.22.4(svelte@4.1.2)(vite@4.4.7)
+  '@types/ua-parser-js':
+    specifier: ^0.7.36
+    version: 0.7.36
   '@typescript-eslint/eslint-plugin':
     specifier: ^6.3.0
     version: 6.3.0(@typescript-eslint/parser@6.3.0)(eslint@8.46.0)(typescript@5.1.6)
@@ -4671,6 +4677,10 @@ packages:
 
   /@types/stripe-v3@3.1.29:
     resolution: {integrity: sha512-G3Ea3aAoZS2ZLd2/DGOUfkKqZR2LXVPRP7mSJgvouzylqqXAqTFmv9DjYOFScFT0ENDPz8Le4yVu9YftH9GXAg==}
+    dev: true
+
+  /@types/ua-parser-js@0.7.36:
+    resolution: {integrity: sha512-N1rW+njavs70y2cApeIw1vLMYXRwfBy+7trgavGuuTfOd7j1Yh7QTRc/yqsPl6ncokt72ZXuxEU0PiCp9bSwNQ==}
     dev: true
 
   /@types/unist@2.0.7:
@@ -10299,6 +10309,10 @@ packages:
     engines: {node: '>=14.17'}
     hasBin: true
     dev: true
+
+  /ua-parser-js@1.0.35:
+    resolution: {integrity: sha512-fKnGuqmTBnIE+/KXSzCn4db8RTigUzw1AN0DmdU6hJovUTbYJKyqj+8Mt1c4VfRDnOVJnENmfYkIPZ946UrSAA==}
+    dev: false
 
   /ufo@1.1.2:
     resolution: {integrity: sha512-TrY6DsjTQQgyS3E3dBaOXf0TpPD8u9FVrVYmKVegJuFw51n/YB9XPt+U6ydzFG5ZIN7+DIjPbNmXoBj9esYhgQ==}

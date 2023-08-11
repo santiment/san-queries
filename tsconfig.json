@@ -38,7 +38,13 @@
   },
   "include": [
     "src/**/*.d.ts",
+    "src/**/*.ts",
+    "src/**/*.svelte",
     "stories/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules/*",
+    "**/*.test.ts"
   ]
   // Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
   //
