@@ -71,7 +71,9 @@
     width: 348px;
     background: var(--athens);
     padding: 24px 24px 0;
-    height: 100vh;
+    max-height: 100vh;
+    position: sticky;
+    top: 0;
   }
 
   tabs {

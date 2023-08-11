@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
+  import { getCurrentUser$Ctx } from 'webkit/stores/user'
   import Svg from 'webkit/ui/Svg/svelte'
   import Profile from 'webkit/ui/Profile/svelte'
 
@@ -12,7 +12,7 @@
   $: mainActionLabel = isAuthor ? 'Execute' : currentUser ? 'Duplicate' : 'Log in to duplicate'
 </script>
 
-<header class="row v-center gap-m">
+<header class="row v-center gap-m mrg-s mrg--b">
   <Profile user={author} source="queries_head" feature="query" />
 
   <div class="divider" />
@@ -40,7 +40,7 @@
 
 <style>
   header {
-    margin: 40px 0;
+    padding: 24px 0 16px;
   }
 
   .divider {

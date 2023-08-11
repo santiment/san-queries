@@ -5,6 +5,8 @@
   import { CurrentUser$$ } from 'webkit/stores/user'
   import { Device$$ } from 'webkit/stores/responsive'
   import { UI$$ } from 'webkit/stores/ui'
+  import NavHeader from '$lib/NavHeader/index.svelte'
+  import LeftMenu from '$lib/LeftMenu/index.svelte'
 
   export let data: LayoutData
 
@@ -16,7 +18,13 @@
 
 <svelte:window on:resize={device$.onResize} />
 
-<slot />
+<NavHeader />
+
+<screen class="row">
+  <LeftMenu />
+
+  <slot />
+</screen>
 
 <style lang="scss">
   :root {
@@ -34,6 +42,10 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+  }
+
+  screen {
+    flex: 1;
   }
 
   @include dac(tablet, phone, phone-xs) {
