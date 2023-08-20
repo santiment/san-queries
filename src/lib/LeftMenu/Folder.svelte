@@ -11,15 +11,15 @@
   }
 </script>
 
-<folder class="column">
+<folder class="column mrg-s mrg--b">
   <button class="expand btn row v-center gap-m" class:opened={isOpened} on:click={onFolderClick}>
     <Svg id="arrow-down" w="8" h="5" />
     {title}
   </button>
 
   {#if isOpened}
-    <section>
-      <items class="column" transition:slide={{ duration: 250 }}>
+    <section transition:slide={{ duration: 250 }}>
+      <items class="column">
         <slot />
       </items>
     </section>
@@ -29,16 +29,13 @@
 <style lang="scss">
   .expand {
     --fill: var(--black);
-  }
-
-  section {
-    padding-top: 8px;
+    height: 32px;
   }
 
   items {
     border-left: 1px solid var(--rhino);
-    margin-left: 3.5px;
     padding-left: 8px;
+    margin: 4px 0 0 3.5px;
   }
 
   Svg {

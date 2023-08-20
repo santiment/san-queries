@@ -1,11 +1,12 @@
 import DataTab from './Data/index.svelte'
 import WorkTab from './Work/index.svelte'
+import UseCasesTab from './UserCases/index.svelte'
 
 export const TABS = [
   {
     title: 'Data',
     icon: ['queries', 16],
-    Component: DataTab ,
+    Component: DataTab,
   },
   {
     title: 'Work',
@@ -15,6 +16,6 @@ export const TABS = [
   {
     title: 'Use cases',
     icon: ['insight', 14, 16],
-    Component: WorkTab,
+    Component: UseCasesTab,
   },
 ] as const
