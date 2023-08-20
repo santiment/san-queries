@@ -9,6 +9,8 @@
   import VisualisationTab from './Visualisation/index.svelte'
 
   export let tab = TABS[0] as (typeof TABS)[number]
+
+  let sqlData: any
 </script>
 
 <tabs class="row gap-l mrg-xxl mrg--l">
@@ -20,12 +22,12 @@
 </tabs>
 
 <section class="column gap-m">
-  <ScreenControls {tab} />
+  <ScreenControls {tab} {sqlData} />
 
   {#if tab === 'Editor'}
     <SQLEditor />
   {:else}
-    <VisualisationTab />
+    <VisualisationTab bind:sqlData />
   {/if}
 </section>
 

@@ -5,7 +5,7 @@
 
   let value = 'Table'
 
-  let sqlData = { headers: [], rows: [], types: [] } as {
+  export let sqlData = { headers: [], rows: [], types: [] } as {
     headers: string[]
     rows: (string | number | null)[][]
     types: string[]

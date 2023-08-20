@@ -15,7 +15,9 @@
 
   function onQueryClick() {
     showAddQueryToDashboardDialog({
-      onQueryAdd: console.log,
+      onQueryAdd: () => {
+        dashboardEditor$.addWidget({ type: 'QUERY', title: 'Bitcoin daily active addresses' })
+      },
     })
   }
 </script>

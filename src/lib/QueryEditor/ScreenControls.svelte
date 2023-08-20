@@ -2,9 +2,18 @@
   import Svg from 'webkit/ui/Svg/svelte'
   import Parameter, { COLORS } from '$lib/Parameter'
   import { TABS } from './index.svelte'
+  import { showVisualisationFullscreenDialog } from './Visualisation/FullscreenDialog/index.svelte'
 
   export let tab = TABS[0] as (typeof TABS)[number]
   export let parameters = [] as any[]
+  export let sqlData: any = undefined
+
+  function onFullscreenClick() {
+    showVisualisationFullscreenDialog({
+      title: 'Table widget',
+      sqlData,
+    })
+  }
 </script>
 
 <header class="row justify gap-xl">
@@ -31,14 +40,14 @@
     {:else}
       <button class="btn-2">Add to dashboard</button>
 
-      <button class="download btn row v-center gap-s">
+      <button class="download btn row v-center gap-s expl-tooltip" aria-label="Download CSV">
         <Svg id="download" w="16" />
 
         CSV
       </button>
     {/if}
 
-    <button class="btn-3">
+    <button class="btn-3 expl-tooltip" aria-label="Open fullscreen" on:click={onFullscreenClick}>
       <Svg id="fullscreen" w="14" />
     </button>
   </actions>
@@ -67,5 +76,9 @@
 
   .btn-2 {
     --border: var(--green);
+  }
+
+  .expl-tooltip {
+    --expl-right: 0;
   }
 </style>

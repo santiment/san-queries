@@ -3,11 +3,13 @@
   import { queryComputeRawClickhouseQuery } from '$lib/api/query'
   import Table from '$lib/QueryEditor/Visualisation/Table.svelte'
   import { getDashboardEditor$Ctx } from '../ctx'
+  import { showVisualisationFullscreenDialog } from '$lib/QueryEditor/Visualisation/FullscreenDialog/index.svelte'
 
   export let widget: App.Dashboard.QueryWidget
 
-  let sqlData: any
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
+
+  let sqlData: any
 
   $: if (process.browser) {
     getData()
@@ -16,6 +18,13 @@
   function getData() {
     queryComputeRawClickhouseQuery().then((data) => {
       sqlData = data
+    })
+  }
+
+  function onFullscreenClick() {
+    showVisualisationFullscreenDialog({
+      title: widget.title,
+      sqlData,
     })
   }
 
@@ -28,16 +37,20 @@
   <header class="row v-center fluid gap-s">
     <h2 class="body-2">{widget.title}</h2>
 
-    <button class="btn-3 mrg-a mrg--l" on:click={console.log}>
+    <button
+      class="btn-3 mrg-a mrg--l expl-tooltip"
+      aria-label="Refresh data"
+      on:click={console.log}
+    >
       <Svg id="refresh" w="14" />
     </button>
 
-    <button class="btn-3" on:click={console.log}>
+    <button class="btn-3 expl-tooltip" aria-label="Open fullscreen" on:click={onFullscreenClick}>
       <Svg id="fullscreen" w="14" />
     </button>
 
-    <button class="close btn-3" on:click={onCloseClick}>
-      <Svg id="close" w="14" />
+    <button class="close btn-3 expl-tooltip" aria-label="Remove widget" on:click={onCloseClick}>
+      <Svg id="close" w="12" />
     </button>
   </header>
 
