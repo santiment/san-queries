@@ -3,6 +3,7 @@
   import Resizer from 'webkit/ui/SnapGrid/Resizer.svelte'
   import TextWidget from './TextWidget/index.svelte'
   import HeadingWidget from './HeadingWidget/index.svelte'
+  import QueryWidget from './QueryWidget/index.svelte'
   import { normalizeGrid, setItemOptions, sortLayout } from 'webkit/ui/SnapGrid/layout'
   import { getDashboardEditor$Ctx } from './ctx'
 
@@ -31,7 +32,8 @@
         }
       default:
         return {
-          minRows: 4,
+          minRows: 8,
+          minCols: 4,
         }
     }
   }
@@ -46,6 +48,8 @@
       <TextWidget {widget} />
     {:else if widget.type === 'HEADING'}
       <HeadingWidget {widget} />
+    {:else if widget.type === 'QUERY'}
+      <QueryWidget {widget} />
     {/if}
 
     <Resizer onEnd={console.log} />

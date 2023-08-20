@@ -4,7 +4,8 @@
   let className = ''
   export { className as class }
   export let sqlData = { rows: [] as any[], types: [] as any[], headers: [] as any[] }
-  export let ColumnSettings: any
+  export let ColumnSettings = {} as any
+  export let border = true
 
   $: columns = sqlData.headers.map((key, i) => {
     const settings = ColumnSettings[key] || {}
@@ -27,8 +28,8 @@
   })
 </script>
 
-<table-widget class="column border">
-  <Table items={sqlData.rows} {columns} class={className} sticky />
+<table-widget class="column {className}" class:border>
+  <Table items={sqlData.rows} {columns} sticky />
 </table-widget>
 
 <style lang="scss">

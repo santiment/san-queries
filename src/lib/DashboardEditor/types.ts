@@ -15,7 +15,9 @@ declare global {
         value: string
       }
 
-      type QueryWidget = DashboardWidget<'QUERY'>
+      type QueryWidget = DashboardWidget<'QUERY'> & {
+        title: string
+      }
 
       type ImageWidget = DashboardWidget<'IMAGE'>
 

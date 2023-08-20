@@ -24,7 +24,6 @@
   function getData() {
     queryComputeRawClickhouseQuery().then((data) => {
       sqlData = data
-      console.log(sqlData)
     })
   }
 </script>
