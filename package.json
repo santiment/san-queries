@@ -48,10 +48,10 @@
     "@storybook/svelte": "^7.2.2",
     "@storybook/sveltekit": "^7.2.2",
     "@storybook/testing-library": "^0.2.0",
-    "@sveltejs/kit": "^1.22.5",
+    "@sveltejs/kit": "^1.22.6",
     "@types/ua-parser-js": "^0.7.36",
-    "@typescript-eslint/eslint-plugin": "^6.3.0",
-    "@typescript-eslint/parser": "^6.3.0",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "@typescript-eslint/parser": "^6.4.0",
     "eslint": "^8.46.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-storybook": "^0.6.13",
@@ -60,30 +60,27 @@
     "husky": "^8.0.3",
     "lint-staged": "^13.2.3",
     "miragejs": "^0.1.47",
-    "prettier": "^3.0.1",
+    "node-fetch": "^3.3.1",
+    "prettier": "^3.0.2",
     "prettier-plugin-svelte": "^3.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "san-webkit": "https://github.com/santiment/san-webkit#2cda5e8",
+    "san-webkit": "https://github.com/santiment/san-webkit#768c63d",
     "sass": "^1.65.1",
-    "storybook": "^7.2.2",
-    "svelte": "^4.1.2",
-    "svelte-check": "^3.4.6",
+    "storybook": "^7.3.2",
+    "svelte": "^4.2.0",
+    "svelte-check": "^3.5.0",
     "svelte-preprocess": "^5.0.4",
     "svelte-preprocess-cssmodules": "https://github.com/DmitriVanGuard/svelte-preprocess-cssmodules#3b24f22",
     "tslib": "^2.6.0",
     "typescript": "^5.1.6",
-    "vite": "^4.4.7",
-    "vitest": "^0.33.0",
-    "node-fetch": "^3.3.1"
+    "vite": "^4.4.9",
+    "vitest": "^0.33.0"
   },
   "type": "module",
   "pnpm": {
     "patchedDependencies": {
-      "@sveltejs/kit@1.22.5": "patches/@sveltejs__kit@1.22.5.patch"
+      "@sveltejs/kit@1.22.6": "patches/@sveltejs__kit@1.22.6.patch"
     }
-  },
-  "msw": {
-    "workerDirectory": ".storybook"
   }
 }
