@@ -1,17 +1,17 @@
 <script lang="ts">
-  import Item from '../Work/Item.svelte'
+  import MenuItem from '../MenuItem.svelte'
   import Folder from '../Folder.svelte'
 </script>
 
 <Folder title="NFT tables">
   {#each [0, 0, 0, 0] as item}
-    <Item />
+    <MenuItem />
   {/each}
 </Folder>
 
 <Folder title="DEX trades tables">
   {#each [0, 0, 0, 0] as item}
-    <Item />
+    <MenuItem />
   {/each}
 </Folder>
 

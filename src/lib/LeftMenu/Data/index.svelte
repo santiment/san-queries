@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Item from './Item.svelte'
+  import MenuItem from '../MenuItem.svelte'
   import Folder from '../Folder.svelte'
   import { queryClickhouseMetadata } from './api'
   import { onMount } from 'svelte'
@@ -17,9 +17,9 @@
 
 <Folder title="Tables">
   {#each tables as item}
-    <Item icon="table">
+    <MenuItem icon="table" dataActions>
       {item.n}
-    </Item>
+    </MenuItem>
   {/each}
 </Folder>
 

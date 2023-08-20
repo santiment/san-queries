@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Item from './Item.svelte'
+  import MenuItem from '../MenuItem.svelte'
   import Folder from '../Folder.svelte'
 </script>
 
@@ -7,7 +7,7 @@
 
 <Folder title="Let's get you started">
   {#each [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0] as item}
-    <Item />
+    <MenuItem moreActions />
   {/each}
 </Folder>
 
