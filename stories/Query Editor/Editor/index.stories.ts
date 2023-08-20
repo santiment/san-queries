@@ -1,12 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 
-import Component from '$lib/QueryEditor/index.svelte'
+import Component, { TABS } from '$lib/QueryEditor/index.svelte'
 
 const meta = {
   component: Component,
-  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/react/writing-docs/autodocs
   parameters: {
-    // More on how to position stories at: https://storybook.js.org/docs/svelte/configure/story-layout
+    bodyStyle: { margin: '30px 0 0' },
     layout: 'fullscreen',
   },
 } satisfies Meta<Component>
@@ -17,6 +16,6 @@ export default meta
 export const EditorTab: Story = {}
 export const VisualisationTab: Story = {
   args: {
-    tab: 'Visualisation',
+    tab: TABS[1],
   },
 }

@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-  export const TABS = ['Editor', 'Visualisation'] as const
+  export const TABS = [{ title: 'Editor' }, { title: 'Visualisation' }] as const
 </script>
 
 <script lang="ts">
@@ -7,24 +7,20 @@
   import ScreenControls from './ScreenControls.svelte'
   import SQLEditor from '$lib/SQLEditor/index.svelte'
   import VisualisationTab from './Visualisation/index.svelte'
+  import Tabs from 'webkit/ui/Tabs'
 
   export let tab = TABS[0] as (typeof TABS)[number]
 
   let sqlData: any
 </script>
 
-<tabs class="row gap-l mrg-xxl mrg--l">
-  {#each TABS as item}
-    <!-- svelte-ignore a11y-click-events-have-key-events -->
-    <!-- svelte-ignore a11y-no-static-element-interactions -->
-    <tab class="btn" class:active={tab === item} on:click={() => (tab = item)}>{item}</tab>
-  {/each}
-</tabs>
+<Tabs class="gap-l mrg-xxl mrg--l" tabs={TABS} selected={tab} onSelect={(item) => (tab = item)}
+></Tabs>
 
 <section class="column gap-m">
   <ScreenControls {tab} {sqlData} />
 
-  {#if tab === 'Editor'}
+  {#if tab === TABS[0]}
     <SQLEditor />
   {:else}
     <VisualisationTab bind:sqlData />
@@ -32,17 +28,6 @@
 </section>
 
 <style>
-  tab {
-    border-bottom: 1px solid transparent;
-    border-radius: 0;
-    padding: 0 0 7px;
-  }
-
-  .active {
-    --color: var(--green);
-    border-bottom-color: var(--green);
-  }
-
   section {
     border-radius: 6px;
     padding: 20px 24px;

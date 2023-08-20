@@ -9,10 +9,13 @@
   export let sqlData: any = undefined
 
   function onFullscreenClick() {
-    showVisualisationFullscreenDialog({
-      title: 'Table widget',
-      sqlData,
-    })
+    if (tab === TABS[0]) {
+    } else {
+      showVisualisationFullscreenDialog({
+        title: 'Table widget',
+        sqlData,
+      })
+    }
   }
 </script>
 
