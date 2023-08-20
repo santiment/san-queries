@@ -2,13 +2,18 @@
   import { dialogs } from 'webkit/ui/Dialog'
   import Component from './index.svelte'
 
-  export const showAddQueryToDashboardDialog = () => dialogs.__show(Component)
+  export const showAddQueryToDashboardDialog = (props: { onQueryAdd: (query: any) => void }) =>
+    dialogs.__show(Component, props)
 </script>
 
 <script lang="ts">
   import Dialog from 'webkit/ui/Dialog'
   import Tabs from 'webkit/ui/Tabs'
   import Svg from 'webkit/ui/Svg/svelte'
+  import Search from 'webkit/ui/Search.svelte'
+  import Queries from './Queries.svelte'
+
+  export let onQueryAdd: (query: any) => void
 
   const tabs = [
     { title: 'My queries', icon: 'chart' },
@@ -22,6 +27,10 @@
       <Svg id={item.icon} w="12"></Svg>
       {item.title}
     </Tabs>
+
+    <Search class="mrg-xl mrg--t mrg--b" big placeholder="Search for a query"></Search>
+
+    <Queries {onQueryAdd}></Queries>
   </div>
 </Dialog>
 

@@ -1,6 +1,7 @@
 <script>
   import Svg from 'webkit/ui/Svg/svelte'
   import { getDashboardEditor$Ctx } from './ctx'
+  import { showAddQueryToDashboardDialog } from './AddQueryToDashboardDialog/index.svelte'
 
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
 
@@ -11,10 +12,16 @@
   function onTextClick() {
     dashboardEditor$.addWidget()
   }
+
+  function onQueryClick() {
+    showAddQueryToDashboardDialog({
+      onQueryAdd: console.log,
+    })
+  }
 </script>
 
 <actions class="row gap-l caption">
-  <button class="btn">
+  <button class="btn" on:click={onQueryClick}>
     <Svg id="query" w="16" />
     Query
   </button>
