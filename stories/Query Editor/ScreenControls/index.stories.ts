@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 
 import Component from '$lib/QueryEditor/ScreenControls.svelte'
+import { TABS } from '$lib/QueryEditor/index.svelte'
 
 const meta = {
   component: Component,
@@ -20,7 +21,7 @@ export const EditorTab: Story = {}
 
 export const VisualisationTab: Story = {
   args: {
-    tab: 'Visualisation',
+    tab: TABS[1],
   },
 }
 

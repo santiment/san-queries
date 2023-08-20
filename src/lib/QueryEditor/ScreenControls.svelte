@@ -3,6 +3,7 @@
   import Parameter, { COLORS } from '$lib/Parameter'
   import { TABS } from './index.svelte'
   import { showVisualisationFullscreenDialog } from './Visualisation/FullscreenDialog/index.svelte'
+  import { showSqlEditorFullscreenDialog } from '$lib/SQLEditor/FullscreenDialog.svelte'
 
   export let tab = TABS[0] as (typeof TABS)[number]
   export let parameters = [] as any[]
@@ -10,6 +11,7 @@
 
   function onFullscreenClick() {
     if (tab === TABS[0]) {
+      showSqlEditorFullscreenDialog()
     } else {
       showVisualisationFullscreenDialog({
         title: 'Table widget',
