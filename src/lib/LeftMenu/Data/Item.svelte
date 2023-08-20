@@ -1,15 +1,23 @@
-<script>
-  import Svg from 'webkit/ui/Svg/svelte'
+<script lang="ts">
+  import Svg, { type Props } from 'webkit/ui/Svg/svelte'
+
+  export let icon = '' as Props['id']
 
   let isHovered = false
 </script>
 
 <article
-  class="btn row v-center"
+  class="btn row gap-s v-center"
   on:mouseenter={() => (isHovered = true)}
   on:mouseleave={() => (isHovered = false)}
 >
-  Data exploration
+  {#if icon}
+    <Svg id={icon} w="12" />
+  {/if}
+
+  <span class="single-line">
+    <slot>Data exploration</slot>
+  </span>
 
   {#if isHovered}
     <actions class="row">
