@@ -1,9 +1,12 @@
 <script lang="ts">
   import Svg from 'webkit/ui/Svg/svelte'
+  import Tabs from 'webkit/ui/Tabs'
   import Search from 'webkit/ui/Search.svelte'
   import MyCredits from './MyCredits.svelte'
   import { TABS } from './tabs'
 
+  let className = ''
+  export { className as class }
   export let tab = TABS[0] as (typeof TABS)[number]
 
   let scrollNode: HTMLElement
@@ -28,25 +31,21 @@
   }
 </script>
 
-<aside class="column">
-  <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <!-- svelte-ignore a11y-no-static-element-interactions -->
-  <tabs class="row gap-s mrg-l mrg--b v-center">
-    {#each TABS as item}
-      {@const {
-        title,
-        icon: [id, w, h],
-      } = item}
-      <tab class="btn" class:active={tab === item} on:click={() => onTabClick(item)}>
-        <Svg {id} {w} {h} />
-        {title}
-      </tab>
-    {/each}
+<aside class="column {className}">
+  <Tabs class="gap-s mrg-l mrg--b" tabs={TABS} onSelect={onTabClick} let:item>
+    {@const {
+      title,
+      icon: [id, w, h],
+    } = item}
+    <Svg {id} {w} {h} />
+    {title}
 
-    <button class="btn mrg-a mrg--l">
-      <Svg id="collapse" w="12" />
-    </button>
-  </tabs>
+    <svelte:fragment slot="after">
+      <button class="btn mrg-a mrg--l">
+        <Svg id="collapse" w="12" />
+      </button>
+    </svelte:fragment>
+  </Tabs>
 
   <Search placeholder="Search for tables, metrics, functions" />
 
@@ -76,33 +75,10 @@
     top: 0;
   }
 
-  tabs {
+  Tabs {
     border-bottom: 1px solid var(--porcelain);
-  }
-
-  tab {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 8px;
-    border-radius: 0;
-    position: relative;
-  }
-
-  .active {
-    fill: var(--green);
-    color: var(--green);
-
-    &:after {
-      display: block;
-      content: '';
-      position: absolute;
-      bottom: -1px;
-      height: 1px;
-      left: 0;
-      right: 0;
-      background: var(--green);
-    }
+    --tab-padding: 6px 8px;
+    --underline-bottom: -1px;
   }
 
   Search {
@@ -144,3 +120,4 @@
     }
   }
 </style>
+

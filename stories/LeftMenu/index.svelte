@@ -8,4 +8,7 @@
 <Component tab={TABS[tab]} />
 
 <style>
+  Component {
+    flex: 1;
+  }
 </style>

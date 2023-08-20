@@ -8,11 +8,13 @@
 
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
 
+  const cols = 12
+
   $: ({ widgets } = $dashboardEditor$)
   $: layout = generateLayout(widgets)
 
   function generateLayout(widgets: any[]) {
-    const layout = widgets.map((_, i) => [0, 1000 + i, 6, 2])
+    const layout = widgets.map((_, i) => [0, 1000 + i, cols, 2])
     // @ts-ignore
     normalizeGrid(sortLayout(layout))
     return layout
@@ -20,7 +22,7 @@
 </script>
 
 <!-- @ts-ignore -->
-<Grid tag="widgets" {layout} let:i let:gridItem rowSize={26}>
+<Grid tag="widgets" {cols} {layout} let:i let:gridItem rowSize={26}>
   {@const widget = widgets[i]}
 
   <widget use:gridItem class="column">

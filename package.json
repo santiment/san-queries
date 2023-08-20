@@ -65,7 +65,7 @@
     "prettier-plugin-svelte": "^3.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "san-webkit": "https://github.com/santiment/san-webkit#02ea5b0",
+    "san-webkit": "https://github.com/santiment/san-webkit#cb934b6",
     "sass": "^1.65.1",
     "storybook": "^7.3.2",
     "svelte": "^4.2.0",
