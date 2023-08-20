@@ -1,7 +1,7 @@
 <script lang="ts">
   import Svg from 'webkit/ui/Svg/svelte'
   import Tabs from 'webkit/ui/Tabs'
-  import Search from 'webkit/ui/Search.svelte'
+  import Search, { Search$$ } from './Search.svelte'
   import MyCredits from './MyCredits.svelte'
   import { TABS } from './tabs'
 
@@ -9,6 +9,9 @@
   export { className as class }
   export let tab = TABS[0] as (typeof TABS)[number]
 
+  const { search$ } = Search$$()
+
+  let asideNode: HTMLElement
   let scrollNode: HTMLElement
 
   function slideIn(node: HTMLElement) {
@@ -27,11 +30,17 @@
 
     scrollNode.scroll({ top: 0, behavior: isNewTab ? undefined : 'smooth' })
 
-    if (isNewTab) tab = item
+    if (isNewTab) {
+      tab = item
+      search$.set('')
+
+      const inputNode = asideNode.querySelector('.search input') as null | HTMLInputElement
+      if (inputNode) inputNode.value = ''
+    }
   }
 </script>
 
-<aside class="column {className}">
+<aside bind:this={asideNode} class="column {className}">
   <Tabs class="gap-s mrg-l mrg--b" tabs={TABS} selected={tab} onSelect={onTabClick} let:item>
     {@const {
       title,
@@ -47,7 +56,7 @@
     </svelte:fragment>
   </Tabs>
 
-  <Search placeholder="Search for tables, metrics, functions" />
+  <Search {tab} />
 
   <section bind:this={scrollNode} class="column relative">
     {#key tab}
@@ -79,10 +88,6 @@
     border-bottom: 1px solid var(--porcelain);
     --tab-padding: 6px 8px;
     --underline-bottom: -1px;
-  }
-
-  Search {
-    margin: 0;
   }
 
   section {
