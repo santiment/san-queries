@@ -3,6 +3,7 @@
   import Editor from 'webkit/ui/Editor'
   import { markdownToHTML } from 'webkit/ui/Editor/markdown'
   import { getDashboardEditor$Ctx } from '../ctx'
+  // import 'medium-editor'
 
   export let widget: any
 

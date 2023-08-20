@@ -3,7 +3,7 @@
   import Resizer from 'webkit/ui/SnapGrid/Resizer.svelte'
   import TextWidget from './TextWidget/index.svelte'
   import HeadingWidget from './HeadingWidget/index.svelte'
-  import { normalizeGrid, sortLayout } from 'webkit/ui/SnapGrid/layout'
+  import { normalizeGrid, setItemOptions, sortLayout } from 'webkit/ui/SnapGrid/layout'
   import { getDashboardEditor$Ctx } from './ctx'
 
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
@@ -14,15 +14,31 @@
   $: layout = generateLayout(widgets)
 
   function generateLayout(widgets: any[]) {
-    const layout = widgets.map((_, i) => [0, 1000 + i, cols, 2])
+    const layout = widgets.map((widget, i) => {
+      return setItemOptions([0, 1000 + i, cols, 2], getGridItemOptions(widget))
+    })
     // @ts-ignore
     normalizeGrid(sortLayout(layout))
-    return layout
+    return layout as SAN.SnapGrid.Item[]
+  }
+
+  function getGridItemOptions(widget: { type: string }) {
+    switch (widget.type) {
+      case 'TEXT':
+      case 'HEADING':
+        return {
+          minRows: 2,
+        }
+      default:
+        return {
+          minRows: 4,
+        }
+    }
   }
 </script>
 
 <!-- @ts-ignore -->
-<Grid tag="widgets" {cols} {layout} let:i let:gridItem rowSize={26}>
+<Grid tag="widgets" {cols} {layout} let:i let:gridItem rowSize={26} minCols={3}>
   {@const widget = widgets[i]}
 
   <widget use:gridItem class="column">

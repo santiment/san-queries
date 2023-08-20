@@ -3,6 +3,7 @@
   import type { EditorCtxType } from './editor'
 
   import { onDestroy, onMount } from 'svelte'
+  import { noop } from 'webkit/utils'
 
   let className = ''
   export { className as class }
@@ -11,6 +12,7 @@
   export let options = undefined as monacoEditor.IStandaloneEditorConstructionOptions | undefined
   export let parameters = [] as { key: string }[]
   export let editor = null as null | monacoEditor.IStandaloneCodeEditor
+  export let onValueChange = noop as (value: string) => void
 
   let editorNode: HTMLElement
   let EditorCtx: EditorCtxType
@@ -18,6 +20,11 @@
   let resizerNode: HTMLIFrameElement
 
   $: EditorCtx?.updateParameters(parameters)
+  $: setValue(value)
+
+  function setValue(value: string) {
+    editor?.setValue(value)
+  }
 
   function onFocus() {
     isFocused = true
@@ -25,6 +32,8 @@
 
   function onBlur() {
     isFocused = false
+    value = editor?.getValue() ?? value
+    onValueChange(value)
   }
 
   function onResize() {
