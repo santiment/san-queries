@@ -3,7 +3,7 @@
 
   let className = ''
   export { className as class }
-  export let sqlData = [] as any
+  export let sqlData = { rows: [] as any[], types: [] as any[], headers: [] as any[] }
   export let ColumnSettings: any
 
   $: columns = sqlData.headers.map((key, i) => {

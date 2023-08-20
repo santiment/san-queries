@@ -6,11 +6,11 @@
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
 
   function onHeadingClick() {
-    dashboardEditor$.addWidget('HEADING')
+    dashboardEditor$.addWidget({ type: 'HEADING', value: '' })
   }
 
   function onTextClick() {
-    dashboardEditor$.addWidget()
+    dashboardEditor$.addWidget({ type: 'TEXT', value: '' })
   }
 
   function onQueryClick() {

@@ -3,18 +3,18 @@ import { writable } from 'svelte/store'
 
 export const CTX = 'DashboardEditor$$'
 
-export function DashboardEditor$$(defaultWidgets = []) {
-  const state = { widgets: defaultWidgets } as App.DashboardEditor
+export function DashboardEditor$$(defaultWidgets = [] as App.Dashboard.Widget[]) {
+  const state = { widgets: defaultWidgets }
   const store = writable(state)
 
   return setContext(CTX, {
     dashboardEditor$: {
       ...store,
-      addWidget(type = 'TEXT') {
-        state.widgets.push({ type })
+      addWidget(widget: App.Dashboard.Widget) {
+        state.widgets.push(widget)
         store.set(state)
       },
-      removeWidget(widget: any) {
+      removeWidget(widget: App.Dashboard.Widget) {
         state.widgets = state.widgets.filter((item) => item !== widget)
         store.set(state)
       },
@@ -24,13 +24,16 @@ export function DashboardEditor$$(defaultWidgets = []) {
 
 export const getDashboardEditor$Ctx = () => getContext(CTX) as ReturnType<typeof DashboardEditor$$>
 
-export type DashboardEditorType = {
-  widgets: { type: string }[]
+type DashboardEditorType = {
+  widgets: App.Dashboard.Widget[]
 }
+type DashboardEditor$Type = ReturnType<typeof DashboardEditor$$>['dashboardEditor$']
 
-export type DashboardEditor$Type = ReturnType<typeof DashboardEditor$$>['dashboardEditor$']
-
-declare namespace App {
-  type DashboardEditor = DashboardEditorType
-  type DashboardEditorStore = DashboardEditor$Type
+declare global {
+  namespace App {
+    namespace Dashboard {
+      type Controller = DashboardEditorType
+      type ControllerStore = DashboardEditor$Type
+    }
+  }
 }

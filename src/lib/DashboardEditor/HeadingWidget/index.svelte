@@ -3,7 +3,7 @@
   import ContentEditable from '../ContentEditable.svelte'
   import { getDashboardEditor$Ctx } from '../ctx'
 
-  export let widget: any
+  export let widget: App.Dashboard.HeadingWidget
 
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
 

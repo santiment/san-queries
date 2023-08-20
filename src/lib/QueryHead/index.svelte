@@ -3,17 +3,21 @@
   import Svg from 'webkit/ui/Svg/svelte'
   import Profile from 'webkit/ui/Profile/svelte'
 
-  export let author: SAN.Author
+  export let author: SAN.Author | null
 
   const { currentUser$ } = getCurrentUser$Ctx()
 
   $: currentUser = $currentUser$
-  $: isAuthor = currentUser?.id === author.id
+  $: isAuthor = currentUser?.id === author?.id
   $: mainActionLabel = isAuthor ? 'Execute' : currentUser ? 'Duplicate' : 'Log in to duplicate'
 </script>
 
 <header class="row v-center gap-m mrg-s mrg--b">
-  <Profile user={author} source="queries_head" feature="query" />
+  {#if author}
+    <Profile user={author} source="queries_head" feature="query" />
+  {:else}
+    Your first query
+  {/if}
 
   <div class="divider" />
 

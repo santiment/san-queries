@@ -3,7 +3,7 @@
   import Parameter, { COLORS } from '$lib/Parameter'
   import { TABS } from './index.svelte'
 
-  export let tab = TABS[0]
+  export let tab = TABS[0] as (typeof TABS)[number]
   export let parameters = [] as any[]
 </script>
 

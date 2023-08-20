@@ -13,7 +13,7 @@
   import Search from 'webkit/ui/Search.svelte'
   import Queries from './Queries.svelte'
 
-  export let onQueryAdd: (query: any) => void
+  export let onQueryAdd: (query: App.Dashboard.Query) => void
 
   const tabs = [
     { title: 'My queries', icon: 'chart' },

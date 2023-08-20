@@ -13,7 +13,7 @@
   $: ({ widgets } = $dashboardEditor$)
   $: layout = generateLayout(widgets)
 
-  function generateLayout(widgets: any[]) {
+  function generateLayout(widgets: App.Dashboard.Widget[]) {
     const layout = widgets.map((widget, i) => {
       return setItemOptions([0, 1000 + i, cols, 2], getGridItemOptions(widget))
     })
@@ -22,7 +22,7 @@
     return layout as SAN.SnapGrid.Item[]
   }
 
-  function getGridItemOptions(widget: { type: string }) {
+  function getGridItemOptions(widget: App.Dashboard.Widget) {
     switch (widget.type) {
       case 'TEXT':
       case 'HEADING':

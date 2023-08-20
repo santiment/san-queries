@@ -2,9 +2,9 @@
   import Profile from 'webkit/ui/Profile/svelte'
   import Svg from 'webkit/ui/Svg/svelte'
 
-  export let onQueryAdd: (query: any) => void
+  export let onQueryAdd: (query: App.Dashboard.Query) => void
 
-  const QUERIES = ['chart', 'table'] as const
+  const QUERIES = ['chart', 'table'] as App.Dashboard.Query[]
 </script>
 
 <queries class="column gap-s">
@@ -20,13 +20,13 @@
         }}
         source="queries_add_query_to_dashboard"
         feature="query"
-      ></Profile>
+      />
 
       <div class="br mrg"></div>
 
       <article class="row v-center gap-s">
         <Svg id={item} w="12"></Svg>
-        <span class="single-line"> WETH borrowed on AAVE platform 22.03.22-22.03.23 </span>
+        <span class="single-line">WETH borrowed on AAVE platform 22.03.22-22.03.23</span>
       </article>
 
       <button class="btn-2 mrg-a mrg--l" on:click={() => onQueryAdd(item)}>Add</button>

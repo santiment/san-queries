@@ -7,7 +7,7 @@
 </script>
 
 <main class="column">
-  <QueryHead author={$currentUser$ || {}} />
+  <QueryHead author={$currentUser$} />
 
   <QueryEditor />
 </main>

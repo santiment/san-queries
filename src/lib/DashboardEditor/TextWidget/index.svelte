@@ -5,7 +5,7 @@
   import { getDashboardEditor$Ctx } from '../ctx'
   // import 'medium-editor'
 
-  export let widget: any
+  export let widget: App.Dashboard.TextWidget
 
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
 

@@ -21,7 +21,7 @@ type Story = StoryObj<typeof meta>
 
 export default meta
 
-const Widget = (value: string) => ({
+const Widget = (value: string): App.Dashboard.TextWidget => ({
   type: 'TEXT',
   value,
 })
