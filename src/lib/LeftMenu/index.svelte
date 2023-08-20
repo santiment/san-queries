@@ -32,7 +32,7 @@
 </script>
 
 <aside class="column {className}">
-  <Tabs class="gap-s mrg-l mrg--b" tabs={TABS} onSelect={onTabClick} let:item>
+  <Tabs class="gap-s mrg-l mrg--b" tabs={TABS} selected={tab} onSelect={onTabClick} let:item>
     {@const {
       title,
       icon: [id, w, h],
@@ -120,4 +120,3 @@
     }
   }
 </style>
-
