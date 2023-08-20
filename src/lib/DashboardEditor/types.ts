@@ -2,6 +2,7 @@ export {}
 
 interface DashboardWidget<T extends string> {
   type: T
+  htmlNode?: HTMLElement
 }
 
 declare global {
