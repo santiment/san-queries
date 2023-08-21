@@ -5,6 +5,9 @@
   import { CurrentUser$$ } from 'webkit/stores/user'
   import { Device$$ } from 'webkit/stores/responsive'
   import { UI$$ } from 'webkit/stores/ui'
+  import Dialogs from 'webkit/ui/Dialog/Dialogs.svelte'
+  import Notifications from 'webkit/ui/Notifications'
+  import FeatureWalkthrough from 'webkit/ui/FeatureWalkthrough/svelte'
   import NavHeader from '$lib/NavHeader/index.svelte'
   import LeftMenu from '$lib/LeftMenu/index.svelte'
 
@@ -25,6 +28,12 @@
 
   <slot />
 </screen>
+
+{#if process.browser}
+  <Dialogs />
+  <FeatureWalkthrough />
+  <Notifications />
+{/if}
 
 <style lang="scss">
   :root {
