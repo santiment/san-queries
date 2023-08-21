@@ -59,19 +59,16 @@ function onLayoutChange() {
   minCols={2}
   minRows={2}
   bind:isDragging
-  let:class={className}
   let:i
-  let:onMouseDown
-  let:style>
+  let:gridItem
+  >
   {@const panel = panels[i]}
 
   <Panel
     {dashboard}
     {panel}
-    {style}
-    class={className}
+    {gridItem}
     onDelete={isSinglePanel ? null : () => onPanelDelete(panel)}
-    onDrag={onMouseDown}
     onResizeEnd={onLayoutChange}
     on:click={() => onPanelSelect(panel)} />
 </Grid>

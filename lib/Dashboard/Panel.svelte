@@ -16,10 +16,9 @@ let className;
 export { className as class };
 export let dashboard;
 export let panel;
-export let style;
 export let onDelete;
-export let onDrag;
 export let onResizeEnd;
+export let gridItem
 let node;
 
 $: ({
@@ -75,8 +74,7 @@ onMount(() => {
 });</script>
 
 <div
-  {style}
-  on:mousedown={onDrag}
+  use:gridItem
   class="panel border column {className}"
   class:panel_text={type === PanelType.TEXT}
   bind:this={node}>
