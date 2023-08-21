@@ -10,6 +10,10 @@
     const text = (node.textContent || '').trim()
     node.innerText = text
   }
+
+  function onKeyDown(e: KeyboardEvent) {
+    if (e.key === 'Enter') e.preventDefault()
+  }
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -20,7 +24,7 @@
   {placeholder}
   on:blur={onBlur}
   on:input
-  on:keydown
+  on:keydown={onKeyDown}
   on:keyup
   on:input
 >
@@ -37,6 +41,7 @@
       height: 100%;
       color: var(--waterloo);
       pointer-events: none;
+      position: absolute;
     }
   }
 </style>
