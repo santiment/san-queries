@@ -15,6 +15,9 @@
 
   function hook(node: HTMLElement, widget: App.Dashboard.Widget) {
     widget.htmlNode = node
+    setTimeout(() => {
+      node.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }, 100)
   }
 </script>
 
