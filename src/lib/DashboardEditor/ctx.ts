@@ -5,7 +5,16 @@ import { normalizeGrid, setItemOptions, sortLayout } from 'webkit/ui/SnapGrid/la
 export const CTX = 'DashboardEditor$$'
 
 export function DashboardEditor$$(defaultWidgets = [] as App.Dashboard.Widget[]) {
-  const state = { widgets: defaultWidgets, layout: [] as SAN.SnapGrid.Item[] }
+  const state = {
+    widgets: defaultWidgets,
+    layout: defaultWidgets.map((widget, i) => {
+      const options = getGridItemOptions(widget)
+      return setItemOptions([0, 1000 + i, 12, options.minRows], options)
+    }) as SAN.SnapGrid.Item[],
+  }
+
+  normalizeGrid(sortLayout(state.layout))
+
   const store = writable(state)
 
   function updateLayout() {

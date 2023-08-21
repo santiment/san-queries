@@ -12,7 +12,7 @@
   $: filteredTables = search$.apply($search$, tables, filterTables)
 
   function filterTables(input: RegExp, table: (typeof tables)[number]) {
-    return table.n.search(input) > 0
+    return table.n.search(input) >= 0
   }
 
   onMount(() => {
