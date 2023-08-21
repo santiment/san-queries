@@ -19,7 +19,7 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <svelte:element
   this={as}
-  class={className}
+  class="{className} relative"
   contenteditable="true"
   {placeholder}
   on:blur={onBlur}
