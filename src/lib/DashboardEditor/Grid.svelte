@@ -4,6 +4,7 @@
   import TextWidget from './TextWidget/index.svelte'
   import HeadingWidget from './HeadingWidget/index.svelte'
   import QueryWidget from './QueryWidget/index.svelte'
+  import ImageWidget from './ImageWidget/index.svelte'
   import { getDashboardEditor$Ctx } from './ctx'
 
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
@@ -38,6 +39,8 @@
       <HeadingWidget {widget} />
     {:else if widget.type === 'QUERY'}
       <QueryWidget {widget} />
+    {:else if widget.type === 'IMAGE'}
+      <ImageWidget {widget} />
     {/if}
 
     <Resizer onEnd={() => console.log(widget, layout)} />

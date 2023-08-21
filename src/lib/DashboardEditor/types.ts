@@ -20,7 +20,9 @@ declare global {
         title: string
       }
 
-      type ImageWidget = DashboardWidget<'IMAGE'>
+      type ImageWidget = DashboardWidget<'IMAGE'> & {
+        src: string
+      }
 
       type Widget = HeadingWidget | TextWidget | QueryWidget | ImageWidget
     }

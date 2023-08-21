@@ -51,6 +51,12 @@ function getGridItemOptions(widget: App.Dashboard.Widget) {
       return {
         minRows: 2,
       }
+    case 'IMAGE':
+      return {
+        minRows: 4,
+        minCols: 3,
+      }
+
     default:
       return {
         minRows: 8,
