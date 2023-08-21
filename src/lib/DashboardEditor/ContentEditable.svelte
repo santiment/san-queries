@@ -38,7 +38,6 @@
     &:empty::before {
       content: attr(placeholder);
       display: block;
-      height: 100%;
       color: var(--waterloo);
       pointer-events: none;
       position: absolute;
