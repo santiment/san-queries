@@ -2,6 +2,7 @@
   import { queryComputeRawClickhouseQuery } from '$lib/api/query'
   import Control from './Control.svelte'
   import Table from './Table.svelte'
+  import Chart from './Chart/index.svelte'
 
   let value = 'Table'
 
@@ -29,7 +30,13 @@
 </script>
 
 <main class="row gap-m">
-  <Table {sqlData} {ColumnSettings} />
+  <section class="column visualisation">
+    {#if controls.visualisation === 'Table'}
+      <Table {sqlData} {ColumnSettings} />
+    {:else}
+      <Chart class="border" {sqlData} {ColumnSettings} />
+    {/if}
+  </section>
 
   <section class="options border column">
     <h2 class="body-2">Options</h2>
@@ -78,6 +85,10 @@
   h2 {
     padding: 16px;
     border-bottom: 1px solid var(--porcelain);
+  }
+
+  .visualisation {
+    flex: 1;
   }
 
   controls {
