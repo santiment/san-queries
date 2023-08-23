@@ -3,8 +3,7 @@
   import Control from './Control.svelte'
   import Table from './Table.svelte'
   import Chart from './Chart/index.svelte'
-
-  let value = 'Table'
+  import ControlsSection from './ControlsSection.svelte'
 
   export let sqlData = { headers: [], rows: [], types: [] } as {
     headers: string[]
@@ -29,7 +28,7 @@
   }
 </script>
 
-<main class="row gap-m">
+<main class="row gap-l">
   <section class="column visualisation">
     {#if controls.visualisation === 'Table'}
       <Table {sqlData} {ColumnSettings} />
@@ -38,25 +37,24 @@
     {/if}
   </section>
 
-  <section class="options border column">
-    <h2 class="body-2">Options</h2>
-
-    <controls class="column gap-xl">
+  <options class="column gap-l">
+    <ControlsSection title="Visualisation: {controls.visualisation}">
       <Control
         name="Visualization type"
         options={['Table', 'Chart']}
-        {value}
+        value={controls.visualisation}
         onUpdate={(updated) => {
           controls.visualisation = updated
           controls = controls
         }}
       />
+    </ControlsSection>
 
-      {#each sqlData.headers as column, i}
-        {@const settings = ColumnSettings[column] || {}}
-
+    {#each sqlData.headers as column, i}
+      {@const settings = ColumnSettings[column] || {}}
+      <ControlsSection title="Column {i}: {column}" isOpened={false}>
         <Control
-          name="Column {i}: Title - {column}"
+          name="Title"
           value={settings.title}
           placeholder={column}
           onUpdate={(updated) => {
@@ -64,9 +62,9 @@
             ColumnSettings[column].title = updated.trim()
           }}
         />
-      {/each}
-    </controls>
-  </section>
+      </ControlsSection>
+    {/each}
+  </options>
 </main>
 
 <style>
@@ -75,25 +73,20 @@
     border-radius: 6px;
     flex: 1;
     padding: 16px 24px;
+    max-height: 100vh;
   }
 
-  .options {
-    max-width: 280px;
-    flex: 1;
-  }
-
-  h2 {
-    padding: 16px;
-    border-bottom: 1px solid var(--porcelain);
+  options {
+    max-width: 320px;
+    min-width: 320px;
+    overflow: auto;
   }
 
   .visualisation {
     flex: 1;
   }
 
-  controls {
-    padding: 24px 16px;
+  Table {
     overflow: auto;
-    flex: 1;
   }
 </style>

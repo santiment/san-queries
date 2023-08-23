@@ -61,6 +61,10 @@
     border-color: var(--green);
   }
 
+  options {
+    --bg: var(--white);
+  }
+
   Tooltip {
     padding: 8px;
     width: 100% !important;
