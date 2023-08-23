@@ -48,11 +48,45 @@
           controls = controls
         }}
       />
+
+      {#if controls.visualisation === 'Table'}
+        <Control
+          name="Sorted column"
+          options={['None', 'Table', 'Chart']}
+          value={'None'}
+          onUpdate={(updated) => {
+            // controls.visualisation = updated
+            controls = controls
+          }}
+        />
+
+        <Control
+          name="Sort direction"
+          options={['Ascending', 'Descending']}
+          value={'Ascending'}
+          disabled={true}
+          onUpdate={(updated) => {
+            // controls.visualisation = updated
+            controls = controls
+          }}
+        />
+      {:else}
+        <Control
+          name="X axis column"
+          options={['Default']}
+          value={'Default'}
+          onUpdate={(updated) => {
+            // controls.visualisation = updated
+            controls = controls
+          }}
+        />
+      {/if}
     </ControlsSection>
 
     {#each sqlData.headers as column, i}
       {@const settings = ColumnSettings[column] || {}}
-      <ControlsSection title="Column {i}: {column}" isOpened={false}>
+
+      <ControlsSection title="Column {i}: {column}">
         <Control
           name="Title"
           value={settings.title}
@@ -62,6 +96,28 @@
             ColumnSettings[column].title = updated.trim()
           }}
         />
+
+        <Control
+          name="Format"
+          options={['No formatting']}
+          value={'No formatting'}
+          onUpdate={(updated) => {
+            // ColumnSettings[column] = { ...ColumnSettings[column] }
+            // ColumnSettings[column].title = updated.trim()
+          }}
+        />
+
+        {#if controls.visualisation === 'Chart'}
+          <Control
+            name="Chart style"
+            options={['Line', 'Bars']}
+            value={'Line'}
+            onUpdate={(updated) => {
+              // controls.visualisation = updated
+              // controls = controls
+            }}
+          />
+        {/if}
       </ControlsSection>
     {/each}
   </options>

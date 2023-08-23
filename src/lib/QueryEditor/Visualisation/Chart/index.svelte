@@ -1,6 +1,8 @@
 <script lang="ts">
   import Chart from '$lib/Chart/index.svelte'
 
+  let className = ''
+  export { className as class }
   export let sqlData: any
   export let ColumnSettings: any
 
@@ -47,7 +49,7 @@
   }
 </script>
 
-<Chart {data} {metrics} xAxisKey={dateColumn} />
+<Chart class={className} {data} {metrics} xAxisKey={dateColumn} />
 
 <style>
 </style>
