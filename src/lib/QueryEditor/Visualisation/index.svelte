@@ -5,11 +5,7 @@
   import Chart from './Chart/index.svelte'
   import ControlsSection from './ControlsSection.svelte'
 
-  export let sqlData = { headers: [], rows: [], types: [] } as {
-    headers: string[]
-    rows: (string | number | null)[][]
-    types: string[]
-  }
+  export let sqlData = { headers: [], rows: [], types: [] } as App.SqlData
 
   let controls = {
     visualisation: 'Table',
@@ -64,7 +60,6 @@
           name="Sort direction"
           options={['Ascending', 'Descending']}
           value={'Ascending'}
-          disabled={true}
           onUpdate={(updated) => {
             // controls.visualisation = updated
             controls = controls

@@ -12,7 +12,7 @@
 
   const TEST = {
     id: 'custom_canvas_background_color',
-    beforeDraw: (chart, args, options) => {
+    beforeDraw: (chart: any, _: any, options: any) => {
       const { ctx } = chart
       ctx.save()
 
@@ -23,7 +23,7 @@
       const BUBBLE_PADDING = 3
       const BUBBLE_DOUBLE_PADDING = BUBBLE_PADDING + BUBBLE_PADDING
 
-      chart.data.datasets.forEach(({ yAxisID, parsing }) => {
+      chart.data.datasets.forEach(({ yAxisID, parsing }: any) => {
         const key = parsing.yAxisKey
         const { min, max, lastValue } = options.MinMax[key]
         const scale = chart.scales[yAxisID]

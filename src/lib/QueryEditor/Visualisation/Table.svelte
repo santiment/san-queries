@@ -3,7 +3,7 @@
 
   let className = ''
   export { className as class }
-  export let sqlData = { rows: [] as any[], types: [] as any[], headers: [] as any[] }
+  export let sqlData = { rows: [], types: [], headers: [] } as App.SqlData
   export let ColumnSettings = {} as any
   export let border = true
 

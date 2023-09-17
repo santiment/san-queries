@@ -2,8 +2,10 @@
   import { dialogs } from 'webkit/ui/Dialog'
   import Component from './index.svelte'
 
-  export const showVisualisationFullscreenDialog = (props: { title: string; sqlData: any }) =>
-    dialogs.__show(Component, props)
+  export const showVisualisationFullscreenDialog = (props: {
+    title: string
+    sqlData: App.SqlData
+  }) => dialogs.__show(Component, props)
 </script>
 
 <script lang="ts">
@@ -11,11 +13,11 @@
   import Table from '$lib/QueryEditor/Visualisation/Table.svelte'
 
   export let title: string
-  export let sqlData: any
+  export let sqlData: App.SqlData
 </script>
 
 <Dialog {...$$props} {title}>
-  <Table border={false} {sqlData}></Table>
+  <Table border={false} {sqlData} />
 </Dialog>
 
 <style lang="scss">

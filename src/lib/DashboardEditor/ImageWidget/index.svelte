@@ -12,7 +12,7 @@
 </script>
 
 <image-widget class="column hv-center border relative">
-  <img src={widget.src} alt="Image widget" />
+  <img src={widget.src} alt="Widget" />
 
   <button class="close btn-3" on:click={onCloseClick}>
     <Svg id="close" w="12" />

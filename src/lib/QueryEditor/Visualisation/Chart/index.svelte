@@ -3,13 +3,13 @@
 
   let className = ''
   export { className as class }
-  export let sqlData: any
+  export let sqlData: App.SqlData
   export let ColumnSettings: any
 
   $: ({ metrics, dateColumn } = getMetrics(sqlData))
   $: data = getData(sqlData, dateColumn)
 
-  function getMetrics(sqlData: any) {
+  function getMetrics(sqlData: App.SqlData) {
     const metrics = [] as any[]
 
     let dateColumn = '0'
@@ -39,11 +39,11 @@
     return { metrics, dateColumn }
   }
 
-  function getData({ rows }, dateColumn) {
+  function getData({ rows }: App.SqlData, dateColumn: string) {
     return rows
       .slice()
       .map((row: any[]) => {
-        return Object.assign({}, row, { [dateColumn]: Date.parse(row[dateColumn]) })
+        return Object.assign({}, row, { [dateColumn]: Date.parse(row[+dateColumn]) })
       })
       .sort((a, b) => a[dateColumn] - b[dateColumn])
   }

@@ -54,14 +54,7 @@ type VariablesType = {
   parameters: {}
 }
 
-type ComputeRawClickhouseQuery = SAN.API.Query<
-  'data',
-  {
-    headers: string[]
-    rows: (string | number | null)[][]
-    types: string[]
-  }
->
+type ComputeRawClickhouseQuery = SAN.API.Query<'data', App.SqlData>
 
 export const queryComputeRawClickhouseQuery = Universal(
   (query) =>
@@ -77,3 +70,13 @@ export const queryComputeRawClickhouseQuery = Universal(
         { variables },
       ).then(({ data }) => data),
 )
+
+declare global {
+  namespace App {
+    type SqlData = {
+      headers: string[]
+      rows: (string | number | null)[][]
+      types: string[]
+    }
+  }
+}

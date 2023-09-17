@@ -7,16 +7,18 @@
 
   export let tab = TABS[0] as (typeof TABS)[number]
   export let parameters = [] as any[]
-  export let sqlData: any = undefined
+  export let sqlData = undefined as undefined | App.SqlData
 
   function onFullscreenClick() {
     if (tab === TABS[0]) {
       showSqlEditorFullscreenDialog()
     } else {
-      showVisualisationFullscreenDialog({
-        title: 'Table widget',
-        sqlData,
-      })
+      if (sqlData) {
+        showVisualisationFullscreenDialog({
+          title: 'Table widget',
+          sqlData,
+        })
+      }
     }
   }
 </script>
