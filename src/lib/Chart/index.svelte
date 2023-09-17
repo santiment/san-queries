@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
+  import { AXES_LAST_VALUE_PLUGIN } from './axes'
 
   let className = ''
   export { className as class }
@@ -10,52 +11,12 @@
 
   let chartNode: HTMLCanvasElement
 
-  const TEST = {
-    id: 'custom_canvas_background_color',
-    beforeDraw: (chart: any, _: any, options: any) => {
-      const { ctx } = chart
-      ctx.save()
-
-      // ctx.globalCompositeOperation = 'destination-over'
-
-      const BUBBLE_HEIGHT = 13
-      const BUBBLE_HALF_HEIGHT = Math.round(BUBBLE_HEIGHT / 2)
-      const BUBBLE_PADDING = 3
-      const BUBBLE_DOUBLE_PADDING = BUBBLE_PADDING + BUBBLE_PADDING
-
-      chart.data.datasets.forEach(({ yAxisID, parsing }: any) => {
-        const key = parsing.yAxisKey
-        const { min, max, lastValue } = options.MinMax[key]
-        const scale = chart.scales[yAxisID]
-
-        const factor = scale.height / (max - min)
-        const top = (max - lastValue) * factor + scale.top
-
-        let { left, width } = scale
-        left += BUBBLE_PADDING
-
-        ctx.fillStyle = options.color
-        ctx.fillRect(left, top - BUBBLE_HALF_HEIGHT, width - BUBBLE_DOUBLE_PADDING, BUBBLE_HEIGHT)
-
-        ctx.textBaseline = 'middle'
-        ctx.fillStyle = 'black'
-        ctx.fillText(lastValue, left + BUBBLE_PADDING, top)
-      })
-
-      ctx.restore()
-    },
-    defaults: {
-      color: 'lightGreen',
-      MinMax: {},
-    },
-  }
-
   onMount(() => {
     import('chart.js/auto').then(({ default: ChartJs }) => {
       ChartJs.defaults.font.family = 'Proxima Nova'
       ChartJs.defaults.font.size = 10
 
-      const MinMax = {} as Record<string, { min: number; max: number }>
+      const MinMax = {} as Record<string, { min: number; max: number; lastValue?: number }>
       const scales = {
         x: {
           ticks: {
@@ -70,7 +31,13 @@
         axesMetrics.forEach((key) => {
           const value = row[key]
 
-          if (!MinMax[key]) MinMax[key] = { min: Infinity, max: -Infinity }
+          if (!MinMax[key]) {
+            MinMax[key] = {
+              min: Infinity,
+              max: -Infinity,
+              lastValue: undefined as undefined | number,
+            }
+          }
 
           const minMax = MinMax[key]
 
@@ -92,8 +59,9 @@
         }
       })
 
-      ChartJs.register(TEST)
+      ChartJs.register(AXES_LAST_VALUE_PLUGIN)
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const chart = new ChartJs(chartNode, {
         type: 'line',
 
