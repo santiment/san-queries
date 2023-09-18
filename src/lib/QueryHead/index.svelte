@@ -6,6 +6,7 @@
 
   export let author: SAN.Author | null
   export let title = 'Your first query'
+  export let sql = ''
 
   const { currentUser$ } = getCurrentUser$Ctx()
 
@@ -22,7 +23,7 @@
     titleNode.textContent = ''
     typing = true
 
-    queryGenerateTitleBySql('select * from table').then((data) => {
+    queryGenerateTitleBySql(sql).then((data) => {
       const typewriter = Typewriter(data.title, titleNode)
 
       typewriter.start(() => {
