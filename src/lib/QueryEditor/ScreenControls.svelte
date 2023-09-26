@@ -4,11 +4,13 @@
   import { TABS } from './index.svelte'
   import { showVisualisationFullscreenDialog } from './Visualisation/FullscreenDialog/index.svelte'
   import { showSqlEditorFullscreenDialog$ } from '$lib/SQLEditor/FullscreenDialog.svelte'
+  import { showAddParameterDialog$ } from '$lib/Parameter/AddParameterDialog.svelte'
 
   export let tab = TABS[0] as (typeof TABS)[number]
   export let parameters = [] as any[]
   export let sqlData = undefined as undefined | App.SqlData
 
+  const showAddParameterDialog = showAddParameterDialog$()
   const showSqlEditorFullscreenDialog = showSqlEditorFullscreenDialog$()
 
   function onFullscreenClick() {
@@ -27,7 +29,10 @@
 
 <header class="row justify gap-xl">
   <parameters class="row gap-s">
-    <button class="parameter btn row v-center gap-s c-waterloo">
+    <button
+      class="parameter btn row v-center gap-s c-waterloo"
+      on:click={() => showAddParameterDialog()}
+    >
       <Svg id="braces" w="16" />
       Parameter
     </button>
