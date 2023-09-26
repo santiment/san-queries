@@ -5,6 +5,7 @@
   import Chart from './Chart/index.svelte'
   import ControlsSection from './ControlsSection.svelte'
 
+  export let sql = ''
   export let sqlData = { headers: [], rows: [], types: [] } as App.SqlData
 
   let controls = {
@@ -18,7 +19,7 @@
   }
 
   function getData() {
-    queryComputeRawClickhouseQuery().then((data) => {
+    queryComputeRawClickhouseQuery({ sql }).then((data) => {
       sqlData = data
     })
   }
@@ -50,7 +51,7 @@
           name="Sorted column"
           options={['None', 'Table', 'Chart']}
           value={'None'}
-          onUpdate={(updated) => {
+          onUpdate={(_updated) => {
             // controls.visualisation = updated
             controls = controls
           }}
@@ -60,7 +61,7 @@
           name="Sort direction"
           options={['Ascending', 'Descending']}
           value={'Ascending'}
-          onUpdate={(updated) => {
+          onUpdate={(_updated) => {
             // controls.visualisation = updated
             controls = controls
           }}
@@ -70,7 +71,7 @@
           name="X axis column"
           options={['Default']}
           value={'Default'}
-          onUpdate={(updated) => {
+          onUpdate={(_updated) => {
             // controls.visualisation = updated
             controls = controls
           }}
@@ -96,7 +97,7 @@
           name="Format"
           options={['No formatting']}
           value={'No formatting'}
-          onUpdate={(updated) => {
+          onUpdate={(_updated) => {
             // ColumnSettings[column] = { ...ColumnSettings[column] }
             // ColumnSettings[column].title = updated.trim()
           }}
@@ -107,7 +108,7 @@
             name="Chart style"
             options={['Line', 'Bars']}
             value={'Line'}
-            onUpdate={(updated) => {
+            onUpdate={(_updated) => {
               // controls.visualisation = updated
               // controls = controls
             }}

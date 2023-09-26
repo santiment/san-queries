@@ -29,7 +29,7 @@
   {#if tab === TABS[0]}
     <SQLEditor value={$queryEditor$.sql} onValueChange={onEditorValueChange} />
   {:else}
-    <VisualisationTab bind:sqlData />
+    <VisualisationTab sql={$queryEditor$.sql} bind:sqlData />
   {/if}
 </section>
 

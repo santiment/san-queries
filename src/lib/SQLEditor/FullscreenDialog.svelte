@@ -2,18 +2,26 @@
   import { dialogs } from 'webkit/ui/Dialog'
   import Component from './FullscreenDialog.svelte'
 
-  export const showSqlEditorFullscreenDialog = () => dialogs.__show(Component)
+  // export const showSqlEditorFullscreenDialog = () => dialogs.__show(Component)
+  export const showSqlEditorFullscreenDialog$ = () => dialogs.__WithCtx(Component)
 </script>
 
 <script lang="ts">
   import Dialog from 'webkit/ui/Dialog'
+  import { getQueryEditor$Ctx } from '$routes/query/new/ctx'
   import SQLEditor from './index.svelte'
 
   export let title = 'Untitled query'
+
+  const { queryEditor$ } = getQueryEditor$Ctx()
+
+  function onEditorValueChange(sql: string) {
+    queryEditor$.set({ sql })
+  }
 </script>
 
 <Dialog {...$$props} {title}>
-  <SQLEditor />
+  <SQLEditor value={$queryEditor$.sql} onValueChange={onEditorValueChange} />
 </Dialog>
 
 <style lang="scss">

@@ -3,10 +3,8 @@ import { writable } from 'svelte/store'
 
 export const CTX = 'QueryEditor$$'
 
-export function QueryEditor$$() {
-  const store = writable({
-    sql: '',
-  })
+export function QueryEditor$$(sql = '') {
+  const store = writable({ sql })
 
   return setContext(CTX, {
     queryEditor$: store,
