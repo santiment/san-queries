@@ -49,7 +49,7 @@
     "@storybook/svelte": "^7.3.2",
     "@storybook/sveltekit": "^7.3.2",
     "@storybook/testing-library": "^0.2.0",
-    "@sveltejs/kit": "^1.22.6",
+    "@sveltejs/kit": "^1.25.1",
     "@types/ua-parser-js": "^0.7.36",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.4.0",
@@ -69,7 +69,7 @@
     "san-webkit": "https://github.com/santiment/san-webkit#d50365d",
     "sass": "^1.65.1",
     "storybook": "^7.3.2",
-    "svelte": "^4.2.0",
+    "svelte": "^4.2.1",
     "svelte-check": "^3.5.0",
     "svelte-preprocess": "^5.0.4",
     "svelte-preprocess-cssmodules": "https://github.com/DmitriVanGuard/svelte-preprocess-cssmodules#3b24f22",
@@ -81,7 +81,7 @@
   "type": "module",
   "pnpm": {
     "patchedDependencies": {
-      "@sveltejs/kit@1.22.6": "patches/@sveltejs__kit@1.22.6.patch"
+      "@sveltejs/kit@1.25.1": "patches/@sveltejs__kit@1.25.1.patch"
     }
   }
 }
