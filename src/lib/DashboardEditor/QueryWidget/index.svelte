@@ -16,7 +16,8 @@
   }
 
   function getData() {
-    queryComputeRawClickhouseQuery(`SELECT
+    queryComputeRawClickhouseQuery({
+      sql: `SELECT
   toStartOfMonth(dt) as month,
   min(total_active_market_cap) as low_total_active_market_cap,
   max(total_active_market_cap) as high_total_active_market_cap
@@ -42,7 +43,8 @@ SELECT
     ORDER BY dt
 )
 group by month
-`).then((data) => {
+`,
+    }).then((data) => {
       sqlData = data
     })
   }
