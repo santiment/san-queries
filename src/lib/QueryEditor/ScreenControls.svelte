@@ -25,14 +25,18 @@
       }
     }
   }
+
+  function onAddParameterClick() {
+    showAddParameterDialog().then((parameter) => {
+      parameters.push(parameter)
+      parameters = parameters
+    })
+  }
 </script>
 
 <header class="row justify gap-xl">
   <parameters class="row gap-s">
-    <button
-      class="parameter btn row v-center gap-s c-waterloo"
-      on:click={() => showAddParameterDialog()}
-    >
+    <button class="parameter btn row v-center gap-s c-waterloo" on:click={onAddParameterClick}>
       <Svg id="braces" w="16" />
       Parameter
     </button>

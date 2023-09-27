@@ -11,7 +11,7 @@
   <color />
 
   {key}
-  <span class="caption c-waterloo">{value}</span>
+  <span class="c-waterloo">{value}</span>
 
   <button class="close btn">
     <Svg id="close" w="10" />
