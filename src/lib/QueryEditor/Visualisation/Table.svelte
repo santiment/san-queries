@@ -14,7 +14,7 @@
     const type = sqlData.types[i]
     if (type === 'DateTime') {
       sortAccessor = (item: any) => Date.parse(item[i])
-    } else if (type.includes('Int')) {
+    } else if (type.includes('Int') || type.includes('Float')) {
       sortAccessor = (item: any) => +item[i]
     }
 
