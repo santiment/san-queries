@@ -1,21 +1,42 @@
 <script lang="ts">
   import Svg from 'webkit/ui/Svg/svelte'
 
-  export let parameter: { key: string; value: string }
+  export let parameter: { key: string; value: string; global: boolean }
   export let color: string
+  export let isAuthor = false
 
-  $: ({ key, value } = parameter)
+  $: ({ key, value, global = false } = parameter)
+  $: shortValue = value.toString()
 </script>
 
 <parameter class="row v-center gap-s border" style="---color:{color}">
   <color />
 
-  {key}
-  <span class="c-waterloo">{value}</span>
+  {#if global}
+    <span class="caption txt-m">GP</span>
+  {/if}
 
-  <button class="close btn">
-    <Svg id="close" w="10" />
-  </button>
+  {key}
+
+  <span class="c-waterloo"
+    >{shortValue.length > 10
+      ? `${shortValue.slice(0, 4)}...${shortValue.slice(-3)}`
+      : shortValue}</span
+  >
+
+  {#if isAuthor}
+    <div class="divider" />
+
+    <actions class="row">
+      <button class="link btn">
+        <Svg id="link" w="15" />
+      </button>
+
+      <button class="close btn">
+        <Svg id="close" w="10" />
+      </button>
+    </actions>
+  {/if}
 </parameter>
 
 <style>
@@ -40,14 +61,28 @@
     border-top-left-radius: 6px;
   }
 
+  actions {
+    margin: 0 -6px 0 -8px;
+  }
+
   button {
+    height: 30px;
+    width: 32px;
     display: flex;
     align-items: center;
+    justify-content: center;
     --color: var(--waterloo);
     --color-hover: var(--green);
   }
 
-  .close {
-    margin: 0 3px 0 11px;
+  .link {
+    --color: var(--black);
+  }
+
+  .divider {
+    width: 1px;
+    background: var(--porcelain);
+    margin: -4px 4px;
+    height: 100%;
   }
 </style>

@@ -27,7 +27,7 @@
   }
 
   function onAddParameterClick() {
-    showAddParameterDialog().then((parameter) => {
+    showAddParameterDialog({ strict: true }).then((parameter) => {
       parameters.push(parameter)
       parameters = parameters
     })
