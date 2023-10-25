@@ -4,6 +4,7 @@
   export let icon = '' as Props['id']
   export let moreActions = false
   export let dataActions = false
+  export let draggable = false
 
   let isHovered = false
 </script>
@@ -12,6 +13,9 @@
   class="btn row gap-s v-center"
   on:mouseenter={() => (isHovered = true)}
   on:mouseleave={() => (isHovered = false)}
+  on:dragstart
+  on:dragend
+  {draggable}
 >
   {#if icon}
     <Svg id={icon} w="12" />

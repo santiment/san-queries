@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Svg from 'webkit/ui/Svg/svelte'
   import { slide } from 'svelte/transition'
+  import Svg from 'webkit/ui/Svg/svelte'
 
   export let title: string
 
@@ -47,7 +47,8 @@
   }
 </script>
 
-<folder class="column mrg-s mrg--b">
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<folder class="column mrg-s mrg--b" on:dragover on:dragend on:drop>
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <folder-head
     class="row v-center justify gap-l"
@@ -66,6 +67,7 @@
           on:blur={onBlur}
           use:onFocus
           autofocus={true}
+          class="name-input"
         >
           {title}
         </span>
@@ -120,5 +122,9 @@
 
   .rename {
     --expl-right: 0;
+  }
+
+  .name-input {
+    outline-offset: 3px;
   }
 </style>

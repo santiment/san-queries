@@ -35,11 +35,59 @@
   ]
 
   function onNewFolderClick() {
-    WorkspaceTree.push({
+    WorkspaceTree.unshift({
       type: TreeItemType.FOLDER,
       name: 'Untitled folder',
       children: [],
     })
+    WorkspaceTree = WorkspaceTree
+  }
+
+  const getDragFolderHighlightNode = (folderNode: HTMLElement) =>
+    folderNode.firstElementChild as HTMLElement
+
+  let dragState = null
+  function onItemDragStart(e: DragEvent, folder: any, item: any) {
+    const node = e.currentTarget as HTMLElement
+    const folderNode = node.closest('folder') as null | HTMLElement
+    const hoverNode = folderNode && getDragFolderHighlightNode(folderNode)
+
+    dragState = { folder, item, hoverNode }
+    hoverNode?.classList.add('dropzone')
+  }
+
+  function onItemDragEnd() {
+    dragState.hoverNode?.classList.remove('dropzone')
+    dragState = null
+  }
+
+  function onFolderDragOver(e: DragEvent) {
+    e.preventDefault()
+
+    if (!dragState) return
+
+    const node = e.currentTarget
+    const hoverNode = getDragFolderHighlightNode(node)
+
+    if (hoverNode === dragState.hoverNode) return
+
+    dragState.hoverNode.classList.remove('dropzone')
+    dragState.hoverNode = hoverNode
+
+    hoverNode.classList.add('dropzone')
+  }
+
+  function onFolderDrop(e: DragEvent, folder: any) {
+    e.preventDefault()
+
+    if (!dragState || folder === dragState.folder) return
+
+    const index = dragState.folder.children.findIndex((item) => item === dragState.item)
+
+    dragState.folder.children.splice(index, 1)
+    folder.children.push(dragState.item)
+
+    onItemDragEnd()
     WorkspaceTree = WorkspaceTree
   }
 </script>
@@ -54,14 +102,20 @@
   </actions>
 </section>
 
-{#each WorkspaceTree as item}
+{#each WorkspaceTree as item (item)}
   {@const { type } = item}
   {#if type === TreeItemType.FOLDER}
-    <Folder title={item.name}>
-      {#each item.children as item}
-        {@const { type } = item}
-        <MenuItem moreActions icon={type === TreeItemType.QUERY ? 'query' : 'dashboard'}>
-          {item.name}
+    <Folder title={item.name} on:dragover={onFolderDragOver} on:drop={(e) => onFolderDrop(e, item)}>
+      {#each item.children as child (child)}
+        {@const { type } = child}
+        <MenuItem
+          draggable
+          moreActions
+          icon={type === TreeItemType.QUERY ? 'query' : 'dashboard'}
+          on:dragstart={(e) => onItemDragStart(e, item, child)}
+          on:dragend={onItemDragEnd}
+        >
+          {child.name}
         </MenuItem>
       {/each}
     </Folder>
@@ -72,5 +126,9 @@
   .expl-tooltip {
     --expl-position-y: 4px;
     --expl-right: 0;
+  }
+
+  :global(.dropzone) {
+    background: red;
   }
 </style>
