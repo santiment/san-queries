@@ -3,7 +3,7 @@
   import Svg from 'webkit/ui/Svg/svelte'
 
   export let title: string
-  export let folder: any
+  export let folder: any = undefined
 
   let isOpened = true
   let isHovered = false

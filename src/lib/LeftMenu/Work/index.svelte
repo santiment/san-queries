@@ -1,14 +1,11 @@
 <script lang="ts">
+  import type { WorkspaceTreeType, FolderTreeType, ItemTreeType } from './types'
+
   import Svg from 'webkit/ui/Svg/svelte'
+  import { TreeItemType } from './types'
   import MenuItem from '../MenuItem.svelte'
   import Folder from '../Folder.svelte'
   import { getSearch$Ctx } from '../Search.svelte'
-
-  const TreeItemType = {
-    FOLDER: 'FOLDER',
-    QUERY: 'QUERY',
-    DASHBOARD: 'DASHBOARD',
-  } as const
 
   let WorkspaceTree = [
     {
@@ -33,29 +30,33 @@
         },
       ],
     },
-  ]
+  ] as WorkspaceTreeType
 
   const { search$ } = getSearch$Ctx()
 
-  let dragState = null as null | { folder: any; item: any; hoverNode: HTMLElement }
+  let dragState = null as null | {
+    folder: FolderTreeType
+    item: ItemTreeType
+    hoverNode: HTMLElement
+  }
 
   $: filteredTree = search$.modify($search$, WorkspaceTree, filterTree)
 
-  function filterTree(input: RegExp, tree: typeof WorkspaceTree) {
+  function filterTree(input: RegExp, tree: WorkspaceTreeType) {
     return tree
       .map((item) => {
-        if (!item.children) {
-          return item.name.search(input) >= 0 ? item : null
+        if ('children' in item) {
+          const children = item.children.filter((child) => child.name.search(input) >= 0)
+          if (children.length) {
+            return { ...item, children, source: item }
+          }
+
+          return null
         }
 
-        const children = item.children.filter((child) => child.name.search(input) >= 0)
-        if (children.length) {
-          return { ...item, children, source: item }
-        }
-
-        return null
+        return item.name.search(input) >= 0 ? item : null
       })
-      .filter(Boolean)
+      .filter(Boolean) as WorkspaceTreeType
   }
 
   function onNewFolderClick() {
