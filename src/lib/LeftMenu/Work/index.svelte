@@ -2,6 +2,7 @@
   import Svg from 'webkit/ui/Svg/svelte'
   import MenuItem from '../MenuItem.svelte'
   import Folder from '../Folder.svelte'
+  import { getSearch$Ctx } from '../Search.svelte'
 
   const TreeItemType = {
     FOLDER: 'FOLDER',
@@ -34,6 +35,29 @@
     },
   ]
 
+  const { search$ } = getSearch$Ctx()
+
+  let dragState = null as null | { folder: any; item: any; hoverNode: HTMLElement }
+
+  $: filteredTree = search$.modify($search$, WorkspaceTree, filterTree)
+
+  function filterTree(input: RegExp, tree: typeof WorkspaceTree) {
+    return tree
+      .map((item) => {
+        if (!item.children) {
+          return item.name.search(input) >= 0 ? item : null
+        }
+
+        const children = item.children.filter((child) => child.name.search(input) >= 0)
+        if (children.length) {
+          return { ...item, children, source: item }
+        }
+
+        return null
+      })
+      .filter(Boolean)
+  }
+
   function onNewFolderClick() {
     WorkspaceTree.unshift({
       type: TreeItemType.FOLDER,
@@ -46,18 +70,19 @@
   const getDragFolderHighlightNode = (folderNode: HTMLElement) =>
     folderNode.firstElementChild as HTMLElement
 
-  let dragState = null
   function onItemDragStart(e: DragEvent, folder: any, item: any) {
     const node = e.currentTarget as HTMLElement
     const folderNode = node.closest('folder') as null | HTMLElement
     const hoverNode = folderNode && getDragFolderHighlightNode(folderNode)
 
-    dragState = { folder, item, hoverNode }
+    if (!hoverNode) return
+
+    dragState = { folder: folder.source || folder, item, hoverNode }
     hoverNode?.classList.add('dropzone')
   }
 
   function onItemDragEnd() {
-    dragState.hoverNode?.classList.remove('dropzone')
+    dragState?.hoverNode.classList.remove('dropzone')
     dragState = null
   }
 
@@ -66,7 +91,7 @@
 
     if (!dragState) return
 
-    const node = e.currentTarget
+    const node = e.currentTarget as HTMLElement
     const hoverNode = getDragFolderHighlightNode(node)
 
     if (hoverNode === dragState.hoverNode) return
@@ -82,10 +107,11 @@
 
     if (!dragState || folder === dragState.folder) return
 
-    const index = dragState.folder.children.findIndex((item) => item === dragState.item)
+    const target = folder.source || folder
+    const index = dragState.folder.children.findIndex((item) => item === dragState?.item)
 
     dragState.folder.children.splice(index, 1)
-    folder.children.push(dragState.item)
+    target.children.push(dragState.item)
 
     onItemDragEnd()
     WorkspaceTree = WorkspaceTree
@@ -102,10 +128,15 @@
   </actions>
 </section>
 
-{#each WorkspaceTree as item (item)}
+{#each filteredTree as item (item)}
   {@const { type } = item}
   {#if type === TreeItemType.FOLDER}
-    <Folder title={item.name} on:dragover={onFolderDragOver} on:drop={(e) => onFolderDrop(e, item)}>
+    <Folder
+      folder={item}
+      title={item.name}
+      on:dragover={onFolderDragOver}
+      on:drop={(e) => onFolderDrop(e, item)}
+    >
       {#each item.children as child (child)}
         {@const { type } = child}
         <MenuItem

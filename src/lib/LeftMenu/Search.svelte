@@ -2,6 +2,10 @@
   const CTX = 'Search$$'
   export function Search$$() {
     const store = writable('')
+
+    const getRegExp = (searchInput: string) =>
+      new RegExp(searchInput.replace(/[\W_]+/g, '(.*)'), 'i')
+
     return setContext(CTX, {
       search$: {
         ...store,
@@ -12,8 +16,14 @@
         ) {
           if (!searchInput) return data
 
-          const regex = new RegExp(searchInput.replace(/[\W_]+/g, '(.*)'), 'i')
+          const regex = getRegExp(searchInput)
           return data.filter((item) => filter(regex, item))
+        },
+
+        modify<T>(searchInput: string, data: T, modify: (searchInput: RegExp, data: T) => T) {
+          if (!searchInput) return data
+
+          return modify(getRegExp(searchInput), data)
         },
       },
     })

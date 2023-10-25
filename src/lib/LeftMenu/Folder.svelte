@@ -3,6 +3,7 @@
   import Svg from 'webkit/ui/Svg/svelte'
 
   export let title: string
+  export let folder: any
 
   let isOpened = true
   let isHovered = false
@@ -44,6 +45,9 @@
     isRenaming = false
     const titleNode = e.currentTarget as HTMLElement
     title = (titleNode.textContent as string).trim()
+
+    const target = folder.source || folder
+    target.name = title
   }
 </script>
 
@@ -103,7 +107,7 @@
     --fill: var(--color, var(--black));
     word-break: break-all;
     min-height: 32px;
-    max-width: calc(100% - 42px);
+    max-width: calc(100% - 50px);
   }
 
   items {
