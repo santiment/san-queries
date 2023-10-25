@@ -129,6 +129,20 @@
   }
 
   :global(.dropzone) {
-    background: red;
+    position: relative;
+    --color: var(--green);
+
+    &::before {
+      background: var(--green-light-1);
+      content: '';
+      position: absolute;
+      display: block;
+      border-radius: 4px;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      z-index: -1;
+    }
   }
 </style>

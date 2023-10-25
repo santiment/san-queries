@@ -99,7 +99,8 @@
 
 <style lang="scss">
   .expand {
-    --fill: var(--black);
+    flex: 1;
+    --fill: var(--color, var(--black));
     word-break: break-all;
     min-height: 32px;
     max-width: calc(100% - 42px);
