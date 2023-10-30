@@ -25,9 +25,10 @@
           name: 'Functions',
         },
         {
+          id: 1698653190973,
           type: TreeItemType.DASHBOARD,
           name: 'Get started dashboard',
-          data: `{"widgets":[{"type":"QUERY","title":"Bitcoin daily active addresses"},{"type":"QUERY","title":"Bitcoin daily active addresses"},{"type":"TEXT","value":""},{"type":"TEXT","value":""}],"layout":[[0,2,4,8],[4,2,8,8],[0,0,12,2],[0,10,12,2]],"title":"Example title","description":"Example description","id":1698653190973}`,
+          data: `{"widgets":[{"type":"QUERY","title":"Bitcoin daily active addresses"},{"type":"QUERY","title":"Bitcoin daily active addresses"},{"type":"TEXT","value":"Some text"},{"type":"TEXT","value":""}],"layout":[[0,2,4,8],[4,2,8,8],[0,0,12,2],[0,10,12,2]],"title":"Example title","description":"Example description","id":1698653190973}`,
         },
       ],
     },
@@ -38,7 +39,7 @@
   let dragState = null as null | {
     folder: FolderTreeType
     item: ItemTreeType
-    hoverNode: HTMLElement
+    hoverNode: HTMLElement | null
   }
 
   $: filteredTree = search$.modify($search$, WorkspaceTree, filterTree)
@@ -78,14 +79,14 @@
     const folderNode = node.closest('folder') as null | HTMLElement
     const hoverNode = folderNode && getDragFolderHighlightNode(folderNode)
 
-    if (!hoverNode) return
+    // if (!hoverNode) return
 
     dragState = { folder: folder.source || folder, item, hoverNode }
     hoverNode?.classList.add('dropzone')
   }
 
   function onItemDragEnd() {
-    dragState?.hoverNode.classList.remove('dropzone')
+    dragState?.hoverNode?.classList.remove('dropzone')
     dragState = null
   }
 
@@ -99,7 +100,7 @@
 
     if (hoverNode === dragState.hoverNode) return
 
-    dragState.hoverNode.classList.remove('dropzone')
+    dragState.hoverNode?.classList.remove('dropzone')
     dragState.hoverNode = hoverNode
 
     hoverNode.classList.add('dropzone')
@@ -111,9 +112,10 @@
     if (!dragState || folder === dragState.folder) return
 
     const target = folder.source || folder
-    const index = dragState.folder.children.findIndex((item) => item === dragState?.item)
+    const p = dragState.folder.children || dragState.folder
+    const index = p.findIndex((item) => item === dragState?.item)
 
-    dragState.folder.children.splice(index, 1)
+    p.splice(index, 1)
     target.children.push(dragState.item)
 
     onItemDragEnd()
@@ -123,6 +125,46 @@
   setRerenderTreeCtx(rerenderTree)
   function rerenderTree() {
     WorkspaceTree = WorkspaceTree
+  }
+
+  if (process.browser) {
+    // @ts-ignore
+    window.saveDashboard = (item: any) => {
+      const found =
+        item.id &&
+        WorkspaceTree.find((i: any) => {
+          if (i.id === item.id) {
+            return i
+          }
+
+          if (i.children) {
+            return i.children.find((i: any) => {
+              if (i.id === item.id) {
+                return i
+              }
+            })
+          }
+        })
+
+      if (found) {
+        found.name = item.title
+        found.data = JSON.stringify(item)
+      } else {
+        item.id = item.id || Date.now()
+
+        WorkspaceTree.unshift({
+          id: item.id,
+          type: TreeItemType.DASHBOARD,
+          name: item.title,
+          data: JSON.stringify(item),
+        } as any)
+        // @ts-ignore
+        window.updateDashboardEditor(item)
+      }
+
+      console.log(WorkspaceTree)
+      rerenderTree()
+    }
   }
 </script>
 
@@ -136,7 +178,7 @@
   </actions>
 </section>
 
-{#each filteredTree as item (item)}
+{#each filteredTree as item, i (item)}
   {@const { type } = item}
   {#if type === TreeItemType.FOLDER}
     <Folder
@@ -149,6 +191,8 @@
         <Item idx={i} item={child} parent={item} {onItemDragStart} {onItemDragEnd} />
       {/each}
     </Folder>
+  {:else}
+    <Item idx={i} {item} parent={WorkspaceTree} {onItemDragStart} {onItemDragEnd} />
   {/if}
 {/each}
 

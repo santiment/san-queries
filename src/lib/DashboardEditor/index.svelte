@@ -13,6 +13,7 @@
   const { dashboardEditor$ } = DashboardEditor$$()
   // DashboardEditor$$()
 
+  let dashboard = {} as any
   let title = ''
   let description = ''
 
@@ -20,6 +21,7 @@
 
   $: dashboardEditor = $dashboardEditor$
 
+  let titleKey = 0
   if (process.browser) {
     unsubSaveShortcut = newGlobalShortcut(
       'CMD+S',
@@ -31,6 +33,11 @@
             description: 'Dashboard is available in "Work" tab',
             dismissAfter: 4000,
           })
+
+          dashboard = { ...dashboard, title, description, ...dashboardEditor }
+
+          // @ts-ignore
+          window.saveDashboard?.(dashboard)
         } else {
           notifications$.show({
             type: 'error',
@@ -39,15 +46,16 @@
             dismissAfter: 4000,
           })
         }
-
-        console.log(dashboardEditor)
       },
       false,
     )
 
     // @ts-ignore
     window.updateDashboardEditor = (v: any) => {
+      console.log(v)
+      dashboard = v
       title = v.title
+      titleKey++
       description = v.description
       dashboardEditor$.update(v.widgets, v.layout)
     }
@@ -66,18 +74,17 @@
 
 <main class="column gap-m {className}">
   <header>
-    <ContentEditable
-      as="h1"
-      class="h4 txt-m mrg-s mrg--b"
-      placeholder="Add your title here..."
-      onChange={onTitleChange}
-    >
-      {title}
-    </ContentEditable>
+    {#key titleKey}
+      <ContentEditable
+        value={title}
+        as="h1"
+        class="h4 txt-m mrg-s mrg--b"
+        placeholder="Add your title here..."
+        onChange={onTitleChange}
+      />
+    {/key}
 
-    <ContentEditable class="body-2" placeholder="Add description here...">
-      {description}
-    </ContentEditable>
+    <ContentEditable value={description} class="body-2" placeholder="Add description here..." />
   </header>
 
   <Grid />

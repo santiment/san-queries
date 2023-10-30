@@ -7,6 +7,7 @@
   export let as = 'p'
   export let placeholder = 'Add your text here...'
   export let onChange = noop
+  export let value = ''
 
   function onBlur(e: Event) {
     const node = e.currentTarget as HTMLElement
@@ -39,7 +40,7 @@
   on:keydown={onKeyDown}
   on:keyup
 >
-  <slot />
+  {value}
 </svelte:element>
 
 <style lang="scss">

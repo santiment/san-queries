@@ -1,5 +1,8 @@
 <script lang="ts">
-  import type { FolderTreeType, ItemTreeType } from './types'
+  import type {
+    /* FolderTreeType, */
+    ItemTreeType,
+  } from './types'
 
   import { TreeItemType, getRerenderTreeCtx } from './types'
   import MenuItem from '../MenuItem.svelte'
@@ -8,7 +11,7 @@
 
   export let idx: number
   export let item: ItemTreeType
-  export let parent: FolderTreeType
+  export let parent: any // FolderTreeType
   export let onItemDragEnd: any
   export let onItemDragStart: any
 
@@ -26,12 +29,14 @@
   }
 
   function onDuplicateClick() {
-    parent.children.splice(idx + 1, 0, { ...item, name: item.name + ' copy' })
+    const p = parent.children || parent
+    p.splice(idx + 1, 0, { ...item, name: item.name + ' copy' })
     rerenderTree()
   }
 
   function onDeleteClick() {
-    parent.children.splice(idx, 1)
+    const p = parent.children || parent
+    p.splice(idx, 1)
     rerenderTree()
   }
 
