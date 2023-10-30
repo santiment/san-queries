@@ -1,6 +1,7 @@
 <script lang="ts">
   import { slide } from 'svelte/transition'
   import Svg from 'webkit/ui/Svg/svelte'
+  import Renamer from '$lib/Renamer.svelte'
 
   export let title: string
   export let folder: any = undefined
@@ -15,39 +16,13 @@
     isOpened = !isOpened
   }
 
-  function onRenameClick(e: Event) {
-    const folderNode = (e.currentTarget as HTMLElement).parentNode
-    const titleNode = folderNode?.firstElementChild?.lastElementChild
-
-    if (!titleNode) return
-
+  function onRenameClick() {
     isRenaming = true
   }
 
-  function onKeyDown(e: KeyboardEvent) {
-    switch (e.key) {
-      case 'Enter':
-        return (e.currentTarget as HTMLInputElement).blur()
-    }
-  }
-
-  function onFocus(node: HTMLElement) {
-    const selection = window.getSelection()
-    if (!selection) return
-
-    const range = document.createRange()
-    selection.removeAllRanges()
-    range.selectNodeContents(node)
-    selection.addRange(range)
-  }
-
-  function onBlur(e: Event) {
-    isRenaming = false
-    const titleNode = e.currentTarget as HTMLElement
-    title = (titleNode.textContent as string).trim()
-
+  function onRename(value: string) {
     const target = folder.source || folder
-    target.name = title
+    target.name = value
   }
 </script>
 
@@ -61,23 +36,8 @@
   >
     <button class="expand btn row v-center gap-m" class:opened={isOpened} on:click={onFolderClick}>
       <Svg id="arrow-down" w="8" h="5" />
-      <!-- svelte-ignore a11y-no-static-element-interactions -->
 
-      {#if isRenaming}
-        <!-- svelte-ignore a11y-autofocus -->
-        <span
-          contenteditable="true"
-          on:keydown={onKeyDown}
-          on:blur={onBlur}
-          use:onFocus
-          autofocus={true}
-          class="name-input"
-        >
-          {title}
-        </span>
-      {:else}
-        {title}
-      {/if}
+      <Renamer {title} {onRename} bind:isRenaming />
     </button>
 
     {#if isHovered || isRenaming}
@@ -127,9 +87,5 @@
 
   .rename {
     --expl-right: 0;
-  }
-
-  .name-input {
-    outline-offset: 3px;
   }
 </style>

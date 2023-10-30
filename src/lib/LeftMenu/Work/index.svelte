@@ -144,8 +144,8 @@
       on:dragover={onFolderDragOver}
       on:drop={(e) => onFolderDrop(e, item)}
     >
-      {#each item.children as child (child)}
-        <Item item={child} parent={item} {onItemDragStart} {onItemDragEnd} />
+      {#each item.children as child, i (child)}
+        <Item idx={i} item={child} parent={item} {onItemDragStart} {onItemDragEnd} />
       {/each}
     </Folder>
   {/if}
