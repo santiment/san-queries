@@ -4,13 +4,16 @@
   import { DashboardEditor$$ } from './ctx'
   import Grid from './Grid.svelte'
 
+  let className = ''
+  export { className as class }
+
   // const { dashboardEditor$ } = DashboardEditor$$()
   DashboardEditor$$()
 
   let title = ''
 </script>
 
-<main class="column gap-m">
+<main class="column gap-m {className}">
   <header>
     <ContentEditable as="h1" class="h4 txt-m mrg-s mrg--b" placeholder="Add your title here...">
       {title}

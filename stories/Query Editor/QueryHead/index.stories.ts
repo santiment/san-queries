@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/svelte'
 
-import Component from '$lib/QueryHead/index.svelte'
+import Component from '$lib/EntityHead/Query/index.svelte'
 
 const meta = {
   component: Component,
