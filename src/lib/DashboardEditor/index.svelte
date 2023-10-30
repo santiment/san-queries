@@ -26,7 +26,8 @@
           notifications$.show({
             type: 'success',
             title: 'Dashboard saved',
-            dismissAfter: 2000,
+            description: 'Dashboard is available in "Work" tab',
+            dismissAfter: 4000,
           })
         } else {
           notifications$.show({

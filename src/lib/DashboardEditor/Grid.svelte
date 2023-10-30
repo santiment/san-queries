@@ -6,12 +6,41 @@
   import QueryWidget from './QueryWidget/index.svelte'
   import ImageWidget from './ImageWidget/index.svelte'
   import { getDashboardEditor$Ctx } from './ctx'
+  import { getDevice$Ctx } from 'san-webkit/lib/stores/responsive'
+  import { normalizeGrid, sortLayout } from 'san-webkit/lib/ui/SnapGrid/layout'
 
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
 
+  const { device$ } = getDevice$Ctx()
   const cols = 12
 
+  $: device = $device$
   $: ({ widgets, layout } = $dashboardEditor$)
+
+  $: if (process.browser) {
+    // dashboardEditor$.responsiveLayout(device.isMobile)
+    reset(device.isMobile)
+  }
+
+  $: _layout = layout
+  function reset(isMobile = false) {
+    let local = layout
+
+    if (isMobile) {
+      local = layout.map((item) => {
+        const _item = item.slice() as any
+        _item[0] = 0
+        _item[2] = 12
+        return _item
+      })
+    } else {
+      local = layout
+    }
+
+    normalizeGrid(sortLayout(local))
+
+    _layout = local
+  }
 
   function hook(node: HTMLElement, widget: App.Dashboard.Widget) {
     widget.htmlNode = node
@@ -24,7 +53,7 @@
 <Grid
   tag="widgets"
   {cols}
-  {layout}
+  layout={_layout}
   let:i
   let:gridItem
   rowSize={26}

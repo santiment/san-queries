@@ -8,6 +8,7 @@
   import Dialogs from 'webkit/ui/Dialog/Dialogs.svelte'
   import Notifications from 'webkit/ui/Notifications'
   import FeatureWalkthrough from 'webkit/ui/FeatureWalkthrough/svelte'
+  import OnlyOnDevice from 'webkit/ui/OnlyOnDevice.svelte'
   import NavHeader from '$lib/NavHeader/index.svelte'
   import LeftMenu from '$lib/LeftMenu/index.svelte'
 
@@ -21,10 +22,14 @@
 
 <svelte:window on:resize={device$.onResize} />
 
-<NavHeader />
+<OnlyOnDevice desktop>
+  <NavHeader />
+</OnlyOnDevice>
 
 <screen class="row">
-  <LeftMenu />
+  <OnlyOnDevice desktop>
+    <LeftMenu />
+  </OnlyOnDevice>
 
   <slot />
 </screen>
