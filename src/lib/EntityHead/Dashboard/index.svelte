@@ -2,25 +2,30 @@
   import { getCurrentUser$Ctx } from 'webkit/stores/user'
   import Svg from 'webkit/ui/Svg/svelte'
   import { showShareDialog } from 'webkit/ui/Share/index.svelte'
-  import Tooltip from 'webkit/ui/Tooltip'
+  // import Tooltip from 'webkit/ui/Tooltip'
+  import CommentsButton from 'webkit/ui/Comments/Button.svelte'
+  import { VoteType } from 'webkit/api/vote'
+  import LikeButton from 'webkit/ui/LikeButton/svelte'
   import Dropdown from '$lib/Dropdown'
+  import { showDashboardPublishedDialog } from '$lib/DashboardPublishedDialog/index.svelte'
   import Head from '../index.svelte'
 
-  export let author: SAN.Author
+  export let author: SAN.Author | null
   export let isPublished = false
 
   const { currentUser$ } = getCurrentUser$Ctx()
 
   $: currentUser = $currentUser$
-  $: isAuthor = currentUser?.id === author.id
+  $: isAuthor = currentUser?.id === author?.id
 
   function onShare() {
     showShareDialog({ entity: 'Dashboard', feature: '', source: '' })
   }
 </script>
 
-<Head {author}>
-  1
+<Head {author} onMainClick={showDashboardPublishedDialog}>
+  <LikeButton id={0} type={VoteType.Insight} onVote={console.log} source="" />
+  <CommentsButton />
 
   <svelte:fragment slot="main-action">
     {#if isPublished}
@@ -57,4 +62,10 @@
   </svelte:fragment>
 </Head>
 
-<style></style>
+<style>
+  LikeButton,
+  CommentsButton {
+    border: none;
+    padding-right: 0 !important;
+  }
+</style>

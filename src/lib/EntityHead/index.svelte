@@ -6,6 +6,8 @@
   export { className as class }
   export let author: SAN.Author | null
   export let onMainClick = noop
+
+  let mainActionClass = 'main-action btn-1 mrg-a mrg--l'
 </script>
 
 <header class="row v-center gap-m {className}">
@@ -19,7 +21,7 @@
 
   <slot />
 
-  <button class="main-action btn-1 mrg-a mrg--l" on:click={onMainClick}>
+  <button class={mainActionClass} on:click={onMainClick}>
     <slot name="main-action" />
   </button>
 

@@ -1,6 +1,6 @@
 <script>
   import { getCurrentUser$Ctx } from 'webkit/stores/user'
-  import QueryHead from '$lib/QueryHead/index.svelte'
+  import { QueryHead } from '$lib/EntityHead'
   import QueryEditor from '$lib/QueryEditor/index.svelte'
   import { QueryEditor$$ } from './ctx'
 

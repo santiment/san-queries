@@ -1,6 +1,6 @@
 <script>
   import { getCurrentUser$Ctx } from 'webkit/stores/user'
-  import QueryHead from '$lib/QueryHead/index.svelte'
+  import { DashboardHead } from '$lib/EntityHead'
   import DashboardEditor from '$lib/DashboardEditor/index.svelte'
 
   // const { currentUser$ } = getCurrentUser$Ctx()
@@ -9,7 +9,7 @@
 </script>
 
 <main class="column">
-  <QueryHead author={$currentUser$} sql={''} />
+  <DashboardHead author={$currentUser$} />
 
   <DashboardEditor />
 </main>
