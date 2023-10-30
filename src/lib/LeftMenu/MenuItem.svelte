@@ -1,18 +1,27 @@
 <script lang="ts">
   import Svg, { type Props } from 'webkit/ui/Svg/svelte'
 
+  import { noop } from 'webkit/utils'
+  import Tooltip from 'webkit/ui/Tooltip'
+
   export let icon = '' as Props['id']
   export let moreActions = false
   export let dataActions = false
   export let draggable = false
 
+  export let onRenameClick = noop
+  export let onDuplicateClick = noop
+  export let onDeleteClick = noop
+
   let isHovered = false
+  let isMenuOpened = false
 </script>
 
 <article
   class="btn row gap-s v-center"
+  class:hovered={isMenuOpened}
   on:mouseenter={() => (isHovered = true)}
-  on:mouseleave={() => (isHovered = false)}
+  on:mouseleave={() => (isHovered = isMenuOpened)}
   on:dragstart
   on:dragend
   {draggable}
@@ -42,13 +51,23 @@
       {/if}
 
       {#if moreActions}
-        <button class="btn-3"><Svg id="vert-dots" w="3" h="12" /></button>
+        <Tooltip let:trigger on="click" position="bottom" clickaway bind:isOpened={isMenuOpened}>
+          <button use:trigger class="more btn-3">
+            <Svg id="vert-dots" w="3" h="12" />
+          </button>
+
+          <svelte:fragment slot="tooltip">
+            <button class="btn-ghost" on:click={onRenameClick}>Rename</button>
+            <button class="btn-ghost" on:click={onDuplicateClick}>Duplicate</button>
+            <button class="btn-ghost" on:click={onDeleteClick}>Delete</button>
+          </svelte:fragment>
+        </Tooltip>
       {/if}
     </actions>
   {/if}
 </article>
 
-<style>
+<style lang="scss">
   article {
     padding: 6px 10px;
     --bg-hover: var(--white);
@@ -62,5 +81,17 @@
   .copy {
     --expl-right: 0;
     --expl-left: unset;
+  }
+
+  Tooltip {
+    padding: 8px;
+  }
+
+  .hovered {
+    --bg: var(--white);
+
+    .more {
+      fill: var(--green);
+    }
   }
 </style>
