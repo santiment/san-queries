@@ -2,10 +2,10 @@
   import type { WorkspaceTreeType, FolderTreeType, ItemTreeType } from './types'
 
   import Svg from 'webkit/ui/Svg/svelte'
-  import { TreeItemType } from './types'
-  import MenuItem from '../MenuItem.svelte'
+  import { TreeItemType, setRerenderTreeCtx } from './types'
   import Folder from '../Folder.svelte'
   import { getSearch$Ctx } from '../Search.svelte'
+  import Item from './Item.svelte'
 
   let WorkspaceTree = [
     {
@@ -65,7 +65,8 @@
       name: 'Untitled folder',
       children: [],
     })
-    WorkspaceTree = WorkspaceTree
+
+    rerenderTree()
   }
 
   const getDragFolderHighlightNode = (folderNode: HTMLElement) =>
@@ -115,6 +116,11 @@
     target.children.push(dragState.item)
 
     onItemDragEnd()
+    rerenderTree()
+  }
+
+  setRerenderTreeCtx(rerenderTree)
+  function rerenderTree() {
     WorkspaceTree = WorkspaceTree
   }
 </script>
@@ -139,16 +145,7 @@
       on:drop={(e) => onFolderDrop(e, item)}
     >
       {#each item.children as child (child)}
-        {@const { type } = child}
-        <MenuItem
-          draggable
-          moreActions
-          icon={type === TreeItemType.QUERY ? 'query' : 'dashboard'}
-          on:dragstart={(e) => onItemDragStart(e, item, child)}
-          on:dragend={onItemDragEnd}
-        >
-          {child.name}
-        </MenuItem>
+        <Item item={child} parent={item} {onItemDragStart} {onItemDragEnd} />
       {/each}
     </Folder>
   {/if}

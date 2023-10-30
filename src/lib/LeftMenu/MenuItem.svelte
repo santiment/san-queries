@@ -15,6 +15,8 @@
 
   let isHovered = false
   let isMenuOpened = false
+
+  $: if (!isMenuOpened) isHovered = false
 </script>
 
 <article
