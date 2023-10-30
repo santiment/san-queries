@@ -19,9 +19,12 @@
   $: if (!isMenuOpened) isHovered = false
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <article
   class="btn row gap-s v-center"
   class:hovered={isMenuOpened}
+  on:click
   on:mouseenter={() => (isHovered = true)}
   on:mouseleave={() => (isHovered = isMenuOpened)}
   on:dragstart

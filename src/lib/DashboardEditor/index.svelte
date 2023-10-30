@@ -10,13 +10,15 @@
   let className = ''
   export { className as class }
 
-  // const { dashboardEditor$ } = DashboardEditor$$()
-  DashboardEditor$$()
+  const { dashboardEditor$ } = DashboardEditor$$()
+  // DashboardEditor$$()
 
   let title = ''
   let description = ''
 
   let unsubSaveShortcut: any
+
+  $: dashboardEditor = $dashboardEditor$
 
   if (process.browser) {
     unsubSaveShortcut = newGlobalShortcut(
@@ -37,9 +39,18 @@
             dismissAfter: 4000,
           })
         }
+
+        console.log(dashboardEditor)
       },
       false,
     )
+
+    // @ts-ignore
+    window.updateDashboardEditor = (v: any) => {
+      title = v.title
+      description = v.description
+      dashboardEditor$.update(v.widgets, v.layout)
+    }
   }
 
   function onTitleChange(value: string) {

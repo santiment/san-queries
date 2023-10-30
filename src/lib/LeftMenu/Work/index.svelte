@@ -27,6 +27,7 @@
         {
           type: TreeItemType.DASHBOARD,
           name: 'Get started dashboard',
+          data: `{"widgets":[{"type":"QUERY","title":"Bitcoin daily active addresses"},{"type":"QUERY","title":"Bitcoin daily active addresses"},{"type":"TEXT","value":""},{"type":"TEXT","value":""}],"layout":[[0,2,4,8],[4,2,8,8],[0,0,12,2],[0,10,12,2]],"title":"Example title","description":"Example description","id":1698653190973}`,
         },
       ],
     },

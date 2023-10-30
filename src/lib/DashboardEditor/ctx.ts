@@ -4,13 +4,15 @@ import { normalizeGrid, setItemOptions, sortLayout } from 'webkit/ui/SnapGrid/la
 
 export const CTX = 'DashboardEditor$$'
 
-export function DashboardEditor$$(defaultWidgets = [] as App.Dashboard.Widget[]) {
-  const state = {
+export function DashboardEditor$$(defaultWidgets = [] as App.Dashboard.Widget[], layout?: any) {
+  let state = {
     widgets: defaultWidgets,
-    layout: defaultWidgets.map((widget, i) => {
-      const options = getGridItemOptions(widget)
-      return setItemOptions([0, 1000 + i, 12, options.minRows], options)
-    }) as SAN.SnapGrid.Item[],
+    layout:
+      layout ||
+      (defaultWidgets.map((widget, i) => {
+        const options = getGridItemOptions(widget)
+        return setItemOptions([0, 1000 + i, 12, options.minRows], options)
+      }) as SAN.SnapGrid.Item[]),
   }
 
   normalizeGrid(sortLayout(state.layout))
@@ -27,6 +29,12 @@ export function DashboardEditor$$(defaultWidgets = [] as App.Dashboard.Widget[])
     dashboardEditor$: {
       ...store,
       updateLayout,
+
+      update(widgets: any, layout: any) {
+        state = { widgets, layout }
+        updateLayout()
+      },
+
       addWidget(widget: App.Dashboard.Widget) {
         const options = getGridItemOptions(widget)
         const gridItem = setItemOptions([0, 1000, 12, options.minRows], options)

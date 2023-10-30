@@ -27,7 +27,7 @@
     let local = layout
 
     if (isMobile) {
-      local = layout.map((item) => {
+      local = layout.map((item: any) => {
         const _item = item.slice() as any
         _item[0] = 0
         _item[2] = 12
