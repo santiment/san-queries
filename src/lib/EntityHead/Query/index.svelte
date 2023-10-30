@@ -54,7 +54,7 @@
   }
 </script>
 
-<Head {author} {mainActionLabel}>
+<Head {author}>
   <button
     class="ai btn mrg-s mrg--l expl-tooltip"
     aria-label="Ask AI to write the title based on your query"
@@ -64,6 +64,10 @@
   </button>
 
   <button bind:this={titleNode} class="title btn body-2" class:typing>{title}</button>
+
+  <svelte:fragment slot="main-action">
+    {mainActionLabel}
+  </svelte:fragment>
 
   <svelte:fragment slot="actions">
     {#if isAuthor}

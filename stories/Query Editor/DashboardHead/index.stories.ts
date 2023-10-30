@@ -20,13 +20,14 @@ const author = {
   username: 'test',
 }
 
-export const LoggedInNotAuthor: Story = {
+export const LoggedInPublished: Story = {
   args: {
-    author,
+    isPublished: true,
+    author: { ...author, id: 0 },
   },
   parameters: {
     mockApi: () => ({
-      currentUser: {},
+      currentUser: author,
     }),
   },
 }
@@ -42,13 +43,13 @@ export const LoggedInAuthor: Story = {
   },
 }
 
-export const LoggedInPublished: Story = {
+export const LoggedInNotAuthor: Story = {
   args: {
-    author: { ...author, id: 0 },
+    author,
   },
   parameters: {
     mockApi: () => ({
-      currentUser: author,
+      currentUser: {},
     }),
   },
 }

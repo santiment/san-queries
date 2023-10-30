@@ -1,10 +1,11 @@
 <script lang="ts">
+  import { noop } from 'webkit/utils'
   import Profile from 'webkit/ui/Profile/svelte'
 
   let className = 'mrg-s mrg--b'
   export { className as class }
   export let author: SAN.Author | null
-  export let mainActionLabel = ''
+  export let onMainClick = noop
 </script>
 
 <header class="row v-center gap-m {className}">
@@ -18,7 +19,9 @@
 
   <slot />
 
-  <button class="main-action btn-1 mrg-a mrg--l">{mainActionLabel}</button>
+  <button class="main-action btn-1 mrg-a mrg--l" on:click={onMainClick}>
+    <slot name="main-action" />
+  </button>
 
   <actions class="row v-center gap-s mrg-xs mrg--l">
     <slot name="actions" />
