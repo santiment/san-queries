@@ -1,18 +1,30 @@
 <script lang="ts">
+  import { noop } from 'san-webkit/lib/utils'
+
   let className = ''
   export { className as class }
 
   export let as = 'p'
   export let placeholder = 'Add your text here...'
+  export let onChange = noop
 
   function onBlur(e: Event) {
     const node = e.currentTarget as HTMLElement
     const text = (node.textContent || '').trim()
     node.innerText = text
+
+    onChange(text)
   }
 
   function onKeyDown(e: KeyboardEvent) {
     if (e.key === 'Enter') e.preventDefault()
+  }
+
+  function onInput(e: Event) {
+    const node = e.currentTarget as HTMLElement
+
+    const text = (node.textContent || '').trim()
+    onChange(text)
   }
 </script>
 
@@ -23,10 +35,9 @@
   contenteditable="true"
   {placeholder}
   on:blur={onBlur}
-  on:input
+  on:input={onInput}
   on:keydown={onKeyDown}
   on:keyup
-  on:input
 >
   <slot />
 </svelte:element>

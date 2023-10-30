@@ -25,4 +25,8 @@
     min-width: 90%;
     min-height: 80%;
   }
+
+  Table {
+    overflow: auto;
+  }
 </style>

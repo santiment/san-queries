@@ -5,9 +5,9 @@
 
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
 
-  function onHeadingClick() {
-    dashboardEditor$.addWidget({ type: 'HEADING', value: '' })
-  }
+  // function onHeadingClick() {
+  //   dashboardEditor$.addWidget({ type: 'HEADING', value: '' })
+  // }
 
   function onTextClick() {
     dashboardEditor$.addWidget({ type: 'TEXT', value: '' })
@@ -41,19 +41,19 @@
     <Svg id="query" w="16" />
     Query
   </button>
-  <button class="btn">
-    <Svg id="chart" w="16" />
-    Chart
-  </button>
+  <!-- <button class="btn"> -->
+  <!--   <Svg id="chart" w="16" /> -->
+  <!--   Chart -->
+  <!-- </button> -->
   <button class="btn" on:click={onImageClick}>
     <Svg id="image" w="16" />
     Image
     <input accept="image/*" type="file" class="hide" />
   </button>
-  <button class="btn" on:click={onHeadingClick}>
-    <Svg id="editor/heading" w="16" />
-    Heading
-  </button>
+  <!-- <button class="btn" on:click={onHeadingClick}> -->
+  <!--   <Svg id="editor/heading" w="16" /> -->
+  <!--   Heading -->
+  <!-- </button> -->
   <button class="btn" on:click={onTextClick}>
     <Svg id="editor/title" w="16" />
     Text
