@@ -11,6 +11,9 @@
   }
 
   function onFocus(node: HTMLElement) {
+    const parentNode = node.parentNode as HTMLElement
+    parentNode.classList.add('$style.visible')
+
     const selection = window.getSelection()
     if (!selection) return
 
@@ -22,9 +25,14 @@
 
   function onBlur(e: Event) {
     isRenaming = false
-    const titleNode = e.currentTarget as HTMLElement
-    const _title = (titleNode.textContent as string).trim()
 
+    const titleNode = e.currentTarget as HTMLElement
+    const parentNode = titleNode.parentNode as HTMLElement
+
+    parentNode.classList.remove('$style.visible')
+    parentNode.scroll(0, 0)
+
+    const _title = (titleNode.textContent as string).trim()
     if (title === _title) return
 
     onRename((title = _title))
@@ -44,5 +52,9 @@
 <style>
   span {
     outline-offset: 3px;
+  }
+
+  .visible {
+    text-overflow: unset;
   }
 </style>
