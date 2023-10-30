@@ -28,7 +28,7 @@
           id: 1698653190973,
           type: TreeItemType.DASHBOARD,
           name: 'Get started dashboard',
-          data: `{"widgets":[{"type":"QUERY","title":"Bitcoin daily active addresses"},{"type":"QUERY","title":"Bitcoin daily active addresses"},{"type":"TEXT","value":"Some text"},{"type":"TEXT","value":""}],"layout":[[0,2,4,8],[4,2,8,8],[0,0,12,2],[0,10,12,2]],"title":"Example title","description":"Example description","id":1698653190973}`,
+          data: `{"widgets":[{"type":"QUERY","title":"Bitcoin daily active addresses"},{"type":"QUERY","title":"Bitcoin daily active addresses"},{"type":"TEXT","value":"Some text"},{"type":"TEXT","value":""}],"layout":[[0,2,4,8],[4,2,8,8],[0,0,12,2],[0,10,12,2]],"title":"Get started dashboard","description":"Example description","id":1698653190973}`,
         },
       ],
     },
@@ -130,21 +130,25 @@
   if (process.browser) {
     // @ts-ignore
     window.saveDashboard = (item: any) => {
-      const found =
-        item.id &&
-        WorkspaceTree.find((i: any) => {
+      let found = null as any
+
+      if (item.id) {
+        WorkspaceTree.some((i: any) => {
           if (i.id === item.id) {
-            return i
+            found = i
+            return true
           }
 
           if (i.children) {
-            return i.children.find((i: any) => {
+            return i.children.some((i: any) => {
               if (i.id === item.id) {
-                return i
+                found = i
+                return true
               }
             })
           }
         })
+      }
 
       if (found) {
         found.name = item.title
