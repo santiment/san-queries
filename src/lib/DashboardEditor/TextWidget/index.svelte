@@ -9,13 +9,25 @@
 
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
 
+  let editor: any
+
+  function onInput() {
+    if (!editor) return
+
+    const value = editor.serialize()
+    if (!value) return
+
+    widget.value = value
+  }
+
   function onCloseClick() {
     dashboardEditor$.removeWidget(widget)
   }
 </script>
 
-<text-widget class="row border body-2 relative">
+<text-widget class="row border body-2 relative" on:input={onInput}>
   <Editor
+    bind:editor
     placeholder="Add your text here..."
     html={widget.value ? markdownToHTML(widget.value) : undefined}
   />
