@@ -45,9 +45,10 @@
 
     const data = JSON.parse((item as any).data) as any
 
-    goto('/dashboard/new')
-    // @ts-ignore
-    window.updateDashboardEditor(data)
+    goto('/dashboard/new').then(() => {
+      // @ts-ignore
+      window.updateDashboardEditor(data)
+    })
   }
 </script>
 

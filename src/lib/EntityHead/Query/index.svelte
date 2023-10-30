@@ -1,6 +1,7 @@
 <script lang="ts">
   import { getCurrentUser$Ctx } from 'webkit/stores/user'
   import Svg from 'webkit/ui/Svg/svelte'
+  import { showShareDialog } from 'webkit/ui/Share/index.svelte'
   import { queryGenerateTitleBySql } from './api'
   import Head from '../index.svelte'
 
@@ -52,9 +53,13 @@
       stop: () => window.clearTimeout(timerId),
     }
   }
+
+  function onShare() {
+    showShareDialog({ entity: 'Query', feature: '', source: '' })
+  }
 </script>
 
-<Head {author}>
+<Head {author} onMainClick={console.log}>
   <button
     class="ai btn mrg-s mrg--l expl-tooltip"
     aria-label="Ask AI to write the title based on your query"
@@ -76,7 +81,9 @@
       <button class="btn-3"><Svg id="refresh" w="16" /></button>
     {/if}
 
-    <button class="btn-3"><Svg id="share-dots" w="16" /></button>
+    <button class="btn-3 expl-tooltip" aria-label="Share" on:click={onShare}>
+      <Svg id="share-dots" w="16" />
+    </button>
     <button class="btn-3"><Svg id="vert-dots" w="3" h="16" /></button>
   </svelte:fragment>
 </Head>
