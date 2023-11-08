@@ -44,5 +44,7 @@ group by month
   main {
     flex: 1;
     padding: 0 24px;
+    max-width: calc(100% - 326px);
+    min-width: 0;
   }
 </style>

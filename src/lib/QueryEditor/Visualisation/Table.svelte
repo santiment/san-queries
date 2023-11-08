@@ -55,6 +55,15 @@
         border-bottom: 1px solid var(--porcelain);
         white-space: pre !important;
       }
+
+      + .paged {
+        position: sticky;
+        bottom: 0;
+        left: 0;
+        padding: 16px 32px;
+        background: var(--white);
+        z-index: 2;
+      }
     }
   }
 </style>

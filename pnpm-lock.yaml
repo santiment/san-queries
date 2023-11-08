@@ -112,8 +112,8 @@ devDependencies:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
   san-webkit:
-    specifier: https://github.com/santiment/san-webkit#bdcbffc
-    version: github.com/santiment/san-webkit/bdcbffc(@types/gtag.js@0.0.4)(@types/medium-editor@5.0.5)(@types/stripe-v3@3.1.30)(ethers@5.7.2)(marked@6.0.0)(medium-editor@5.23.3)(node-fetch@3.3.2)(react-dom@18.2.0)(react@18.2.0)(svelte@4.2.1)(turndown@7.1.2)
+    specifier: https://github.com/santiment/san-webkit#67f9c1a
+    version: github.com/santiment/san-webkit/67f9c1a(@types/gtag.js@0.0.4)(@types/medium-editor@5.0.5)(@types/stripe-v3@3.1.30)(ethers@5.7.2)(marked@6.0.0)(medium-editor@5.23.3)(node-fetch@3.3.2)(react-dom@18.2.0)(react@18.2.0)(svelte@4.2.1)(turndown@7.1.2)
   sass:
     specifier: ^1.65.1
     version: 1.65.1
@@ -2040,23 +2040,10 @@ packages:
     resolution: {integrity: sha512-cEee/Z+I12mZcFJshKcCqC8tuX5hG3s+d+9nZ3LabqKF1vKdF41B92pJVCBggjAGORAeOzyyDDKrZwIkLffeOQ==}
     dev: true
 
-  /@floating-ui/core@1.4.1:
-    resolution: {integrity: sha512-jk3WqquEJRlcyu7997NtR5PibI+y5bi+LS3hPmguVClypenMsCY3CBa3LAQnozRCtCrYWSEtAdiskpamuJRFOQ==}
-    dependencies:
-      '@floating-ui/utils': 0.1.1
-    dev: true
-
   /@floating-ui/core@1.5.0:
     resolution: {integrity: sha512-kK1h4m36DQ0UHGj5Ah4db7R0rHemTqqO0QLvUqi1/mUUp3LuAWbWxdxSIf/XsnH9VS6rRVPLJCncjRzUvyCLXg==}
     dependencies:
       '@floating-ui/utils': 0.1.4
-    dev: true
-
-  /@floating-ui/dom@1.5.1:
-    resolution: {integrity: sha512-KwvVcPSXg6mQygvA1TjbN/gh///36kKtllIF8SUm0qpFj8+rvYrpvlYdL1JoA71SHpDqgSSdGOSoQ0Mp3uY5aw==}
-    dependencies:
-      '@floating-ui/core': 1.4.1
-      '@floating-ui/utils': 0.1.1
     dev: true
 
   /@floating-ui/dom@1.5.3:
@@ -2072,13 +2059,9 @@ packages:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
-      '@floating-ui/dom': 1.5.1
+      '@floating-ui/dom': 1.5.3
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-    dev: true
-
-  /@floating-ui/utils@0.1.1:
-    resolution: {integrity: sha512-m0G6wlnhm/AX0H12IOWtK8gASEMffnX08RtKkCgTdHb9JpHKGloI7icFfLg9ZmQeavcvR0PKmzxClyuFPSjKWw==}
     dev: true
 
   /@floating-ui/utils@0.1.4:
@@ -5304,7 +5287,7 @@ packages:
       object-is: 1.1.5
       object-keys: 1.1.1
       object.assign: 4.1.4
-      regexp.prototype.flags: 1.5.0
+      regexp.prototype.flags: 1.5.1
       side-channel: 1.0.4
       which-boxed-primitive: 1.0.2
       which-collection: 1.0.1
@@ -5345,14 +5328,6 @@ packages:
   /define-lazy-prop@2.0.0:
     resolution: {integrity: sha512-Ds09qNh8yw3khSjiJjiUInaGX9xlqZDY7JVryGxdxV7NPeuqQfplOpQ66yJFZut3jLa5zOwkXw1g9EI2uKh4Og==}
     engines: {node: '>=8'}
-    dev: true
-
-  /define-properties@1.2.0:
-    resolution: {integrity: sha512-xvqAVKGfT1+UAvPwKTVw/njhdQ8ZhXK4lI0bCIuCMrp2up9nPnaDftrLtmpTazqd1o+UY4zgzU+avtMbDP+ldA==}
-    engines: {node: '>= 0.4'}
-    dependencies:
-      has-property-descriptors: 1.0.0
-      object-keys: 1.1.1
     dev: true
 
   /define-properties@1.2.1:
@@ -6934,7 +6909,7 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       call-bind: 1.0.2
-      define-properties: 1.2.0
+      define-properties: 1.2.1
     dev: true
 
   /is-negative-zero@2.0.2:
@@ -7967,7 +7942,7 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       call-bind: 1.0.2
-      define-properties: 1.2.0
+      define-properties: 1.2.1
     dev: true
 
   /object-keys@1.1.1:
@@ -7980,7 +7955,7 @@ packages:
     engines: {node: '>= 0.4'}
     dependencies:
       call-bind: 1.0.2
-      define-properties: 1.2.0
+      define-properties: 1.2.1
       has-symbols: 1.0.3
       object-keys: 1.1.1
     dev: true
@@ -8740,15 +8715,6 @@ packages:
     resolution: {integrity: sha512-hfMp2BoF0qOk3uc5V20ALGDS2ddjQaLrdl7xrGXvAIow7qeWRM2VA2HuCHkUKk9slq3VwEwLNK3DFBqDfPGYtg==}
     dependencies:
       '@babel/runtime': 7.22.10
-    dev: true
-
-  /regexp.prototype.flags@1.5.0:
-    resolution: {integrity: sha512-0SutC3pNudRKgquxGoRGIz946MZVHqbNfPjBdxeOhBrdgDKlRoXmYLQN9xRbrR09ZXWeGAdPuif7egofn6v5LA==}
-    engines: {node: '>= 0.4'}
-    dependencies:
-      call-bind: 1.0.2
-      define-properties: 1.2.0
-      functions-have-names: 1.2.3
     dev: true
 
   /regexp.prototype.flags@1.5.1:
@@ -10395,9 +10361,9 @@ packages:
       typescript: 5.1.6
     dev: true
 
-  github.com/santiment/san-webkit/bdcbffc(@types/gtag.js@0.0.4)(@types/medium-editor@5.0.5)(@types/stripe-v3@3.1.30)(ethers@5.7.2)(marked@6.0.0)(medium-editor@5.23.3)(node-fetch@3.3.2)(react-dom@18.2.0)(react@18.2.0)(svelte@4.2.1)(turndown@7.1.2):
-    resolution: {tarball: https://codeload.github.com/santiment/san-webkit/tar.gz/bdcbffc}
-    id: github.com/santiment/san-webkit/bdcbffc
+  github.com/santiment/san-webkit/67f9c1a(@types/gtag.js@0.0.4)(@types/medium-editor@5.0.5)(@types/stripe-v3@3.1.30)(ethers@5.7.2)(marked@6.0.0)(medium-editor@5.23.3)(node-fetch@3.3.2)(react-dom@18.2.0)(react@18.2.0)(svelte@4.2.1)(turndown@7.1.2):
+    resolution: {tarball: https://codeload.github.com/santiment/san-webkit/tar.gz/67f9c1a}
+    id: github.com/santiment/san-webkit/67f9c1a
     name: san-webkit
     version: 0.0.1
     peerDependencies:
