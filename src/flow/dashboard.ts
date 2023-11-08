@@ -12,7 +12,9 @@ import { sharePanelSettings } from '@/sharing'
 
 export function startSaveDashboardFlow(dashboard: SAN.Queries.Dashboard) {
   const mutation = dashboard.id ? mutateUpdateDashboard : mutateCreateDashboard
-  return mutation(dashboard as any).then((updated) => {
+
+  const {id, title, description, isPublic} = dashboard
+  return mutation({id, title, description, isPublic}).then((updated) => {
     Object.assign(dashboard, updated)
     return dashboard
   })
