@@ -41,7 +41,7 @@
 </script>
 
 <Dialog bind:closeDialog {...$$props} {title} class="$style.dialog">
-  <form class="dialog-body" on:submit|preventDefault={onFormSubmit}>
+  <form class="dialog-body" on:submit|preventDefault>
     <Field
       bind:value={name}
       autofocus
@@ -60,7 +60,9 @@
     </Field>
 
     <div class="row v-center mrg-xl mrg--t">
-      <button class="btn-1 btn--l mrg-a mrg--r" class:loading type="submit">
+      <button class="btn-1 btn--l mrg-a mrg--r" class:loading type="submit"
+      on:click={onFormSubmit}
+      >
         {action}
       </button>
 

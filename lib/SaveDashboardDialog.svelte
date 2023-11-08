@@ -36,7 +36,7 @@ function onFormSubmit() {
 }</script>
 
 <Dialog bind:closeDialog {...$$props} {title} class="dialog-sK6WJ0">
-  <form class="dialog-body" on:submit|preventDefault={onFormSubmit}>
+  <form class="dialog-body" on:submit|preventDefault>
     <Field
       bind:value={name}
       autofocus
@@ -55,7 +55,9 @@ function onFormSubmit() {
     </Field>
 
     <div class="row v-center mrg-xl mrg--t">
-      <button class="btn-1 btn--l mrg-a mrg--r" class:loading type="submit">
+      <button class="btn-1 btn--l mrg-a mrg--r" class:loading type="submit"
+      on:click={onFormSubmit}
+      >
         {action}
       </button>
 
