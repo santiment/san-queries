@@ -1,34 +1,27 @@
 <script lang="ts">
+  import type { Readable } from 'svelte/store'
+
+  import { page as page$ } from '$app/stores'
   import { GlobalShortcut$ } from 'webkit/utils/events'
   import { notifications$ } from 'webkit/ui/Notifications'
+  import { getWorkspace$Ctx } from '$lib/LeftMenu/Work/ctx'
+  import { TreeItemType } from '$lib/LeftMenu/Work/types'
   import Actions from './Actions.svelte'
   import ContentEditable from './ContentEditable.svelte'
   import { DashboardEditor$$ } from './ctx'
   import Grid from './Grid.svelte'
-  import { page as page$ } from '$app/stores'
-  import type { Readable } from 'svelte/store'
 
   let className = ''
   export { className as class }
 
   const { dashboardEditor$ } = DashboardEditor$$()
+  const { workspace$ } = getWorkspace$Ctx()
   // DashboardEditor$$()
 
-  let dashboard = {} as any
+  let dashboard = { title: '', description: '' } as any
 
   $: if (process.browser) updateDashboard($page$)
   $: dashboardEditor = $dashboardEditor$
-
-  let titleKey = 0
-  if (process.browser) {
-    // @ts-ignore
-    window.updateDashboardEditor = (v: any) => {
-      console.log(v)
-      dashboard = v
-      titleKey++
-      dashboardEditor$.update(v.widgets, v.layout)
-    }
-  }
 
   type StoreValue<T> = T extends Readable<infer K> ? K : never
 
@@ -45,12 +38,15 @@
     const value = JSON.parse(data)
 
     dashboard = value
-    titleKey++
     dashboardEditor$.update(value.widgets, value.layout)
   }
 
   function onTitleChange(value: string) {
     dashboard.title = value
+  }
+
+  function onDescriptionChange(value: string) {
+    dashboard.description = value
   }
 
   const saveShortcut = GlobalShortcut$(
@@ -66,8 +62,7 @@
 
         dashboard = { ...dashboard, ...dashboardEditor }
 
-        // @ts-ignore
-        window.saveDashboard?.(dashboard)
+        workspace$.addItem(dashboard, TreeItemType.DASHBOARD)
       } else {
         notifications$.show({
           type: 'error',
@@ -84,20 +79,19 @@
 
 <main class="column gap-m {className}">
   <header>
-    {#key titleKey}
-      <ContentEditable
-        value={dashboard.title}
-        as="h1"
-        class="h4 txt-m mrg-s mrg--b"
-        placeholder="Add your title here..."
-        onChange={onTitleChange}
-      />
-    {/key}
+    <ContentEditable
+      value={dashboard.title}
+      as="h1"
+      class="h4 txt-m mrg-s mrg--b"
+      placeholder="Add your title here..."
+      onBlur={onTitleChange}
+    />
 
     <ContentEditable
       value={dashboard.description}
       class="body-2"
       placeholder="Add description here..."
+      onBlur={onDescriptionChange}
     />
   </header>
 

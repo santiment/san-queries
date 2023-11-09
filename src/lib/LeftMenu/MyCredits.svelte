@@ -8,6 +8,8 @@
     background: var(--porcelain);
     margin: 0 -24px;
     padding: 6px 24px;
+    position: sticky;
+    bottom: 0;
   }
 
   .my-credits {

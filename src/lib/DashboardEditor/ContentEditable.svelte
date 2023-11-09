@@ -6,15 +6,17 @@
 
   export let as = 'p'
   export let placeholder = 'Add your text here...'
-  export let onChange = noop
   export let value = ''
+  export let onChange = noop
+  export let onBlur = noop
 
-  function onBlur(e: Event) {
+  function onInputBlur(e: Event) {
     const node = e.currentTarget as HTMLElement
     const text = (node.textContent || '').trim()
     node.innerText = text
 
     onChange(text)
+    onBlur(text)
   }
 
   function onKeyDown(e: KeyboardEvent) {
@@ -29,19 +31,21 @@
   }
 </script>
 
-<!-- svelte-ignore a11y-no-static-element-interactions -->
-<svelte:element
-  this={as}
-  class="{className} relative"
-  contenteditable="true"
-  {placeholder}
-  on:blur={onBlur}
-  on:input={onInput}
-  on:keydown={onKeyDown}
-  on:keyup
->
-  {value}
-</svelte:element>
+{#key value}
+  <!-- svelte-ignore a11y-no-static-element-interactions -->
+  <svelte:element
+    this={as}
+    class="{className} relative"
+    contenteditable="true"
+    {placeholder}
+    on:blur={onInputBlur}
+    on:input={onInput}
+    on:keydown={onKeyDown}
+    on:keyup
+  >
+    {value}
+  </svelte:element>
+{/key}
 
 <style lang="scss">
   [contenteditable] {

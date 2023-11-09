@@ -61,7 +61,7 @@ export function Workspace$$() {
 
   const update = (value: typeof tree) => store.set(value)
 
-  function addItem(item) {
+  function addItem(item, type: 'QUERY' | 'DASHBOARD') {
     let found = item.id && traverseTreeForItem(tree.children, item.id)
 
     if (found) {
@@ -71,8 +71,8 @@ export function Workspace$$() {
       item.id = item.id || Date.now()
 
       tree.children.unshift({
+        type,
         id: item.id,
-        type: TreeItemType.DASHBOARD,
         name: item.title,
         data: JSON.stringify(item),
       } as any)

@@ -9,9 +9,6 @@
   import { getWorkspace$Ctx } from './ctx'
 
   const { workspace$ } = getWorkspace$Ctx()
-  $: tree = $workspace$
-  $: console.log(tree)
-
   const { search$ } = getSearch$Ctx()
 
   let dragState = null as null | {
@@ -20,6 +17,8 @@
     hoverNode: HTMLElement | null
   }
 
+  $: tree = $workspace$
+  $: console.log(tree)
   $: filteredTree = search$.modify($search$, tree.children, filterTree)
 
   function filterTree(input: RegExp, tree: WorkspaceTreeType) {
