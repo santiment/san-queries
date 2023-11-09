@@ -4,10 +4,11 @@
     ItemTreeType,
   } from './types'
 
-  import { TreeItemType, getRerenderTreeCtx } from './types'
+  import { TreeItemType } from './types'
   import MenuItem from '../MenuItem.svelte'
   import Renamer from '$lib/Renamer.svelte'
   import { goto } from '$app/navigation'
+  import { getWorkspace$Ctx } from './ctx'
 
   export let idx: number
   export let item: ItemTreeType
@@ -15,7 +16,7 @@
   export let onItemDragEnd: any
   export let onItemDragStart: any
 
-  const { rerenderTree } = getRerenderTreeCtx()
+  const { workspace$ } = getWorkspace$Ctx()
 
   let isRenaming = false
 
@@ -29,15 +30,11 @@
   }
 
   function onDuplicateClick() {
-    const p = parent.children || parent
-    p.splice(idx + 1, 0, { ...item, name: item.name + ' copy' })
-    rerenderTree()
+    workspace$.duplicateItem(parent, item, idx)
   }
 
   function onDeleteClick() {
-    const p = parent.children || parent
-    p.splice(idx, 1)
-    rerenderTree()
+    workspace$.deleteItem(parent, item, idx)
   }
 
   function onItemClick() {

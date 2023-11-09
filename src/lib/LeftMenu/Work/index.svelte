@@ -2,37 +2,15 @@
   import type { WorkspaceTreeType, FolderTreeType, ItemTreeType } from './types'
 
   import Svg from 'webkit/ui/Svg/svelte'
-  import { TreeItemType, setRerenderTreeCtx } from './types'
+  import { TreeItemType } from './types'
   import Folder from '../Folder.svelte'
   import { getSearch$Ctx } from '../Search.svelte'
   import Item from './Item.svelte'
+  import { getWorkspace$Ctx } from './ctx'
 
-  let WorkspaceTree = [
-    {
-      type: TreeItemType.FOLDER,
-      name: "Let's get you started",
-      children: [
-        {
-          type: TreeItemType.QUERY,
-          name: 'Data exploration',
-        },
-        {
-          type: TreeItemType.QUERY,
-          name: 'Commands',
-        },
-        {
-          type: TreeItemType.QUERY,
-          name: 'Functions',
-        },
-        {
-          id: 1698653190973,
-          type: TreeItemType.DASHBOARD,
-          name: 'Get started dashboard',
-          data: `{"widgets":[{"type":"QUERY","title":"Bitcoin daily active addresses"},{"type":"QUERY","title":"Bitcoin daily active addresses"},{"type":"TEXT","value":"Some text"},{"type":"TEXT","value":""}],"layout":[[0,2,4,8],[4,2,8,8],[0,0,12,2],[0,10,12,2]],"title":"Get started dashboard","description":"Example description","id":1698653190973}`,
-        },
-      ],
-    },
-  ] as WorkspaceTreeType
+  const { workspace$ } = getWorkspace$Ctx()
+  $: tree = $workspace$
+  $: console.log(tree)
 
   const { search$ } = getSearch$Ctx()
 
@@ -42,7 +20,7 @@
     hoverNode: HTMLElement | null
   }
 
-  $: filteredTree = search$.modify($search$, WorkspaceTree, filterTree)
+  $: filteredTree = search$.modify($search$, tree.children, filterTree)
 
   function filterTree(input: RegExp, tree: WorkspaceTreeType) {
     return tree
@@ -62,13 +40,7 @@
   }
 
   function onNewFolderClick() {
-    WorkspaceTree.unshift({
-      type: TreeItemType.FOLDER,
-      name: 'Untitled folder',
-      children: [],
-    })
-
-    rerenderTree()
+    workspace$.newFolder()
   }
 
   const getDragFolderHighlightNode = (folderNode: HTMLElement) =>
@@ -106,69 +78,16 @@
     hoverNode.classList.add('dropzone')
   }
 
-  function onFolderDrop(e: DragEvent, folder: any) {
+  function onFolderDrop(e: DragEvent, targetFolder: any) {
     e.preventDefault()
 
-    if (!dragState || folder === dragState.folder) return
+    const { folder: sourceFolder, item } = dragState || {}
 
-    const target = folder.source || folder
-    const p = dragState.folder.children || dragState.folder
-    const index = p.findIndex((item) => item === dragState?.item)
+    if (!item || sourceFolder === targetFolder) return
 
-    p.splice(index, 1)
-    target.children.push(dragState.item)
+    workspace$.moveItemToFolder(sourceFolder, targetFolder.source || targetFolder, item)
 
     onItemDragEnd()
-    rerenderTree()
-  }
-
-  setRerenderTreeCtx(rerenderTree)
-  function rerenderTree() {
-    WorkspaceTree = WorkspaceTree
-  }
-
-  if (process.browser) {
-    // @ts-ignore
-    window.saveDashboard = (item: any) => {
-      let found = null as any
-
-      if (item.id) {
-        WorkspaceTree.some((i: any) => {
-          if (i.id === item.id) {
-            found = i
-            return true
-          }
-
-          if (i.children) {
-            return i.children.some((i: any) => {
-              if (i.id === item.id) {
-                found = i
-                return true
-              }
-            })
-          }
-        })
-      }
-
-      if (found) {
-        found.name = item.title
-        found.data = JSON.stringify(item)
-      } else {
-        item.id = item.id || Date.now()
-
-        WorkspaceTree.unshift({
-          id: item.id,
-          type: TreeItemType.DASHBOARD,
-          name: item.title,
-          data: JSON.stringify(item),
-        } as any)
-        // @ts-ignore
-        window.updateDashboardEditor(item)
-      }
-
-      console.log(WorkspaceTree)
-      rerenderTree()
-    }
   }
 </script>
 
@@ -196,7 +115,7 @@
       {/each}
     </Folder>
   {:else}
-    <Item idx={i} {item} parent={WorkspaceTree} {onItemDragStart} {onItemDragEnd} />
+    <Item idx={i} {item} parent={tree} {onItemDragStart} {onItemDragEnd} />
   {/if}
 {/each}
 

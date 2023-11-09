@@ -11,6 +11,7 @@
   import OnlyOnDevice from 'webkit/ui/OnlyOnDevice.svelte'
   import NavHeader from '$lib/NavHeader/index.svelte'
   import LeftMenu from '$lib/LeftMenu/index.svelte'
+  import { Workspace$$ } from '$lib/LeftMenu/Work/ctx'
 
   export let data: LayoutData
 
@@ -18,6 +19,7 @@
   Customer$$(data.session.customer)
   UI$$()
   const { device$ } = Device$$(data.session.device)
+  Workspace$$()
 </script>
 
 <svelte:window on:resize={device$.onResize} />
