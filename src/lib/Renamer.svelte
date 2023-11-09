@@ -46,7 +46,9 @@
     {title}
   </span>
 {:else}
-  {title}
+  <slot value={title}>
+    {title}
+  </slot>
 {/if}
 
 <style>

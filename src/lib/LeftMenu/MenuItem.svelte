@@ -22,7 +22,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <article
-  class="btn row gap-s v-center"
+  class="btn row gap-s v-center relative"
   class:hovered={isMenuOpened}
   on:click
   on:mouseenter={() => (isHovered = true)}
@@ -86,6 +86,10 @@
   .copy {
     --expl-right: 0;
     --expl-left: unset;
+  }
+
+  .more {
+    z-index: 2;
   }
 
   Tooltip {

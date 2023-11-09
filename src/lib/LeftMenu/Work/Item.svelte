@@ -7,7 +7,6 @@
   import { TreeItemType } from './types'
   import MenuItem from '../MenuItem.svelte'
   import Renamer from '$lib/Renamer.svelte'
-  import { goto } from '$app/navigation'
   import { getWorkspace$Ctx } from './ctx'
 
   export let idx: number
@@ -37,31 +36,38 @@
     workspace$.deleteItem(parent, item, idx)
   }
 
-  function onItemClick() {
-    if (isQuery) return
-
-    const data = JSON.parse((item as any).data) as any
-
-    goto('/dashboard/new').then(() => {
-      // @ts-ignore
-      window.updateDashboardEditor(data)
-    })
-  }
+  // function onItemClick() {
+  //   if (isQuery) return
+  //
+  //   const data = JSON.parse((item as any).data) as any
+  //
+  //   goto('/dashboard/new').then(() => {
+  //     // @ts-ignore
+  //     window.updateDashboardEditor(data)
+  //   })
+  // }
 </script>
 
 <MenuItem
   draggable
   moreActions
   icon={isQuery ? 'query' : 'dashboard'}
-  on:click={onItemClick}
   on:dragstart={(e) => onItemDragStart(e, parent, item)}
   on:dragend={onItemDragEnd}
   {onRenameClick}
   {onDuplicateClick}
   {onDeleteClick}
 >
-  <Renamer title={item.name} bind:isRenaming {onRename} />
+  <Renamer title={item.name} bind:isRenaming {onRename} let:value>
+    <a
+      href="/{item.type === TreeItemType.QUERY ? 'query' : 'dashboard'}/new?data={item.data}"
+      class="link-as-bg">{value}</a
+    >
+  </Renamer>
 </MenuItem>
 
 <style>
+  a:hover {
+    color: var(--black);
+  }
 </style>

@@ -14,6 +14,8 @@ export type FolderTreeType =
       source?: any
     }
 
-export type ItemTreeType = Node<'DASHBOARD'> | Node<'QUERY'>
+export type ItemTreeType = (Node<'DASHBOARD'> | Node<'QUERY'>) & {
+  data?: string
+}
 
 export type WorkspaceTreeType = Array<FolderTreeType | ItemTreeType>
