@@ -15,6 +15,7 @@ export type FolderTreeType =
     }
 
 export type ItemTreeType = (Node<'DASHBOARD'> | Node<'QUERY'>) & {
+  id?: number | string
   data?: string
 }
 

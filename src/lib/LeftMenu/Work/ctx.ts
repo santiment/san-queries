@@ -1,4 +1,9 @@
-import { TreeItemType, type WorkspaceTreeType } from './types'
+import {
+  TreeItemType,
+  type FolderTreeType,
+  type WorkspaceTreeType,
+  type ItemTreeType,
+} from './types'
 
 import { getContext, setContext } from 'svelte'
 import { writable } from 'svelte/store'
@@ -6,7 +11,7 @@ import { writable } from 'svelte/store'
 const CTX = 'Workspace$$'
 
 function traverseTreeForItem<T>(tree: T[], id: string | number) {
-  let found = null as null | T
+  let found = null as null | ItemTreeType
 
   tree.some((i: any) => {
     if (i.id === id) {
@@ -61,7 +66,10 @@ export function Workspace$$() {
 
   const update = (value: typeof tree) => store.set(value)
 
-  function addItem(item, type: 'QUERY' | 'DASHBOARD') {
+  function addItem(
+    item: { id?: number | string; title: string; data?: any },
+    type: 'QUERY' | 'DASHBOARD',
+  ) {
     let found = item.id && traverseTreeForItem(tree.children, item.id)
 
     if (found) {
@@ -96,7 +104,11 @@ export function Workspace$$() {
         })
         update(tree)
       },
-      moveItemToFolder(sourceFolder, targetFolder, item) {
+      moveItemToFolder(
+        sourceFolder: FolderTreeType,
+        targetFolder: FolderTreeType,
+        item: ItemTreeType,
+      ) {
         const index = sourceFolder.children.findIndex((i) => i === item)
 
         sourceFolder.children.splice(index, 1)
@@ -105,12 +117,12 @@ export function Workspace$$() {
         update(tree)
       },
 
-      duplicateItem(folder, item, idx: number) {
+      duplicateItem(folder: FolderTreeType, item: ItemTreeType, idx: number) {
         folder.children.splice(idx + 1, 0, { ...item, name: item.name + ' copy' })
         update(tree)
       },
 
-      deleteItem(folder, idx: number) {
+      deleteItem(folder: FolderTreeType, idx: number) {
         folder.children.splice(idx, 1)
         update(tree)
       },

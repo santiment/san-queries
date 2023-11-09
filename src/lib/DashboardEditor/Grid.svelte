@@ -58,6 +58,7 @@
   let:gridItem
   rowSize={26}
   minCols={3}
+  readonly={device.isMobile}
   onLayoutChange={() => {
     dashboardEditor$.updateLayout()
   }}
