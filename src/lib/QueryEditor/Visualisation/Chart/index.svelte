@@ -19,7 +19,7 @@
       const settings = ColumnSettings[key] || {}
 
       const type = sqlData.types[i]
-      if (isLookingForDate && type === 'DateTime') {
+      if (isLookingForDate && type.includes('Date')) {
         dateColumn = i.toString()
         isLookingForDate = false
         return

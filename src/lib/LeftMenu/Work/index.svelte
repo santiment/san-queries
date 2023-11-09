@@ -82,6 +82,7 @@
 
     const { folder: sourceFolder, item } = dragState || {}
 
+    if (!sourceFolder) return
     if (!item || sourceFolder === targetFolder) return
 
     workspace$.moveItemToFolder(sourceFolder, targetFolder.source || targetFolder, item)

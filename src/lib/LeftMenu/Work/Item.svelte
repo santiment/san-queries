@@ -33,7 +33,7 @@
   }
 
   function onDeleteClick() {
-    workspace$.deleteItem(parent, item, idx)
+    workspace$.deleteItem(parent, idx)
   }
 
   // function onItemClick() {
