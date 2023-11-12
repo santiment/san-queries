@@ -1,7 +1,8 @@
 <script lang="ts">
   import { queryComputeRawClickhouseQuery } from '$lib/api/query'
   import Control from './Control.svelte'
-  import Table from './Table.svelte'
+  import Table, { getTableColumns } from './Table.svelte'
+  import TableControls from './Table/Controls.svelte'
   import Chart from './Chart/index.svelte'
   import ControlsSection from './ControlsSection.svelte'
 
@@ -10,9 +11,14 @@
 
   let controls = {
     visualisation: 'Table',
+    sort: {} as any,
+    props: {} as any,
   }
 
   let ColumnSettings = {} as Record<string, Partial<{ title: string }>>
+
+  $: console.log(controls)
+  $: tableColumns = getTableColumns(sqlData, ColumnSettings)
 
   $: if (process.browser) {
     getData()
@@ -28,7 +34,13 @@
 <main class="row gap-l">
   <section class="column visualisation">
     {#if controls.visualisation === 'Table'}
-      <Table {sqlData} {ColumnSettings} />
+      <Table
+        {...controls.props}
+        columns={tableColumns}
+        {sqlData}
+        {ColumnSettings}
+        sort={controls.sort}
+      />
     {:else}
       <Chart class="border" {sqlData} {ColumnSettings} />
     {/if}
@@ -47,25 +59,7 @@
       />
 
       {#if controls.visualisation === 'Table'}
-        <Control
-          name="Sorted column"
-          options={['None', 'Table', 'Chart']}
-          value={'None'}
-          onUpdate={(_updated) => {
-            // controls.visualisation = updated
-            controls = controls
-          }}
-        />
-
-        <Control
-          name="Sort direction"
-          options={['Ascending', 'Descending']}
-          value={'Ascending'}
-          onUpdate={(_updated) => {
-            // controls.visualisation = updated
-            controls = controls
-          }}
-        />
+        <TableControls columns={tableColumns} bind:controls />
       {:else}
         <Control
           name="X axis column"
@@ -96,7 +90,8 @@
         <Control
           name="Format"
           options={['No formatting']}
-          value={'No formatting'}
+          value={null}
+          defaultValue={'No formatting'}
           onUpdate={(_updated) => {
             // ColumnSettings[column] = { ...ColumnSettings[column] }
             // ColumnSettings[column].title = updated.trim()
