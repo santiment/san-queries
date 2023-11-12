@@ -2,6 +2,8 @@
   export function getTableColumns(sqlData: App.SqlData, ColumnSettings: Record<string, any>) {
     return sqlData.headers.map((key, i) => {
       const settings = ColumnSettings[key] || {}
+      const format = settings.formatter?.format
+
       let sortAccessor
 
       const type = sqlData.types[i]
@@ -15,7 +17,7 @@
         key,
         title: settings.title || key,
         valueKey: i,
-        format: (row: any, i: number, value: any) => value,
+        format: (row: any, i: number, value: any) => (format ? format(value) : value),
         sortAccessor,
       }
     })

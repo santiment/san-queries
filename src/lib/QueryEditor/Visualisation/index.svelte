@@ -5,6 +5,7 @@
   import TableControls from './Table/Controls.svelte'
   import Chart from './Chart/index.svelte'
   import ControlsSection from './ControlsSection.svelte'
+  import FormattingControl from './Controls/FormattingControl.svelte'
 
   export let sql = ''
   export let sqlData = { headers: [], rows: [], types: [] } as App.SqlData
@@ -22,6 +23,10 @@
 
   $: if (process.browser) {
     getData()
+  }
+
+  function updateColumnSettings(column: string, value: any) {
+    ColumnSettings[column] = value
   }
 
   function getData() {
@@ -87,15 +92,11 @@
           }}
         />
 
-        <Control
-          name="Format"
-          options={['No formatting']}
-          value={null}
-          defaultValue={'No formatting'}
-          onUpdate={(_updated) => {
-            // ColumnSettings[column] = { ...ColumnSettings[column] }
-            // ColumnSettings[column].title = updated.trim()
-          }}
+        <FormattingControl
+          {column}
+          {settings}
+          type={sqlData.types[i]}
+          update={updateColumnSettings}
         />
 
         {#if controls.visualisation === 'Chart'}
