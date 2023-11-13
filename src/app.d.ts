@@ -17,6 +17,9 @@ declare global {
     }
     // interface PageData {}
     // interface Platform {}
+    //
+
+    export type RequestEvent = import('webkit/api').RequestEvent | undefined
   }
 }
 

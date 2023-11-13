@@ -1,7 +1,7 @@
 import type { PageLoad } from './$types'
 
-import { redirect } from '@sveltejs/kit'
+// import { redirect } from '@sveltejs/kit'
 
 export const load: PageLoad = async () => {
-  throw redirect(302, '/query/new')
+  // throw redirect(302, '/query/new')
 }
