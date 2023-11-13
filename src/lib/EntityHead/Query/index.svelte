@@ -8,8 +8,6 @@
   import { GlobalShortcut$ } from 'san-webkit/lib/utils/events'
 
   export let author: SAN.Author | null
-  export let title = 'Your first query'
-  export let sql = ''
 
   const { currentUser$ } = getCurrentUser$Ctx()
   const { queryEditor$ } = getQueryEditor$Ctx()
@@ -17,7 +15,7 @@
   let titleNode: HTMLElement
   let typing = false
 
-  $: console.log($queryEditor$)
+  $: queryEditor = $queryEditor$
   $: currentUser = $currentUser$
   $: isAuthor = currentUser?.id === author?.id
   $: mainActionLabel = isAuthor ? 'Execute' : currentUser ? 'Duplicate' : 'Log in to duplicate'
@@ -28,12 +26,13 @@
     titleNode.textContent = ''
     typing = true
 
-    queryGenerateTitleBySql(sql).then((data) => {
+    queryGenerateTitleBySql(queryEditor.sql).then((data) => {
       const typewriter = Typewriter(data.title, titleNode)
 
       typewriter.start(() => {
         typing = false
-        title = data.title
+        $queryEditor$.name = data.title
+        $queryEditor$.description = data.description
       })
     })
   }
@@ -85,7 +84,9 @@
     ✨
   </button>
 
-  <button bind:this={titleNode} class="title btn body-2" class:typing>{title}</button>
+  <button bind:this={titleNode} class="title btn body-2" class:typing>
+    {queryEditor.name || 'Your first query'}
+  </button>
 
   <svelte:fragment slot="main-action">
     {mainActionLabel}

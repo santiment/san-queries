@@ -1,29 +1,46 @@
-import { queryComputeRawClickhouseQuery } from '$lib/api/query'
 import { getContext, setContext } from 'svelte'
 import { writable } from 'svelte/store'
+import { queryComputeRawClickhouseQuery } from '$lib/api/query'
+import { serializeParameters } from '$lib/api/query/utilts'
 
 export const CTX = 'QueryEditor$$'
 
-function serializeParameters(parameters: App.Parameter[]) {
-  return JSON.stringify(
-    parameters.reduce((acc, parameter) => {
-      acc[parameter.key] = parameter.value
-      return acc
-    }, {} as Record<string, any>),
-  )
+type Store = {
+  query?: App.ApiQuery
+
+  name: string
+  description: string
+
+  sql: string
+  parameters: App.Parameter[]
+  sqlData: App.SqlData
 }
 
-export function QueryEditor$$(
-  sql = '',
-  sqlData = { headers: [], types: [], rows: [] } as App.SqlData,
-  parameters = [] as App.Parameter[],
-) {
-  let store = { sql, sqlData, parameters }
+function prepareStore(apiQuery?: null | App.ApiQuery, sql = '') {
+  const { name = '', description = '', sqlQueryText } = apiQuery || {}
+
+  return {
+    query: apiQuery,
+
+    name,
+    description,
+    sql: sqlQueryText || sql,
+    parameters: [],
+    sqlData: { headers: [], types: [], rows: [] },
+  } as Store
+}
+
+export function QueryEditor$$(apiQuery?: null | App.ApiQuery, sql = '') {
+  let store = prepareStore(apiQuery, sql)
   const queryEditor$ = writable(store)
 
   return setContext(CTX, {
     queryEditor$: {
       ...queryEditor$,
+      setApiQuery(apiQuery: App.ApiQuery) {
+        store = prepareStore(apiQuery)
+        queryEditor$.set(store)
+      },
       querySqlData() {
         return queryComputeRawClickhouseQuery({
           sql: store.sql.trim(),
