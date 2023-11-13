@@ -1,5 +1,10 @@
 <script lang="ts" context="module">
-  export const TABS = [{ title: 'Editor' }, { title: 'Visualisation' }] as const
+  import { CMD } from 'webkit/utils/os'
+
+  export const TABS = [
+    { title: 'Editor', ariaLabel: `${CMD} + 1` },
+    { title: 'Visualisation', ariaLabel: `${CMD} + 2` },
+  ] as const
 </script>
 
 <script lang="ts">
@@ -31,7 +36,13 @@
   $visulisationViewShortcut
 </script>
 
-<Tabs class="gap-l mrg-xxl mrg--l" tabs={TABS} selected={tab} onSelect={(item) => (tab = item)} />
+<Tabs
+  class="gap-l mrg-xxl mrg--l"
+  tabClass="expl-tooltip"
+  tabs={TABS}
+  selected={tab}
+  onSelect={(item) => (tab = item)}
+/>
 
 <section class="column gap-m">
   <ScreenControls {tab} />
@@ -49,9 +60,14 @@
     padding: 20px 24px;
     background: var(--athens);
     flex: 1;
+    min-height: 0;
   }
 
   SQLEditor {
     --border-radius: 6px;
+  }
+
+  Tabs {
+    overflow: visible !important;
   }
 </style>

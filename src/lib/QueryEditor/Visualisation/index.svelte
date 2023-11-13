@@ -127,7 +127,7 @@
     border-radius: 6px;
     flex: 1;
     padding: 16px 24px;
-    max-height: 100vh;
+    min-height: 0;
   }
 
   .data-loading {

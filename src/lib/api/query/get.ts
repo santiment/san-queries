@@ -17,3 +17,12 @@ export const queryGetSqlQuery = Universal(
         }
       }`).then(({ query }) => query),
 )
+
+export const queryGetUserQueries = Universal(
+  (query) => () =>
+    query<SAN.API.Query<'queries', App.ApiQuery[]>>(`{
+        query:getUserQueries(page:1, pageSize:100) {
+          ${QUERY_FRAGMENT}
+        }
+      }`).then(({ queries }) => queries),
+)
