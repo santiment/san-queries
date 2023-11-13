@@ -78,11 +78,10 @@ export function QueryEditor$$(apiQuery?: null | App.ApiQuery, sql = '') {
     queryEditor$: {
       ...queryEditor$,
       setApiQuery(apiQuery: App.ApiQuery) {
-        if (store.query?.id === apiQuery.id) {
-          store.query = apiQuery
-        } else {
-          store = prepareStore(apiQuery)
-        }
+        const { sqlData } = store
+
+        store = prepareStore(apiQuery)
+        store.sqlData = sqlData
 
         queryEditor$.set(store)
       },
