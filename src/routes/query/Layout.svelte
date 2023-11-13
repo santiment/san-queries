@@ -5,9 +5,7 @@
   import { QueryHead } from '$lib/EntityHead'
   import QueryEditor from '$lib/QueryEditor/index.svelte'
   import { QueryEditor$$ } from './new/ctx'
-  import { mutateCreateSqlQuery } from '$lib/api/query/create'
-
-  import { getSavedJson, saveJson } from 'webkit/utils/localStorage'
+  import { startSaveQueryFlow } from './flow'
 
   export let apiQuery = null as null | App.ApiQuery
   export let defaultSql = ''
@@ -20,38 +18,8 @@
   const saveShortcut = GlobalShortcut$(
     'CMD+S',
     () => {
-      const { name, description, query, sql, parameters } = $queryEditor$
-
-      if (!name) {
-        notifications$.show({
-          type: 'error',
-          title: 'Untitled query can not be saved',
-          dismissAfter: 5000,
-        })
-
-        return
-      }
-
-      mutateCreateSqlQuery({
-        name,
-        description,
-        sql,
-        isPublic: true,
-        parameters,
-      }).then((apiQuery) => {
-        console.log(apiQuery)
-        queryEditor$.setApiQuery(apiQuery)
-
-        saveJson('__QUERIES', [...getSavedJson<any>('__QUERIES', []), apiQuery])
-
+      startSaveQueryFlow(queryEditor$).then((apiQuery) => {
         window.history.replaceState('', history.state, '/query/' + apiQuery.id)
-
-        notifications$.show({
-          type: 'success',
-          title: query?.id ? 'Query saved' : 'New query created',
-          description: 'Query is available in "Work" tab',
-          dismissAfter: 5000,
-        })
       })
     },
     false,
