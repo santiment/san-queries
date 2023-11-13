@@ -35,6 +35,12 @@
       queryEditor$.addParameter(parameter)
     })
   }
+
+  function onParameterClick(parameter: any) {
+    showAddParameterDialog({ parameter, strict: true }).then(() => {
+      queryEditor$.updateParameters()
+    })
+  }
 </script>
 
 <header class="row justify gap-xl">
@@ -49,7 +55,7 @@
     </button>
 
     {#each parameters as parameter, i}
-      <Parameter {parameter} color={COLORS[i]} />
+      <Parameter {parameter} color={COLORS[i]} on:click={() => onParameterClick(parameter)} />
     {/each}
   </parameters>
 

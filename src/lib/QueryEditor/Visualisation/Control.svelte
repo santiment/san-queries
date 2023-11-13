@@ -59,7 +59,14 @@
       </svelte:fragment>
     </Tooltip>
   {:else}
-    <input type="text" class="input" {placeholder} on:input={onInput} on:blur={onInputBlur} />
+    <input
+      type="text"
+      class="input"
+      {value}
+      {placeholder}
+      on:input={onInput}
+      on:blur={onInputBlur}
+    />
   {/if}
 </control>
 

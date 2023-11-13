@@ -3,13 +3,15 @@
 
   export let parameter: { key: string; value: string; global: boolean }
   export let color: string
-  export let isAuthor = false
+  export let isAuthor = true
 
   $: ({ key, value, global = false } = parameter)
   $: shortValue = value.toString()
 </script>
 
-<parameter class="row v-center gap-s border" style="---color:{color}">
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<parameter class="row v-center gap-s border" style="---color:{color}" on:click>
   <color />
 
   {#if global}

@@ -17,7 +17,7 @@ type Store = {
 }
 
 function prepareStore(apiQuery?: null | App.ApiQuery, sql = '') {
-  const { name = '', description = '', sqlQueryText } = apiQuery || {}
+  const { name = '', description = '', sqlQueryText, sqlQueryParameters } = apiQuery || {}
 
   return {
     query: apiQuery,
@@ -25,7 +25,12 @@ function prepareStore(apiQuery?: null | App.ApiQuery, sql = '') {
     name,
     description,
     sql: sqlQueryText || sql,
-    parameters: [],
+    parameters: sqlQueryParameters
+      ? Object.keys(sqlQueryParameters).map((key) => {
+          const value = sqlQueryParameters[key]
+          return { key, value, type: Number.isFinite(value) ? 'Number' : 'Text' }
+        })
+      : [],
     sqlData: { headers: [], types: [], rows: [] },
   } as Store
 }
@@ -61,6 +66,11 @@ export function QueryEditor$$(apiQuery?: null | App.ApiQuery, sql = '') {
 
       addParameter(parameter: App.Parameter) {
         store.parameters.push(parameter)
+        queryEditor$.set(store)
+      },
+
+      updateParameters() {
+        store.parameters = store.parameters.slice()
         queryEditor$.set(store)
       },
     },

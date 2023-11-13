@@ -53,6 +53,6 @@ declare global {
       types: string[]
     }
 
-    type Parameter = { key: string; value: string; global: boolean }
+    type Parameter = { key: string; value: string; global?: boolean }
   }
 }
