@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { queryComputeRawClickhouseQuery } from '$lib/api/query'
+  import SpinLoader from 'webkit/ui/SpinLoader.svelte'
+  import { getQueryEditor$Ctx } from '$routes/query/new/ctx'
   import Control from './Control.svelte'
   import Table, { getTableColumns } from './Table.svelte'
   import TableControls from './Table/Controls.svelte'
@@ -7,8 +8,7 @@
   import ControlsSection from './ControlsSection.svelte'
   import FormattingControl from './Controls/FormattingControl.svelte'
 
-  export let sql = ''
-  export let sqlData = { headers: [], rows: [], types: [] } as App.SqlData
+  const { queryEditor$ } = getQueryEditor$Ctx()
 
   let controls = {
     visualisation: 'Table',
@@ -17,8 +17,10 @@
   }
 
   let ColumnSettings = {} as Record<string, Partial<{ title: string }>>
+  let loading = false
 
-  $: console.log(controls)
+  $: queryEditor = $queryEditor$
+  $: ({ sql, sqlData } = queryEditor)
   $: tableColumns = getTableColumns(sqlData, ColumnSettings)
 
   $: if (process.browser) {
@@ -30,13 +32,17 @@
   }
 
   function getData() {
-    queryComputeRawClickhouseQuery({ sql }).then((data) => {
-      sqlData = data
+    loading = true
+    queryEditor$.querySqlData().finally(() => {
+      loading = false
     })
   }
 </script>
 
-<main class="row gap-l">
+<main class="row gap-l relative" class:data-loading={loading}>
+  {#if loading}
+    <SpinLoader />
+  {/if}
   <section class="column visualisation">
     {#if controls.visualisation === 'Table'}
       <Table
@@ -122,6 +128,10 @@
     flex: 1;
     padding: 16px 24px;
     max-height: 100vh;
+  }
+
+  .data-loading {
+    opacity: 0.5;
   }
 
   options {
