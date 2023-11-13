@@ -25,7 +25,7 @@ const SQL = ``
 
 type VariablesType = {
   sql: string
-  parameters: {}
+  parameters: Record<string, string | number>
 }
 
 type ComputeRawClickhouseQuery = SAN.API.Query<'data', App.SqlData>
@@ -52,5 +52,7 @@ declare global {
       rows: (string | number | null)[][]
       types: string[]
     }
+
+    type Parameter = { key: string; value: string; global: boolean }
   }
 }

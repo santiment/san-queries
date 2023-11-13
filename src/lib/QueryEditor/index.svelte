@@ -15,8 +15,11 @@
 
   const { queryEditor$ } = getQueryEditor$Ctx()
 
+  $: queryEditor = $queryEditor$
+  $: ({ sql, parameters } = queryEditor)
+
   function onEditorValueChange(sql: string) {
-    queryEditor$.set({ sql })
+    queryEditor$.setSql(sql)
   }
 
   const editorViewShortcut = GlobalShortcut$('CMD+1', () => (tab = TABS[0]), false)
@@ -32,7 +35,7 @@
   <ScreenControls {tab} />
 
   {#if tab === TABS[0]}
-    <SQLEditor value={$queryEditor$.sql} onValueChange={onEditorValueChange} />
+    <SQLEditor value={sql} {parameters} onValueChange={onEditorValueChange} />
   {:else}
     <VisualisationTab />
   {/if}

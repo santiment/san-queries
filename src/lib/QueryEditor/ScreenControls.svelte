@@ -5,13 +5,17 @@
   import { showVisualisationFullscreenDialog } from './Visualisation/FullscreenDialog/index.svelte'
   import { showSqlEditorFullscreenDialog$ } from '$lib/SQLEditor/FullscreenDialog.svelte'
   import { showAddParameterDialog$ } from '$lib/Parameter/AddParameterDialog.svelte'
+  import { getQueryEditor$Ctx } from '$routes/query/new/ctx'
 
   export let tab = TABS[0] as (typeof TABS)[number]
-  export let parameters = [] as any[]
-  export let sqlData = undefined as undefined | App.SqlData
+
+  const { queryEditor$ } = getQueryEditor$Ctx()
 
   const showAddParameterDialog = showAddParameterDialog$()
   const showSqlEditorFullscreenDialog = showSqlEditorFullscreenDialog$()
+
+  $: queryEditor = $queryEditor$
+  $: ({ parameters, sqlData } = queryEditor)
 
   function onFullscreenClick() {
     if (tab === TABS[0]) {
@@ -28,8 +32,7 @@
 
   function onAddParameterClick() {
     showAddParameterDialog({ strict: true }).then((parameter) => {
-      parameters.push(parameter)
-      parameters = parameters
+      queryEditor$.addParameter(parameter)
     })
   }
 </script>

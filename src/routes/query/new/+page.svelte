@@ -30,8 +30,7 @@ SELECT
     GROUP BY dt
     ORDER BY dt
 )
-group by month
-`)
+group by month`)
 </script>
 
 <main class="column">

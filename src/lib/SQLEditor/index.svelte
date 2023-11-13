@@ -10,7 +10,7 @@
   export let style = ''
   export let value = ''
   export let options = undefined as monacoEditor.IStandaloneEditorConstructionOptions | undefined
-  export let parameters = [] as { key: string }[]
+  export let parameters = [] as App.Parameter[]
   export let editor = null as null | monacoEditor.IStandaloneCodeEditor
   export let onValueChange = noop as (value: string) => void
 
