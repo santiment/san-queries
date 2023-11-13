@@ -28,7 +28,7 @@
   }
 
   function updateColumnSettings(column: string, value: any) {
-    ColumnSettings[column] = value
+    queryEditor$.updateSettings(column, value)
   }
 
   function getData() {
@@ -94,15 +94,13 @@
           defaultValue={column}
           placeholder={column}
           onUpdate={(updated) => {
-            // ColumnSettings[column] = { ...ColumnSettings[column] }
-            // ColumnSettings[column].title = updated.trim()
             queryEditor$.updateSettings(column, { title: updated.trim() })
           }}
         />
 
         <FormattingControl
           {column}
-          {settings}
+          settings={columnSettings}
           type={sqlData.types[i]}
           update={updateColumnSettings}
         />
