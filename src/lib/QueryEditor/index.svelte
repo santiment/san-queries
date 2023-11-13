@@ -4,14 +4,16 @@
 
 <script lang="ts">
   // import Svg from 'webkit/ui/Svg/svelte'
+  import Tabs from 'webkit/ui/Tabs'
+  import { noop } from 'webkit/utils'
   import { GlobalShortcut$ } from 'webkit/utils/events'
   import { getQueryEditor$Ctx } from '$routes/query/new/ctx'
   import ScreenControls from './ScreenControls.svelte'
   import SQLEditor from '$lib/SQLEditor/index.svelte'
   import VisualisationTab from './Visualisation/index.svelte'
-  import Tabs from 'webkit/ui/Tabs'
 
   export let tab = TABS[0] as (typeof TABS)[number]
+  export let onEditorSave = noop
 
   const { queryEditor$ } = getQueryEditor$Ctx()
 
@@ -35,7 +37,7 @@
   <ScreenControls {tab} />
 
   {#if tab === TABS[0]}
-    <SQLEditor value={sql} {parameters} onValueChange={onEditorValueChange} />
+    <SQLEditor value={sql} {parameters} onValueChange={onEditorValueChange} onSave={onEditorSave} />
   {:else}
     <VisualisationTab />
   {/if}

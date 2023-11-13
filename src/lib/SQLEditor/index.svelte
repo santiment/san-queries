@@ -13,6 +13,7 @@
   export let parameters = [] as App.Parameter[]
   export let editor = null as null | monacoEditor.IStandaloneCodeEditor
   export let onValueChange = noop as (value: string) => void
+  export let onSave = noop as () => void
 
   let editorNode: HTMLElement
   let EditorCtx: EditorCtxType
@@ -26,13 +27,17 @@
     editor?.setValue(value)
   }
 
+  function getValue() {
+    return editor?.getValue() ?? value
+  }
+
   function onFocus() {
     isFocused = true
   }
 
   function onBlur() {
     isFocused = false
-    value = editor?.getValue() ?? value
+    value = getValue()
     onValueChange(value)
   }
 
@@ -53,6 +58,16 @@
 
         editor.onDidBlurEditorText(onBlur)
         editor.onDidFocusEditorWidget(onFocus)
+
+        editor.onKeyDown((e) => {
+          if (e.keyCode === 49 && (e.ctrlKey || e.metaKey)) {
+            e.preventDefault()
+
+            value = getValue()
+            onValueChange(value)
+            onSave()
+          }
+        })
       })
     })
   })

@@ -1,6 +1,5 @@
 <script lang="ts">
   import { GlobalShortcut$ } from 'webkit/utils/events'
-  import { notifications$ } from 'webkit/ui/Notifications'
   import { getCurrentUser$Ctx } from 'webkit/stores/user'
   import { QueryHead } from '$lib/EntityHead'
   import QueryEditor from '$lib/QueryEditor/index.svelte'
@@ -15,15 +14,13 @@
 
   $: console.log($queryEditor$)
 
-  const saveShortcut = GlobalShortcut$(
-    'CMD+S',
-    () => {
-      startSaveQueryFlow(queryEditor$).then((apiQuery) => {
-        window.history.replaceState('', history.state, '/query/' + apiQuery.id)
-      })
-    },
-    false,
-  )
+  function onSave() {
+    startSaveQueryFlow(queryEditor$).then((apiQuery) => {
+      window.history.replaceState('', history.state, '/query/' + apiQuery.id)
+    })
+  }
+
+  const saveShortcut = GlobalShortcut$('CMD+S', onSave)
   $saveShortcut
 </script>
 
@@ -32,7 +29,7 @@
 
   <slot />
 
-  <QueryEditor />
+  <QueryEditor onEditorSave={onSave} />
 </main>
 
 <style>
