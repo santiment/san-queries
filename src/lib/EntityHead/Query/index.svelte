@@ -4,16 +4,20 @@
   import { showShareDialog } from 'webkit/ui/Share/index.svelte'
   import { queryGenerateTitleBySql } from './api'
   import Head from '../index.svelte'
+  import { getQueryEditor$Ctx } from '$routes/query/new/ctx'
+  import { GlobalShortcut$ } from 'san-webkit/lib/utils/events'
 
   export let author: SAN.Author | null
   export let title = 'Your first query'
   export let sql = ''
 
   const { currentUser$ } = getCurrentUser$Ctx()
+  const { queryEditor$ } = getQueryEditor$Ctx()
 
   let titleNode: HTMLElement
   let typing = false
 
+  $: console.log($queryEditor$)
   $: currentUser = $currentUser$
   $: isAuthor = currentUser?.id === author?.id
   $: mainActionLabel = isAuthor ? 'Execute' : currentUser ? 'Duplicate' : 'Log in to duplicate'
@@ -57,9 +61,22 @@
   function onShare() {
     showShareDialog({ entity: 'Query', feature: '', source: '' })
   }
+
+  function onMainActionClick() {
+    if (mainActionLabel === 'Execute') {
+      onExecuteClick()
+    }
+  }
+
+  function onExecuteClick() {
+    queryEditor$.querySqlData()
+  }
+
+  const runShortcut = GlobalShortcut$('CMD+ENTER', onExecuteClick, false)
+  $runShortcut
 </script>
 
-<Head {author} onMainClick={console.log}>
+<Head {author} onMainClick={onMainActionClick}>
   <button
     class="ai btn mrg-s mrg--l expl-tooltip"
     aria-label="Ask AI to write the title based on your query"

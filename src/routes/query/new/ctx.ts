@@ -1,13 +1,29 @@
+import { queryComputeRawClickhouseQuery } from '$lib/api/query'
 import { getContext, setContext } from 'svelte'
 import { writable } from 'svelte/store'
 
 export const CTX = 'QueryEditor$$'
 
-export function QueryEditor$$(sql = '') {
-  const store = writable({ sql })
+export function QueryEditor$$(
+  sql = '',
+  sqlData = { headers: [], types: [], rows: [] } as App.SqlData,
+) {
+  let store = { sql, sqlData }
+  const queryEditor$ = writable(store)
 
   return setContext(CTX, {
-    queryEditor$: store,
+    queryEditor$: {
+      ...queryEditor$,
+      querySqlData() {
+        return queryComputeRawClickhouseQuery({ sql: store.sql }).then((data) => {
+          store.sqlData = data
+
+          queryEditor$.set(store)
+
+          return data
+        })
+      },
+    },
   })
 }
 
