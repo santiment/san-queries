@@ -5,7 +5,7 @@
   import { queryGenerateTitleBySql } from './api'
   import Head from '../index.svelte'
   import { getQueryEditor$Ctx } from '$routes/query/new/ctx'
-  import { GlobalShortcut$ } from 'san-webkit/lib/utils/events'
+  import ExecuteButton from './ExecuteButton.svelte'
 
   export let author: SAN.Author | null
 
@@ -62,17 +62,8 @@
   }
 
   function onMainActionClick() {
-    if (mainActionLabel === 'Execute') {
-      onExecuteClick()
-    }
+    if (mainActionLabel === 'Execute') return
   }
-
-  function onExecuteClick() {
-    queryEditor$.querySqlData()
-  }
-
-  const runShortcut = GlobalShortcut$('CMD+ENTER', onExecuteClick, false)
-  $runShortcut
 </script>
 
 <Head {author} onMainClick={onMainActionClick}>
@@ -88,8 +79,14 @@
     {queryEditor.name || 'Your first query'}
   </button>
 
-  <svelte:fragment slot="main-action">
-    {mainActionLabel}
+  <svelte:fragment slot="main-action-wrap" let:classes>
+    {#if mainActionLabel === 'Execute'}
+      <ExecuteButton class={classes} />
+    {:else}
+      <button class={classes} on:click={onMainActionClick}>
+        {mainActionLabel}
+      </button>
+    {/if}
   </svelte:fragment>
 
   <svelte:fragment slot="actions">

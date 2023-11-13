@@ -21,9 +21,11 @@
 
   <slot />
 
-  <button class={mainActionClass} on:click={onMainClick}>
-    <slot name="main-action" />
-  </button>
+  <slot name="main-action-wrap" classes={mainActionClass}>
+    <button class={mainActionClass} on:click={onMainClick}>
+      <slot name="main-action" />
+    </button>
+  </slot>
 
   <actions class="row v-center gap-s mrg-xs mrg--l">
     <slot name="actions" />
