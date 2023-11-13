@@ -9,7 +9,7 @@ export function mutateCreateSqlQuery(variables: {
   parameters: App.Parameter[]
 
   isPublic?: boolean
-  settings?: any
+  settings?: App.ApiQuery['settings']
 }) {
   return mutate<SAN.API.Query<'createSqlQuery', App.ApiQuery>>(
     `mutation createSqlQuery($name: String!, $description: String, $isPublic:Boolean, $settings: json, $sql: String, $parameters: json) {
@@ -27,7 +27,7 @@ export function mutateCreateSqlQuery(variables: {
     {
       variables: {
         ...variables,
-        settings: JSON.stringify({}),
+        settings: JSON.stringify(variables.settings || {}),
         parameters: serializeParameters(variables.parameters),
       },
     },
@@ -42,9 +42,20 @@ declare global {
       description: string
       isPublic: boolean
       createdAt: string
-      settings: Record<string, any>
+
       sqlQueryParameters: Record<string, number | string>
       sqlQueryText: string
+
+      settings: {
+        columns?: Record<
+          string,
+          | undefined
+          | Partial<{
+              title: string
+              formatter: number
+            }>
+        >
+      }
     }
   }
 }

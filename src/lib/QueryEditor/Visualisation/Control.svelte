@@ -62,7 +62,7 @@
     <input
       type="text"
       class="input"
-      {value}
+      value={value || ''}
       {placeholder}
       on:input={onInput}
       on:blur={onInputBlur}

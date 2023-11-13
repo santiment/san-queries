@@ -20,8 +20,8 @@
   let loading = false
 
   $: queryEditor = $queryEditor$
-  $: ({ sql, sqlData } = queryEditor)
-  $: tableColumns = getTableColumns(sqlData, ColumnSettings)
+  $: ({ sql, sqlData, settings } = queryEditor)
+  $: tableColumns = getTableColumns(sqlData, settings.columns)
 
   $: if (process.browser) {
     getData()
@@ -49,7 +49,7 @@
         {...controls.props}
         columns={tableColumns}
         {sqlData}
-        {ColumnSettings}
+        ColumnSettings={settings.columns}
         sort={controls.sort}
       />
     {:else}
@@ -85,16 +85,18 @@
     </ControlsSection>
 
     {#each sqlData.headers as column, i}
-      {@const settings = ColumnSettings[column] || {}}
+      {@const columnSettings = settings.columns[column] || {}}
 
       <ControlsSection title="Column {i}: {column}">
         <Control
           name="Title"
-          value={settings.title}
+          value={columnSettings.title}
+          defaultValue={column}
           placeholder={column}
           onUpdate={(updated) => {
-            ColumnSettings[column] = { ...ColumnSettings[column] }
-            ColumnSettings[column].title = updated.trim()
+            // ColumnSettings[column] = { ...ColumnSettings[column] }
+            // ColumnSettings[column].title = updated.trim()
+            queryEditor$.updateSettings(column, { title: updated.trim() })
           }}
         />
 

@@ -10,7 +10,7 @@ export function mutateUpdateSqlQuery(
     parameters: App.Parameter[]
 
     isPublic?: boolean
-    settings?: any
+    settings?: App.ApiQuery['settings']
   },
 ) {
   return mutate<SAN.API.Query<'query', App.ApiQuery>>(
@@ -29,7 +29,7 @@ export function mutateUpdateSqlQuery(
     {
       variables: {
         ...variables,
-        settings: variables.settings && JSON.stringify({}),
+        settings: variables.settings && JSON.stringify(variables.settings),
         parameters: variables.parameters && serializeParameters(variables.parameters),
       },
     },

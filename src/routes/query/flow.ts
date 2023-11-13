@@ -4,8 +4,19 @@ import { getSavedJson, saveJson } from 'webkit/utils/localStorage'
 import { mutateCreateSqlQuery } from '$lib/api/query/create'
 import { mutateUpdateSqlQuery } from '$lib/api/query/update'
 
+export function serializeQuerySettings(settings: App.QueryEditorStoreValue['settings']) {
+  return {
+    ...settings,
+    columns: Object.keys(settings.columns).reduce((acc, key) => {
+      const { title, formatter } = settings.columns[key]
+      acc[key] = { title, formatter: formatter?.key }
+      return acc
+    }, {} as any),
+  } as App.ApiQuery['settings']
+}
+
 export function startSaveQueryFlow(queryEditor$: App.QueryEditorStore) {
-  const { name, description, query, sql, parameters } = get(queryEditor$)
+  const { name, description, query, sql, parameters, settings } = get(queryEditor$)
 
   if (!name) {
     notifications$.show({
@@ -22,6 +33,8 @@ export function startSaveQueryFlow(queryEditor$: App.QueryEditorStore) {
     sql,
     isPublic: true,
     parameters,
+
+    settings: serializeQuerySettings(settings),
   }
 
   const promise = query

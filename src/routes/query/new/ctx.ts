@@ -2,11 +2,12 @@ import { getContext, setContext } from 'svelte'
 import { writable } from 'svelte/store'
 import { queryComputeRawClickhouseQuery } from '$lib/api/query'
 import { serializeParameters } from '$lib/api/query/utilts'
+import { Formatter } from '$lib/QueryEditor/Visualisation/Controls/FormattingControl.svelte'
 
 export const CTX = 'QueryEditor$$'
 
 type Store = {
-  query?: App.ApiQuery
+  query?: null | App.ApiQuery
 
   name: string
   description: string
@@ -14,10 +15,42 @@ type Store = {
   sql: string
   parameters: App.Parameter[]
   sqlData: App.SqlData
+
+  settings: {
+    columns: Record<
+      string,
+      | undefined
+      | Partial<{
+          title: string
+          formatter: any
+        }>
+    >
+  }
+}
+
+function parseQuerySettings(querySettings: App.ApiQuery['settings']) {
+  const settings = {
+    columns: {},
+  }
+
+  if (!querySettings) return settings
+
+  if (querySettings.columns) {
+    Object.keys(querySettings.columns).forEach((key) => {
+      const { title, formatter } = querySettings.columns[key]
+
+      settings.columns[key] = {
+        title,
+        formatter: Formatter[formatter],
+      }
+    })
+  }
+
+  return settings
 }
 
 function prepareStore(apiQuery?: null | App.ApiQuery, sql = '') {
-  const { name = '', description = '', sqlQueryText, sqlQueryParameters } = apiQuery || {}
+  const { name = '', description = '', settings, sqlQueryText, sqlQueryParameters } = apiQuery || {}
 
   return {
     query: apiQuery,
@@ -32,18 +65,25 @@ function prepareStore(apiQuery?: null | App.ApiQuery, sql = '') {
         })
       : [],
     sqlData: { headers: [], types: [], rows: [] },
-  } as Store
+
+    settings: parseQuerySettings(settings),
+  }
 }
 
 export function QueryEditor$$(apiQuery?: null | App.ApiQuery, sql = '') {
-  let store = prepareStore(apiQuery, sql)
-  const queryEditor$ = writable(store)
+  let store = prepareStore(apiQuery, sql) as Store
+  const queryEditor$ = writable<Store>(store)
 
   return setContext(CTX, {
     queryEditor$: {
       ...queryEditor$,
       setApiQuery(apiQuery: App.ApiQuery) {
-        store = prepareStore(apiQuery)
+        if (store.query?.id === apiQuery.id) {
+          store.query = apiQuery
+        } else {
+          store = prepareStore(apiQuery)
+        }
+
         queryEditor$.set(store)
       },
       querySqlData() {
@@ -73,6 +113,12 @@ export function QueryEditor$$(apiQuery?: null | App.ApiQuery, sql = '') {
         store.parameters = store.parameters.slice()
         queryEditor$.set(store)
       },
+
+      updateSettings(column: string, value: any) {
+        store.settings.columns[column] = { ...store.settings.columns[column], ...value }
+
+        queryEditor$.set(store)
+      },
     },
   })
 }
@@ -87,5 +133,6 @@ export const getQueryEditor$Ctx = () => getContext(CTX) as App.ReturnType<typeof
 declare global {
   namespace App {
     type QueryEditorStore = ReturnType<typeof QueryEditor$$>['queryEditor$']
+    type QueryEditorStoreValue = Store
   }
 }
