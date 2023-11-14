@@ -1,11 +1,13 @@
 <script lang="ts">
+  import { noop } from 'webkit/utils'
   import { CMD } from 'webkit/utils/os'
   import { GlobalShortcut$ } from 'webkit/utils/events'
-  import { getQueryEditor$Ctx } from '$routes/query/new/ctx'
   import Tooltip from 'webkit/ui/Tooltip'
+  import { getQueryEditor$Ctx } from '$routes/query/new/ctx'
 
   let className = ''
   export { className as class }
+  export let onQueryExecute = noop
 
   const { queryEditor$ } = getQueryEditor$Ctx()
 
@@ -14,6 +16,8 @@
   let lastRunMs = 0
 
   function onExecuteClick() {
+    onQueryExecute()
+
     loading = true
 
     tooltipNode.open()

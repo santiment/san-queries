@@ -25,8 +25,9 @@ export function startSaveQueryFlow(queryEditor$: App.QueryEditorStore) {
       dismissAfter: 5000,
     })
 
-    return
+    return Promise.reject()
   }
+
   const variables = {
     name,
     description,

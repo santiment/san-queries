@@ -21,18 +21,11 @@
   let loading = false
 
   $: queryEditor = $queryEditor$
-  $: ({ sql, sqlData, settings } = queryEditor)
+  $: ({ sqlData, settings } = queryEditor)
   $: tableColumns = getTableColumns(sqlData, settings.columns)
 
   function updateColumnSettings(column: string, value: any) {
     queryEditor$.updateSettings(column, value)
-  }
-
-  function getData() {
-    loading = true
-    queryEditor$.querySqlData().finally(() => {
-      loading = false
-    })
   }
 </script>
 

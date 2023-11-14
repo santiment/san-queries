@@ -1,13 +1,15 @@
 <script lang="ts">
+  import { noop } from 'webkit/utils'
   import { getCurrentUser$Ctx } from 'webkit/stores/user'
   import Svg from 'webkit/ui/Svg/svelte'
   import { showShareDialog } from 'webkit/ui/Share/index.svelte'
-  import { queryGenerateTitleBySql } from './api'
-  import Head from '../index.svelte'
   import { getQueryEditor$Ctx } from '$routes/query/new/ctx'
+  import { queryGenerateTitleBySql } from './api'
   import ExecuteButton from './ExecuteButton.svelte'
+  import Head from '../index.svelte'
 
   export let author: SAN.Author | null
+  export let onQueryExecute = noop
 
   const { currentUser$ } = getCurrentUser$Ctx()
   const { queryEditor$ } = getQueryEditor$Ctx()
@@ -81,7 +83,7 @@
 
   <svelte:fragment slot="main-action-wrap" let:classes>
     {#if mainActionLabel === 'Execute'}
-      <ExecuteButton class={classes} />
+      <ExecuteButton class={classes} {onQueryExecute} />
     {:else}
       <button class={classes} on:click={onMainActionClick}>
         {mainActionLabel}

@@ -3,7 +3,7 @@
   import { getSEOLinkFromIdAndTitle } from 'webkit/utils/url'
   import { getCurrentUser$Ctx } from 'webkit/stores/user'
   import { QueryHead } from '$lib/EntityHead'
-  import QueryEditor from '$lib/QueryEditor/index.svelte'
+  import QueryEditor, { TABS } from '$lib/QueryEditor/index.svelte'
   import { QueryEditor$$ } from './new/ctx'
   import { startSaveQueryFlow } from './flow'
 
@@ -12,6 +12,8 @@
 
   const { currentUser$ } = getCurrentUser$Ctx()
   const { queryEditor$ } = QueryEditor$$(apiQuery, defaultSql)
+
+  let QueryEditorNode: QueryEditor
 
   function onSave() {
     startSaveQueryFlow(queryEditor$).then((apiQuery) => {
@@ -23,16 +25,20 @@
     })
   }
 
+  function onQueryExecute() {
+    QueryEditorNode.$set({ tab: TABS[1] })
+  }
+
   const saveShortcut = GlobalShortcut$('CMD+S', onSave)
   $saveShortcut
 </script>
 
 <main class="column">
-  <QueryHead author={$currentUser$} />
+  <QueryHead author={$currentUser$} {onQueryExecute} />
 
   <slot />
 
-  <QueryEditor onEditorSave={onSave} />
+  <QueryEditor bind:this={QueryEditorNode} onEditorSave={onSave} />
 </main>
 
 <style>
