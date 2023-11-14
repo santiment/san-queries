@@ -3,7 +3,7 @@
   import Tooltip from 'webkit/ui/Tooltip'
 
   export let name: string
-  export let options = [] as any[]
+  export let options = null as null | any[]
   export let value = null as any
   export let onUpdate: (value?: any) => void
   export let placeholder = ''
@@ -26,7 +26,7 @@
   <!-- svelte-ignore a11y-label-has-associated-control -->
   <label class="caption txt-m c-waterloo">{name}</label>
 
-  {#if options.length}
+  {#if options}
     <Tooltip on="click" position="bottom" activeClass="$style.opened" let:trigger>
       <options use:trigger class="btn input row v-center justify gap-m">
         {#if value}

@@ -7,6 +7,7 @@
   import Chart from './Chart/index.svelte'
   import ControlsSection from './ControlsSection.svelte'
   import FormattingControl from './Controls/FormattingControl.svelte'
+  import NoData from './NoData.svelte'
 
   const { queryEditor$ } = getQueryEditor$Ctx()
 
@@ -22,10 +23,6 @@
   $: queryEditor = $queryEditor$
   $: ({ sql, sqlData, settings } = queryEditor)
   $: tableColumns = getTableColumns(sqlData, settings.columns)
-
-  $: if (process.browser) {
-    getData()
-  }
 
   function updateColumnSettings(column: string, value: any) {
     queryEditor$.updateSettings(column, value)
@@ -43,7 +40,7 @@
   {#if loading}
     <SpinLoader />
   {/if}
-  <section class="column visualisation">
+  <section class="column visualisation relative">
     {#if controls.visualisation === 'Table'}
       <Table
         {...controls.props}
@@ -54,6 +51,10 @@
       />
     {:else}
       <Chart class="border" {sqlData} {ColumnSettings} />
+    {/if}
+
+    {#if sqlData.rows.length === 0}
+      <NoData />
     {/if}
   </section>
 

@@ -16,7 +16,7 @@
 
   $: sortableColumns = columns.filter((column) => !!column.sortAccessor)
 
-  function onSortClick(column: any, _, dir: 'asc' | 'desc') {
+  function onSortClick(column: any, _: any, dir: 'asc' | 'desc') {
     controls.sort.column = column
     controls.sort.dir = dir
   }
