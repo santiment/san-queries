@@ -2,7 +2,8 @@
   import { dialogs } from 'webkit/ui/Dialog'
   import Component from './index.svelte'
 
-  export const showNameDescriptionDialog = (props: any) => dialogs.__show(Component, props)
+  export const showNameDescriptionDialog = (props: any) =>
+    dialogs.__show(Component, { ...props, strict: true })
 </script>
 
 <script lang="ts">
