@@ -137,7 +137,7 @@ export function QueryEditor$$(apiQuery?: null | App.ApiQuery, sql = '') {
   })
 }
 
-export const getQueryEditor$Ctx = () => getContext(CTX) as App.ReturnType<typeof QueryEditor$$>
+export const getQueryEditor$Ctx = () => getContext(CTX) as ReturnType<typeof QueryEditor$$>
 
 // type DashboardEditorType = {
 //   widgets: App.Dashboard.Widget[]

@@ -1,26 +1,27 @@
 <script lang="ts">
   import type { Readable } from 'svelte/store'
 
-  import { page as page$ } from '$app/stores'
+  // import { page as page$ } from '$app/stores'
   import { GlobalShortcut$ } from 'webkit/utils/events'
   import { notifications$ } from 'webkit/ui/Notifications'
   import { getWorkspace$Ctx } from '$lib/LeftMenu/Work/ctx'
   import { TreeItemType } from '$lib/LeftMenu/Work/types'
   import Actions from './Actions.svelte'
   import ContentEditable from './ContentEditable.svelte'
-  import { DashboardEditor$$ } from './ctx'
+  // import { DashboardEditor$$ } from './ctx'
   import Grid from './Grid.svelte'
+  import { getDashboardEditor$Ctx } from '$routes/dashboard/[[slug]]/ctx'
 
   let className = ''
   export { className as class }
 
-  const { dashboardEditor$ } = DashboardEditor$$()
-  const { workspace$ } = getWorkspace$Ctx()
+  const { dashboardEditor$ } = getDashboardEditor$Ctx()
+  // const { dashboardEditor$ } = DashboardEditor$$()
   // DashboardEditor$$()
 
   let dashboard = { title: '', description: '' } as any
 
-  $: if (process.browser) updateDashboard($page$)
+  // $: if (process.browser) updateDashboard($page$)
   $: dashboardEditor = $dashboardEditor$
 
   type StoreValue<T> = T extends Readable<infer K> ? K : never
@@ -42,11 +43,11 @@
   }
 
   function onTitleChange(value: string) {
-    dashboard.title = value
+    $dashboardEditor$.name = value
   }
 
   function onDescriptionChange(value: string) {
-    dashboard.description = value
+    $dashboardEditor$.description = value
   }
 
   const saveShortcut = GlobalShortcut$(
@@ -61,8 +62,6 @@
         })
 
         dashboard = { ...dashboard, ...dashboardEditor }
-
-        workspace$.addItem(dashboard, TreeItemType.DASHBOARD)
       } else {
         notifications$.show({
           type: 'error',
@@ -80,7 +79,7 @@
 <main class="column gap-m {className}">
   <header>
     <ContentEditable
-      value={dashboard.title}
+      value={dashboardEditor.name}
       as="h1"
       class="h4 txt-m mrg-s mrg--b"
       placeholder="Add your title here..."
@@ -88,14 +87,14 @@
     />
 
     <ContentEditable
-      value={dashboard.description}
+      value={dashboardEditor.description}
       class="body-2"
       placeholder="Add description here..."
       onBlur={onDescriptionChange}
     />
   </header>
 
-  <Grid />
+  <!-- <Grid /> -->
 
   <Actions />
 </main>

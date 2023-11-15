@@ -9,11 +9,13 @@ isPublic
 
 export const queryGetDashboard = Universal(
   (query) => (id: number) =>
-    query<SAN.API.Query<'query', App.ApiQuery>>(`{
-        query:getDashboard(id:${id}) {
+    query<SAN.API.Query<'item', App.ApiQuery>>(`{
+        item:getDashboard(id:${id}) {
           ${DASHBOARD_FRAGMENT}
+          settings
+          user {id username avatarUrl}
         }
-      }`).then(({ query }) => query),
+      }`).then(({ item }) => item),
 )
 
 export const queryGetUserDashboards = Universal(
@@ -24,3 +26,16 @@ export const queryGetUserDashboards = Universal(
         }
       }`).then(({ dashboards }) => dashboards),
 )
+
+declare global {
+  namespace App {
+    type ApiDashboard = {
+      id: number
+      name: string
+      description: string
+      isPublic: boolean
+      settings: null | Record<string, any>
+      user: SAN.Author
+    }
+  }
+}

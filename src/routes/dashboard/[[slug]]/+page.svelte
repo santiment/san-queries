@@ -4,17 +4,21 @@
   import { getCurrentUser$Ctx } from 'webkit/stores/user'
   import { DashboardHead } from '$lib/EntityHead'
   import DashboardEditor from '$lib/DashboardEditor/index.svelte'
+  import { DashboardEditor$$ } from './ctx'
 
-  // const { currentUser$ } = getCurrentUser$Ctx()
   export let data: PageData
 
   const { currentUser$ } = getCurrentUser$Ctx()
+  const { dashboardEditor$ } = DashboardEditor$$(data.apiDashboard)
 
-  $: console.log(data)
+  $: dashboardEditor = $dashboardEditor$
+  $: author = dashboardEditor.dashboard?.user || $currentUser$
+
+  $: console.log(data, dashboardEditor)
 </script>
 
 <main class="column">
-  <DashboardHead author={$currentUser$} />
+  <DashboardHead {author} />
 
   <DashboardEditor />
 </main>
