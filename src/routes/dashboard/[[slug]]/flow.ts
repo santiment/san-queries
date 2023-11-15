@@ -2,6 +2,7 @@ import {
   mutateAddDashboardTextWidget,
   mutateCreateDashboard,
   mutateDeleteDashboardTextWidget,
+  mutateUpdateDashboard,
 } from '$lib/api/dashboard/create'
 import { notifications$ } from 'webkit/ui/Notifications'
 
@@ -50,16 +51,29 @@ export async function startDashboardSaveFlow(dashboardEditor: App.DashboardEdito
     dashboardEditor.dashboard = dashboard
   }
 
-  const { dashboard } = dashboardEditor
+  const { dashboard, widgets, layout } = dashboardEditor
   if (!dashboard) return Promise.reject()
 
   const diffTextWidgets = Diff('TEXT', 'textWidgets', dashboardEditor)
 
   console.log(diffTextWidgets)
 
-  // diffTextWidgets.added.map((widget) =>
-  //   mutateAddDashboardTextWidget({ dashboardId: dashboard.id, value: widget.value }),
-  // )
-  //
+  const addedTextWidgetsPromises = diffTextWidgets.added.map((widget) =>
+    mutateAddDashboardTextWidget({ dashboardId: dashboard.id, value: widget.value }).then(
+      ({ id }) => (widget.id = id),
+    ),
+  )
+
   diffTextWidgets.removed.map((widgetId) => mutateDeleteDashboardTextWidget(dashboard.id, widgetId))
+
+  await Promise.all(addedTextWidgetsPromises)
+
+  const settings = {
+    version: 2,
+    layout: widgets.map((widget, i) => {
+      return { id: widget.id, xywh: layout[i].slice(0, 4) }
+    }),
+  }
+
+  return mutateUpdateDashboard({ id: dashboard.id, settings })
 }

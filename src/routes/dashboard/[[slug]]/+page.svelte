@@ -21,7 +21,7 @@
   const saveShortcut = GlobalShortcut$(
     'CMD+S',
     () => {
-      startDashboardSaveFlow(dashboardEditor)
+      startDashboardSaveFlow(dashboardEditor).then(console.log)
     },
     false,
   )

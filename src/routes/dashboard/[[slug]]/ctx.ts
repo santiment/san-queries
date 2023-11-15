@@ -14,7 +14,39 @@ type Store = {
 }
 
 function prepareStore(apiDashboard?: null | App.ApiDashboard) {
-  const { name = '', description = '' } = apiDashboard || {}
+  const { name = '', description = '', textWidgets = [] } = apiDashboard || {}
+
+  let { layout = [] } = apiDashboard?.settings || {}
+  let widgets = []
+
+  function mapTextWidget({ id, body }) {
+    return { id, type: 'TEXT', value: body }
+  }
+
+  if (layout.length === 0) {
+    widgets = textWidgets.map(mapTextWidget)
+    layout = widgets.map((widget, i) => {
+      const options = getGridItemOptions(widget)
+      return setItemOptions([0, 1000 + i, 12, options.minRows], options)
+    })
+  } else {
+    const IdToWidget = textWidgets.reduce((acc, v) => {
+      acc[v.id] = v
+      return acc
+    }, {} as Record<string, any>)
+
+    layout = layout
+      .map(({ id, xywh }) => {
+        const widget = IdToWidget[id]
+        if (widget) {
+          widgets.push(mapTextWidget(widget))
+          return xywh
+        }
+      })
+      .filter(Boolean)
+  }
+
+  normalizeGrid(sortLayout(layout))
 
   return {
     dashboard: apiDashboard,
@@ -22,8 +54,8 @@ function prepareStore(apiDashboard?: null | App.ApiDashboard) {
     name,
     description,
 
-    widgets: [],
-    layout: [],
+    widgets,
+    layout,
   }
 }
 
