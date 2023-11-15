@@ -31,6 +31,8 @@ export const queryGetUserDashboards = Universal(
 
 declare global {
   namespace App {
+    type ApiTextWidget = { id: string; body: string }
+
     type ApiDashboard = {
       id: number
       name: string
@@ -39,7 +41,7 @@ declare global {
       settings: null | Record<string, any>
       user: SAN.Author
 
-      textWidgets: { id: string; body: string }[]
+      textWidgets: ApiTextWidget[]
     }
   }
 }

@@ -3,6 +3,7 @@ import {
   mutateCreateDashboard,
   mutateDeleteDashboardTextWidget,
   mutateUpdateDashboard,
+  mutateUpdateDashboardTextWidget,
 } from '$lib/api/dashboard/create'
 import { notifications$ } from 'webkit/ui/Notifications'
 
@@ -12,22 +13,27 @@ export const errorify = <T>(promise: Promise<T>): Promise<[T] | [null, { message
 function Diff<T>(type: T, key: 'textWidgets', dashboardEditor: App.DashboardEditorStoreValue) {
   const items = dashboardEditor.widgets.filter((item) => item.type === type)
 
-  const present = new Set()
+  const present = new Map<string, App.Dashboard.TextWidget>()
   const removed = new Set<string>()
   const added = new Set()
+  const updated = new Set<App.Dashboard.TextWidget>()
 
   items.forEach((item) => {
-    if (item.id) present.add(item.id)
+    if (item.id) present.set(item.id, item)
     else added.add(item)
   })
 
-  dashboardEditor.dashboard![key].forEach(({ id }) => {
-    if (present.has(id)) return
+  dashboardEditor.dashboard![key].forEach(({ id, body }) => {
+    const widget = present.get(id)
+    if (widget) {
+      if (widget.value !== body) updated.add(widget)
+      return
+    }
 
     removed.add(id)
   })
 
-  return { removed: [...removed], added: [...added] }
+  return { removed: [...removed], added: [...added], updated: [...updated] }
 }
 
 export async function startDashboardSaveFlow(dashboardEditor: App.DashboardEditorStoreValue) {
@@ -58,15 +64,23 @@ export async function startDashboardSaveFlow(dashboardEditor: App.DashboardEdito
 
   console.log(diffTextWidgets)
 
-  const addedTextWidgetsPromises = diffTextWidgets.added.map((widget) =>
-    mutateAddDashboardTextWidget({ dashboardId: dashboard.id, value: widget.value }).then(
-      ({ id }) => (widget.id = id),
-    ),
+  // TODO: Should await removals and updates? [@vanguard | 15 Nov, 2023]
+  diffTextWidgets.removed.map((widgetId) => mutateDeleteDashboardTextWidget(dashboard.id, widgetId))
+  diffTextWidgets.updated.map((widget) =>
+    mutateUpdateDashboardTextWidget({
+      id: widget.id!,
+      dashboardId: dashboard.id,
+      value: widget.value,
+    }),
   )
 
-  diffTextWidgets.removed.map((widgetId) => mutateDeleteDashboardTextWidget(dashboard.id, widgetId))
-
-  await Promise.all(addedTextWidgetsPromises)
+  await Promise.all([
+    ...diffTextWidgets.added.map((widget) =>
+      mutateAddDashboardTextWidget({ dashboardId: dashboard.id, value: widget.value }).then(
+        ({ id }) => (widget.id = id),
+      ),
+    ),
+  ])
 
   const settings = {
     version: 2,

@@ -1,3 +1,5 @@
+import type { SnapItem } from 'san-webkit/lib/ui/SnapGrid/types'
+
 import { normalizeGrid, setItemOptions, sortLayout } from 'san-webkit/lib/ui/SnapGrid/layout'
 import { getContext, setContext } from 'svelte'
 import { writable } from 'svelte/store'
@@ -10,7 +12,7 @@ type Store = {
   description: string
 
   widgets: App.Dashboard.Widget[]
-  layout: any[]
+  layout: SnapItem[]
 }
 
 function prepareStore(apiDashboard?: null | App.ApiDashboard) {

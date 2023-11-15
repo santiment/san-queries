@@ -1,6 +1,7 @@
 export {}
 
 interface DashboardWidget<T extends string> {
+  id?: string
   type: T
   htmlNode?: HTMLElement
 }

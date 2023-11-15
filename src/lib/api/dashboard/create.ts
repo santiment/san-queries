@@ -34,22 +34,33 @@ export function mutateUpdateDashboard(
 // ---
 
 export function mutateAddDashboardTextWidget(variables: { dashboardId: number; value: string }) {
-  return mutate<SAN.API.Query<'added', any>>(
+  return mutate<SAN.API.Query<'added', { textWidget: App.ApiTextWidget }>>(
     `mutation ($dashboardId: Int!, $value: String) {
     added:addDashboardTextWidget(dashboardId:$dashboardId, body:$value) {
       textWidget {id body}
     }
   }`,
-    {
-      variables: {
-        ...variables,
-      },
-    },
+    { variables },
+  ).then(({ added }) => added.textWidget)
+}
+
+export function mutateUpdateDashboardTextWidget(variables: {
+  id: string
+  dashboardId: number
+  value: string
+}) {
+  return mutate<SAN.API.Query<'added', { textWidget: App.ApiTextWidget }>>(
+    `mutation ($id: String!, $dashboardId: Int!, $value: String) {
+    added:updateDashboardTextWidget(textWidgetId:$id, dashboardId:$dashboardId, body:$value) {
+      textWidget {id body}
+    }
+  }`,
+    { variables },
   ).then(({ added }) => added.textWidget)
 }
 
 export function mutateDeleteDashboardTextWidget(dashboardId: number, widgetId: string) {
-  return mutate<SAN.API.Query<'deleted', any>>(
+  return mutate<SAN.API.Query<'deleted', { textWidget: App.ApiTextWidget }>>(
     `mutation {
     deleted:deleteDashboardTextWidget(dashboardId:${dashboardId}, textWidgetId:${JSON.stringify(
       widgetId,
