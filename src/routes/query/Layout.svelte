@@ -28,10 +28,17 @@
         QueryEditorNode.$set({ tab: TABS[1] })
       })
       .catch((error) => {
-        const { details } = error
-        const { HH, mm, ss } = getTimeFormats(new Date())
+        const errors = Array.isArray(error) ? error : [error]
 
-        queryEditor$.addError({ date: `${HH}:${mm}:${ss}`, details })
+        errors.forEach((error) => {
+          const { message, details = message } = error
+          const { HH, mm, ss } = getTimeFormats(new Date())
+
+          queryEditor$.addError({
+            date: `${HH}:${mm}:${ss}`,
+            details: details.replace('FORMAT JSONCompact', '').trim(),
+          })
+        })
 
         QueryEditorNode.$set({ tab: TABS[2] })
       })

@@ -123,7 +123,7 @@ export function QueryEditor$$(apiQuery?: null | App.ApiQuery, sql = '') {
       },
 
       addError(error: App.SqlError) {
-        store.sqlErrors.push(error)
+        store.sqlErrors.unshift(error)
 
         queryEditor$.set(store)
       },

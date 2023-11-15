@@ -11,15 +11,16 @@
   }
 </script>
 
-<main>
+<main class="caption">
   {#each sqlErrors as error}
-    <error class="mrg-m mrg--b">
+    <error class="row gap-s mrg-m mrg--b">
       {#if !error.old}
         <!-- svelte-ignore a11y-label-has-associated-control -->
         <label use:read={error}>NEW</label>
       {/if}
       <date class="c-waterloo">[{error.date}]</date>
-      {error.details}
+
+      <pre>{error.details.trim()}</pre>
     </error>
   {/each}
 </main>
@@ -31,11 +32,12 @@
     flex: 1;
     padding: 16px 24px;
     min-height: 0;
+    overflow: auto;
   }
 
   error {
     font-family: monospace;
-    display: block;
+    align-items: flex-start;
   }
 
   label {
@@ -44,7 +46,6 @@
     color: var(--white);
     padding: 2px 6px;
     border-radius: 4px;
-    margin-top: -3px;
-    display: inline-block;
+    margin-top: -1px;
   }
 </style>

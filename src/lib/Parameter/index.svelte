@@ -1,9 +1,11 @@
 <script lang="ts">
+  import { noop } from 'webkit/utils'
   import Svg from 'webkit/ui/Svg/svelte'
 
   export let parameter: { key: string; value: string; global: boolean }
   export let color: string
   export let isAuthor = true
+  export let onRemoveClick = noop
 
   $: ({ key, value, global = false } = parameter)
   $: shortValue = value.toString()
@@ -30,11 +32,11 @@
     <div class="divider" />
 
     <actions class="row">
-      <button class="link btn">
-        <Svg id="link" w="15" />
-      </button>
+      <!-- <button class="link btn"> -->
+      <!--   <Svg id="link" w="15" /> -->
+      <!-- </button> -->
 
-      <button class="close btn">
+      <button class="close btn" on:click|capture|stopPropagation={onRemoveClick}>
         <Svg id="close" w="10" />
       </button>
     </actions>

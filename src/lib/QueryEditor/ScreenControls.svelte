@@ -55,7 +55,12 @@
     </button>
 
     {#each parameters as parameter, i}
-      <Parameter {parameter} color={COLORS[i]} on:click={() => onParameterClick(parameter)} />
+      <Parameter
+        {parameter}
+        color={COLORS[i]}
+        on:click={() => onParameterClick(parameter)}
+        onRemoveClick={console.log}
+      />
     {/each}
   </parameters>
 
