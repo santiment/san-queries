@@ -20,6 +20,7 @@
   let isRenaming = false
 
   $: isQuery = item.type === TreeItemType.QUERY
+  $: link = `/${item.type === TreeItemType.QUERY ? 'query' : 'dashboard'}/${item.id}`
 
   function onRename(value: string) {
     item.name = value
@@ -52,6 +53,7 @@
   draggable
   moreActions
   icon={isQuery ? 'query' : 'dashboard'}
+  {link}
   on:dragstart={(e) => onItemDragStart(e, parent, item)}
   on:dragend={onItemDragEnd}
   {onRenameClick}
@@ -59,10 +61,7 @@
   {onDeleteClick}
 >
   <Renamer title={item.name} bind:isRenaming {onRename} let:value>
-    <a
-      href="/{item.type === TreeItemType.QUERY ? 'query' : 'dashboard'}/new?data={item.data}"
-      class="link-as-bg">{value}</a
-    >
+    <a href={link} class="link-as-bg">{value}</a>
   </Renamer>
 </MenuItem>
 

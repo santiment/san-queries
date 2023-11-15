@@ -7,7 +7,7 @@
 
   let className = ''
   export { className as class }
-  export let tab = TABS[0] as (typeof TABS)[number]
+  export let tab = TABS[1] as (typeof TABS)[number]
 
   const { search$ } = Search$$()
 

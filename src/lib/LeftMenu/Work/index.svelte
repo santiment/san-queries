@@ -7,6 +7,7 @@
   import { getSearch$Ctx } from '../Search.svelte'
   import Item from './Item.svelte'
   import { getWorkspace$Ctx } from './ctx'
+  import { queryGetUserQueries } from '$lib/api/query/get'
 
   const { workspace$ } = getWorkspace$Ctx()
   const { search$ } = getSearch$Ctx()
@@ -18,8 +19,17 @@
   }
 
   $: tree = $workspace$
-  $: console.log(tree)
   $: filteredTree = search$.modify($search$, tree.children, filterTree)
+
+  let queries = [] as any[]
+  $: if (process.browser) {
+    queryGetUserQueries().then((data) => {
+      queries = data.map((query) => ({
+        ...query,
+        type: TreeItemType.QUERY,
+      }))
+    })
+  }
 
   function filterTree(input: RegExp, tree: WorkspaceTreeType) {
     return tree
@@ -101,6 +111,7 @@
   </actions>
 </section>
 
+<!--
 {#each filteredTree as item, i (item)}
   {@const { type } = item}
   {#if type === TreeItemType.FOLDER}
@@ -118,6 +129,20 @@
     <Item idx={i} {item} parent={tree} {onItemDragStart} {onItemDragEnd} />
   {/if}
 {/each}
+
+-->
+
+<Folder title="My Queries">
+  {#each queries as item, i}
+    <Item
+      idx={i}
+      {item}
+      parent={queries}
+      onItemDragStart={console.log}
+      onItemDragEnd={console.log}
+    />
+  {/each}
+</Folder>
 
 <style lang="scss">
   .expl-tooltip {

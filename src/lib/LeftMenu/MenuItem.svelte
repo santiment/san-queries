@@ -8,6 +8,7 @@
   export let moreActions = false
   export let dataActions = false
   export let draggable = false
+  export let link = ''
 
   export let onRenameClick = noop
   export let onDuplicateClick = noop
@@ -17,6 +18,10 @@
   let isMenuOpened = false
 
   $: if (!isMenuOpened) isHovered = false
+
+  function onOpenInTabClick() {
+    window.open(link, '_blank')
+  }
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
@@ -50,7 +55,11 @@
           <Svg id="right-arrow" w="11" h="6" />
         </button>
       {:else}
-        <button class="btn-3 expl-tooltip" aria-label="Open in a new tab">
+        <button
+          class="btn-3 expl-tooltip"
+          aria-label="Open in a new tab"
+          on:click={onOpenInTabClick}
+        >
           <Svg id="external-link" w="12" />
         </button>
       {/if}

@@ -1,6 +1,6 @@
 import { Universal } from 'webkit/api'
 
-const QUERY_FRAGMENT = `id
+export const QUERY_FRAGMENT = `id
       name
       description
       isPublic
@@ -21,7 +21,7 @@ export const queryGetSqlQuery = Universal(
 export const queryGetUserQueries = Universal(
   (query) => () =>
     query<SAN.API.Query<'queries', App.ApiQuery[]>>(`{
-        query:getUserQueries(page:1, pageSize:100) {
+        queries:getUserQueries(page:1, pageSize:100) {
           ${QUERY_FRAGMENT}
         }
       }`).then(({ queries }) => queries),
