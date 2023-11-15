@@ -3,20 +3,20 @@ import { mutate } from 'webkit/api'
 import { DASHBOARD_FRAGMENT } from './get'
 
 export function mutateCreateDashboard(variables: { name: string; description?: string }) {
-  return mutate<SAN.API.Query<'dashboard', any>>(
+  return mutate<SAN.API.Query<'dashboard', App.ApiDashboard>>(
     `mutation ($name: String!, $description: String) {
     dashboard:createDashboard(name:$name, description:$description) {
       ${DASHBOARD_FRAGMENT}
     }
   }`,
     { variables },
-  ).then(({ createDashboard }) => createDashboard)
+  ).then(({ dashboard }) => dashboard)
 }
 
 export function mutateUpdateDashboard(
   variables: { id: number } & Partial<{ name: string; description: string; settings: any }>,
 ) {
-  return mutate<SAN.API.Query<'dashboard', any>>(
+  return mutate<SAN.API.Query<'dashboard', App.ApiDashboard>>(
     `mutation ($id:Int!, $name: String, $description: String, $isPublic: Boolean, $settings:json) {
     dashboard:updateDashboard(id:$id, name:$name, description:$description, isPublic:$isPublic, settings:$settings) {
       ${DASHBOARD_FRAGMENT}

@@ -43,7 +43,7 @@ function prepareStore(apiDashboard?: null | App.ApiDashboard) {
         const widget = IdToWidget[id]
         if (widget) {
           widgets.push(mapTextWidget(widget))
-          return xywh
+          return xywh.slice(0, 4)
         }
       })
       .filter(Boolean)

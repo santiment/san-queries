@@ -8,6 +8,7 @@
   import DashboardEditor from '$lib/DashboardEditor/index.svelte'
   import { DashboardEditor$$ } from './ctx'
   import { startDashboardSaveFlow } from './flow'
+  import { getSEOLinkFromIdAndTitle } from 'san-webkit/lib/utils/url'
 
   export let data: PageData
 
@@ -20,9 +21,11 @@
 
   $: console.log(data, dashboardEditor)
 
-  $: if (dashboard?.id !== data.apiDashboard?.id) updateDashboard(data.apiDashboard)
+  $: updateDashboard(data.apiDashboard)
 
   function updateDashboard(apiDashboard: (typeof data)['apiDashboard']) {
+    if (dashboard?.id === apiDashboard?.id) return
+
     tick().then(() => dashboardEditor$.setApiDashboard(apiDashboard))
   }
 
@@ -30,7 +33,16 @@
     'CMD+S',
     () => {
       startDashboardSaveFlow(dashboardEditor).then((apiDashboard) => {
+        console.log(apiDashboard)
+
+        data.apiDashboard = apiDashboard
         dashboardEditor$.setApiDashboard(apiDashboard)
+
+        window.history.replaceState(
+          '',
+          history.state,
+          '/query/' + getSEOLinkFromIdAndTitle(apiDashboard.id, apiDashboard.name),
+        )
       })
     },
     false,

@@ -58,7 +58,7 @@ export async function startDashboardSaveFlow(dashboardEditor: App.DashboardEdito
   }
 
   const { dashboard, widgets, layout } = dashboardEditor
-  if (!dashboard) return Promise.reject()
+  if (!dashboard) return Promise.reject('Dashboard not found')
 
   const diffTextWidgets = Diff('TEXT', 'textWidgets', dashboardEditor)
 
