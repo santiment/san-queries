@@ -53,6 +53,12 @@ declare global {
       types: string[]
     }
 
+    type SqlError = {
+      date: string
+      details: string
+      old?: boolean
+    }
+
     type Parameter = { key: string; value: string; global?: boolean }
   }
 }

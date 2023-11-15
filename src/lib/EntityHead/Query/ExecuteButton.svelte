@@ -16,12 +16,17 @@
   let lastRunMs = 0
 
   function onExecuteClick() {
-    onQueryExecute()
+    if (loading) return
 
     loading = true
 
     tooltipNode.open()
-    queryEditor$.querySqlData().finally(() => {
+
+    const promise = queryEditor$.querySqlData()
+
+    onQueryExecute(promise)
+
+    promise.finally(() => {
       loading = false
     })
   }
@@ -30,9 +35,9 @@
     let ms = 0
 
     const runningTimer = window.setInterval(() => {
-      ms += 25
+      ms += 27
       update()
-    }, 25)
+    }, 27)
 
     function update() {
       node.textContent = `${ms}ms`

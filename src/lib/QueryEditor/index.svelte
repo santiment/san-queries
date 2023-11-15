@@ -4,6 +4,7 @@
   export const TABS = [
     { title: 'Editor', ariaLabel: `${CMD} + 1` },
     { title: 'Visualisation', ariaLabel: `${CMD} + 2` },
+    { title: 'Errors', ariaLabel: `${CMD} + 3` },
   ] as const
 </script>
 
@@ -14,6 +15,7 @@
   import { GlobalShortcut$ } from 'webkit/utils/events'
   import { getQueryEditor$Ctx } from '$routes/query/new/ctx'
   import ScreenControls from './ScreenControls.svelte'
+  import Errors from './Errors/index.svelte'
   import SQLEditor from '$lib/SQLEditor/index.svelte'
   import VisualisationTab from './Visualisation/index.svelte'
 
@@ -34,6 +36,9 @@
 
   const visulisationViewShortcut = GlobalShortcut$('CMD+2', () => (tab = TABS[1]), false)
   $visulisationViewShortcut
+
+  const errorsViewShortcut = GlobalShortcut$('CMD+3', () => (tab = TABS[2]), false)
+  $errorsViewShortcut
 </script>
 
 <Tabs
@@ -49,8 +54,10 @@
 
   {#if tab === TABS[0]}
     <SQLEditor value={sql} {parameters} onValueChange={onEditorValueChange} onSave={onEditorSave} />
-  {:else}
+  {:else if tab === TABS[1]}
     <VisualisationTab />
+  {:else if tab === TABS[2]}
+    <Errors />
   {/if}
 </section>
 

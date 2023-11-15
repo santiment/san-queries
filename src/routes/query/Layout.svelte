@@ -1,6 +1,7 @@
 <script lang="ts">
   import { GlobalShortcut$ } from 'webkit/utils/events'
   import { getSEOLinkFromIdAndTitle } from 'webkit/utils/url'
+  import { getTimeFormats } from 'webkit/utils/dates'
   import { getCurrentUser$Ctx } from 'webkit/stores/user'
   import { QueryHead } from '$lib/EntityHead'
   import QueryEditor, { TABS } from '$lib/QueryEditor/index.svelte'
@@ -25,8 +26,21 @@
     })
   }
 
-  function onQueryExecute() {
-    QueryEditorNode.$set({ tab: TABS[1] })
+  function onQueryExecute(promise: any) {
+    promise
+      .then(() => {
+        QueryEditorNode.$set({ tab: TABS[1] })
+      })
+      .catch((error) => {
+        console.log(error)
+        const { details } = error
+
+        const { HH, mm, ss } = getTimeFormats(new Date())
+
+        queryEditor$.addError({ date: `${HH}:${mm}:${ss}`, details })
+
+        QueryEditorNode.$set({ tab: TABS[2] })
+      })
   }
 
   const saveShortcut = GlobalShortcut$('CMD+S', onSave)

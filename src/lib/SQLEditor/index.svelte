@@ -24,7 +24,7 @@
   $: setValue(value)
 
   function setValue(value: string) {
-    editor?.setValue(value)
+    // editor?.setValue(value)
   }
 
   function getValue() {
@@ -55,6 +55,8 @@
       createEditor(editorNode, value, options).then((ctx) => {
         EditorCtx = ctx
         editor = ctx.editor
+
+        console.log(editor)
 
         editor.onDidBlurEditorText(onBlur)
         editor.onDidFocusEditorWidget(onFocus)

@@ -15,6 +15,7 @@ type Store = {
   sql: string
   parameters: App.Parameter[]
   sqlData: App.SqlData
+  sqlErrors: App.SqlError[]
 
   settings: {
     columns: Record<
@@ -65,6 +66,7 @@ function prepareStore(apiQuery?: null | App.ApiQuery, sql = '') {
         })
       : [],
     sqlData: { headers: [], types: [], rows: [] },
+    sqlErrors: [],
 
     settings: parseQuerySettings(settings),
   }
@@ -78,10 +80,11 @@ export function QueryEditor$$(apiQuery?: null | App.ApiQuery, sql = '') {
     queryEditor$: {
       ...queryEditor$,
       setApiQuery(apiQuery: App.ApiQuery) {
-        const { sqlData } = store
+        const { sqlData, sqlErrors } = store
 
         store = prepareStore(apiQuery)
         store.sqlData = sqlData
+        store.sqlErrors = sqlErrors
 
         queryEditor$.set(store)
       },
@@ -115,6 +118,12 @@ export function QueryEditor$$(apiQuery?: null | App.ApiQuery, sql = '') {
 
       updateSettings(column: string, value: any) {
         store.settings.columns[column] = { ...store.settings.columns[column], ...value }
+
+        queryEditor$.set(store)
+      },
+
+      addError(error: App.SqlError) {
+        store.sqlErrors.push(error)
 
         queryEditor$.set(store)
       },
