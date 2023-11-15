@@ -8,6 +8,7 @@
   import Item from './Item.svelte'
   import { getWorkspace$Ctx } from './ctx'
   import { queryGetUserQueries } from '$lib/api/query/get'
+  import { queryGetUserDashboards } from '$lib/api/dashboard/get'
 
   const { workspace$ } = getWorkspace$Ctx()
   const { search$ } = getSearch$Ctx()
@@ -22,11 +23,19 @@
   $: filteredTree = search$.modify($search$, tree.children, filterTree)
 
   let queries = [] as any[]
+  let dashboards = [] as any[]
   $: if (process.browser) {
     queryGetUserQueries().then((data) => {
       queries = data.map((query) => ({
         ...query,
         type: TreeItemType.QUERY,
+      }))
+    })
+
+    queryGetUserDashboards().then((data) => {
+      dashboards = data.map((item) => ({
+        ...item,
+        type: TreeItemType.DASHBOARD,
       }))
     })
   }
@@ -131,6 +140,18 @@
 {/each}
 
 -->
+
+<Folder title="My Dashboards">
+  {#each dashboards as item, i}
+    <Item
+      idx={i}
+      {item}
+      parent={dashboards}
+      onItemDragStart={console.log}
+      onItemDragEnd={console.log}
+    />
+  {/each}
+</Folder>
 
 <Folder title="My Queries">
   {#each queries as item, i}

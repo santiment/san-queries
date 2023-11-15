@@ -4,6 +4,7 @@
     ItemTreeType,
   } from './types'
 
+  import { getSEOLinkFromIdAndTitle } from 'webkit/utils/url'
   import { TreeItemType } from './types'
   import MenuItem from '../MenuItem.svelte'
   import Renamer from '$lib/Renamer.svelte'
@@ -20,7 +21,9 @@
   let isRenaming = false
 
   $: isQuery = item.type === TreeItemType.QUERY
-  $: link = `/${item.type === TreeItemType.QUERY ? 'query' : 'dashboard'}/${item.id}`
+  $: link = `/${
+    item.type === TreeItemType.QUERY ? 'query' : 'dashboard'
+  }/${getSEOLinkFromIdAndTitle(item.id, item.name)}`
 
   function onRename(value: string) {
     item.name = value
