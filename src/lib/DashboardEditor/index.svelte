@@ -47,31 +47,6 @@
   function onDescriptionChange(value: string) {
     $dashboardEditor$.description = value
   }
-
-  const saveShortcut = GlobalShortcut$(
-    'CMD+S',
-    () => {
-      if (dashboardEditor.name) {
-        notifications$.show({
-          type: 'success',
-          title: 'Dashboard saved',
-          description: 'Dashboard is available in "Work" tab',
-          dismissAfter: 4000,
-        })
-
-        // dashboard = { ...dashboard, ...dashboardEditor }
-      } else {
-        notifications$.show({
-          type: 'error',
-          title: "Can't save untitled dashboard",
-          description: 'Please add a title to save a dashboard',
-          dismissAfter: 4000,
-        })
-      }
-    },
-    false,
-  )
-  $saveShortcut
 </script>
 
 <main class="column gap-m {className}">

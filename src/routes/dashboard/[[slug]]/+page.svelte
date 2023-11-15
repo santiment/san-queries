@@ -5,6 +5,8 @@
   import { DashboardHead } from '$lib/EntityHead'
   import DashboardEditor from '$lib/DashboardEditor/index.svelte'
   import { DashboardEditor$$ } from './ctx'
+  import { startDashboardSaveFlow } from './flow'
+  import { GlobalShortcut$ } from 'san-webkit/lib/utils/events'
 
   export let data: PageData
 
@@ -15,6 +17,15 @@
   $: author = dashboardEditor.dashboard?.user || $currentUser$
 
   $: console.log(data, dashboardEditor)
+
+  const saveShortcut = GlobalShortcut$(
+    'CMD+S',
+    () => {
+      startDashboardSaveFlow(dashboardEditor)
+    },
+    false,
+  )
+  $saveShortcut
 </script>
 
 <main class="column">

@@ -5,6 +5,8 @@ id
 name
 description
 isPublic
+settings
+textWidgets { id body }
 `
 
 export const queryGetDashboard = Universal(
@@ -12,7 +14,6 @@ export const queryGetDashboard = Universal(
     query<SAN.API.Query<'item', App.ApiQuery>>(`{
         item:getDashboard(id:${id}) {
           ${DASHBOARD_FRAGMENT}
-          settings
           user {id username avatarUrl}
         }
       }`).then(({ item }) => item),
@@ -22,7 +23,8 @@ export const queryGetUserDashboards = Universal(
   (query) => () =>
     query<SAN.API.Query<'dashboards', any[]>>(`{
         dashboards:getUserDashboards(page:1, pageSize:100) {
-          ${DASHBOARD_FRAGMENT}
+          id
+          name
         }
       }`).then(({ dashboards }) => dashboards),
 )
@@ -36,6 +38,8 @@ declare global {
       isPublic: boolean
       settings: null | Record<string, any>
       user: SAN.Author
+
+      textWidgets: { id: string; body: string }[]
     }
   }
 }
