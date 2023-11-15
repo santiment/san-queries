@@ -1,3 +1,4 @@
+import { normalizeGrid, setItemOptions, sortLayout } from 'san-webkit/lib/ui/SnapGrid/layout'
 import { getContext, setContext } from 'svelte'
 import { writable } from 'svelte/store'
 
@@ -7,6 +8,9 @@ type Store = {
   dashboard?: null | App.ApiDashboard
   name: string
   description: string
+
+  widgets: App.Dashboard.Widget[]
+  layout: any[]
 }
 
 function prepareStore(apiDashboard?: null | App.ApiDashboard) {
@@ -17,6 +21,9 @@ function prepareStore(apiDashboard?: null | App.ApiDashboard) {
 
     name,
     description,
+
+    widgets: [],
+    layout: [],
   }
 }
 
@@ -27,6 +34,27 @@ export function DashboardEditor$$(apiDashboard?: null | App.ApiDashboard) {
   return setContext(CTX, {
     dashboardEditor$: {
       ...dashboardEditor$,
+
+      updateLayout(forceUpdate = true) {
+        // state.layout = (state.layout)
+        normalizeGrid(sortLayout(state.layout))
+
+        if (forceUpdate) {
+          dashboardEditor$.set(state)
+        }
+      },
+
+      addWidget(widget: App.Dashboard.Widget) {
+        const options = getGridItemOptions(widget)
+        const gridItem = setItemOptions([0, 1000, 12, options.minRows], options)
+
+        state.layout.push(gridItem as SAN.SnapGrid.Item)
+        state.widgets.push(widget)
+
+        this.updateLayout(false)
+
+        dashboardEditor$.set(state)
+      },
     },
   })
 }
@@ -37,5 +65,26 @@ declare global {
   namespace App {
     type DashboardEditorStore = ReturnType<typeof DashboardEditor$$>['dashboardEditor$']
     type DashboardEditorStoreValue = Store
+  }
+}
+
+function getGridItemOptions(widget: App.Dashboard.Widget) {
+  switch (widget.type) {
+    case 'TEXT':
+    case 'HEADING':
+      return {
+        minRows: 2,
+      }
+    case 'IMAGE':
+      return {
+        minRows: 4,
+        minCols: 3,
+      }
+
+    default:
+      return {
+        minRows: 8,
+        minCols: 4,
+      }
   }
 }

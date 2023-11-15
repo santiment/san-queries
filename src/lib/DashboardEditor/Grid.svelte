@@ -5,41 +5,34 @@
   import HeadingWidget from './HeadingWidget/index.svelte'
   import QueryWidget from './QueryWidget/index.svelte'
   import ImageWidget from './ImageWidget/index.svelte'
-  import { getDashboardEditor$Ctx } from './ctx'
+  // import { getDashboardEditor$Ctx } from './ctx'
   import { getDevice$Ctx } from 'san-webkit/lib/stores/responsive'
   import { normalizeGrid, sortLayout } from 'san-webkit/lib/ui/SnapGrid/layout'
+  import { getDashboardEditor$Ctx } from '$routes/dashboard/[[slug]]/ctx'
 
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
-
   const { device$ } = getDevice$Ctx()
+
   const cols = 12
 
   $: device = $device$
-  $: ({ widgets, layout } = $dashboardEditor$)
+  $: dashboardEditor = $dashboardEditor$
+  $: ({ widgets, layout } = dashboardEditor)
+  $: _layout = adaptLayoutToDevice(layout, device.isMobile)
 
-  $: if (process.browser) {
-    // dashboardEditor$.responsiveLayout(device.isMobile)
-    reset(device.isMobile)
-  }
+  function adaptLayoutToDevice(layout: any[], isMobile = false) {
+    if (isMobile === false) return layout
 
-  $: _layout = layout
-  function reset(isMobile = false) {
-    let local = layout
+    layout = layout.map((item) => {
+      const mobileItem = item.slice()
+      mobileItem[0] = 0
+      mobileItem[2] = cols
+      return mobileItem
+    })
 
-    if (isMobile) {
-      local = layout.map((item: any) => {
-        const _item = item.slice() as any
-        _item[0] = 0
-        _item[2] = 12
-        return _item
-      })
-    } else {
-      local = layout
-    }
+    normalizeGrid(sortLayout(layout))
 
-    normalizeGrid(sortLayout(local))
-
-    _layout = local
+    return layout
   }
 
   function hook(node: HTMLElement, widget: App.Dashboard.Widget) {
@@ -47,6 +40,10 @@
     setTimeout(() => {
       node.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }, 100)
+  }
+
+  function onLayoutChange() {
+    dashboardEditor$.updateLayout()
   }
 </script>
 
@@ -59,9 +56,7 @@
   rowSize={26}
   minCols={3}
   readonly={device.isMobile}
-  onLayoutChange={() => {
-    dashboardEditor$.updateLayout()
-  }}
+  {onLayoutChange}
 >
   {@const widget = widgets[i]}
 
@@ -76,7 +71,7 @@
       <ImageWidget {widget} />
     {/if}
 
-    <Resizer onEnd={() => console.log(widget, layout)} />
+    <Resizer onEnd={onLayoutChange} />
   </widget>
 </Grid>
 

@@ -19,8 +19,6 @@
   // const { dashboardEditor$ } = DashboardEditor$$()
   // DashboardEditor$$()
 
-  let dashboard = { title: '', description: '' } as any
-
   // $: if (process.browser) updateDashboard($page$)
   $: dashboardEditor = $dashboardEditor$
 
@@ -31,14 +29,14 @@
 
     const data = page.url.searchParams.get('data')
     if (!data) {
-      dashboard = { title: '', description: '' }
+      // dashboard = { title: '', description: '' }
       dashboardEditor$.update([], [])
       return
     }
 
     const value = JSON.parse(data)
 
-    dashboard = value
+    // dashboard = value
     dashboardEditor$.update(value.widgets, value.layout)
   }
 
@@ -53,7 +51,7 @@
   const saveShortcut = GlobalShortcut$(
     'CMD+S',
     () => {
-      if (dashboard.title) {
+      if (dashboardEditor.name) {
         notifications$.show({
           type: 'success',
           title: 'Dashboard saved',
@@ -61,7 +59,7 @@
           dismissAfter: 4000,
         })
 
-        dashboard = { ...dashboard, ...dashboardEditor }
+        // dashboard = { ...dashboard, ...dashboardEditor }
       } else {
         notifications$.show({
           type: 'error',
@@ -94,7 +92,7 @@
     />
   </header>
 
-  <!-- <Grid /> -->
+  <Grid />
 
   <Actions />
 </main>
