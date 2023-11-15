@@ -36,7 +36,6 @@ export function DashboardEditor$$(apiDashboard?: null | App.ApiDashboard) {
       ...dashboardEditor$,
 
       updateLayout(forceUpdate = true) {
-        // state.layout = (state.layout)
         normalizeGrid(sortLayout(state.layout))
 
         if (forceUpdate) {
@@ -51,9 +50,17 @@ export function DashboardEditor$$(apiDashboard?: null | App.ApiDashboard) {
         state.layout.push(gridItem as SAN.SnapGrid.Item)
         state.widgets.push(widget)
 
-        this.updateLayout(false)
+        this.updateLayout()
+      },
 
-        dashboardEditor$.set(state)
+      removeWidget(widget: App.Dashboard.Widget) {
+        const index = state.widgets.indexOf(widget)
+        if (index < 0) return
+
+        state.widgets.splice(index, 1)
+        state.layout.splice(index, 1)
+
+        this.updateLayout()
       },
     },
   })
