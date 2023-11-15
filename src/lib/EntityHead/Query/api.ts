@@ -16,5 +16,5 @@ export const queryGenerateTitleBySql = (sql: string) =>
     description
   }
 }`,
-    { variables: { sql } },
+    { variables: { sql }, cache: false },
   ).then(({ data }) => data)

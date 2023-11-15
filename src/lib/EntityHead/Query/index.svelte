@@ -77,7 +77,7 @@
     ✨
   </button>
 
-  <button bind:this={titleNode} class="title btn body-2" class:typing>
+  <button bind:this={titleNode} class="title btn body-2" class:typing on:click>
     {queryEditor.name || 'Your first query'}
   </button>
 

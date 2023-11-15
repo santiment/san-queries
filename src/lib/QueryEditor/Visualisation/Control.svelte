@@ -8,6 +8,7 @@
   export let onUpdate: (value?: any) => void
   export let placeholder = ''
   export let defaultValue = ''
+  export let textarea = false
 
   function onInput(e: Event) {
     const inputNode = e.currentTarget as HTMLInputElement
@@ -24,7 +25,13 @@
 
 <control class="column gap-s relative">
   <!-- svelte-ignore a11y-label-has-associated-control -->
-  <label class="caption txt-m c-waterloo">{name}</label>
+  <div class="row v-center gap-s">
+    <label class="caption txt-m c-waterloo">
+      {name}
+    </label>
+
+    <slot name="label" />
+  </div>
 
   {#if options}
     <Tooltip on="click" position="bottom" activeClass="$style.opened" let:trigger>
@@ -58,6 +65,15 @@
         {/each}
       </svelte:fragment>
     </Tooltip>
+  {:else if textarea}
+    <textarea
+      class="input"
+      value={value || ''}
+      {placeholder}
+      on:input={onInput}
+      on:blur={onInputBlur}
+      rows={8}
+    />
   {:else}
     <input
       type="text"
@@ -91,5 +107,9 @@
   .default {
     color: var(--casper);
     opacity: 0.5;
+  }
+
+  textarea {
+    resize: vertical;
   }
 </style>

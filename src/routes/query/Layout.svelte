@@ -1,12 +1,12 @@
 <script lang="ts">
   import { GlobalShortcut$ } from 'webkit/utils/events'
-  import { getSEOLinkFromIdAndTitle } from 'webkit/utils/url'
   import { getTimeFormats } from 'webkit/utils/dates'
   import { getCurrentUser$Ctx } from 'webkit/stores/user'
   import { QueryHead } from '$lib/EntityHead'
   import QueryEditor, { TABS } from '$lib/QueryEditor/index.svelte'
   import { QueryEditor$$ } from './new/ctx'
-  import { startSaveQueryFlow } from './flow'
+  import { startSaveQueryFlow, startUpdateQueryEditorFlow } from './flow'
+  import { showNameDescriptionDialog } from '$lib/QueryEditor/NameDescriptionDialog/index.svelte'
 
   export let apiQuery = null as null | App.ApiQuery
   export let defaultSql = ''
@@ -16,13 +16,9 @@
 
   let QueryEditorNode: QueryEditor
 
-  function onSave() {
-    startSaveQueryFlow(queryEditor$).then((apiQuery) => {
-      window.history.replaceState(
-        '',
-        history.state,
-        '/query/' + getSEOLinkFromIdAndTitle(apiQuery.id, apiQuery.name),
-      )
+  function onSave(queryEditor = $queryEditor$, isPublic?: boolean) {
+    startSaveQueryFlow(queryEditor, isPublic).then((apiQuery) => {
+      startUpdateQueryEditorFlow(queryEditor$, apiQuery)
     })
   }
 
@@ -32,9 +28,7 @@
         QueryEditorNode.$set({ tab: TABS[1] })
       })
       .catch((error) => {
-        console.log(error)
         const { details } = error
-
         const { HH, mm, ss } = getTimeFormats(new Date())
 
         queryEditor$.addError({ date: `${HH}:${mm}:${ss}`, details })
@@ -43,12 +37,19 @@
       })
   }
 
-  const saveShortcut = GlobalShortcut$('CMD+S', onSave)
+  function onQueryNameClick() {
+    const queryEditor = $queryEditor$
+    showNameDescriptionDialog({ queryEditor }).then((updated) => {
+      onSave({ ...queryEditor, ...updated }, updated.isPublic)
+    })
+  }
+
+  const saveShortcut = GlobalShortcut$('CMD+S', () => onSave())
   $saveShortcut
 </script>
 
 <main class="column">
-  <QueryHead author={$currentUser$} {onQueryExecute} />
+  <QueryHead author={$currentUser$} {onQueryExecute} on:click={onQueryNameClick} />
 
   <slot />
 

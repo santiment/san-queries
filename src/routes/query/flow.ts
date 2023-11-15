@@ -1,8 +1,7 @@
-import { get } from 'svelte/store'
 import { notifications$ } from 'webkit/ui/Notifications'
-import { getSavedJson, saveJson } from 'webkit/utils/localStorage'
 import { mutateCreateSqlQuery } from '$lib/api/query/create'
 import { mutateUpdateSqlQuery } from '$lib/api/query/update'
+import { getSEOLinkFromIdAndTitle } from 'san-webkit/lib/utils/url'
 
 export function serializeQuerySettings(settings: App.QueryEditorStoreValue['settings']) {
   return {
@@ -15,8 +14,8 @@ export function serializeQuerySettings(settings: App.QueryEditorStoreValue['sett
   } as App.ApiQuery['settings']
 }
 
-export function startSaveQueryFlow(queryEditor$: App.QueryEditorStore) {
-  const { name, description, query, sql, parameters, settings } = get(queryEditor$)
+export function startSaveQueryFlow(queryEditor: App.QueryEditorStoreValue, isPublic = true) {
+  const { name, description, query, sql, parameters, settings } = queryEditor
 
   if (!name) {
     notifications$.show({
@@ -32,7 +31,7 @@ export function startSaveQueryFlow(queryEditor$: App.QueryEditorStore) {
     name,
     description,
     sql,
-    isPublic: true,
+    isPublic: query?.isPublic ?? isPublic,
     parameters,
 
     settings: serializeQuerySettings(settings),
@@ -43,21 +42,6 @@ export function startSaveQueryFlow(queryEditor$: App.QueryEditorStore) {
     : mutateCreateSqlQuery(variables)
 
   return promise.then((apiQuery) => {
-    console.log(apiQuery)
-    queryEditor$.setApiQuery(apiQuery)
-
-    if (query?.id) {
-      const saved = getSavedJson<any[]>('__QUERIES', []) as any
-      saved.some((v: any) => {
-        if (v.id === apiQuery.id) {
-          return Object.assign(v, apiQuery)
-        }
-      })
-      saveJson('__QUERIES', saved)
-    } else {
-      saveJson('__QUERIES', [...getSavedJson<any>('__QUERIES', []), apiQuery])
-    }
-
     notifications$.show({
       type: 'success',
       title: query?.id ? 'Query saved' : 'New query created',
@@ -67,4 +51,17 @@ export function startSaveQueryFlow(queryEditor$: App.QueryEditorStore) {
 
     return apiQuery
   })
+}
+
+export function startUpdateQueryEditorFlow(
+  queryEditor$: App.QueryEditorStore,
+  apiQuery: App.ApiQuery,
+) {
+  queryEditor$.setApiQuery(apiQuery)
+
+  window.history.replaceState(
+    '',
+    history.state,
+    '/query/' + getSEOLinkFromIdAndTitle(apiQuery.id, apiQuery.name),
+  )
 }
