@@ -36,10 +36,14 @@
     })
   }
 
-  function onParameterClick(parameter: any) {
+  function onParameterClick(parameter: App.Parameter) {
     showAddParameterDialog({ parameter, strict: true }).then(() => {
       queryEditor$.updateParameters()
     })
+  }
+
+  function onParameterRemove(i: number) {
+    queryEditor$.removeParameter(i)
   }
 </script>
 
@@ -59,7 +63,7 @@
         {parameter}
         color={COLORS[i]}
         on:click={() => onParameterClick(parameter)}
-        onRemoveClick={console.log}
+        onRemoveClick={() => onParameterRemove(i)}
       />
     {/each}
   </parameters>

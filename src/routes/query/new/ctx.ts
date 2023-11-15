@@ -116,6 +116,12 @@ export function QueryEditor$$(apiQuery?: null | App.ApiQuery, sql = '') {
         queryEditor$.set(store)
       },
 
+      removeParameter(i: number) {
+        store.parameters.splice(i, 1)
+
+        queryEditor$.set(store)
+      },
+
       updateSettings(column: string, value: any) {
         store.settings.columns[column] = { ...store.settings.columns[column], ...value }
 

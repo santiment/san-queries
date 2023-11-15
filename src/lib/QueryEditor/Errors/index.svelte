@@ -48,4 +48,8 @@
     border-radius: 4px;
     margin-top: -1px;
   }
+
+  pre {
+    white-space: pre-wrap;
+  }
 </style>
