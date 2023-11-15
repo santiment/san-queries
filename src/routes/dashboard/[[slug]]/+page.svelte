@@ -1,12 +1,13 @@
 <script lang="ts">
   import type { PageData } from './$types'
 
+  import { tick } from 'svelte'
   import { getCurrentUser$Ctx } from 'webkit/stores/user'
+  import { GlobalShortcut$ } from 'webkit/utils/events'
   import { DashboardHead } from '$lib/EntityHead'
   import DashboardEditor from '$lib/DashboardEditor/index.svelte'
   import { DashboardEditor$$ } from './ctx'
   import { startDashboardSaveFlow } from './flow'
-  import { GlobalShortcut$ } from 'san-webkit/lib/utils/events'
 
   export let data: PageData
 
@@ -14,14 +15,23 @@
   const { dashboardEditor$ } = DashboardEditor$$(data.apiDashboard)
 
   $: dashboardEditor = $dashboardEditor$
-  $: author = dashboardEditor.dashboard?.user || $currentUser$
+  $: ({ dashboard } = dashboardEditor)
+  $: author = dashboard?.user || $currentUser$
 
   $: console.log(data, dashboardEditor)
+
+  $: if (dashboard?.id !== data.apiDashboard?.id) updateDashboard(data.apiDashboard)
+
+  function updateDashboard(apiDashboard: (typeof data)['apiDashboard']) {
+    tick().then(() => dashboardEditor$.setApiDashboard(apiDashboard))
+  }
 
   const saveShortcut = GlobalShortcut$(
     'CMD+S',
     () => {
-      startDashboardSaveFlow(dashboardEditor).then(console.log)
+      startDashboardSaveFlow(dashboardEditor).then((apiDashboard) => {
+        dashboardEditor$.setApiDashboard(apiDashboard)
+      })
     },
     false,
   )

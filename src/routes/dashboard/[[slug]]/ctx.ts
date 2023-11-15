@@ -8,6 +8,7 @@ export const CTX = 'DashboardEditor$$'
 
 type Store = {
   dashboard?: null | App.ApiDashboard
+
   name: string
   description: string
 
@@ -68,6 +69,11 @@ export function DashboardEditor$$(apiDashboard?: null | App.ApiDashboard) {
   return setContext(CTX, {
     dashboardEditor$: {
       ...dashboardEditor$,
+
+      setApiDashboard(apiDashboard?: null | App.ApiDashboard) {
+        state = prepareStore(apiDashboard)
+        dashboardEditor$.set(state)
+      },
 
       updateLayout(forceUpdate = true) {
         normalizeGrid(sortLayout(state.layout))

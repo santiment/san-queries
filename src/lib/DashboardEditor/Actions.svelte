@@ -21,6 +21,7 @@
     })
   }
 
+  /*
   function onImageClick(e: Event) {
     const node = e.currentTarget as HTMLElement
     const inputNode = node.querySelector('input') as HTMLInputElement
@@ -34,6 +35,7 @@
 
     inputNode.click()
   }
+  */
 </script>
 
 <actions class="row gap-l caption">
@@ -45,11 +47,15 @@
   <!--   <Svg id="chart" w="16" /> -->
   <!--   Chart -->
   <!-- </button> -->
+
+  <!--
   <button class="btn" on:click={onImageClick}>
     <Svg id="image" w="16" />
     Image
     <input accept="image/*" type="file" class="hide" />
   </button>
+-->
+
   <!-- <button class="btn" on:click={onHeadingClick}> -->
   <!--   <Svg id="editor/heading" w="16" /> -->
   <!--   Heading -->
