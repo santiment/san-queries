@@ -65,12 +65,12 @@
     showNameDescriptionDialog({ queryEditor }).then((updated) => {
       const { id } = queryEditor.query || {}
 
+      queryEditor.name = updated.name
+      queryEditor.description = updated.description
+
+      queryEditor$.set(queryEditor)
+
       if (id) {
-        queryEditor.name = updated.name
-        queryEditor.description = updated.description
-
-        queryEditor$.set(queryEditor)
-
         EventQueryChanged$.dispatch({ ...updated, id })
       }
       // onSave({ ...queryEditor, ...updated }, updated.isPublic)

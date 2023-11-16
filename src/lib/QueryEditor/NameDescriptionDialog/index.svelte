@@ -19,7 +19,8 @@
   const query = queryEditor.query as App.ApiQuery
 
   const { sql } = queryEditor
-  let { name, description, isPublic } = query
+  let { name, description } = queryEditor
+  let { isPublic } = query || {}
 
   function onUpdateClick() {
     DialogCtx.resolve({ name, description, isPublic })
@@ -65,7 +66,7 @@
       <button class="btn-1" on:click={onUpdateClick} class:disabled={false}> Update </button>
       <button class="btn-2" on:click={() => DialogCtx.close()}>Cancel</button>
 
-      {#if isAuthor}
+      {#if isAuthor && isPublic !== undefined}
         <button class="btn mrg-a mrg--l row v-center" on:click={() => (isPublic = !isPublic)}>
           {isPublic ? 'Public' : 'Private'}
           <Toggle isActive={isPublic} class="mrg-m mrg--l" />
