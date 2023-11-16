@@ -29,3 +29,9 @@ export const EventQueryChanged$ = createEvent$<{
   description: string
   isPublic: boolean
 }>('QUERY_CHANGED')
+
+export const EventDashboardChanged$ = createEvent$<{
+  id: number
+  name?: string
+  description?: string
+}>('QUERY_CHANGED')

@@ -9,7 +9,7 @@
   import { getWorkspace$Ctx } from './ctx'
   import { queryGetUserQueries } from '$lib/api/query/get'
   import { queryGetUserDashboards } from '$lib/api/dashboard/get'
-  import { EventQueryChanged$ } from '$routes/query/events'
+  import { EventQueryChanged$, EventDashboardChanged$ } from '$routes/query/events'
 
   const { workspace$ } = getWorkspace$Ctx()
   const { search$ } = getSearch$Ctx()
@@ -61,6 +61,20 @@
     })
   })
   $eventQueryChanged
+
+  const eventDashboardChanged = EventDashboardChanged$((changed) => {
+    queryGetUserDashboards().then((items) => {
+      const shouldUpdate = items.some((item) => {
+        if (item.id !== changed.id) return
+
+        Object.assign(item, changed)
+        return true
+      })
+
+      if (shouldUpdate) loadDashboards()
+    })
+  })
+  $eventDashboardChanged
 
   function filterTree(input: RegExp, tree: WorkspaceTreeType) {
     return tree

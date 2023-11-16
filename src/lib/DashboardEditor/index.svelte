@@ -11,6 +11,7 @@
   // import { DashboardEditor$$ } from './ctx'
   import Grid from './Grid.svelte'
   import { getDashboardEditor$Ctx } from '$routes/dashboard/[[slug]]/ctx'
+  import { EventDashboardChanged$ } from '$routes/query/events'
 
   let className = ''
   export { className as class }
@@ -41,11 +42,28 @@
   }
 
   function onTitleChange(value: string) {
-    $dashboardEditor$.name = value
+    const { name, dashboard } = dashboardEditor
+    const { id } = dashboard || {}
+
+    if (name === value) return
+    // $dashboardEditor$.name = value
+
+    // if (id) {
+    EventDashboardChanged$.dispatch({ id, name: value })
+    // }
   }
 
   function onDescriptionChange(value: string) {
-    $dashboardEditor$.description = value
+    const { description, dashboard } = dashboardEditor
+    const { id } = dashboard || {}
+
+    if (description === value) return
+
+    // if (id) {
+    EventDashboardChanged$.dispatch({ id, description: value })
+    // }
+
+    // $dashboardEditor$.description = value
   }
 </script>
 

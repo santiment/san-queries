@@ -9,6 +9,8 @@
   import { DashboardEditor$$ } from './ctx'
   import { startDashboardSaveFlow } from './flow'
   import { getSEOLinkFromIdAndTitle } from 'san-webkit/lib/utils/url'
+  import { EventDashboardChanged$ } from '$routes/query/events'
+  import { mutateUpdateDashboard } from '$lib/api/dashboard/create'
 
   export let data: PageData
 
@@ -48,6 +50,16 @@
     false,
   )
   $saveShortcut
+
+  const eventDashboardChanged = EventDashboardChanged$(({ id, name, description }) => {
+    if (name !== undefined) $dashboardEditor$.name = name
+    if (description !== undefined) $dashboardEditor$.description = description
+
+    if (id) {
+      mutateUpdateDashboard({ id, name, description })
+    }
+  })
+  $eventDashboardChanged
 </script>
 
 <main class="column">
