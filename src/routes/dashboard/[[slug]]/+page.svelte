@@ -41,7 +41,7 @@
         window.history.replaceState(
           '',
           history.state,
-          '/query/' + getSEOLinkFromIdAndTitle(apiDashboard.id, apiDashboard.name),
+          '/dashboard/' + getSEOLinkFromIdAndTitle(apiDashboard.id, apiDashboard.name),
         )
       })
     },

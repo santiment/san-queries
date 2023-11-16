@@ -26,6 +26,10 @@ function prepareStore(apiDashboard?: null | App.ApiDashboard) {
     return { id, type: 'TEXT', value: body }
   }
 
+  function mapQueryWidget(query: App.ApiQuery) {
+    return { id: query.dashboardQueryMappingId, type: 'QUERY', title: query.name, query }
+  }
+
   if (layout.length === 0) {
     widgets = textWidgets.map(mapTextWidget)
     layout = widgets.map((widget, i) => {
@@ -46,7 +50,9 @@ function prepareStore(apiDashboard?: null | App.ApiDashboard) {
       .map(({ id, xywh }) => {
         const widget = IdToWidget[id]
         if (widget) {
-          widgets.push(mapTextWidget(widget))
+          if (widget.body) widgets.push(mapTextWidget(widget))
+          else widgets.push(mapQueryWidget(widget))
+
           return xywh.slice(0, 4)
         }
       })
