@@ -4,6 +4,7 @@
   import { GlobalShortcut$ } from 'webkit/utils/events'
   import Tooltip from 'webkit/ui/Tooltip'
   import { getQueryEditor$Ctx } from '$routes/query/new/ctx'
+  import { EventQueryExecute$ } from '$routes/query/events'
 
   let className = ''
   export { className as class }
@@ -21,6 +22,8 @@
     loading = true
 
     tooltipNode.open()
+
+    EventQueryExecute$.dispatch()
 
     const promise = queryEditor$.querySqlData()
 

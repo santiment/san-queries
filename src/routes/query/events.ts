@@ -23,6 +23,8 @@ function createEvent$<Data = undefined>(name: string) {
 
 export const EventQuerySave$ = createEvent$('QUERY_SAVE')
 
+export const EventQueryExecute$ = createEvent$('QUERY_EXECUTE')
+
 export const EventQueryChanged$ = createEvent$<{
   id: number
   name: string

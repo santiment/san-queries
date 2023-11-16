@@ -17,7 +17,7 @@
   import Errors from './Errors/index.svelte'
   import SQLEditor from '$lib/SQLEditor/index.svelte'
   import VisualisationTab from './Visualisation/index.svelte'
-  import { EventQuerySave$ } from '$routes/query/events'
+  import { EventQuerySave$, EventQueryExecute$ } from '$routes/query/events'
 
   export let tab = TABS[0] as (typeof TABS)[number]
 
@@ -40,12 +40,17 @@
   $errorsViewShortcut
 
   let SqlEditorNode: null | SQLEditor
-  const eventQuerySave = EventQuerySave$(() => {
+
+  function updateSql() {
     if (SqlEditorNode) {
       Object.assign(queryEditor, { sql: SqlEditorNode.getValue() })
     }
-  })
+  }
+  const eventQuerySave = EventQuerySave$(updateSql)
   $eventQuerySave
+
+  const eventQueryExecute = EventQueryExecute$(updateSql)
+  $eventQueryExecute
 </script>
 
 <Tabs
