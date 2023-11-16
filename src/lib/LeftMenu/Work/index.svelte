@@ -9,6 +9,7 @@
   import { getWorkspace$Ctx } from './ctx'
   import { queryGetUserQueries } from '$lib/api/query/get'
   import { queryGetUserDashboards } from '$lib/api/dashboard/get'
+  import { EventQueryChanged$ } from '$routes/query/events'
 
   const { workspace$ } = getWorkspace$Ctx()
   const { search$ } = getSearch$Ctx()
@@ -25,13 +26,20 @@
   let queries = [] as any[]
   let dashboards = [] as any[]
   $: if (process.browser) {
+    loadQueries()
+    loadDashboards()
+  }
+
+  function loadQueries() {
     queryGetUserQueries().then((data) => {
       queries = data.map((query) => ({
         ...query,
         type: TreeItemType.QUERY,
       }))
     })
+  }
 
+  function loadDashboards() {
     queryGetUserDashboards().then((data) => {
       dashboards = data.map((item) => ({
         ...item,
@@ -39,6 +47,20 @@
       }))
     })
   }
+
+  const eventQueryChanged = EventQueryChanged$((changed) => {
+    queryGetUserQueries().then((queries) => {
+      const shouldUpdate = queries.some((query) => {
+        if (query.id !== changed.id) return
+
+        Object.assign(query, changed)
+        return true
+      })
+
+      if (shouldUpdate) loadQueries()
+    })
+  })
+  $eventQueryChanged
 
   function filterTree(input: RegExp, tree: WorkspaceTreeType) {
     return tree

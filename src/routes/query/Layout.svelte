@@ -7,7 +7,10 @@
   import { QueryEditor$$ } from './new/ctx'
   import { startSaveQueryFlow, startUpdateQueryEditorFlow } from './flow'
   import { showNameDescriptionDialog } from '$lib/QueryEditor/NameDescriptionDialog/index.svelte'
-  import { EventQuerySave$ } from './events'
+  import { EventQuerySave$, EventQueryChanged$ } from './events'
+  import { queryGetSqlQuery } from '$lib/api/query/get'
+  import { mutateCreateSqlQuery } from '$lib/api/query/create'
+  import { mutateUpdateSqlQuery } from '$lib/api/query/update'
 
   export let apiQuery = null as null | App.ApiQuery
   export let defaultSql = ''
@@ -20,6 +23,8 @@
   function onSave(queryEditor = $queryEditor$, isPublic?: boolean) {
     startSaveQueryFlow(queryEditor, isPublic).then((apiQuery) => {
       startUpdateQueryEditorFlow(queryEditor$, apiQuery)
+
+      queryGetSqlQuery(apiQuery.id).then((data) => Object.assign(data, apiQuery))
     })
   }
 
@@ -48,7 +53,17 @@
   function onQueryNameClick() {
     const queryEditor = $queryEditor$
     showNameDescriptionDialog({ queryEditor }).then((updated) => {
-      onSave({ ...queryEditor, ...updated }, updated.isPublic)
+      const { id } = queryEditor.query || {}
+
+      if (id) {
+        queryEditor.name = updated.name
+        queryEditor.description = updated.description
+
+        queryEditor$.set(queryEditor)
+
+        EventQueryChanged$.dispatch({ ...updated, id })
+      }
+      // onSave({ ...queryEditor, ...updated }, updated.isPublic)
     })
   }
 
@@ -62,6 +77,11 @@
     false,
   )
   $saveShortcut
+
+  const eventQueryChanged = EventQueryChanged$((variables) => {
+    mutateUpdateSqlQuery(variables)
+  })
+  $eventQueryChanged
 </script>
 
 <main class="column">

@@ -2,16 +2,16 @@ import { mutate } from 'webkit/api'
 import { serializeParameters } from './utilts'
 
 export function mutateUpdateSqlQuery(
-  variables: { id: number } & {
+  variables: { id: number } & Partial<{
     name: string
-    description?: string
+    description: string
 
     sql: string
     parameters: App.Parameter[]
 
-    isPublic?: boolean
-    settings?: App.ApiQuery['settings']
-  },
+    isPublic: boolean
+    settings: App.ApiQuery['settings']
+  }>,
 ) {
   return mutate<SAN.API.Query<'query', App.ApiQuery>>(
     `mutation updateSqlQuery($id: Int!, $name: String, $description: String, $isPublic:Boolean, $settings: json, $sql: String, $parameters: json) {
