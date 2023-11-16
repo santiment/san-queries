@@ -1,4 +1,4 @@
-import { editor as monacoEditor, languages } from 'monaco-editor'
+import { editor as monacoEditor, languages, Uri } from 'monaco-editor'
 import { clickhouseLanguageDefinition as clickhouse } from '@popsql/monaco-sql-languages'
 import { COLORS } from '$lib/Parameter/colors'
 import { registerSuggestions } from './suggestions'
@@ -83,6 +83,15 @@ export async function createEditor(
     monarchDisposal = languages.setMonarchTokensProvider(languageId, _language)
   }
 
+  let [model] = monacoEditor.getModels()
+  if (!model) {
+    model = monacoEditor.createModel(value, languageId, new Uri().with({ path: 'test' }))
+  } else {
+    monacoEditor.setModelLanguage(model, languageId)
+  }
+
+  // console.log(model)
+
   const editor = monacoEditor.create(node, {
     ...options,
     value,
@@ -98,6 +107,7 @@ export async function createEditor(
     // @ts-ignore
     'bracketPairColorization.enabled': false,
   })
+  editor.setModel(model)
 
   function destroy() {
     confDisposal.dispose()

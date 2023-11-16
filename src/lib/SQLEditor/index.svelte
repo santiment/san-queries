@@ -57,6 +57,10 @@
         editor = ctx.editor
 
         console.log(editor)
+        // if (window.__model) editor.setModel(window.__model)
+        if (window.__viewState) editor.restoreViewState(window.__viewState)
+
+        editor.focus()
 
         editor.onDidBlurEditorText(onBlur)
         editor.onDidFocusEditorWidget(onFocus)
@@ -76,6 +80,12 @@
 
   onDestroy(() => {
     if (process.browser && EditorCtx) {
+      window.__model = editor!.getModel()
+      window.__viewState = editor!.saveViewState()
+
+      // console.log(editor!.getModels)
+
+      console.log('destroyed')
       EditorCtx.destroy()
     }
   })
