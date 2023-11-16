@@ -7,9 +7,8 @@
   import { QueryEditor$$ } from './new/ctx'
   import { startSaveQueryFlow, startUpdateQueryEditorFlow } from './flow'
   import { showNameDescriptionDialog } from '$lib/QueryEditor/NameDescriptionDialog/index.svelte'
-  import { EventQuerySave$, EventQueryChanged$ } from './events'
+  import { EventQuerySave$, EventQueryChanged$, EventQuerySaved$ } from './events'
   import { queryGetSqlQuery } from '$lib/api/query/get'
-  import { mutateCreateSqlQuery } from '$lib/api/query/create'
   import { mutateUpdateSqlQuery } from '$lib/api/query/update'
   import { tick } from 'svelte'
 
@@ -35,6 +34,8 @@
       startUpdateQueryEditorFlow(queryEditor$, apiQuery)
 
       queryGetSqlQuery(apiQuery.id).then((data) => Object.assign(data, apiQuery))
+
+      EventQuerySaved$.dispatch(apiQuery)
     })
   }
 

@@ -6,7 +6,10 @@ function createEvent$<Data = undefined>(name: string) {
 
   function CustomEvent$(clb: Clb) {
     return readable(null, () => {
-      const listener = ({ detail }: Event) => clb(detail)
+      const listener = (e: Event) => {
+        console.log(e)
+        clb(e.detail)
+      }
 
       if (process.browser) window.addEventListener<any>(name, listener)
       return () => process.browser && window.removeEventListener<any>(name, listener)
@@ -23,6 +26,8 @@ function createEvent$<Data = undefined>(name: string) {
 
 export const EventQuerySave$ = createEvent$('QUERY_SAVE')
 
+export const EventQuerySaved$ = createEvent$<{ id: number; name: string }>('QUERY_SAVED')
+
 export const EventQueryExecute$ = createEvent$('QUERY_EXECUTE')
 
 export const EventQueryChanged$ = createEvent$<{
@@ -36,4 +41,6 @@ export const EventDashboardChanged$ = createEvent$<{
   id: number
   name?: string
   description?: string
-}>('QUERY_CHANGED')
+}>('DASHBOARD_CHANGED')
+
+export const EventDashboardSaved$ = createEvent$<{ id: number; name: string }>('DASHBOARD_SAVED')

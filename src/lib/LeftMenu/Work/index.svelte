@@ -9,7 +9,12 @@
   import { getWorkspace$Ctx } from './ctx'
   import { queryGetUserQueries } from '$lib/api/query/get'
   import { queryGetUserDashboards } from '$lib/api/dashboard/get'
-  import { EventQueryChanged$, EventDashboardChanged$ } from '$routes/query/events'
+  import {
+    EventQueryChanged$,
+    EventDashboardChanged$,
+    EventQuerySaved$,
+    EventDashboardSaved$,
+  } from '$routes/query/events'
 
   const { workspace$ } = getWorkspace$Ctx()
   const { search$ } = getSearch$Ctx()
@@ -48,33 +53,58 @@
     })
   }
 
-  const eventQueryChanged = EventQueryChanged$((changed) => {
+  function changeOrCreateQuery(changed: any) {
     queryGetUserQueries().then((queries) => {
-      const shouldUpdate = queries.some((query) => {
+      let isFound = queries.some((query) => {
         if (query.id !== changed.id) return
 
         Object.assign(query, changed)
         return true
       })
 
-      if (shouldUpdate) loadQueries()
-    })
-  })
-  $eventQueryChanged
+      if (!isFound) {
+        queries.unshift(changed)
+      }
 
-  const eventDashboardChanged = EventDashboardChanged$((changed) => {
+      loadQueries()
+    })
+  }
+
+  function changeOrCreateDashboard(changed) {
+    if (changed.id === undefined) return
+
     queryGetUserDashboards().then((items) => {
-      const shouldUpdate = items.some((item) => {
+      const isFound = items.some((item) => {
         if (item.id !== changed.id) return
 
         Object.assign(item, changed)
         return true
       })
 
-      if (shouldUpdate) loadDashboards()
+      if (!isFound) {
+        items.unshift(changed)
+      }
+
+      loadDashboards()
     })
+  }
+
+  const eventQueryChanged = EventQueryChanged$((changed) => {
+    console.log({ changed })
+    changeOrCreateQuery(changed)
   })
+  $eventQueryChanged
+  const eventQuerySaved = EventQuerySaved$((saved) => {
+    console.log({ saved })
+    changeOrCreateQuery(saved)
+  })
+  $eventQuerySaved
+
+  const eventDashboardChanged = EventDashboardChanged$(changeOrCreateDashboard)
   $eventDashboardChanged
+
+  const eventDashboardSaved = EventDashboardSaved$(changeOrCreateDashboard)
+  $eventDashboardSaved
 
   function filterTree(input: RegExp, tree: WorkspaceTreeType) {
     return tree

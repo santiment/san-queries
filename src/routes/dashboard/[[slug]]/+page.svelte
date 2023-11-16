@@ -9,7 +9,7 @@
   import { DashboardEditor$$ } from './ctx'
   import { startDashboardSaveFlow } from './flow'
   import { getSEOLinkFromIdAndTitle } from 'san-webkit/lib/utils/url'
-  import { EventDashboardChanged$ } from '$routes/query/events'
+  import { EventDashboardChanged$, EventDashboardSaved$ } from '$routes/query/events'
   import { mutateUpdateDashboard } from '$lib/api/dashboard/create'
 
   export let data: PageData
@@ -39,6 +39,8 @@
 
         data.apiDashboard = apiDashboard
         dashboardEditor$.setApiDashboard(apiDashboard)
+
+        EventDashboardSaved$.dispatch(apiDashboard)
 
         window.history.replaceState(
           '',
