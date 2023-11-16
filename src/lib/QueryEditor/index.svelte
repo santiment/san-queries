@@ -11,16 +11,15 @@
 <script lang="ts">
   // import Svg from 'webkit/ui/Svg/svelte'
   import Tabs from 'webkit/ui/Tabs'
-  import { noop } from 'webkit/utils'
   import { GlobalShortcut$ } from 'webkit/utils/events'
   import { getQueryEditor$Ctx } from '$routes/query/new/ctx'
   import ScreenControls from './ScreenControls.svelte'
   import Errors from './Errors/index.svelte'
   import SQLEditor from '$lib/SQLEditor/index.svelte'
   import VisualisationTab from './Visualisation/index.svelte'
+  import { EventQuerySave$ } from '$routes/query/events'
 
   export let tab = TABS[0] as (typeof TABS)[number]
-  export let onEditorSave = noop
 
   const { queryEditor$ } = getQueryEditor$Ctx()
 
@@ -39,6 +38,14 @@
 
   const errorsViewShortcut = GlobalShortcut$('CMD+3', () => (tab = TABS[2]), false)
   $errorsViewShortcut
+
+  let SqlEditorNode: null | SQLEditor
+  const eventQuerySave = EventQuerySave$(() => {
+    if (SqlEditorNode) {
+      Object.assign(queryEditor, { sql: SqlEditorNode.getValue() })
+    }
+  })
+  $eventQuerySave
 </script>
 
 <Tabs
@@ -53,7 +60,12 @@
   <ScreenControls {tab} />
 
   {#if tab === TABS[0]}
-    <SQLEditor value={sql} {parameters} onValueChange={onEditorValueChange} onSave={onEditorSave} />
+    <SQLEditor
+      bind:this={SqlEditorNode}
+      value={sql}
+      {parameters}
+      onValueChange={onEditorValueChange}
+    />
   {:else if tab === TABS[1]}
     <VisualisationTab />
   {:else if tab === TABS[2]}

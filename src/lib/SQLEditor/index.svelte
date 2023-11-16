@@ -27,7 +27,7 @@
     // editor?.setValue(value)
   }
 
-  function getValue() {
+  export function getValue() {
     return editor?.getValue() ?? value
   }
 
@@ -65,15 +65,15 @@
         editor.onDidBlurEditorText(onBlur)
         editor.onDidFocusEditorWidget(onFocus)
 
-        editor.onKeyDown((e) => {
-          if (e.keyCode === 49 && (e.ctrlKey || e.metaKey)) {
-            e.preventDefault()
-
-            value = getValue()
-            onValueChange(value)
-            onSave()
-          }
-        })
+        // editor.onKeyDown((e) => {
+        //   if (e.keyCode === 49 && (e.ctrlKey || e.metaKey)) {
+        //     e.preventDefault()
+        //
+        //     value = getValue()
+        //     onValueChange(value)
+        //     onSave()
+        //   }
+        // })
       })
     })
   })

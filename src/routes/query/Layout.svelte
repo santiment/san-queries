@@ -7,6 +7,7 @@
   import { QueryEditor$$ } from './new/ctx'
   import { startSaveQueryFlow, startUpdateQueryEditorFlow } from './flow'
   import { showNameDescriptionDialog } from '$lib/QueryEditor/NameDescriptionDialog/index.svelte'
+  import { EventQuerySave$ } from './events'
 
   export let apiQuery = null as null | App.ApiQuery
   export let defaultSql = ''
@@ -51,7 +52,15 @@
     })
   }
 
-  const saveShortcut = GlobalShortcut$('CMD+S', () => onSave())
+  const saveShortcut = GlobalShortcut$(
+    'CMD+S',
+    () => {
+      EventQuerySave$.dispatch()
+
+      onSave()
+    },
+    false,
+  )
   $saveShortcut
 </script>
 
@@ -60,7 +69,7 @@
 
   <slot />
 
-  <QueryEditor bind:this={QueryEditorNode} onEditorSave={onSave} />
+  <QueryEditor bind:this={QueryEditorNode} />
 </main>
 
 <style>
