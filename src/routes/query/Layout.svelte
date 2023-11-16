@@ -11,6 +11,7 @@
   import { queryGetSqlQuery } from '$lib/api/query/get'
   import { mutateCreateSqlQuery } from '$lib/api/query/create'
   import { mutateUpdateSqlQuery } from '$lib/api/query/update'
+  import { tick } from 'svelte'
 
   export let apiQuery = null as null | App.ApiQuery
   export let defaultSql = ''
@@ -19,6 +20,15 @@
   const { queryEditor$ } = QueryEditor$$(apiQuery, defaultSql)
 
   let QueryEditorNode: QueryEditor
+
+  $: updateQuery(apiQuery)
+
+  function updateQuery(apiQuery: any) {
+    const query = $queryEditor$.query
+    if (query?.id === apiQuery?.id) return
+
+    tick().then(() => queryEditor$.setApiQuery(apiQuery))
+  }
 
   function onSave(queryEditor = $queryEditor$, isPublic?: boolean) {
     startSaveQueryFlow(queryEditor, isPublic).then((apiQuery) => {

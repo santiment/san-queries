@@ -51,6 +51,9 @@
 
   const eventQueryExecute = EventQueryExecute$(updateSql)
   $eventQueryExecute
+
+  $: id = queryEditor.query?.id
+  $: console.log(queryEditor, id)
 </script>
 
 <Tabs
@@ -65,12 +68,15 @@
   <ScreenControls {tab} />
 
   {#if tab === TABS[0]}
-    <SQLEditor
-      bind:this={SqlEditorNode}
-      value={sql}
-      {parameters}
-      onValueChange={onEditorValueChange}
-    />
+    {#key id}
+      <SQLEditor
+        bind:this={SqlEditorNode}
+        {id}
+        value={sql}
+        {parameters}
+        onValueChange={onEditorValueChange}
+      />
+    {/key}
   {:else if tab === TABS[1]}
     <VisualisationTab />
   {:else if tab === TABS[2]}

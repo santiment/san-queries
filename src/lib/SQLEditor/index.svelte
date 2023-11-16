@@ -14,6 +14,7 @@
   export let editor = null as null | monacoEditor.IStandaloneCodeEditor
   export let onValueChange = noop as (value: string) => void
   export let onSave = noop as () => void
+  export let id: any
 
   let editorNode: HTMLElement
   let EditorCtx: EditorCtxType
@@ -52,7 +53,7 @@
     if (resizerNode.contentWindow) resizerNode.contentWindow.onresize = onResize
 
     import('./editor').then(({ createEditor }) => {
-      createEditor(editorNode, value, options).then((ctx) => {
+      createEditor(editorNode, value, options, id).then((ctx) => {
         EditorCtx = ctx
         editor = ctx.editor
 
@@ -61,6 +62,7 @@
         if (window.__viewState) editor.restoreViewState(window.__viewState)
 
         editor.focus()
+        onFocus()
 
         editor.onDidBlurEditorText(onBlur)
         editor.onDidFocusEditorWidget(onFocus)

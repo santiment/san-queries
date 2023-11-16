@@ -49,6 +49,7 @@ export async function createEditor(
   node: HTMLElement,
   value: string,
   options?: monacoEditor.IStandaloneEditorConstructionOptions,
+  fileId?: any,
 ) {
   const languageId = clickhouse.id + id++
 
@@ -83,14 +84,11 @@ export async function createEditor(
     monarchDisposal = languages.setMonarchTokensProvider(languageId, _language)
   }
 
-  let [model] = monacoEditor.getModels()
-  if (!model) {
-    model = monacoEditor.createModel(value, languageId, new Uri().with({ path: 'test' }))
-  } else {
-    monacoEditor.setModelLanguage(model, languageId)
-  }
+  const uri = new Uri().with({ path: fileId })
 
-  // console.log(model)
+  const model = monacoEditor.getModel(uri) || monacoEditor.createModel(value, languageId, uri)
+
+  monacoEditor.setModelLanguage(model, languageId)
 
   const editor = monacoEditor.create(node, {
     ...options,
