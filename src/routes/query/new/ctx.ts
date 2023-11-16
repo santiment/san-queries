@@ -29,7 +29,7 @@ type Store = {
   }
 }
 
-function parseQuerySettings(querySettings: App.ApiQuery['settings']) {
+export function parseQuerySettings(querySettings: App.ApiQuery['settings']) {
   const settings = {
     columns: {},
   }
@@ -50,6 +50,15 @@ function parseQuerySettings(querySettings: App.ApiQuery['settings']) {
   return settings
 }
 
+export function parseQueryParameters(parameters: App.ApiQuery['sqlQueryParameters']) {
+  return parameters
+    ? Object.keys(parameters).map((key) => {
+        const value = parameters[key]
+        return { key, value, type: Number.isFinite(value) ? 'Number' : 'Text' }
+      })
+    : []
+}
+
 function prepareStore(apiQuery?: null | App.ApiQuery, sql = '') {
   const { name = '', description = '', settings, sqlQueryText, sqlQueryParameters } = apiQuery || {}
 
@@ -59,12 +68,7 @@ function prepareStore(apiQuery?: null | App.ApiQuery, sql = '') {
     name,
     description,
     sql: sqlQueryText || sql,
-    parameters: sqlQueryParameters
-      ? Object.keys(sqlQueryParameters).map((key) => {
-          const value = sqlQueryParameters[key]
-          return { key, value, type: Number.isFinite(value) ? 'Number' : 'Text' }
-        })
-      : [],
+    parameters: parseQueryParameters(sqlQueryParameters),
     sqlData: { headers: [], types: [], rows: [] },
     sqlErrors: [],
 

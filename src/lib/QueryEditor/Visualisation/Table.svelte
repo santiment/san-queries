@@ -27,6 +27,7 @@
 </script>
 
 <script lang="ts">
+  import { noop } from 'webkit/utils'
   import Table from 'webkit/ui/Table/Paged.svelte'
 
   let className = ''
@@ -35,7 +36,7 @@
   export let ColumnSettings = {} as any
   export let border = true
   export let columns = undefined as undefined | TableColumn[]
-  export let onSortClick = undefined as any
+  export let onSortClick = noop as any
   export let sort = { column: undefined, dir: 'desc' as 'desc' | 'asc' }
 
   $: tableColumns = columns || getTableColumns(sqlData, ColumnSettings)

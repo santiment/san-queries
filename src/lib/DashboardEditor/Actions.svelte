@@ -15,8 +15,8 @@
 
   function onQueryClick() {
     showAddQueryToDashboardDialog({
-      onQueryAdd: () => {
-        dashboardEditor$.addWidget({ type: 'QUERY', title: 'Bitcoin daily active addresses' })
+      onQueryAdd: (apiQuery: App.ApiQuery) => {
+        dashboardEditor$.addWidget({ type: 'QUERY', title: apiQuery.name, query: apiQuery })
       },
     })
   }

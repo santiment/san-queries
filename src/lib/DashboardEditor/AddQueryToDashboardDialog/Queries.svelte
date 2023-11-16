@@ -1,32 +1,32 @@
 <script lang="ts">
+  import { queryGetUserQueries } from '$lib/api/query/get'
   import Profile from 'webkit/ui/Profile/svelte'
   import Svg from 'webkit/ui/Svg/svelte'
 
   export let onQueryAdd: (query: App.Dashboard.Query) => void
 
-  const QUERIES = ['chart', 'table'] as App.Dashboard.Query[]
+  let queries = [] as Awaited<ReturnType<typeof queryGetUserQueries>>
+
+  queryGetUserQueries().then((data) => {
+    queries = data
+  })
 </script>
 
 <queries class="column gap-s">
-  {#each QUERIES as item}
+  {#each queries as item}
     <query class="btn row v-center gap-s">
       <Profile
         class="c-fiord"
-        user={{
-          id: 0,
-          username: 'brianq',
-          avatarUrl:
-            'https://production-sanbase-images.s3.amazonaws.com/uploads/b0491479eb1927335173d4fcfee35e04c79e357c33bb95aa5027320c47e471bc_1575478604555_1575478602965.jpeg',
-        }}
+        user={item.user}
         source="queries_add_query_to_dashboard"
         feature="query"
       />
 
-      <div class="br mrg"></div>
+      <div class="br mrg" />
 
       <article class="row v-center gap-s">
-        <Svg id={item} w="12"></Svg>
-        <span class="single-line">WETH borrowed on AAVE platform 22.03.22-22.03.23</span>
+        <Svg id="table" w="12" />
+        <span class="single-line">{item.name}</span>
       </article>
 
       <button class="btn-2 mrg-a mrg--l" on:click={() => onQueryAdd(item)}>Add</button>
