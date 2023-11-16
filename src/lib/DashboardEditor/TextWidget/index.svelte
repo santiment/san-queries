@@ -11,7 +11,7 @@
 
   let editor: any
 
-  function onInput() {
+  function onBlur() {
     if (!editor) return
 
     const value = editor.serialize()
@@ -25,7 +25,7 @@
   }
 </script>
 
-<text-widget class="row border body-2 relative" on:input={onInput}>
+<text-widget class="row border body-2 relative" on:focusout={onBlur}>
   <Editor
     bind:editor
     placeholder="Add your text here..."
