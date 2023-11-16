@@ -7,7 +7,8 @@ export const QUERY_FRAGMENT = `id
       #createdAt # Cannot return null for non-nullable field
       settings
       sqlQueryParameters
-      sqlQueryText`
+      sqlQueryText
+      dashboardQueryMappingId`
 
 export const queryGetSqlQuery = Universal(
   (query) => (id: number) =>

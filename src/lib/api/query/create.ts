@@ -46,6 +46,8 @@ declare global {
       sqlQueryParameters: Record<string, number | string>
       sqlQueryText: string
 
+      dashboardQueryMappingId: string
+
       settings: {
         columns?: Record<
           string,

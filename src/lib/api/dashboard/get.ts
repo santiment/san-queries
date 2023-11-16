@@ -1,4 +1,5 @@
 import { Universal } from 'webkit/api'
+import { QUERY_FRAGMENT } from '../query/get'
 
 export const DASHBOARD_FRAGMENT = `
 id
@@ -7,6 +8,7 @@ description
 isPublic
 settings
 textWidgets { id body }
+queries {${QUERY_FRAGMENT}}
 `
 
 export const queryGetDashboard = Universal(
@@ -42,6 +44,7 @@ declare global {
       user: SAN.Author
 
       textWidgets: ApiTextWidget[]
+      queries: App.ApiQuery[]
     }
   }
 }

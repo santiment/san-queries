@@ -70,3 +70,28 @@ export function mutateDeleteDashboardTextWidget(dashboardId: number, widgetId: s
   }`,
   )
 }
+
+// -------
+
+export function mutateCreateDashboardQuery(variables: { dashboardId: number; queryId: number }) {
+  return mutate<SAN.API.Query<'created', { id: string }>>(
+    `mutation ($dashboardId: Int!, $queryId: Int!) {
+    created:createDashboardQuery(dashboardId:$dashboardId, queryId:$queryId) {
+      id
+    }
+  }`,
+    { variables },
+  ).then(({ created }) => created)
+}
+
+export function mutateDeleteDashboardQuery(dashboardId: number, widgetId: string) {
+  return mutate<SAN.API.Query<'deleted', { id: string }>>(
+    `mutation {
+    deleted:deleteDashboardQuery(dashboardId:${dashboardId}, dashboardQueryMappingId:${JSON.stringify(
+      widgetId,
+    )}) {
+      id
+    }
+  }`,
+  )
+}

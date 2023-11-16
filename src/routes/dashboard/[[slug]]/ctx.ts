@@ -17,7 +17,7 @@ type Store = {
 }
 
 function prepareStore(apiDashboard?: null | App.ApiDashboard) {
-  const { name = '', description = '', textWidgets = [] } = apiDashboard || {}
+  const { name = '', description = '', textWidgets = [], queries = [] } = apiDashboard || {}
 
   let { layout = [] } = apiDashboard?.settings || {}
   let widgets = []
@@ -37,6 +37,10 @@ function prepareStore(apiDashboard?: null | App.ApiDashboard) {
       acc[v.id] = v
       return acc
     }, {} as Record<string, any>)
+
+    queries.forEach((query) => {
+      IdToWidget[query.dashboardQueryMappingId] = query
+    })
 
     layout = layout
       .map(({ id, xywh }) => {

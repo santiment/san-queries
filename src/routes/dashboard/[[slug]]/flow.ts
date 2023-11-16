@@ -1,6 +1,8 @@
 import {
   mutateAddDashboardTextWidget,
   mutateCreateDashboard,
+  mutateCreateDashboardQuery,
+  mutateDeleteDashboardQuery,
   mutateDeleteDashboardTextWidget,
   mutateUpdateDashboard,
   mutateUpdateDashboardTextWidget,
@@ -23,14 +25,16 @@ function Diff<T>(type: T, key: 'textWidgets', dashboardEditor: App.DashboardEdit
     else added.add(item)
   })
 
-  dashboardEditor.dashboard![key].forEach(({ id, body }) => {
-    const widget = present.get(id)
+  dashboardEditor.dashboard![key].forEach(({ id, body, dashboardQueryMappingId }) => {
+    const widgetId = dashboardQueryMappingId || id
+
+    const widget = present.get(widgetId)
     if (widget) {
       if (widget.value !== body) updated.add(widget)
       return
     }
 
-    removed.add(id)
+    removed.add(widgetId)
   })
 
   return { removed: [...removed], added: [...added], updated: [...updated] }
@@ -62,10 +66,18 @@ export async function startDashboardSaveFlow(dashboardEditor: App.DashboardEdito
 
   const diffTextWidgets = Diff('TEXT', 'textWidgets', dashboardEditor)
 
+  const diffQueryWidgets = Diff('QUERY', 'queries', dashboardEditor)
+
+  console.log(diffQueryWidgets)
+
+  // throw new Error(123)
+
   console.log(diffTextWidgets)
 
   // TODO: Should await removals and updates? [@vanguard | 15 Nov, 2023]
   diffTextWidgets.removed.map((widgetId) => mutateDeleteDashboardTextWidget(dashboard.id, widgetId))
+  diffQueryWidgets.removed.map((widgetId) => mutateDeleteDashboardQuery(dashboard.id, widgetId))
+
   diffTextWidgets.updated.map((widget) =>
     mutateUpdateDashboardTextWidget({
       id: widget.id!,
@@ -77,6 +89,12 @@ export async function startDashboardSaveFlow(dashboardEditor: App.DashboardEdito
   await Promise.all([
     ...diffTextWidgets.added.map((widget) =>
       mutateAddDashboardTextWidget({ dashboardId: dashboard.id, value: widget.value }).then(
+        ({ id }) => (widget.id = id),
+      ),
+    ),
+
+    ...diffQueryWidgets.added.map((widget) =>
+      mutateCreateDashboardQuery({ dashboardId: dashboard.id, queryId: widget.query.id }).then(
         ({ id }) => (widget.id = id),
       ),
     ),

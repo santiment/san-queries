@@ -19,9 +19,9 @@ declare global {
 
       type QueryWidget = DashboardWidget<'QUERY'> & {
         title: string
-        data: App.ApiQuery
-        settings: any
-        parameters: any
+        query: App.ApiQuery
+        // settings: any
+        // parameters: any
       }
 
       type ImageWidget = DashboardWidget<'IMAGE'> & {
