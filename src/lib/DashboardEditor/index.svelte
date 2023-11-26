@@ -11,7 +11,7 @@
   // import { DashboardEditor$$ } from './ctx'
   import Grid from './Grid.svelte'
   import { getDashboardEditor$Ctx } from '$routes/dashboard/[[slug]]/ctx'
-  import { EventDashboardChanged$ } from '$routes/query/events'
+  import { EventDashboardChanged$ } from '$routes/(editor)/query/events'
 
   let className = ''
   export { className as class }

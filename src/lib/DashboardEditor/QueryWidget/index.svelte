@@ -4,7 +4,7 @@
   import Table from '$lib/QueryEditor/Visualisation/Table.svelte'
   import { getDashboardEditor$Ctx } from '../ctx'
   import { showVisualisationFullscreenDialog } from '$lib/QueryEditor/Visualisation/FullscreenDialog/index.svelte'
-  import { parseQuerySettings, parseQueryParameters } from '$routes/query/new/ctx'
+  import { parseQuerySettings, parseQueryParameters } from '$routes/(editor)/query/new/ctx'
 
   export let widget: App.Dashboard.QueryWidget
 

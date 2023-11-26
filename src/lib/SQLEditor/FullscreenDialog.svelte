@@ -8,7 +8,7 @@
 
 <script lang="ts">
   import Dialog from 'webkit/ui/Dialog'
-  import { getQueryEditor$Ctx } from '$routes/query/new/ctx'
+  import { getQueryEditor$Ctx } from '$routes/(editor)/query/new/ctx'
   import SQLEditor from './index.svelte'
 
   export let title = 'Untitled query'

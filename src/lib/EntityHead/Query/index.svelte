@@ -3,7 +3,7 @@
   import { getCurrentUser$Ctx } from 'webkit/stores/user'
   import Svg from 'webkit/ui/Svg/svelte'
   import { showShareDialog } from 'webkit/ui/Share/index.svelte'
-  import { getQueryEditor$Ctx } from '$routes/query/new/ctx'
+  import { getQueryEditor$Ctx } from '$routes/(editor)/query/new/ctx'
   import { queryGenerateTitleBySql } from './api'
   import ExecuteButton from './ExecuteButton.svelte'
   import Head from '../index.svelte'

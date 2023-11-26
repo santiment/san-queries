@@ -14,7 +14,7 @@
     EventDashboardChanged$,
     EventQuerySaved$,
     EventDashboardSaved$,
-  } from '$routes/query/events'
+  } from '$routes/(editor)/query/events'
 
   const { workspace$ } = getWorkspace$Ctx()
   const { search$ } = getSearch$Ctx()

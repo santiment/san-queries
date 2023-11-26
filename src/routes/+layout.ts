@@ -14,7 +14,7 @@ export const load: LayoutLoad = (event) => {
   if (!data.currentUser) {
     if (event.route.id?.startsWith('/(auth)/')) return { session: data }
 
-    throw redirect(302, '/sign-up')
+    // throw redirect(302, '/sign-up')
   }
 
   return {

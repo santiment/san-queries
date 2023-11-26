@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { getQueryEditor$Ctx } from '$routes/query/new/ctx'
+  import { getQueryEditor$Ctx } from '$routes/(editor)/query/new/ctx'
 
   const { queryEditor$ } = getQueryEditor$Ctx()
 

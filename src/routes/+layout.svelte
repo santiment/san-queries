@@ -10,8 +10,6 @@
   import FeatureWalkthrough from 'webkit/ui/FeatureWalkthrough/svelte'
   import OnlyOnDevice from 'webkit/ui/OnlyOnDevice.svelte'
   import NavHeader from '$lib/NavHeader/index.svelte'
-  import LeftMenu from '$lib/LeftMenu/index.svelte'
-  import { Workspace$$ } from '$lib/LeftMenu/Work/ctx'
 
   export let data: LayoutData
 
@@ -19,7 +17,6 @@
   Customer$$(data.session.customer)
   UI$$()
   const { device$ } = Device$$(data.session.device)
-  Workspace$$()
 </script>
 
 <svelte:window on:resize={device$.onResize} />
@@ -29,10 +26,6 @@
 </OnlyOnDevice>
 
 <screen class="row">
-  <OnlyOnDevice desktop>
-    <LeftMenu />
-  </OnlyOnDevice>
-
   <slot />
 </screen>
 

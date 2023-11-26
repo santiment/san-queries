@@ -5,7 +5,7 @@
   import { showVisualisationFullscreenDialog } from './Visualisation/FullscreenDialog/index.svelte'
   import { showSqlEditorFullscreenDialog$ } from '$lib/SQLEditor/FullscreenDialog.svelte'
   import { showAddParameterDialog$ } from '$lib/Parameter/AddParameterDialog.svelte'
-  import { getQueryEditor$Ctx } from '$routes/query/new/ctx'
+  import { getQueryEditor$Ctx } from '$routes/(editor)/query/new/ctx'
 
   export let tab = TABS[0] as (typeof TABS)[number]
 
