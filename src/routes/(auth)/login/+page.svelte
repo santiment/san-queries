@@ -5,11 +5,4 @@
   const { onMetamaskClick } = getAuthCtx() || {}
 </script>
 
-<LoginPrompt
-  title="Welcome to Queries"
-  isSignUp
-  bottomLabel="Have an account?"
-  bottomAction="Log in"
-  bottomHref="/login"
-  {onMetamaskClick}
-/>
+<LoginPrompt title="Welcome back" {onMetamaskClick} />

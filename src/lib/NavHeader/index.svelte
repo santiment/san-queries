@@ -41,6 +41,7 @@
   header {
     border-bottom: 1px solid var(--porcelain);
     padding: 16px 24px;
+    background: var(--white);
   }
 
   .btn-ghost {
