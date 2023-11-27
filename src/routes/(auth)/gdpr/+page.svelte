@@ -23,4 +23,4 @@
   <title>GDPR - Santiment Queries</title>
 </svelte:head>
 
-<Gdpr currentUser={$currentUser$} {onAccept} />
+<Gdpr title="Welcome to Queries" currentUser={$currentUser$} {onAccept} />

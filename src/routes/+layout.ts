@@ -2,6 +2,7 @@ import type { LayoutLoad } from './$types'
 
 import '../setup'
 import { redirect } from '@sveltejs/kit'
+import { handleGdprAccess } from './(auth)/flow'
 
 let hasBooted = false
 
@@ -21,10 +22,12 @@ export const load: LayoutLoad = (event) => {
 
   setupKitClientSession(data)
 
-  if (!data.currentUser) {
-    if (event.route.id?.startsWith('/(auth)/')) return { session: data }
+  handleGdprAccess(data.currentUser, event.url)
 
-    throw redirect(302, '/sign-up')
+  if (!data.currentUser) {
+    if (event.route.id?.startsWith('/(editor)/')) {
+      throw redirect(302, '/sign-up')
+    }
   }
 
   return {

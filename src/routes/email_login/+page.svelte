@@ -4,6 +4,7 @@
   // import { LoginType } from 'webkit/analytics/events/general'
   import { goto } from '$app/navigation'
   import { mutateVerifyEmail } from './api'
+  // import { tick } from 'svelte'
   // import { trackSignupLogin } from '$lib/utils/analytics'
   // import PageLoader from '$lib/PageLoader.svelte'
 
