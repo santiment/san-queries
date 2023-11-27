@@ -16,12 +16,14 @@
   const { queryEditor$ } = getQueryEditor$Ctx()
 
   function onEditorValueChange(sql: string) {
-    queryEditor$.set({ sql })
+    // queryEditor$.set({ sql })
   }
+
+  $: id = $queryEditor$.query?.id
 </script>
 
 <Dialog {...$$props} {title}>
-  <SQLEditor value={$queryEditor$.sql} onValueChange={onEditorValueChange} />
+  <SQLEditor value={$queryEditor$.sql} onValueChange={onEditorValueChange} {id} />
 </Dialog>
 
 <style lang="scss">
