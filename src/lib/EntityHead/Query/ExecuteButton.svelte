@@ -3,7 +3,7 @@
   import { CMD } from 'webkit/utils/os'
   import { GlobalShortcut$ } from 'webkit/utils/events'
   import Tooltip from 'webkit/ui/Tooltip'
-  import { getQueryEditor$Ctx } from '$routes/(editor)/query/new/ctx'
+  import { getQueryEditor$Ctx } from '$routes/(editor)/query/ctx'
   import { EventQueryExecute$ } from '$routes/(editor)/query/events'
 
   let className = ''

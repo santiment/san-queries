@@ -8,7 +8,7 @@
   // import { getDashboardEditor$Ctx } from './ctx'
   import { getDevice$Ctx } from 'san-webkit/lib/stores/responsive'
   import { normalizeGrid, sortLayout } from 'san-webkit/lib/ui/SnapGrid/layout'
-  import { getDashboardEditor$Ctx } from '$routes/dashboard/[[slug]]/ctx'
+  import { getDashboardEditor$Ctx } from '$routes/(editor)/dashboard/[[slug]]/ctx'
 
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
   const { device$ } = getDevice$Ctx()

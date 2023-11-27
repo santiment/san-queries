@@ -1,6 +1,6 @@
 <script lang="ts">
   import SpinLoader from 'webkit/ui/SpinLoader.svelte'
-  import { getQueryEditor$Ctx } from '$routes/(editor)/query/new/ctx'
+  import { getQueryEditor$Ctx } from '$routes/(editor)/query/ctx'
   import Control from './Control.svelte'
   import Table, { getTableColumns } from './Table.svelte'
   import TableControls from './Table/Controls.svelte'

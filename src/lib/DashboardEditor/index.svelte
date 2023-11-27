@@ -10,7 +10,7 @@
   import ContentEditable from './ContentEditable.svelte'
   // import { DashboardEditor$$ } from './ctx'
   import Grid from './Grid.svelte'
-  import { getDashboardEditor$Ctx } from '$routes/dashboard/[[slug]]/ctx'
+  import { getDashboardEditor$Ctx } from '$routes/(editor)/dashboard/[[slug]]/ctx'
   import { EventDashboardChanged$ } from '$routes/(editor)/query/events'
 
   let className = ''
