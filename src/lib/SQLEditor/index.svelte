@@ -4,6 +4,7 @@
 
   import { onDestroy, onMount } from 'svelte'
   import { noop } from 'webkit/utils'
+  import { saveEditorState, getEditorState } from './utils'
 
   let className = ''
   export { className as class }
@@ -15,6 +16,10 @@
   export let onValueChange = noop as (value: string) => void
   export let onSave = noop as () => void
   export let id: any
+  export let state = { model: undefined, viewState: undefined } as Partial<{
+    model: monacoEditor.ITextModel
+    viewState: monacoEditor.ICodeEditorViewState
+  }>
 
   let editorNode: HTMLElement
   let EditorCtx: EditorCtxType
@@ -49,43 +54,43 @@
     }
   }
 
+  export function getEditor() {
+    return editor
+  }
+
   onMount(() => {
     if (resizerNode.contentWindow) resizerNode.contentWindow.onresize = onResize
 
+    const { model, viewState } = getEditorState(id) || {}
+
     import('./editor').then(({ createEditor }) => {
-      createEditor(editorNode, value, options, id).then((ctx) => {
+      createEditor(editorNode, value, options, model).then((ctx) => {
         EditorCtx = ctx
         editor = ctx.editor
 
         console.log(editor)
-        // if (window.__model) editor.setModel(window.__model)
-        if (window.__viewState) editor.restoreViewState(window.__viewState)
 
-        editor.focus()
-        onFocus()
+        if (viewState) {
+          editor.restoreViewState(viewState)
+          editor.focus()
+          onFocus()
+        }
 
         editor.onDidBlurEditorText(onBlur)
         editor.onDidFocusEditorWidget(onFocus)
 
-        // editor.onKeyDown((e) => {
-        //   if (e.keyCode === 49 && (e.ctrlKey || e.metaKey)) {
-        //     e.preventDefault()
-        //
-        //     value = getValue()
-        //     onValueChange(value)
-        //     onSave()
-        //   }
-        // })
+        if (id) {
+          saveEditorState(editor, id)
+        }
       })
     })
   })
 
   onDestroy(() => {
     if (process.browser && EditorCtx) {
-      window.__model = editor!.getModel()
-      window.__viewState = editor!.saveViewState()
-
       // console.log(editor!.getModels)
+
+      saveEditorState(editor, id)
 
       console.log('destroyed')
       EditorCtx.destroy()

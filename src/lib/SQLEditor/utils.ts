@@ -22,3 +22,22 @@ label: "Typing,
 model: Object { _store: {…}, _undoRedoService: Proxy, _languageService: {…}, … },
 
 */
+
+export function saveEditorState(editor: any, queryId?: number) {
+  if (!process.browser) return
+
+  if (!queryId) return
+
+  if (!window.sqlEditor) {
+    window.sqlEditor = {}
+  }
+
+  window.sqlEditor[queryId] = {
+    model: editor.getModel(),
+    viewState: editor.saveViewState(),
+  }
+}
+
+export function getEditorState(queryId?: number) {
+  return window.sqlEditor?.[queryId] as undefined | any
+}

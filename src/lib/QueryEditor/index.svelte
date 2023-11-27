@@ -23,8 +23,14 @@
 
   const { queryEditor$ } = getQueryEditor$Ctx()
 
+  let SqlEditorNode: null | SQLEditor
+
   $: queryEditor = $queryEditor$
   $: ({ sql, parameters } = queryEditor)
+
+  export function getEditor() {
+    return SqlEditorNode?.getEditor()
+  }
 
   function onEditorValueChange(sql: string) {
     queryEditor$.setSql(sql)
@@ -38,8 +44,6 @@
 
   const errorsViewShortcut = GlobalShortcut$('CMD+3', () => (tab = TABS[2]), false)
   $errorsViewShortcut
-
-  let SqlEditorNode: null | SQLEditor
 
   function updateSql() {
     if (SqlEditorNode) {

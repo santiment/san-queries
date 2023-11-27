@@ -13,17 +13,18 @@
   import { QueryEditor$$ } from '../ctx'
   import { startSaveQueryFlow, startUpdateQueryEditorFlow } from '../flow'
   import { EventQuerySave$, EventQueryChanged$, EventQuerySaved$ } from '../events'
+  import { saveEditorState } from '$lib/SQLEditor/utils'
 
   export let data: PageData
 
-  let apiQuery = data.apiQuery as null | App.ApiQuery
   let defaultSql = ''
 
   const { currentUser$ } = getCurrentUser$Ctx()
-  const { queryEditor$ } = QueryEditor$$(apiQuery, defaultSql)
+  const { queryEditor$ } = QueryEditor$$(data.apiQuery, defaultSql)
 
   let QueryEditorNode: QueryEditor
 
+  $: ({ apiQuery } = data)
   $: updateQuery(apiQuery)
 
   function updateQuery(apiQuery: any) {
@@ -34,7 +35,14 @@
   }
 
   function onSave(queryEditor = $queryEditor$, isPublic?: boolean) {
+    const isNew = !queryEditor.query
+
     startSaveQueryFlow(queryEditor, isPublic).then((apiQuery) => {
+      if (isNew) {
+        const editor = QueryEditorNode?.getEditor()
+        saveEditorState(editor, apiQuery.id)
+      }
+
       startUpdateQueryEditorFlow(queryEditor$, apiQuery)
 
       queryGetSqlQuery(apiQuery.id).then((data) => Object.assign(data, apiQuery))

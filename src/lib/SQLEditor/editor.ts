@@ -49,7 +49,7 @@ export async function createEditor(
   node: HTMLElement,
   value: string,
   options?: monacoEditor.IStandaloneEditorConstructionOptions,
-  fileId?: any,
+  model?: any,
 ) {
   const languageId = clickhouse.id + id++
 
@@ -84,9 +84,11 @@ export async function createEditor(
     monarchDisposal = languages.setMonarchTokensProvider(languageId, _language)
   }
 
-  const uri = new Uri().with({ path: fileId })
+  // const uri = new Uri().with({ path: fileId })
 
-  const model = monacoEditor.getModel(uri) || monacoEditor.createModel(value, languageId, uri)
+  // const model = monacoEditor.getModel(uri) || monacoEditor.createModel(value, languageId, uri)
+  // console.log(monacoEditor, Uri)
+  model = model || monacoEditor.createModel(value, languageId) // TODO: Make a universal constructor for lanugage and model [@vanguard | 27 Nov, 2023]
 
   monacoEditor.setModelLanguage(model, languageId)
 
