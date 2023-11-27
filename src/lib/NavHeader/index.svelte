@@ -1,15 +1,27 @@
 <script>
   import Svg from 'webkit/ui/Svg/svelte'
   import Tooltip from 'webkit/ui/Tooltip'
+  import { getCustomer$Ctx } from 'webkit/stores/customer'
   import { getCurrentUser$Ctx } from 'webkit/stores/user'
   import Product from 'webkit/ui/Product.svelte'
   import AccountStatus from 'webkit/ui/AccountStatus.svelte'
   import AccountDropdown from 'webkit/ui/AccountDropdown/index.svelte'
+  import { startLogoutFlow } from '$lib/flow/logout'
+  import { goto } from '$app/navigation'
+  import { tick } from 'svelte'
 
   const { currentUser$ } = getCurrentUser$Ctx()
+  const { customer$ } = getCustomer$Ctx()
+
   $: currentUser = $currentUser$
 
-  function onLogoutClick() {}
+  function onLogoutClick() {
+    startLogoutFlow(currentUser$, customer$)
+
+    tick().then(() => {
+      goto('/login')
+    })
+  }
 </script>
 
 <header class="row v-center gap-s">

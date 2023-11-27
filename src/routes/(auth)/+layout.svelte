@@ -1,19 +1,18 @@
 <script lang="ts">
   import { getCustomer$Ctx } from 'webkit/stores/customer'
   import { getCurrentUser$Ctx } from 'webkit/stores/user'
-  // import { startEthLoginFlow } from '$lib/flow/login'
-  // import { setAuthCtx } from './ctx'
+  import { setAuthCtx, startEthLoginFlow } from './ctx'
 
   const { currentUser$ } = getCurrentUser$Ctx()
   const { customer$ } = getCustomer$Ctx()
 
   function onMetamaskClick() {
-    // return startEthLoginFlow(currentUser$).then(() => {
-    //   customer$.refetch()
-    // })
+    return startEthLoginFlow(currentUser$).then(() => {
+      customer$.refetch()
+    })
   }
 
-  // setAuthCtx(onMetamaskClick)
+  setAuthCtx(onMetamaskClick)
 </script>
 
 <auth-page class="row hv-center">
