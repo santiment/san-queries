@@ -1,5 +1,6 @@
 <script lang="ts">
   import Svg from 'webkit/ui/Svg/svelte'
+  import { downloadCsv } from 'webkit/utils/csv'
   import Parameter, { COLORS } from '$lib/Parameter'
   import { TABS } from './index.svelte'
   import { showVisualisationFullscreenDialog } from './Visualisation/FullscreenDialog/index.svelte'
@@ -45,6 +46,15 @@
   function onParameterRemove(i: number) {
     queryEditor$.removeParameter(i)
   }
+
+  function onDownloadCsvClick() {
+    console.log($queryEditor$)
+    const { name, sqlData } = $queryEditor$
+
+    const columns = sqlData.headers.map((title, i) => ({ title, format: (v) => v[i] }))
+
+    downloadCsv(name, columns, sqlData.rows)
+  }
 </script>
 
 <header class="row justify gap-xl">
@@ -76,7 +86,11 @@
     {:else}
       <button class="btn-2">Add to dashboard</button>
 
-      <button class="download btn row v-center gap-s expl-tooltip" aria-label="Download CSV">
+      <button
+        class="download btn row v-center gap-s expl-tooltip"
+        aria-label="Download CSV"
+        on:click={onDownloadCsvClick}
+      >
         <Svg id="download" w="16" />
 
         CSV
