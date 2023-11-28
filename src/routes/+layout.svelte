@@ -4,6 +4,7 @@
   import { Customer$$ } from 'webkit/stores/customer'
   import { CurrentUser$$ } from 'webkit/stores/user'
   import { Device$$ } from 'webkit/stores/responsive'
+  import { newAppTooltipsCtx } from 'webkit/ui/Tooltip/ctx'
   import { UI$$ } from 'webkit/stores/ui'
   import Dialogs from 'webkit/ui/Dialog/Dialogs.svelte'
   import Notifications from 'webkit/ui/Notifications'
@@ -17,6 +18,7 @@
   Customer$$(data.session.customer)
   UI$$()
   const { device$ } = Device$$(data.session.device)
+  newAppTooltipsCtx()
 </script>
 
 <svelte:window on:resize={device$.onResize} />

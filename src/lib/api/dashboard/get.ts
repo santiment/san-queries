@@ -9,6 +9,9 @@ isPublic
 settings
 textWidgets { id body }
 queries {${QUERY_FRAGMENT}}
+commentsCount
+votedAt
+votes { userVotes:currentUserVotes  totalVotes }
 `
 
 export const queryGetDashboard = Universal(

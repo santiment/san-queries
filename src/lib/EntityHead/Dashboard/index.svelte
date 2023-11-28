@@ -3,13 +3,14 @@
   import Svg from 'webkit/ui/Svg/svelte'
   import { showShareDialog } from 'webkit/ui/Share/index.svelte'
   // import Tooltip from 'webkit/ui/Tooltip'
-  import CommentsButton from 'webkit/ui/Comments/Button.svelte'
   import { VoteType } from 'webkit/api/vote'
   import LikeButton from 'webkit/ui/LikeButton/svelte'
   import Dropdown from '$lib/Dropdown'
   import { showDashboardPublishedDialog } from '$lib/DashboardPublishedDialog/index.svelte'
+  import Comments from './Comments.svelte'
   import Head from '../index.svelte'
 
+  export let dashboard = null as null | App.ApiDashboard
   export let author: SAN.Author | null
   export let isPublished = false
 
@@ -24,8 +25,16 @@
 </script>
 
 <Head {author} onMainClick={showDashboardPublishedDialog}>
-  <LikeButton id={0} type={VoteType.Insight} onVote={console.log} source="" />
-  <CommentsButton />
+  <LikeButton
+    id={dashboard?.id}
+    type={VoteType.Dashboard}
+    votes={dashboard?.votes}
+    onVote={console.log}
+    source="queries_dashboard_vote"
+    disabled={!dashboard?.id}
+  />
+
+  <Comments {dashboard} />
 
   <svelte:fragment slot="main-action">
     {#if isPublished}
@@ -64,7 +73,7 @@
 
 <style>
   LikeButton,
-  CommentsButton {
+  Comments {
     border: none;
     padding-right: 0 !important;
   }

@@ -65,7 +65,7 @@
 </script>
 
 <main class="column">
-  <DashboardHead {author} />
+  <DashboardHead {dashboard} {author} />
 
   <DashboardEditor />
 </main>
