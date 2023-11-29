@@ -4,6 +4,7 @@
   import { queryClickhouseMetadata } from './api'
   import { onMount } from 'svelte'
   import { getSearch$Ctx } from '../Search.svelte'
+  import PreviewTable from './PreviewTable.svelte'
 
   const { search$ } = getSearch$Ctx()
 
@@ -20,6 +21,20 @@
       tables = data.tables
     })
   })
+
+  let viewed = null
+
+  function onExploreTableClick(e, item) {
+    const { right, top } = e.currentTarget.getBoundingClientRect()
+
+    console.log({ right, top })
+
+    viewed = {
+      item,
+      right,
+      top,
+    }
+  }
 </script>
 
 <h2 class="txt-m mrg-l mrg--b">Datasets</h2>
@@ -27,12 +42,39 @@
 {#if filteredTables.length}
   <Folder title="Tables">
     {#each filteredTables as item}
-      <MenuItem icon="table" dataActions>
+      <MenuItem
+        icon="table"
+        dataActions
+        onExploreTableClick={(e) => onExploreTableClick(e, item)}
+        isHoverActive={item === viewed?.item}
+      >
         {item.n}
       </MenuItem>
     {/each}
   </Folder>
 {/if}
 
+{#if viewed}
+  <clickaway on:click={() => (viewed = null)} />
+  <div class="explore border box" style="top:{viewed.top + 5}px;left:{viewed.right}px">
+    <PreviewTable table={viewed.item.n} />
+  </div>
+{/if}
+
 <style lang="scss">
+  .explore {
+    position: fixed;
+    // left: 100px;
+    width: 700px;
+    height: 400px;
+    // top: 50px;
+  }
+
+  clickaway {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+  }
 </style>

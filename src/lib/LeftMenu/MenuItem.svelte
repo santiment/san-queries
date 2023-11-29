@@ -9,7 +9,9 @@
   export let dataActions = false
   export let draggable = false
   export let link = ''
+  export let isHoverActive = false
 
+  export let onExploreTableClick = noop
   export let onRenameClick = noop
   export let onDuplicateClick = noop
   export let onDeleteClick = noop
@@ -28,7 +30,7 @@
 <!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 <article
   class="btn row gap-s v-center relative"
-  class:hovered={isMenuOpened}
+  class:hovered={isMenuOpened || isHoverActive}
   on:click
   on:mouseenter={() => (isHovered = true)}
   on:mouseleave={() => (isHovered = isMenuOpened)}
@@ -47,7 +49,10 @@
   {#if isHovered}
     <actions class="row">
       {#if dataActions}
-        <button class="btn-3"><Svg id="eye" w="15" h="10" /></button>
+        <button class="btn-3 expl-tooltip" aria-label="Explore table" on:click={onExploreTableClick}
+          ><Svg id="eye" w="15" h="10" /></button
+        >
+
         <button class="btn-3 expl-tooltip" aria-label="Add to Favourites"
           ><Svg id="star-filled" w="12" /></button
         >
