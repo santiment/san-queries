@@ -112,8 +112,8 @@ devDependencies:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
   san-webkit:
-    specifier: https://github.com/santiment/san-webkit#8b16b81
-    version: github.com/santiment/san-webkit/8b16b81(@types/gtag.js@0.0.4)(@types/medium-editor@5.0.5)(@types/stripe-v3@3.1.30)(ethers@5.7.2)(marked@6.0.0)(medium-editor@5.23.3)(node-fetch@3.3.2)(react-dom@18.2.0)(react@18.2.0)(svelte@4.2.1)(turndown@7.1.2)
+    specifier: https://github.com/santiment/san-webkit#ba44987
+    version: github.com/santiment/san-webkit/ba44987(@types/gtag.js@0.0.4)(@types/medium-editor@5.0.5)(@types/stripe-v3@3.1.30)(ethers@5.7.2)(marked@6.0.0)(medium-editor@5.23.3)(node-fetch@3.3.2)(react-dom@18.2.0)(react@18.2.0)(svelte@4.2.1)(turndown@7.1.2)
   sass:
     specifier: ^1.65.1
     version: 1.65.1
@@ -10361,9 +10361,9 @@ packages:
       typescript: 5.1.6
     dev: true
 
-  github.com/santiment/san-webkit/8b16b81(@types/gtag.js@0.0.4)(@types/medium-editor@5.0.5)(@types/stripe-v3@3.1.30)(ethers@5.7.2)(marked@6.0.0)(medium-editor@5.23.3)(node-fetch@3.3.2)(react-dom@18.2.0)(react@18.2.0)(svelte@4.2.1)(turndown@7.1.2):
-    resolution: {tarball: https://codeload.github.com/santiment/san-webkit/tar.gz/8b16b81}
-    id: github.com/santiment/san-webkit/8b16b81
+  github.com/santiment/san-webkit/ba44987(@types/gtag.js@0.0.4)(@types/medium-editor@5.0.5)(@types/stripe-v3@3.1.30)(ethers@5.7.2)(marked@6.0.0)(medium-editor@5.23.3)(node-fetch@3.3.2)(react-dom@18.2.0)(react@18.2.0)(svelte@4.2.1)(turndown@7.1.2):
+    resolution: {tarball: https://codeload.github.com/santiment/san-webkit/tar.gz/ba44987}
+    id: github.com/santiment/san-webkit/ba44987
     name: san-webkit
     version: 0.0.1
     peerDependencies:
