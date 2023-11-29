@@ -28,15 +28,19 @@
     titleNode.textContent = ''
     typing = true
 
-    queryGenerateTitleBySql(queryEditor.sql).then((data) => {
-      const typewriter = Typewriter(data.title, titleNode)
+    queryGenerateTitleBySql(queryEditor.sql)
+      .then((data) => {
+        const typewriter = Typewriter(data.title, titleNode)
 
-      typewriter.start(() => {
-        typing = false
-        $queryEditor$.name = data.title
-        $queryEditor$.description = data.description
+        typewriter.start(() => {
+          typing = false
+          $queryEditor$.name = data.title
+          $queryEditor$.description = data.description
+        })
       })
-    })
+      .finally(() => {
+        typing = false
+      })
   }
 
   function Typewriter(txt: string, node: HTMLElement) {
