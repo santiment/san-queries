@@ -16,6 +16,8 @@ export const load: PageLoad = async (event) => {
 
   const apiDashboard = await queryGetDashboard(id, event as App.RequestEvent)
 
+  const isLegacyMigrateMode = !!event.url.searchParams.get('legacy-migrate')
+
   let legacyDashboard
 
   if (process.browser) {
@@ -24,10 +26,33 @@ export const load: PageLoad = async (event) => {
     }
   }
 
-  console.log({ legacyDashboard })
+  console.log({ legacyDashboard, apiDashboard }, isLegacyMigrateMode)
+
+  if (legacyDashboard && isLegacyMigrateMode === false) {
+    const dashboardLayout = []
+
+    const queries = legacyDashboard.panels.map((panel) => {
+      const { layout } = panel.settings || {}
+      dashboardLayout.push({ id: panel.id, xywh: layout || [] })
+
+      return {
+        id: panel.id,
+        name: panel.name,
+        dashboardQueryMappingId: panel.id,
+        settings: {},
+        sqlQueryParameters: panel.sql.parameters || {},
+        sqlQueryText: panel.sql.query,
+      }
+    })
+
+    apiDashboard.settings = { layout: dashboardLayout }
+    apiDashboard.queries = queries
+
+    console.log(dashboardLayout, queries)
+  }
 
   return {
     apiDashboard,
-    legacyDashboard,
+    legacyDashboard: isLegacyMigrateMode ? legacyDashboard : undefined,
   }
 }
