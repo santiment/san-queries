@@ -1,4 +1,4 @@
-import { Universal } from 'webkit/api'
+import { Universal, query } from 'webkit/api'
 import { QUERY_FRAGMENT } from '../query/get'
 
 export const DASHBOARD_FRAGMENT = `
@@ -20,6 +20,7 @@ export const queryGetDashboard = Universal(
         item:getDashboard(id:${id}) {
           ${DASHBOARD_FRAGMENT}
           user {id username avatarUrl}
+          panels {id}
         }
       }`).then(({ item }) => item),
 )
@@ -50,4 +51,16 @@ declare global {
       queries: App.ApiQuery[]
     }
   }
+}
+
+export function queryGetLegacyDashboard(id: number) {
+  return query<any>(`{
+    dashboard:getDashboardSchema(id:${id}){
+      id
+      name
+      description
+      isPublic
+      panels {id  name  description  settings  sql {    query    parameters  }  }  
+    }
+  }`).then(({ dashboard }) => dashboard)
 }

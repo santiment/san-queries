@@ -12,9 +12,11 @@
   import Grid from './Grid.svelte'
   import { getDashboardEditor$Ctx } from '$routes/(editor)/dashboard/[[slug]]/ctx'
   import { EventDashboardChanged$ } from '$routes/(editor)/query/events'
+  import Legacy from './Legacy.svelte'
 
   let className = ''
   export { className as class }
+  export let legacyDashboard: any
 
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
   // const { dashboardEditor$ } = DashboardEditor$$()
@@ -85,9 +87,13 @@
     />
   </header>
 
-  <Grid />
+  {#if legacyDashboard}
+    <Legacy {legacyDashboard} />
+  {:else}
+    <Grid />
 
-  <Actions />
+    <Actions />
+  {/if}
 </main>
 
 <style lang="scss">

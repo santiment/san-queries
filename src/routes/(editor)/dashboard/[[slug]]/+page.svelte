@@ -67,7 +67,7 @@
 <main class="column">
   <DashboardHead {dashboard} {author} />
 
-  <DashboardEditor />
+  <DashboardEditor legacyDashboard={data.legacyDashboard} />
 </main>
 
 <style>
