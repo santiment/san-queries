@@ -15,15 +15,16 @@
   $: layout = getLayout(panels)
   $: ColumnsSettings = getColumnsSettings(panels)
 
-  $: console.log(layout, panels, panelsData)
-
   $: if (panels) getPanelsData()
 
   function getPanelsData() {
     panelsData = []
 
     panels.forEach((panel, i) => {
-      queryComputeRawClickhouseQuery({ sql: panel.sql.query }).then((data) => {
+      queryComputeRawClickhouseQuery({
+        sql: panel.sql.query,
+        parameters: JSON.stringify(panel.sql.parameters || ''),
+      }).then((data) => {
         panelsData[i] = data
         panelsData = panelsData
       })
@@ -33,7 +34,7 @@
   function getLayout(panels: App.LegacyPanel[]) {
     const layout = panels.map((panel) => {
       const { layout } = panel.settings || {}
-      return (layout || [0, 1000, 12, 5]) as any as SnapItem
+      return (layout || [0, 1000, 6, 5]) as any as SnapItem
     })
 
     normalizeGrid(sortLayout(layout))
@@ -43,10 +44,10 @@
 
   function getColumnsSettings(panels: App.LegacyPanel[]) {
     return panels.map((panel: any) => {
-      if (!panel.settings) return
+      if (!panel.settings) return []
 
       const { columns } = panel.settings
-      if (!columns) return
+      if (!columns) return []
 
       return columns.map((column: any) => {
         const settings = {} as Record<string, any>
