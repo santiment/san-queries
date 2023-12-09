@@ -13,10 +13,10 @@
   import { getDashboardEditor$Ctx } from '$routes/(editor)/dashboard/[[slug]]/ctx'
   import { EventDashboardChanged$ } from '$routes/(editor)/query/events'
   import Legacy from './Legacy.svelte'
+  import { BROWSER } from 'esm-env'
 
   let className = ''
   export { className as class }
-  export let legacyDashboard: any
 
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
   // const { dashboardEditor$ } = DashboardEditor$$()
@@ -87,8 +87,10 @@
     />
   </header>
 
-  {#if legacyDashboard}
-    <Legacy {legacyDashboard} />
+  {#if dashboardEditor.dashboard?.panels?.length}
+    {#if BROWSER}
+      <Legacy dashboard={dashboardEditor.dashboard} />
+    {/if}
   {:else}
     <Grid />
 

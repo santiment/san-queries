@@ -107,7 +107,7 @@
   $eventQueryChanged
 </script>
 
-<main class="column">
+<main class="column relative">
   <QueryHead author={$currentUser$} {onQueryExecute} on:click={onQueryNameClick} />
 
   <slot />

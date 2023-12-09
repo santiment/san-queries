@@ -16,7 +16,7 @@ votes { userVotes:currentUserVotes  totalVotes }
 
 export const queryGetDashboard = Universal(
   (query) => (id: number) =>
-    query<SAN.API.Query<'item', App.ApiQuery>>(`{
+    query<SAN.API.Query<'item', App.ApiDashboard>>(`{
         item:getDashboard(id:${id}) {
           ${DASHBOARD_FRAGMENT}
           user {id username avatarUrl}
@@ -49,17 +49,30 @@ declare global {
 
       textWidgets: ApiTextWidget[]
       queries: App.ApiQuery[]
+
+      panels?: App.LegacyPanel[]
+    }
+
+    type LegacyPanel = {
+      id: string
+      name: string
+      description?: string
+      settings?: { type: 'TEXT' | 'CHART'; columns?: []; layout?: []; parameters?: [] }
+      sql: { query: string; parameters: Record<string, string> }
     }
   }
 }
 
 export function queryGetLegacyDashboard(id: number) {
-  return query<any>(`{
+  return query<
+    SAN.API.Query<
+      'dashboard',
+      {
+        panels: App.LegacyPanel[]
+      }
+    >
+  >(`{
     dashboard:getDashboardSchema(id:${id}){
-      id
-      name
-      description
-      isPublic
       panels {id  name  description  settings  sql {    query    parameters  }  }  
     }
   }`).then(({ dashboard }) => dashboard)

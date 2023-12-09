@@ -1,50 +1,115 @@
-<script>
-  export let legacyDashboard
+<script lang="ts">
+  import type { SnapItem } from 'webkit/ui/SnapGrid/types'
 
-  let migrating = false
-  let loaded = 1
+  import Grid from 'webkit/ui/SnapGrid/Grid.svelte'
+  import { normalizeGrid, sortLayout } from 'webkit/ui/SnapGrid/layout'
+  import { queryComputeRawClickhouseQuery } from '$lib/api/query'
+  import Table from '$lib/QueryEditor/Visualisation/Table.svelte'
+  import { Formatter } from '$lib/QueryEditor/Visualisation/Controls/FormattingControl.svelte'
 
-  async function onMigrateClick() {
-    if (migrating) return
+  export let dashboard: App.ApiDashboard
 
-    migrating = true
-    console.log(legacyDashboard)
+  let panelsData = [] as App.SqlData[]
 
-    setTimeout(() => {
-      loaded = 70
-    }, 100)
+  $: panels = dashboard.panels as App.LegacyPanel[]
+  $: layout = getLayout(panels)
+  $: ColumnsSettings = getColumnsSettings(panels)
+
+  $: console.log(layout, panels, panelsData)
+
+  $: if (panels) getPanelsData()
+
+  function getPanelsData() {
+    panelsData = []
+
+    panels.forEach((panel, i) => {
+      queryComputeRawClickhouseQuery({ sql: panel.sql.query }).then((data) => {
+        panelsData[i] = data
+        panelsData = panelsData
+      })
+    })
+  }
+
+  function getLayout(panels: App.LegacyPanel[]) {
+    const layout = panels.map((panel) => {
+      const { layout } = panel.settings || {}
+      return (layout || [0, 1000, 12, 5]) as any as SnapItem
+    })
+
+    normalizeGrid(sortLayout(layout))
+
+    return layout
+  }
+
+  function getColumnsSettings(panels: App.LegacyPanel[]) {
+    return panels.map((panel: any) => {
+      if (!panel.settings) return
+
+      const { columns } = panel.settings
+      if (!columns) return
+
+      return columns.map((column: any) => {
+        const settings = {} as Record<string, any>
+
+        if (column.title) settings.title = column.title
+        if (column.formatterId) settings.formatter = (Formatter as any)[column.formatterId]
+
+        return settings
+      })
+    })
+  }
+
+  function mapColumnSettingsToData(ColumnSettings: any[], sqlData: App.SqlData) {
+    const settings = {} as any
+
+    ColumnSettings.forEach((columnSettings, i) => {
+      settings[sqlData.headers[i]] = columnSettings
+    })
+
+    return settings
   }
 </script>
 
-<div class="column hv-center mrg-l mrg--t gap-l">
-  <h3 class="h4">This is a legacy dashboard</h3>
+<Grid tag="widgets" cols={6} {layout} let:i let:gridItem rowSize={100} minCols={3} readonly>
+  {@const widget = panels[i]}
+  <widget use:gridItem class="column border">
+    <header class="row v-center fluid gap-s">
+      <h2 class="body-2">{widget.name}</h2>
+    </header>
 
-  <button class="btn-1" on:click={onMigrateClick}>
-    {migrating ? 'Migrating...' : 'Migrate dashboard'}
-  </button>
+    {#if panelsData[i]}
+      {@const sqlData = panelsData[i]}
 
-  {#if migrating}
-    <migrate-progress class="row mrg-l mrg--t">
-      <progress-bar style="--loaded:{loaded}%" />
-    </migrate-progress>
-  {/if}
-</div>
+      <Table
+        border={false}
+        {sqlData}
+        ColumnSettings={mapColumnSettingsToData(ColumnsSettings[i], sqlData)}
+      />
+    {/if}
+  </widget>
+</Grid>
+
+<legacy-caption class="row hv-center c-red">
+  This is a legacy dashboard. Save it to migrate the dashboard to Queries V2
+</legacy-caption>
 
 <style>
-  migrate-progress {
-    height: 8px;
-    background: var(--athens);
-    width: 500px;
-    border-radius: 6px;
-    overflow: hidden;
+  legacy-caption {
+    position: fixed;
+    left: 300px;
+    bottom: 0;
+    right: 0;
+
+    background: var(--red-light-1);
+    padding: 6px 24px;
   }
 
-  progress-bar {
-    height: 100%;
-    width: 100%;
-    background: var(--green);
-    min-width: 2px;
-    transform: translateX(calc(-100% + var(--loaded)));
-    transition: transform 3s cubic-bezier(0.4, 1, 1, 1);
+  header {
+    padding: 12px 18px 12px 12px;
+    border-bottom: 1px solid var(--porcelain);
+  }
+
+  Table {
+    max-height: calc(100% - 57px);
   }
 </style>

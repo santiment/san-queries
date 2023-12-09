@@ -1,5 +1,6 @@
 import type { PageLoad } from '../../$types'
 
+import { BROWSER } from 'esm-env'
 import { redirect } from '@sveltejs/kit'
 import { getIdFromSEOLink } from 'webkit/utils/url'
 import { queryGetDashboard, queryGetLegacyDashboard } from '$lib/api/dashboard/get'
@@ -16,43 +17,17 @@ export const load: PageLoad = async (event) => {
 
   const apiDashboard = await queryGetDashboard(id, event as App.RequestEvent)
 
-  const isLegacyMigrateMode = !!event.url.searchParams.get('legacy-migrate')
-
-  let legacyDashboard
-
-  if (process.browser) {
-    if (apiDashboard.panels.length) {
-      legacyDashboard = await queryGetLegacyDashboard(id)
+  if (BROWSER) {
+    if (apiDashboard.panels?.length) {
+      apiDashboard.panels = (await queryGetLegacyDashboard(id)).panels
     }
   }
 
-  console.log({ legacyDashboard, apiDashboard }, isLegacyMigrateMode)
-
-  if (legacyDashboard && isLegacyMigrateMode === false) {
-    const dashboardLayout = []
-
-    const queries = legacyDashboard.panels.map((panel) => {
-      const { layout } = panel.settings || {}
-      dashboardLayout.push({ id: panel.id, xywh: layout || [] })
-
-      return {
-        id: panel.id,
-        name: panel.name,
-        dashboardQueryMappingId: panel.id,
-        settings: {},
-        sqlQueryParameters: panel.sql.parameters || {},
-        sqlQueryText: panel.sql.query,
-      }
-    })
-
-    apiDashboard.settings = { layout: dashboardLayout }
-    apiDashboard.queries = queries
-
-    console.log(dashboardLayout, queries)
+  if (!apiDashboard.description) {
+    apiDashboard.description = ''
   }
 
   return {
     apiDashboard,
-    legacyDashboard: isLegacyMigrateMode ? legacyDashboard : undefined,
   }
 }
