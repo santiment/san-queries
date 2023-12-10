@@ -35,14 +35,40 @@ export const queryComputeRawClickhouseQuery = Universal(
     (variables = { sql: SQL } as VariablesType) =>
       query<ComputeRawClickhouseQuery>(
         `query($sql: String!, $parameters: json!="{}") {
-    data:computeRawClickhouseQuery(query:$sql,parameters:$parameters) {
+    data:runRawSqlQuery(sqlQueryText: $sql, sqlQueryParameters: $parameters) {
       headers:columns
       rows
       types:columnTypes
+
+      clickhouseQueryId
+      queryId
     }
   }`,
         { variables },
       ).then(({ data }) => data),
+)
+
+type QueryExecutionStats = {
+  creditsCost: number
+  readGb: number
+  readRows: number
+  insertedAt: number
+  queryDurationMs: number
+}
+
+export const queryExecutionStats = Universal(
+  (query) => (clickhouseQueryId: string) =>
+    query<SAN.API.Query<'data', QueryExecutionStats>>(
+      `{
+          data:getClickhouseQueryExecutionStats(clickhouseQueryId:"${clickhouseQueryId}") {
+            creditsCost
+            readGb
+            readRows
+            insertedAt
+            queryDurationMs
+          }
+        }`,
+    ).then(({ data }) => data),
 )
 
 declare global {
@@ -51,6 +77,9 @@ declare global {
       headers: string[]
       rows: (string | number | null)[][]
       types: string[]
+
+      clickhouseQueryId: string
+      queryId?: number | number
     }
 
     type SqlError = {

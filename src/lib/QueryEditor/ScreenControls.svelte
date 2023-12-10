@@ -7,6 +7,7 @@
   import { showSqlEditorFullscreenDialog$ } from '$lib/SQLEditor/FullscreenDialog.svelte'
   import { showAddParameterDialog$ } from '$lib/Parameter/AddParameterDialog.svelte'
   import { getQueryEditor$Ctx } from '$routes/(editor)/query/ctx'
+  import ExecutionStats from './ExecutionStats.svelte'
 
   export let tab = TABS[0] as (typeof TABS)[number]
 
@@ -79,18 +80,7 @@
   </parameters>
 
   <actions class="row gap-s c-waterloo nowrap">
-    <button
-      class="btn-3 expl-tooltip"
-      aria-label="Please execute the query to calculate the credits"
-    >
-      <Svg id="coin" w="16" />
-    </button>
-
-    {#if tab === TABS[0]}
-      <button class="btn-3">
-        <Svg id="report" w="16" />
-      </button>
-    {:else}
+    {#if tab === TABS[1]}
       <button class="btn-2">Add to dashboard</button>
 
       <button
@@ -101,6 +91,14 @@
         <Svg id="download" w="16" />
 
         CSV
+      </button>
+    {/if}
+
+    <ExecutionStats {sqlData} />
+
+    {#if tab === TABS[0]}
+      <button class="btn-3">
+        <Svg id="report" w="16" />
       </button>
     {/if}
 
