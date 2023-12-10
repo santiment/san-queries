@@ -18,8 +18,13 @@ export const load: PageLoad = async (event) => {
   const apiDashboard = await queryGetDashboard(id, event as App.RequestEvent)
 
   if (BROWSER) {
-    if (apiDashboard.panels?.length) {
+    const isLegacy =
+      apiDashboard.panels?.length &&
+      !(apiDashboard.queries.length || apiDashboard.textWidgets.length)
+
+    if (isLegacy) {
       apiDashboard.panels = (await queryGetLegacyDashboard(id)).panels
+      apiDashboard.isLegacy = true
     }
   }
 

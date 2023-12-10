@@ -87,7 +87,7 @@
     />
   </header>
 
-  {#if dashboardEditor.dashboard?.panels?.length}
+  {#if dashboardEditor.isLegacy && dashboardEditor.dashboard}
     {#if BROWSER}
       <Legacy dashboard={dashboardEditor.dashboard} />
     {/if}

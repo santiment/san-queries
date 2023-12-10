@@ -11,7 +11,7 @@
 
   let panelsData = [] as App.SqlData[]
 
-  $: panels = dashboard.panels as App.LegacyPanel[]
+  $: panels = dashboard.panels!
   $: layout = getLayout(panels)
   $: ColumnsSettings = getColumnsSettings(panels)
 

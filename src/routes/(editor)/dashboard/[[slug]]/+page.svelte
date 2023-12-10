@@ -21,8 +21,6 @@
   $: ({ dashboard } = dashboardEditor)
   $: author = dashboard?.user || $currentUser$
 
-  $: console.log(data, dashboardEditor)
-
   $: updateDashboard(data.apiDashboard)
 
   function updateDashboard(apiDashboard: (typeof data)['apiDashboard']) {
@@ -34,6 +32,11 @@
   const saveShortcut = GlobalShortcut$(
     'CMD+S',
     () => {
+      if (dashboardEditor.isLegacy) {
+        console.log(dashboardEditor)
+        return
+      }
+
       startDashboardSaveFlow(dashboardEditor).then((apiDashboard) => {
         console.log(apiDashboard)
 

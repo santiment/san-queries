@@ -69,6 +69,8 @@ function prepareStore(apiDashboard?: null | App.ApiDashboard) {
 
     widgets,
     layout,
+
+    isLegacy: apiDashboard?.isLegacy || false,
   }
 }
 

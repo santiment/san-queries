@@ -51,6 +51,7 @@ declare global {
       queries: App.ApiQuery[]
 
       panels?: App.LegacyPanel[]
+      isLegacy?: boolean
     }
 
     type LegacyPanel = {
