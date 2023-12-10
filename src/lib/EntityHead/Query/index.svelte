@@ -9,6 +9,7 @@
   import Head from '../index.svelte'
 
   export let author: SAN.Author | null
+  export let quickSave = noop
   export let onQueryExecute = noop
 
   const { currentUser$ } = getCurrentUser$Ctx()
@@ -36,6 +37,8 @@
           typing = false
           $queryEditor$.name = data.title
           $queryEditor$.description = data.description
+
+          quickSave()
         })
       })
       .finally(() => {
@@ -82,7 +85,7 @@
   </button>
 
   <button bind:this={titleNode} class="title btn body-2" class:typing on:click>
-    {queryEditor.name || 'Your first query'}
+    {queryEditor.name || 'Untitled query'}
   </button>
 
   <svelte:fragment slot="main-action-wrap" let:classes>

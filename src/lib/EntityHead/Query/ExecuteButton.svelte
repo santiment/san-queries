@@ -18,6 +18,7 @@
 
   function onExecuteClick() {
     if (loading) return
+    if ($queryEditor$.sql === '') return
 
     loading = true
 

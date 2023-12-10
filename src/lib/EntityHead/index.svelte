@@ -1,13 +1,30 @@
 <script lang="ts">
   import { noop } from 'webkit/utils'
+  import Svg from 'webkit/ui/Svg/svelte'
   import Profile from 'webkit/ui/Profile/svelte'
+  import { EventSavingState$ } from '$routes/(editor)/query/events'
 
   let className = 'mrg-s mrg--b'
   export { className as class }
   export let author: SAN.Author | null
   export let onMainClick = noop
 
-  let mainActionClass = 'main-action btn-1 mrg-a mrg--l'
+  let mainActionClass = 'main-action btn-1 mrg-l mrg--l'
+
+  let savingState = 'hidden' as 'start' | 'success' | 'error' | 'hidden'
+  let stateTimer: number
+
+  const eventSavingState = EventSavingState$(({ state }) => {
+    window.clearTimeout(stateTimer)
+
+    savingState = state
+
+    switch (state) {
+      case 'success':
+        stateTimer = window.setTimeout(() => (savingState = 'hidden'), 4e3)
+    }
+  })
+  $eventSavingState
 </script>
 
 <header class="row v-center gap-m {className}">
@@ -20,6 +37,16 @@
   <div class="divider" />
 
   <slot />
+
+  <auto-save class="row v-center c-waterloo gap-s mrg-a mrg--l">
+    {#if savingState !== 'hidden'}
+      {#if savingState === 'start'}
+        Saving <loading-spin />
+      {:else if savingState === 'success'}
+        Saved <Svg id="checkmark" w="12" />
+      {/if}
+    {/if}
+  </auto-save>
 
   <slot name="main-action-wrap" classes={mainActionClass}>
     <button class={mainActionClass} on:click={onMainClick}>
@@ -41,5 +68,9 @@
     height: 32px;
     width: 1px;
     background: var(--mystic);
+  }
+
+  Svg {
+    fill: var(--casper);
   }
 </style>

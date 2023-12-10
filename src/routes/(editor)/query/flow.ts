@@ -14,7 +14,11 @@ export function serializeQuerySettings(settings: App.QueryEditorStoreValue['sett
   } as App.ApiQuery['settings']
 }
 
-export function startSaveQueryFlow(queryEditor: App.QueryEditorStoreValue, isPublic = true) {
+export function startSaveQueryFlow(
+  queryEditor: App.QueryEditorStoreValue,
+  isPublic = true,
+  isForced = false,
+) {
   const { name, description, query, sql, parameters, settings } = queryEditor
 
   if (!name) {
@@ -42,12 +46,14 @@ export function startSaveQueryFlow(queryEditor: App.QueryEditorStoreValue, isPub
     : mutateCreateSqlQuery(variables)
 
   return promise.then((apiQuery) => {
-    notifications$.show({
-      type: 'success',
-      title: query?.id ? 'Query saved' : 'New query created',
-      description: 'Query is available in "Work" tab',
-      dismissAfter: 5000,
-    })
+    if (isForced) {
+      notifications$.show({
+        type: 'success',
+        title: query?.id ? 'Query saved' : 'New query created',
+        description: 'Your work is automatically saved on every change',
+        dismissAfter: 5000,
+      })
+    }
 
     return apiQuery
   })

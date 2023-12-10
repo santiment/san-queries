@@ -12,7 +12,13 @@
   import { showNameDescriptionDialog } from '$lib/QueryEditor/NameDescriptionDialog/index.svelte'
   import { QueryEditor$$ } from '../ctx'
   import { startSaveQueryFlow, startUpdateQueryEditorFlow } from '../flow'
-  import { EventQuerySave$, EventQueryChanged$, EventQuerySaved$ } from '../events'
+  import {
+    EventQuerySave$,
+    EventQueryChanged$,
+    EventQuerySaved$,
+    EventSavingState$,
+    EventAutoSave$,
+  } from '../events'
   import { saveEditorState } from '$lib/SQLEditor/utils'
 
   export let data: PageData
@@ -34,21 +40,28 @@
     tick().then(() => queryEditor$.setApiQuery(apiQuery))
   }
 
-  function onSave(queryEditor = $queryEditor$, isPublic?: boolean) {
+  function onSave(queryEditor = $queryEditor$, isPublic?: boolean, isForced = false) {
     const isNew = !queryEditor.query
 
-    startSaveQueryFlow(queryEditor, isPublic).then((apiQuery) => {
-      if (isNew) {
-        const editor = QueryEditorNode?.getEditor()
-        saveEditorState(editor, apiQuery.id)
-      }
+    EventSavingState$.dispatch({ state: 'start' })
 
-      startUpdateQueryEditorFlow(queryEditor$, apiQuery)
+    startSaveQueryFlow(queryEditor, isPublic, isForced)
+      .then((apiQuery) => {
+        if (isNew) {
+          const editor = QueryEditorNode?.getEditor()
+          saveEditorState(editor, apiQuery.id)
+        }
 
-      queryGetSqlQuery(apiQuery.id).then((data) => Object.assign(data, apiQuery))
+        startUpdateQueryEditorFlow(queryEditor$, apiQuery)
 
-      EventQuerySaved$.dispatch(apiQuery)
-    })
+        queryGetSqlQuery(apiQuery.id).then((data) => Object.assign(data, apiQuery))
+
+        EventQuerySaved$.dispatch(apiQuery)
+        EventSavingState$.dispatch({ state: 'success' })
+      })
+      .catch(() => {
+        EventSavingState$.dispatch({ state: 'hidden' })
+      })
   }
 
   function onQueryExecute(promise: any) {
@@ -71,34 +84,36 @@
 
         QueryEditorNode.$set({ tab: TABS[2] })
       })
+      .finally(() => {
+        quickSave()
+      })
   }
 
   function onQueryNameClick() {
     const queryEditor = $queryEditor$
     showNameDescriptionDialog({ queryEditor }).then((updated) => {
-      const { id } = queryEditor.query || {}
+      // const { id } = queryEditor.query || {}
 
       queryEditor.name = updated.name
       queryEditor.description = updated.description
 
       queryEditor$.set(queryEditor)
 
-      if (id) {
-        EventQueryChanged$.dispatch({ ...updated, id })
-      }
+      quickSave(false, updated.isPublic)
+      // if (id) {
+      // EventQueryChanged$.dispatch({ ...updated, id })
+      // }
       // onSave({ ...queryEditor, ...updated }, updated.isPublic)
     })
   }
 
-  const saveShortcut = GlobalShortcut$(
-    'CMD+S',
-    () => {
-      EventQuerySave$.dispatch()
+  function quickSave(isForced = false, isPublic = undefined) {
+    EventQuerySave$.dispatch()
 
-      onSave()
-    },
-    false,
-  )
+    onSave(undefined, isPublic, isForced)
+  }
+
+  const saveShortcut = GlobalShortcut$('CMD+S', () => quickSave(true), false)
   $saveShortcut
 
   const eventQueryChanged = EventQueryChanged$((variables) => {
@@ -108,7 +123,7 @@
 </script>
 
 <main class="column relative">
-  <QueryHead author={$currentUser$} {onQueryExecute} on:click={onQueryNameClick} />
+  <QueryHead author={$currentUser$} {onQueryExecute} {quickSave} on:click={onQueryNameClick} />
 
   <slot />
 

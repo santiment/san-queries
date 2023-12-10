@@ -1,14 +1,19 @@
 import { BROWSER } from 'esm-env'
 import { readable } from 'svelte/store'
 
-function createEvent$<Data = undefined>(name: string) {
+function createEvent$<Data = undefined>(name: string, debounceTime?: number) {
   type Event = CustomEvent<Data>
   type Clb = Data extends undefined ? () => void : (data: Data) => void
 
   function CustomEvent$(clb: Clb) {
     return readable(null, () => {
+      let debounceTimer: number
+
       const listener = (e: Event) => {
-        console.log(e)
+        if (debounceTime) {
+          window.clearTimeout(debounceTimer)
+          debounceTimer = window.setTimeout(() => clb(e.detail), debounceTime)
+        }
         clb(e.detail)
       }
 
@@ -47,3 +52,8 @@ export const EventDashboardChanged$ = createEvent$<{
 export const EventDashboardSaved$ = createEvent$<{ id: number; name: string }>('DASHBOARD_SAVED')
 
 export const EventRefreshUserCredits$ = createEvent$('REFRESH_USER_CREDITS')
+
+export const EventAutoSave$ = createEvent$('AUTO_SAVE', 4000)
+export const EventSavingState$ = createEvent$<{ state: 'start' | 'success' | 'error' | 'hidden' }>(
+  'SAVING_STATE',
+)
