@@ -1,3 +1,4 @@
+import { BROWSER } from 'esm-env'
 import { readable } from 'svelte/store'
 
 function createEvent$<Data = undefined>(name: string) {
@@ -11,8 +12,8 @@ function createEvent$<Data = undefined>(name: string) {
         clb(e.detail)
       }
 
-      if (process.browser) window.addEventListener<any>(name, listener)
-      return () => process.browser && window.removeEventListener<any>(name, listener)
+      if (BROWSER) window.addEventListener<any>(name, listener)
+      return () => BROWSER && window.removeEventListener<any>(name, listener)
     })
   }
 
@@ -44,3 +45,5 @@ export const EventDashboardChanged$ = createEvent$<{
 }>('DASHBOARD_CHANGED')
 
 export const EventDashboardSaved$ = createEvent$<{ id: number; name: string }>('DASHBOARD_SAVED')
+
+export const EventRefreshUserCredits$ = createEvent$('REFRESH_USER_CREDITS')

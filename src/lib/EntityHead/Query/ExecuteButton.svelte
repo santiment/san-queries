@@ -4,7 +4,7 @@
   import { GlobalShortcut$ } from 'webkit/utils/events'
   import Tooltip from 'webkit/ui/Tooltip'
   import { getQueryEditor$Ctx } from '$routes/(editor)/query/ctx'
-  import { EventQueryExecute$ } from '$routes/(editor)/query/events'
+  import { EventQueryExecute$, EventRefreshUserCredits$ } from '$routes/(editor)/query/events'
 
   let className = ''
   export { className as class }
@@ -31,6 +31,8 @@
 
     promise.finally(() => {
       loading = false
+
+      EventRefreshUserCredits$.dispatch()
     })
   }
 

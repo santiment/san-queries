@@ -7,10 +7,8 @@ import { Device } from 'webkit/responsive'
 import { getDeviceInfo } from 'webkit/stores/responsive'
 import { queryCustomer } from 'webkit/stores/customer'
 import { COOKIE_POLICY_ACCEPTED } from 'webkit/ui/ManageCookiesDialog/index.svelte'
-// import { queryCurrentUser } from '$lib/api/user'
+import { queryCurrentUser } from '$lib/api/user'
 // import { initSentry } from '$lib/sentry'
-
-import { queryCurrentUser } from 'webkit/stores/user'
 
 function normalizeDeviceType(type: string | undefined): Device {
   switch (type) {

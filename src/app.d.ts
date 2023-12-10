@@ -9,7 +9,7 @@ declare global {
   namespace App {
     // interface Error {}
     interface Locals {
-      currentUser: SAN.CurrentUser | null
+      currentUser: App.CurrentUser | null
       device: DeviceInfoType
       theme: 'night-mode' | ''
       isCookiesVisible: boolean
