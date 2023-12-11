@@ -9,7 +9,7 @@
     MILLLIFY: 2,
     USD: 3,
     PERCENT_CHANGE: 4,
-    DAYS_SINCE: 5,
+    TIME_SINCE: 5,
     ADDRESS: 6,
     LABELS: 7,
   } as const
@@ -27,12 +27,16 @@
 
   export const Formatter = keyify({
     [FormatType.DATE]: Format('Date', dateFormatter),
+    [FormatType.TIME_SINCE]: Format('Time since', TimeSince),
+
     [FormatType.MILLLIFY]: Format('Millify', millify),
     [FormatType.USD]: Format('USD', (value: number) => {
       const usd = formatUsd(value * 100)
       return usd.endsWith('.00') ? usd.slice(0, -3) : usd
     }),
-    [FormatType.PERCENT_CHANGE]: Format('Percent Change', PercentChange),
+
+    [FormatType.PERCENT_CHANGE]: Format('Percent change', PercentChange),
+
     [FormatType.LABELS]: Format('Labels', Labels),
   })
 
@@ -49,6 +53,7 @@
   import Control from '../Control.svelte'
   import PercentChange from '../Table/PercentChange.svelte'
   import Labels from '../Table/Labels.svelte'
+  import TimeSince from '../Table/TimeSince.svelte'
 
   export let column: string
   export let type: string
@@ -59,7 +64,7 @@
 
   function getFormatters(_column: string, type: string) {
     if (type.includes('Date')) {
-      return [Formatter[FormatType.DATE]]
+      return [Formatter[FormatType.DATE], Formatter[FormatType.TIME_SINCE]]
     }
 
     if (type.includes('Int') || type.includes('Float')) {

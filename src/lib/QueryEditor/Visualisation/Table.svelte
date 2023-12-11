@@ -15,11 +15,17 @@
       }
 
       let Component: ComponentType
+      let className = ''
       if (
         format === Formatter[FormatType.PERCENT_CHANGE].format ||
-        format === Formatter[FormatType.LABELS].format
+        format === Formatter[FormatType.LABELS].format ||
+        format === Formatter[FormatType.TIME_SINCE].format
       ) {
         Component = format
+      }
+
+      if (format === Formatter[FormatType.TIME_SINCE].format) {
+        className = 'cell-visible'
       }
 
       return {
@@ -29,6 +35,7 @@
         format: (row: any, i: number, value: any) => (format ? format(value) : value),
         sortAccessor,
         Component,
+        className,
       }
     })
   }

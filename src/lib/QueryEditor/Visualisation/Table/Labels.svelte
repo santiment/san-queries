@@ -1,8 +1,6 @@
 <script lang="ts">
   export let value: string
 
-  $: console.log($$props)
-
   $: labels = Array.isArray(value) ? value : (value || '').split(',').map((label) => label.trim())
 </script>
 
