@@ -11,6 +11,7 @@
     PERCENT_CHANGE: 4,
     DAYS_SINCE: 5,
     ADDRESS: 6,
+    LABELS: 7,
   } as const
 
   type Keyified<T> = { [K in keyof T]: T[K] & { key: K } }
@@ -27,8 +28,12 @@
   export const Formatter = keyify({
     [FormatType.DATE]: Format('Date', dateFormatter),
     [FormatType.MILLLIFY]: Format('Millify', millify),
-    [FormatType.USD]: Format('USD', (value: number) => formatUsd(value * 100)),
+    [FormatType.USD]: Format('USD', (value: number) => {
+      const usd = formatUsd(value * 100)
+      return usd.endsWith('.00') ? usd.slice(0, -3) : usd
+    }),
     [FormatType.PERCENT_CHANGE]: Format('Percent Change', PercentChange),
+    [FormatType.LABELS]: Format('Labels', Labels),
   })
 
   export function dateFormatter(timestamp: string | number) {
@@ -43,6 +48,7 @@
 <script lang="ts">
   import Control from '../Control.svelte'
   import PercentChange from '../Table/PercentChange.svelte'
+  import Labels from '../Table/Labels.svelte'
 
   export let column: string
   export let type: string
@@ -64,7 +70,7 @@
       ]
     }
 
-    return []
+    return [Formatter[FormatType.LABELS]]
   }
 </script>
 

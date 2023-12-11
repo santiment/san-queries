@@ -15,7 +15,10 @@
       }
 
       let Component: ComponentType
-      if (format === Formatter[FormatType.PERCENT_CHANGE].format) {
+      if (
+        format === Formatter[FormatType.PERCENT_CHANGE].format ||
+        format === Formatter[FormatType.LABELS].format
+      ) {
         Component = format
       }
 
