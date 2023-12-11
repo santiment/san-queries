@@ -8,6 +8,9 @@
     DATE: 1,
     MILLLIFY: 2,
     USD: 3,
+    PERCENT_CHANGE: 4,
+    DAYS_SINCE: 5,
+    ADDRESS: 6,
   } as const
 
   type Keyified<T> = { [K in keyof T]: T[K] & { key: K } }
@@ -25,6 +28,7 @@
     [FormatType.DATE]: Format('Date', dateFormatter),
     [FormatType.MILLLIFY]: Format('Millify', millify),
     [FormatType.USD]: Format('USD', (value: number) => formatUsd(value * 100)),
+    [FormatType.PERCENT_CHANGE]: Format('Percent Change', PercentChange),
   })
 
   export function dateFormatter(timestamp: string | number) {
@@ -38,6 +42,7 @@
 
 <script lang="ts">
   import Control from '../Control.svelte'
+  import PercentChange from '../Table/PercentChange.svelte'
 
   export let column: string
   export let type: string
@@ -52,7 +57,11 @@
     }
 
     if (type.includes('Int') || type.includes('Float')) {
-      return [Formatter[FormatType.MILLLIFY], Formatter[FormatType.USD]]
+      return [
+        Formatter[FormatType.MILLLIFY],
+        Formatter[FormatType.USD],
+        Formatter[FormatType.PERCENT_CHANGE],
+      ]
     }
 
     return []

@@ -78,7 +78,7 @@ declare global {
       rows: (string | number | null)[][]
       types: string[]
 
-      clickhouseQueryId: string
+      clickhouseQueryId?: string
       queryId?: number | number
     }
 

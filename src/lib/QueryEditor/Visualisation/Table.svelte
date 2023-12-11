@@ -2,7 +2,8 @@
   export function getTableColumns(sqlData: App.SqlData, ColumnSettings: Record<string, any>) {
     return sqlData.headers.map((key, i) => {
       const settings = ColumnSettings[key] || {}
-      const format = settings.formatter?.format
+
+      let format = settings.formatter?.format
 
       let sortAccessor
 
@@ -13,12 +14,18 @@
         sortAccessor = (item: any) => +item[i]
       }
 
+      let Component: ComponentType
+      if (format === Formatter[FormatType.PERCENT_CHANGE].format) {
+        Component = format
+      }
+
       return {
         key,
         title: settings.title || key,
         valueKey: i,
         format: (row: any, i: number, value: any) => (format ? format(value) : value),
         sortAccessor,
+        Component,
       }
     })
   }
@@ -29,6 +36,8 @@
 <script lang="ts">
   import { noop } from 'webkit/utils'
   import Table from 'webkit/ui/Table/Paged.svelte'
+  import { FormatType, Formatter } from './Controls/FormattingControl.svelte'
+  import type { ComponentType } from 'svelte'
 
   let className = ''
   export { className as class }

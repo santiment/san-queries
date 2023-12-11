@@ -31,4 +31,9 @@
   h4 {
     fill: var(--waterloo);
   }
+
+  parameters {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
 </style>
