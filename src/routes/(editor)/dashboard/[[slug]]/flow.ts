@@ -112,20 +112,24 @@ export async function startDashboardSaveFlow(
     }),
   }
 
-  return mutateUpdateDashboard({ id: dashboard.id, settings, name, description }).then(
-    (apiDashboard) => {
-      if (!apiDashboard.description) apiDashboard.description = ''
+  return mutateUpdateDashboard({
+    id: dashboard.id,
+    settings,
+    name,
+    description,
+    isPublic: dashboard.isPublic,
+  }).then((apiDashboard) => {
+    if (!apiDashboard.description) apiDashboard.description = ''
 
-      if (isForced) {
-        notifications$.show({
-          type: 'success',
-          title: isNewDashboard ? 'New dashboard created' : 'Dashboard saved',
-          description: 'Your work is automatically saved on every change',
-          dismissAfter: 5000,
-        })
-      }
+    if (isForced) {
+      notifications$.show({
+        type: 'success',
+        title: isNewDashboard ? 'New dashboard created' : 'Dashboard saved',
+        description: 'Your work is automatically saved on every change',
+        dismissAfter: 5000,
+      })
+    }
 
-      return apiDashboard
-    },
-  )
+    return apiDashboard
+  })
 }

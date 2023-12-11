@@ -1,6 +1,7 @@
 <script lang="ts">
   import { getCurrentUser$Ctx } from 'webkit/stores/user'
   import Svg from 'webkit/ui/Svg/svelte'
+  import Tooltip from 'webkit/ui/Tooltip'
   import { showShareDialog } from 'webkit/ui/Share/index.svelte'
   // import Tooltip from 'webkit/ui/Tooltip'
   import { VoteType } from 'webkit/api/vote'
@@ -9,22 +10,35 @@
   import { showDashboardPublishedDialog } from '$lib/DashboardPublishedDialog/index.svelte'
   import Comments from './Comments.svelte'
   import Head from '../index.svelte'
+  import { noop } from 'san-webkit/lib/utils'
 
   export let dashboard = null as null | App.ApiDashboard
   export let author: SAN.Author | null
-  export let isPublished = false
+  export let saveDashboard = noop
 
   const { currentUser$ } = getCurrentUser$Ctx()
 
   $: currentUser = $currentUser$
   $: isAuthor = currentUser?.id === author?.id
+  $: isPublished = isAuthor && dashboard?.isPublic
 
   function onShare() {
     showShareDialog({ entity: 'Dashboard', feature: '', source: '' })
   }
+
+  function onMainClick() {
+    if (isAuthor) {
+      if (!isPublished) {
+        if (dashboard) dashboard.isPublic = true
+
+        showDashboardPublishedDialog()
+        return saveDashboard()
+      }
+    }
+  }
 </script>
 
-<Head {author} onMainClick={showDashboardPublishedDialog}>
+<Head {author}>
   <LikeButton
     id={dashboard?.id}
     type={VoteType.Dashboard}
@@ -36,13 +50,24 @@
 
   <Comments {dashboard} />
 
-  <svelte:fragment slot="main-action">
+  <svelte:fragment slot="main-action-wrap" let:classes>
     {#if isPublished}
-      Update
+      <Tooltip let:trigger on="click" position="bottom" clickaway>
+        <button use:trigger class="update btn-1">
+          Update
 
-      <Svg id="arrow-down" w="8" h="5" class="mrg-m mrg--l" />
+          <Svg id="arrow-down" w="8" h="5" class="mrg-m mrg--l" />
+        </button>
+
+        <svelte:fragment slot="tooltip" let:close>
+          <button class="btn-ghost" on:click={close}>Publish updates</button>
+          <button class="btn-ghost" on:click={close}>Unpublish</button>
+        </svelte:fragment>
+      </Tooltip>
     {:else}
-      {isAuthor ? 'Publish' : 'Share'}
+      <button class={classes} on:click={onMainClick}>
+        {isAuthor ? 'Publish' : 'Share'}
+      </button>
     {/if}
   </svelte:fragment>
 
@@ -76,5 +101,13 @@
   Comments {
     border: none;
     padding-right: 0 !important;
+  }
+
+  Tooltip {
+    padding: 8px;
+  }
+
+  .update {
+    padding: 6px 12px;
   }
 </style>

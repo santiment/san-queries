@@ -82,7 +82,7 @@
 </script>
 
 <main class="column">
-  <DashboardHead {dashboard} {author} />
+  <DashboardHead {dashboard} {author} {saveDashboard} />
 
   <DashboardEditor />
 </main>

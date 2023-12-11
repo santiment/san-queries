@@ -14,7 +14,12 @@ export function mutateCreateDashboard(variables: { name: string; description?: s
 }
 
 export function mutateUpdateDashboard(
-  variables: { id: number } & Partial<{ name: string; description: string; settings: any }>,
+  variables: { id: number } & Partial<{
+    name: string
+    description: string
+    settings: any
+    isPublic: boolean
+  }>,
 ) {
   return mutate<SAN.API.Query<'dashboard', App.ApiDashboard>>(
     `mutation ($id:Int!, $name: String, $description: String, $isPublic: Boolean, $settings:json) {
