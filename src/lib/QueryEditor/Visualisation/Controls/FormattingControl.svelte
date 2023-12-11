@@ -37,6 +37,7 @@
 
     [FormatType.PERCENT_CHANGE]: Format('Percent change', PercentChange),
 
+    [FormatType.ADDRESS]: Format('Address', Address),
     [FormatType.LABELS]: Format('Labels', Labels),
   })
 
@@ -54,6 +55,7 @@
   import PercentChange from '../Table/PercentChange.svelte'
   import Labels from '../Table/Labels.svelte'
   import TimeSince from '../Table/TimeSince.svelte'
+  import Address from '../Table/Address.svelte'
 
   export let column: string
   export let type: string
@@ -75,7 +77,7 @@
       ]
     }
 
-    return [Formatter[FormatType.LABELS]]
+    return [Formatter[FormatType.LABELS], Formatter[FormatType.ADDRESS]]
   }
 </script>
 

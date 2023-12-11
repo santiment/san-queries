@@ -19,12 +19,16 @@
       if (
         format === Formatter[FormatType.PERCENT_CHANGE].format ||
         format === Formatter[FormatType.LABELS].format ||
-        format === Formatter[FormatType.TIME_SINCE].format
+        format === Formatter[FormatType.TIME_SINCE].format ||
+        format === Formatter[FormatType.ADDRESS].format
       ) {
         Component = format
       }
 
-      if (format === Formatter[FormatType.TIME_SINCE].format) {
+      if (
+        format === Formatter[FormatType.TIME_SINCE].format ||
+        format === Formatter[FormatType.ADDRESS].format
+      ) {
         className = 'cell-visible'
       }
 
