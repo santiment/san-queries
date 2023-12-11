@@ -1,15 +1,10 @@
 <script lang="ts">
-  import { queryGetUserQueries } from '$lib/api/query/get'
+  import type { queryGetUserQueries } from '$lib/api/query/get'
   import Profile from 'webkit/ui/Profile/svelte'
   import Svg from 'webkit/ui/Svg/svelte'
 
+  export let queries = [] as Awaited<ReturnType<typeof queryGetUserQueries>>
   export let onQueryAdd: (query: App.Dashboard.Query) => void
-
-  let queries = [] as Awaited<ReturnType<typeof queryGetUserQueries>>
-
-  queryGetUserQueries().then((data) => {
-    queries = data
-  })
 </script>
 
 <queries class="column gap-s">

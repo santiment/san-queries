@@ -1,3 +1,4 @@
+import { CachePolicy } from 'san-webkit/lib/api/cache'
 import { Universal } from 'webkit/api'
 
 export const QUERY_FRAGMENT = `id
@@ -20,16 +21,43 @@ export const queryGetSqlQuery = Universal(
 )
 
 export const queryGetUserQueries = Universal(
-  (query) => () =>
-    query<
-      SAN.API.Query<
-        'queries',
-        (App.ApiQuery & { user: { id: number; username: string; avatarUrl?: string } })[]
-      >
-    >(`{
+  (query) =>
+    (ignoreCache = false) =>
+      query<
+        SAN.API.Query<
+          'queries',
+          (App.ApiQuery & { user: { id: number; username: string; avatarUrl?: string } })[]
+        >
+      >(
+        `{
         queries:getUserQueries(page:1, pageSize:100) {
           ${QUERY_FRAGMENT}
           user { id username avatarUrl }
         }
-      }`).then(({ queries }) => queries),
+      }`,
+        {
+          cachePolicy: ignoreCache ? CachePolicy.NewCache : undefined,
+        },
+      ).then(({ queries }) => queries),
+)
+
+export const queryGetPublicQueries = Universal(
+  (query) =>
+    (ignoreCache = false) =>
+      query<
+        SAN.API.Query<
+          'queries',
+          (App.ApiQuery & { user: { id: number; username: string; avatarUrl?: string } })[]
+        >
+      >(
+        `{
+        queries:getPublicQueries(page:1, pageSize:100) {
+          ${QUERY_FRAGMENT}
+          user { id username avatarUrl }
+        }
+      }`,
+        {
+          cachePolicy: ignoreCache ? CachePolicy.NewCache : undefined,
+        },
+      ).then(({ queries }) => queries),
 )
