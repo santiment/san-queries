@@ -5,6 +5,7 @@
   import { getDashboardEditor$Ctx } from '../ctx'
   import { showVisualisationFullscreenDialog } from '$lib/QueryEditor/Visualisation/FullscreenDialog/index.svelte'
   import { parseQuerySettings, parseQueryParameters } from '$routes/(editor)/query/ctx'
+  import { EventAutoSave$ } from '$routes/(editor)/query/events'
 
   export let widget: App.Dashboard.QueryWidget
 
@@ -40,6 +41,8 @@
 
   function onCloseClick() {
     dashboardEditor$.removeWidget(widget)
+
+    EventAutoSave$.dispatch()
   }
 </script>
 

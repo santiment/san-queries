@@ -13,8 +13,9 @@ function createEvent$<Data = undefined>(name: string, debounceTime?: number) {
         if (debounceTime) {
           window.clearTimeout(debounceTimer)
           debounceTimer = window.setTimeout(() => clb(e.detail), debounceTime)
+        } else {
+          clb(e.detail)
         }
-        clb(e.detail)
       }
 
       if (BROWSER) window.addEventListener<any>(name, listener)

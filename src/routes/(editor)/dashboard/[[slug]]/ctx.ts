@@ -50,7 +50,7 @@ function prepareStore(apiDashboard?: null | App.ApiDashboard) {
       .map(({ id, xywh }) => {
         const widget = IdToWidget[id]
         if (widget) {
-          if (widget.body) widgets.push(mapTextWidget(widget))
+          if ('body' in widget) widgets.push(mapTextWidget(widget))
           else widgets.push(mapQueryWidget(widget))
 
           return xywh.slice(0, 4)

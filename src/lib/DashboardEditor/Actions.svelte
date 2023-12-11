@@ -2,6 +2,7 @@
   import Svg from 'webkit/ui/Svg/svelte'
   import { getDashboardEditor$Ctx } from './ctx'
   import { showAddQueryToDashboardDialog } from './AddQueryToDashboardDialog/index.svelte'
+  import { EventAutoSave$ } from '$routes/(editor)/query/events'
 
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
 
@@ -11,12 +12,15 @@
 
   function onTextClick() {
     dashboardEditor$.addWidget({ type: 'TEXT', value: '' })
+    EventAutoSave$.dispatch()
   }
 
   function onQueryClick() {
     showAddQueryToDashboardDialog({
       onQueryAdd: (apiQuery: App.ApiQuery) => {
         dashboardEditor$.addWidget({ type: 'QUERY', title: apiQuery.name, query: apiQuery })
+
+        EventAutoSave$.dispatch()
       },
     })
   }

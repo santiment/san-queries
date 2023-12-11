@@ -40,7 +40,10 @@ function Diff<T>(type: T, key: 'textWidgets', dashboardEditor: App.DashboardEdit
   return { removed: [...removed], added: [...added], updated: [...updated] }
 }
 
-export async function startDashboardSaveFlow(dashboardEditor: App.DashboardEditorStoreValue) {
+export async function startDashboardSaveFlow(
+  dashboardEditor: App.DashboardEditorStoreValue,
+  isForced = false,
+) {
   const { name, description } = dashboardEditor
 
   if (!name) {
@@ -53,6 +56,8 @@ export async function startDashboardSaveFlow(dashboardEditor: App.DashboardEdito
 
     return Promise.reject()
   }
+
+  const isNewDashboard = !dashboardEditor.dashboard
 
   if (!dashboardEditor.dashboard) {
     const [dashboard, error] = await errorify(mutateCreateDashboard({ name, description }))
@@ -107,5 +112,20 @@ export async function startDashboardSaveFlow(dashboardEditor: App.DashboardEdito
     }),
   }
 
-  return mutateUpdateDashboard({ id: dashboard.id, settings })
+  return mutateUpdateDashboard({ id: dashboard.id, settings, name, description }).then(
+    (apiDashboard) => {
+      if (!apiDashboard.description) apiDashboard.description = ''
+
+      if (isForced) {
+        notifications$.show({
+          type: 'success',
+          title: isNewDashboard ? 'New dashboard created' : 'Dashboard saved',
+          description: 'Your work is automatically saved on every change',
+          dismissAfter: 5000,
+        })
+      }
+
+      return apiDashboard
+    },
+  )
 }

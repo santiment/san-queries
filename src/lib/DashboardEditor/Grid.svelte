@@ -9,6 +9,7 @@
   import { getDevice$Ctx } from 'san-webkit/lib/stores/responsive'
   import { normalizeGrid, sortLayout } from 'san-webkit/lib/ui/SnapGrid/layout'
   import { getDashboardEditor$Ctx } from '$routes/(editor)/dashboard/[[slug]]/ctx'
+  import { EventAutoSave$ } from '$routes/(editor)/query/events'
 
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
   const { device$ } = getDevice$Ctx()
@@ -44,6 +45,7 @@
 
   function onLayoutChange() {
     dashboardEditor$.updateLayout()
+    EventAutoSave$.dispatch()
   }
 </script>
 

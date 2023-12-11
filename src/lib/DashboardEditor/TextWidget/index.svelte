@@ -3,6 +3,7 @@
   import Editor from 'webkit/ui/Editor'
   import { markdownToHTML } from 'webkit/ui/Editor/markdown'
   import { getDashboardEditor$Ctx } from '../ctx'
+  import { EventAutoSave$ } from '$routes/(editor)/query/events'
   // import 'medium-editor'
 
   export let widget: App.Dashboard.TextWidget
@@ -18,10 +19,14 @@
     if (!value) return
 
     widget.value = value
+
+    EventAutoSave$.dispatch()
   }
 
   function onCloseClick() {
     dashboardEditor$.removeWidget(widget)
+
+    EventAutoSave$.dispatch()
   }
 </script>
 

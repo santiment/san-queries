@@ -9,7 +9,12 @@
   import { DashboardEditor$$ } from './ctx'
   import { startDashboardSaveFlow } from './flow'
   import { getSEOLinkFromIdAndTitle } from 'san-webkit/lib/utils/url'
-  import { EventDashboardChanged$, EventDashboardSaved$ } from '$routes/(editor)/query/events'
+  import {
+    EventAutoSave$,
+    EventDashboardChanged$,
+    EventDashboardSaved$,
+    EventSavingState$,
+  } from '$routes/(editor)/query/events'
   import { mutateUpdateDashboard } from '$lib/api/dashboard/create'
 
   export let data: PageData
@@ -29,15 +34,16 @@
     tick().then(() => dashboardEditor$.setApiDashboard(apiDashboard))
   }
 
-  const saveShortcut = GlobalShortcut$(
-    'CMD+S',
-    () => {
-      if (dashboardEditor.isLegacy) {
-        console.log(dashboardEditor)
-        return
-      }
+  function saveDashboard(isForced = false) {
+    EventSavingState$.dispatch({ state: 'start' })
 
-      startDashboardSaveFlow(dashboardEditor).then((apiDashboard) => {
+    if (dashboardEditor.isLegacy) {
+      console.log(dashboardEditor)
+      return
+    }
+
+    startDashboardSaveFlow(dashboardEditor, isForced)
+      .then((apiDashboard) => {
         console.log(apiDashboard)
 
         data.apiDashboard = apiDashboard
@@ -50,21 +56,29 @@
           history.state,
           '/dashboard/' + getSEOLinkFromIdAndTitle(apiDashboard.id, apiDashboard.name),
         )
+
+        EventSavingState$.dispatch({ state: 'success' })
       })
-    },
-    false,
-  )
+      .catch(() => {
+        EventSavingState$.dispatch({ state: 'hidden' })
+      })
+  }
+
+  const saveShortcut = GlobalShortcut$('CMD+S', () => saveDashboard(true), false)
   $saveShortcut
 
   const eventDashboardChanged = EventDashboardChanged$(({ id, name, description }) => {
-    if (name !== undefined) $dashboardEditor$.name = name
-    if (description !== undefined) $dashboardEditor$.description = description
+    if (name !== undefined) dashboardEditor.name = name
+    if (description !== undefined) dashboardEditor.description = description
 
-    if (id) {
-      mutateUpdateDashboard({ id, name, description })
-    }
+    dashboardEditor$.set(dashboardEditor)
+
+    saveDashboard(!id)
   })
   $eventDashboardChanged
+
+  const eventAutoSave = EventAutoSave$(() => dashboardEditor.name && saveDashboard())
+  $eventAutoSave
 </script>
 
 <main class="column">
