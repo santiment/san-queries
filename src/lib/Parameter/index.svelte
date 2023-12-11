@@ -5,7 +5,8 @@
   export let parameter: { key: string; value: string; global: boolean }
   export let color: string
   export let isAuthor = true
-  export let onRemoveClick = noop
+  export let onRemoveClick = null as null | (() => void)
+  export let onLinkClick = null as null | (() => void)
 
   $: ({ key, value, global = false } = parameter)
   $: shortValue = value.toString()
@@ -28,17 +29,21 @@
       : shortValue}</span
   >
 
-  {#if isAuthor}
+  {#if isAuthor && (onLinkClick || onRemoveClick)}
     <div class="divider" />
 
     <actions class="row">
-      <!-- <button class="link btn"> -->
-      <!--   <Svg id="link" w="15" /> -->
-      <!-- </button> -->
+      {#if onLinkClick}
+        <button class="link btn">
+          <Svg id="link" w="15" />
+        </button>
+      {/if}
 
-      <button class="close btn" on:click|capture|stopPropagation={onRemoveClick}>
-        <Svg id="close" w="10" />
-      </button>
+      {#if onRemoveClick}
+        <button class="close btn" on:click|capture|stopPropagation={onRemoveClick}>
+          <Svg id="close" w="10" />
+        </button>
+      {/if}
     </actions>
   {/if}
 </parameter>

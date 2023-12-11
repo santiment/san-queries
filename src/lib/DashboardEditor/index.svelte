@@ -14,10 +14,12 @@
   import { EventDashboardChanged$ } from '$routes/(editor)/query/events'
   import Legacy from './Legacy.svelte'
   import { BROWSER } from 'esm-env'
+  import { showEditGlobalParameterDialog$ } from './EditGlobalParameterDialog.svelte'
 
   let className = ''
   export { className as class }
 
+  const showEditGlobalParameterDialog = showEditGlobalParameterDialog$()
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
   // const { dashboardEditor$ } = DashboardEditor$$()
   // DashboardEditor$$()
@@ -67,6 +69,10 @@
 
     // $dashboardEditor$.description = value
   }
+
+  function onAddGlobalParameterClick() {
+    showEditGlobalParameterDialog()
+  }
 </script>
 
 <main class="column gap-m {className}">
@@ -86,6 +92,10 @@
       onBlur={onDescriptionChange}
     />
   </header>
+
+  <parameters class="row gap-s mrg-l mrg--b">
+    <button class="btn-2" on:click={onAddGlobalParameterClick}>Add global parameter</button>
+  </parameters>
 
   {#if dashboardEditor.isLegacy && dashboardEditor.dashboard}
     {#if BROWSER}

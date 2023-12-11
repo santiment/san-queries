@@ -6,6 +6,7 @@
   import { showVisualisationFullscreenDialog } from '$lib/QueryEditor/Visualisation/FullscreenDialog/index.svelte'
   import { parseQuerySettings, parseQueryParameters } from '$routes/(editor)/query/ctx'
   import { EventAutoSave$ } from '$routes/(editor)/query/events'
+  import Parameter, { COLORS } from '$lib/Parameter'
 
   export let widget: App.Dashboard.QueryWidget
 
@@ -67,16 +68,26 @@
     </button>
   </header>
 
+  <parameters class="row gap-s">
+    {#each parameters as parameter, i}
+      <Parameter {parameter} color={COLORS[i]} onLinkClick={console.log} />
+    {/each}
+  </parameters>
+
   <Table border={false} {sqlData} ColumnSettings={settings.columns} />
 </query-widget>
 
 <style>
   header {
-    padding: 12px 18px 12px 12px;
+    padding: 12px 18px 0 12px;
+  }
+
+  parameters {
     border-bottom: 1px solid var(--porcelain);
+    padding: 12px;
   }
 
   Table {
-    max-height: calc(100% - 57px);
+    min-height: 0;
   }
 </style>
