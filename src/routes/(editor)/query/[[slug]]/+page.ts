@@ -5,6 +5,8 @@ import { redirect } from '@sveltejs/kit'
 
 import { getIdFromSEOLink } from 'webkit/utils/url'
 
+export const ssr = false
+
 export const load: PageLoad = async (event) => {
   const { slug } = event.params
 
