@@ -1,4 +1,4 @@
-podTemplate(label: 'sanqueries-staging-deploy', containers: [
+podTemplate(label: 'sanqueries-production-deploy', containers: [
     containerTemplate(name: 'kubectl', image: 'lachlanevenson/k8s-kubectl:v1.23.14', command: 'cat', ttyEnabled: true),
     containerTemplate(name: 'docker', image: 'docker', ttyEnabled: true, command: 'cat', envVars: [
         envVar(key: 'DOCKER_HOST', value: 'tcp://docker-host-docker-host.default.svc.cluster.local:2375')
@@ -9,7 +9,7 @@ podTemplate(label: 'sanqueries-staging-deploy', containers: [
       secretEnvVar(key: 'AWS_SECRET_ACCESS_KEY', secretName: 'sanqueries-ecr-env', secretKey: 'awsSecretAccessKey'),
     ])
   ]) {
-  node('sanqueries-staging-deploy') {
+  node('sanqueries-production-deploy') {
     stage('Update deployment') {
       def scmVars = checkout scm
 
