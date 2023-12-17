@@ -1,4 +1,5 @@
 import type { ChartType } from 'chart.js'
+import { yAxisFormatter } from './scales'
 
 // NOTE: http://stackoverflow.com/a/3943023/112731 [@vanguard | Mar  9, 2021]
 export function getBubbleFontColorHex(color: string, isNightMode = false) {
@@ -13,34 +14,36 @@ export function getBubbleFontColorHex(color: string, isNightMode = false) {
 
 export const AXES_LAST_VALUE_PLUGIN = {
   id: 'custom_canvas_background_color',
-  afterDraw: (chart: any, _: any, options: any) => {
+  afterDraw: function (chart: any, _: any, options: any) {
+    const { MinMax } = options
     const { ctx } = chart
-    ctx.save()
 
     const BUBBLE_HEIGHT = 13
     const BUBBLE_HALF_HEIGHT = Math.round(BUBBLE_HEIGHT / 2)
     const BUBBLE_PADDING = 3
     const BUBBLE_DOUBLE_PADDING = BUBBLE_PADDING + BUBBLE_PADDING
 
+    ctx.save()
+
     chart.data.datasets.forEach(({ yAxisID, parsing, borderColor }: any) => {
       const key = parsing.yAxisKey
-      const { min, max, lastValue } = options.MinMax[key]
+      const { lastValue } = MinMax[key]
+
       const scale = chart.scales[yAxisID]
-
-      const factor = scale.height / (max - min)
-      const top = (max - lastValue) * factor + scale.top
-
+      const top = scale.getPixelForValue(lastValue)
       let { left } = scale
-      left += BUBBLE_PADDING
+      left += 2.5 + BUBBLE_PADDING
 
-      const width = ctx.measureText(lastValue).width
+      // const text = (+lastValue).toLocaleString()
+      const text = yAxisFormatter(+lastValue)
+      const width = ctx.measureText(text).width
 
       ctx.fillStyle = borderColor
       ctx.fillRect(left, top - BUBBLE_HALF_HEIGHT, width + BUBBLE_DOUBLE_PADDING, BUBBLE_HEIGHT)
 
       ctx.textBaseline = 'middle'
       ctx.fillStyle = getBubbleFontColorHex(borderColor)
-      ctx.fillText(lastValue, left + BUBBLE_PADDING, top)
+      ctx.fillText(text, left + BUBBLE_PADDING, top)
     })
 
     ctx.restore()

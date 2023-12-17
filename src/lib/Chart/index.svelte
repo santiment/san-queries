@@ -17,7 +17,7 @@
   $: BROWSER && data && metrics && xAxisKey && mountChart()
 
   async function mountChart() {
-    const ChartJs = (await import('chart.js/auto')).default
+    const { default: ChartJs } = await import('chart.js/auto')
 
     ChartJs.defaults.font.family = 'Proxima Nova'
     ChartJs.defaults.font.size = 10
