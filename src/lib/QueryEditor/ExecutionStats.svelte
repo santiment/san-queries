@@ -57,7 +57,7 @@
   }
 
   execution-stats {
-    min-width: 286px;
+    min-width: 305px;
     min-height: 269px;
   }
 

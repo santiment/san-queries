@@ -1,7 +1,5 @@
 <script lang="ts">
   import { BROWSER } from 'esm-env'
-  import { onMount } from 'svelte'
-  import { getDateFormats } from 'webkit/utils/dates'
   import { AXES_LAST_VALUE_PLUGIN } from './axes'
   import { getMinMax } from './minMax'
   import { getScales } from './scales'
@@ -29,17 +27,13 @@
     const MinMax = getMinMax(axesMetrics, data)
     const scales = getScales(axesMetrics, MinMax)
 
-    ChartJs.register(AXES_LAST_VALUE_PLUGIN)
-
     const xAxisLabels = data.map((row) => row[xAxisKey])
-    // .map((value) => {
-    //   const { DD, MMM, YY } = getDateFormats(new Date(value))
-    //   return `${DD} ${MMM} ${YY}`
-    // })
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const chart = new ChartJs(chartNode, {
       type: 'line',
+
+      plugins: [AXES_LAST_VALUE_PLUGIN],
 
       options: {
         maintainAspectRatio: false,
@@ -69,6 +63,8 @@
           data,
           label: metric.title,
           yAxisID: metric.key,
+
+          pointRadius: 0,
 
           parsing: {
             yAxisKey: metric.key,
