@@ -1,5 +1,7 @@
 <script lang="ts">
   import Chart from '$lib/Chart/index.svelte'
+  import { COLORS } from '$lib/Parameter'
+  import Metric from './Metric.svelte'
 
   let className = ''
   export { className as class }
@@ -33,6 +35,7 @@
         key: i.toString(),
         title: settings.title || key,
         valueKey: i,
+        color: COLORS[i],
       })
     })
 
@@ -49,7 +52,16 @@
   }
 </script>
 
+<metrics class="row gap-s mrg-s mrg--b">
+  {#each metrics as metric}
+    <Metric {metric} />
+  {/each}
+</metrics>
+
 <Chart class={className} {data} {metrics} xAxisKey={dateColumn} />
 
 <style>
+  metrics {
+    flex-wrap: wrap;
+  }
 </style>

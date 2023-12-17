@@ -43,7 +43,7 @@
         sort={controls.sort}
       />
     {:else}
-      <Chart class="border" {sqlData} {ColumnSettings} />
+      <Chart class="" {sqlData} {ColumnSettings} />
     {/if}
 
     {#if sqlData.rows.length === 0}

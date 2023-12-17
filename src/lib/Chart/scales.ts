@@ -1,9 +1,8 @@
 import { getDateFormats } from 'san-webkit/lib/utils/dates'
 import { themes } from './theme'
-import { COLORS } from '$lib/Parameter'
 import { millify } from 'webkit/utils/formatting'
 
-export function getScales(axesMetrics: string[], MinMax: any) {
+export function getScales(metrics: string[], MinMax: any) {
   const scales = {
     x: {
       grid: {
@@ -25,7 +24,7 @@ export function getScales(axesMetrics: string[], MinMax: any) {
     },
   } as Record<string, any>
 
-  axesMetrics.forEach((key, i) => {
+  metrics.forEach(({ key, color }, i) => {
     const { min, max } = MinMax[key]
     const margin = (max - min) * 0.05
 
@@ -33,9 +32,9 @@ export function getScales(axesMetrics: string[], MinMax: any) {
       position: 'right',
       min: min - margin,
       max: max + margin,
-      grid: { display: false, borderColor: 'red' },
+      grid: { display: false },
 
-      border: { color: COLORS[i] },
+      border: { color },
       paddingRight: 20,
 
       ticks: {
