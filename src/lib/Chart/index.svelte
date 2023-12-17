@@ -1,6 +1,11 @@
 <script lang="ts">
+  import { BROWSER } from 'esm-env'
   import { onMount } from 'svelte'
+  import { getDateFormats } from 'webkit/utils/dates'
   import { AXES_LAST_VALUE_PLUGIN } from './axes'
+  import { getMinMax } from './minMax'
+  import { getScales } from './scales'
+  import { getTooltip } from './tooltip'
 
   let className = ''
   export { className as class }
@@ -11,102 +16,68 @@
 
   let chartNode: HTMLCanvasElement
 
-  onMount(() => {
-    import('chart.js/auto').then(({ default: ChartJs }) => {
-      ChartJs.defaults.font.family = 'Proxima Nova'
-      ChartJs.defaults.font.size = 10
+  $: BROWSER && data && metrics && xAxisKey && mountChart()
 
-      const MinMax = {} as Record<string, { min: number; max: number; lastValue?: number }>
-      const scales = {
-        x: {
-          ticks: {
-            maxTicksLimit: 10,
-          },
-        },
-      } as Record<string, any>
+  async function mountChart() {
+    const ChartJs = (await import('chart.js/auto')).default
 
-      const axesMetrics = metrics.slice(0, 4).map(({ key }) => key)
+    ChartJs.defaults.font.family = 'Proxima Nova'
+    ChartJs.defaults.font.size = 10
 
-      data.forEach((row) => {
-        axesMetrics.forEach((key) => {
-          const value = row[key]
+    const axesMetrics = metrics.slice(0, 4).map(({ key }) => key)
 
-          if (!MinMax[key]) {
-            MinMax[key] = {
-              min: Infinity,
-              max: -Infinity,
-              lastValue: undefined as undefined | number,
-            }
-          }
+    const MinMax = getMinMax(axesMetrics, data)
+    const scales = getScales(axesMetrics, MinMax)
 
-          const minMax = MinMax[key]
+    ChartJs.register(AXES_LAST_VALUE_PLUGIN)
 
-          if (value < minMax.min) minMax.min = value
-          if (value > minMax.max) minMax.max = value
-          if (Number.isFinite(value)) minMax.lastValue = value
-        })
-      })
+    const xAxisLabels = data.map((row) => row[xAxisKey])
+    // .map((value) => {
+    //   const { DD, MMM, YY } = getDateFormats(new Date(value))
+    //   return `${DD} ${MMM} ${YY}`
+    // })
 
-      axesMetrics.forEach((key) => {
-        const { min, max } = MinMax[key]
-        scales[key] = {
-          position: 'right',
-          min,
-          max,
-          ticks: {
-            stepSize: (max - min) / 5,
-          },
-        }
-      })
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const chart = new ChartJs(chartNode, {
+      type: 'line',
 
-      ChartJs.register(AXES_LAST_VALUE_PLUGIN)
+      options: {
+        maintainAspectRatio: false,
+        responsive: true,
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const chart = new ChartJs(chartNode, {
-        type: 'line',
-
-        options: {
-          maintainAspectRatio: false,
-          responsive: true,
-
-          interaction: {
-            intersect: false,
-            mode: 'index',
-          },
-
-          plugins: {
-            legend: {
-              display: false,
-            },
-            tooltip: {
-              bodyFont: {
-                size: 12,
-              },
-            },
-            custom_canvas_background_color: {
-              MinMax,
-            },
-          },
-
-          scales,
+        interaction: {
+          intersect: false,
+          mode: 'index',
         },
 
-        data: {
-          labels: data.map((row) => row[xAxisKey]),
-          datasets: metrics.map((metric) => ({
-            data,
-            label: metric.title,
-            yAxisID: metric.key,
-
-            parsing: {
-              yAxisKey: metric.key,
-              xAxisKey: xAxisKey,
-            },
-          })),
+        plugins: {
+          legend: {
+            display: false,
+          },
+          tooltip: getTooltip(),
+          custom_canvas_background_color: {
+            MinMax,
+          },
         },
-      })
+
+        scales,
+      },
+
+      data: {
+        labels: xAxisLabels,
+        datasets: metrics.map((metric) => ({
+          data,
+          label: metric.title,
+          yAxisID: metric.key,
+
+          parsing: {
+            yAxisKey: metric.key,
+            xAxisKey: xAxisKey,
+          },
+        })),
+      },
     })
-  })
+  }
 </script>
 
 <chart class="column {className}">
@@ -119,5 +90,6 @@
   chart,
   canvas {
     flex: 1;
+    min-height: 0;
   }
 </style>

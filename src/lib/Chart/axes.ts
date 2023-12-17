@@ -2,16 +2,16 @@ import type { ChartType } from 'chart.js'
 
 export const AXES_LAST_VALUE_PLUGIN = {
   id: 'custom_canvas_background_color',
-  beforeDraw: (chart: any, _: any, options: any) => {
+  afterDraw: (chart: any, _: any, options: any) => {
     const { ctx } = chart
     ctx.save()
-
-    // ctx.globalCompositeOperation = 'destination-over'
 
     const BUBBLE_HEIGHT = 13
     const BUBBLE_HALF_HEIGHT = Math.round(BUBBLE_HEIGHT / 2)
     const BUBBLE_PADDING = 3
     const BUBBLE_DOUBLE_PADDING = BUBBLE_PADDING + BUBBLE_PADDING
+
+    ctx.globalCompositeOperation = 'destination-over'
 
     chart.data.datasets.forEach(({ yAxisID, parsing }: any) => {
       const key = parsing.yAxisKey
@@ -35,7 +35,7 @@ export const AXES_LAST_VALUE_PLUGIN = {
     ctx.restore()
   },
   defaults: {
-    color: 'lightGreen',
+    color: 'red',
     MinMax: {},
   },
 }
