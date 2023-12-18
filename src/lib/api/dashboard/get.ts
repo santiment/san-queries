@@ -7,6 +7,7 @@ name
 description
 isPublic
 settings
+parameters
 textWidgets { id body }
 queries {${QUERY_FRAGMENT}}
 commentsCount
@@ -46,6 +47,8 @@ declare global {
       isPublic: boolean
       settings: null | Record<string, any>
       user: SAN.Author
+
+      parameters: any
 
       textWidgets: ApiTextWidget[]
       queries: App.ApiQuery[]

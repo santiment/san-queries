@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Readable } from 'svelte/store'
 
+  import { BROWSER } from 'esm-env'
   // import { page as page$ } from '$app/stores'
   import { GlobalShortcut$ } from 'webkit/utils/events'
   import { notifications$ } from 'webkit/ui/Notifications'
@@ -14,13 +15,11 @@
   import { getDashboardEditor$Ctx } from '$routes/(editor)/dashboard/[[slug]]/ctx'
   import { EventDashboardChanged$ } from '$routes/(editor)/query/events'
   import Legacy from './Legacy.svelte'
-  import { BROWSER } from 'esm-env'
-  import { showEditGlobalParameterDialog$ } from './EditGlobalParameterDialog.svelte'
+  import Globals from './Globals/Parameters.svelte'
 
   let className = ''
   export { className as class }
 
-  const showEditGlobalParameterDialog = showEditGlobalParameterDialog$()
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
 
   let CachedData = {} as any
@@ -66,10 +65,6 @@
 
     // $dashboardEditor$.description = value
   }
-
-  function onAddGlobalParameterClick() {
-    showEditGlobalParameterDialog()
-  }
 </script>
 
 <main class="column gap-m {className}">
@@ -90,9 +85,7 @@
     />
   </header>
 
-  <parameters class="row gap-s mrg-l mrg--b">
-    <button class="btn-2" on:click={onAddGlobalParameterClick}>Add global parameter</button>
-  </parameters>
+  <Globals />
 
   {#if dashboardEditor.isLegacy && dashboardEditor.dashboard}
     {#if BROWSER}
