@@ -11,6 +11,8 @@
   import { getDashboardEditor$Ctx } from '$routes/(editor)/dashboard/[[slug]]/ctx'
   import { EventAutoSave$ } from '$routes/(editor)/query/events'
 
+  export let CachedData: any
+
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
   const { device$ } = getDevice$Ctx()
 
@@ -68,7 +70,7 @@
     {:else if widget.type === 'HEADING'}
       <HeadingWidget {widget} />
     {:else if widget.type === 'QUERY'}
-      <QueryWidget {widget} />
+      <QueryWidget {widget} {CachedData} />
     {:else if widget.type === 'IMAGE'}
       <ImageWidget {widget} />
     {/if}

@@ -9,6 +9,7 @@
   import Actions from './Actions.svelte'
   import ContentEditable from './ContentEditable.svelte'
   // import { DashboardEditor$$ } from './ctx'
+  import { queryGetCachedDashboardQueriesExecutions } from '$lib/api/dashboard/query'
   import Grid from './Grid.svelte'
   import { getDashboardEditor$Ctx } from '$routes/(editor)/dashboard/[[slug]]/ctx'
   import { EventDashboardChanged$ } from '$routes/(editor)/query/events'
@@ -21,28 +22,24 @@
 
   const showEditGlobalParameterDialog = showEditGlobalParameterDialog$()
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
-  // const { dashboardEditor$ } = DashboardEditor$$()
-  // DashboardEditor$$()
 
-  // $: if (process.browser) updateDashboard($page$)
+  let CachedData = {} as any
+
   $: dashboardEditor = $dashboardEditor$
+  $: id = dashboardEditor.dashboard?.id
 
-  type StoreValue<T> = T extends Readable<infer K> ? K : never
+  $: if (BROWSER && id) getQueriesCache(id)
 
-  function updateDashboard(page: StoreValue<typeof page$>) {
-    if (!process.browser) return
+  function getQueriesCache(dashboardId: number) {
+    queryGetCachedDashboardQueriesExecutions(dashboardId).then((cached) => {
+      const result = {} as any
 
-    const data = page.url.searchParams.get('data')
-    if (!data) {
-      // dashboard = { title: '', description: '' }
-      dashboardEditor$.update([], [])
-      return
-    }
+      cached.forEach((query) => {
+        result[query.dashboardQueryMappingId] = query
+      })
 
-    const value = JSON.parse(data)
-
-    // dashboard = value
-    dashboardEditor$.update(value.widgets, value.layout)
+      CachedData = result
+    })
   }
 
   function onTitleChange(value: string) {
@@ -102,7 +99,7 @@
       <Legacy dashboard={dashboardEditor.dashboard} />
     {/if}
   {:else}
-    <Grid />
+    <Grid {CachedData} />
 
     <Actions />
   {/if}

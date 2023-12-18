@@ -14,7 +14,7 @@
   let chartNode: HTMLCanvasElement
   let chart: any
 
-  $: BROWSER && updateChart(chartNode, { data, xAxisKey, metrics })
+  $: BROWSER && chartNode && updateChart(chartNode, { data, xAxisKey, metrics })
 
   async function updateChart(node: HTMLCanvasElement, vars: any) {
     console.log({ chart })

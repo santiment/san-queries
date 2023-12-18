@@ -63,11 +63,34 @@ export const queryExecutionStats = Universal(
           data:getClickhouseQueryExecutionStats(clickhouseQueryId:"${clickhouseQueryId}") {
             creditsCost
             readGb
-            readRows
+
             insertedAt
             queryDurationMs
           }
         }`,
+    ).then(({ data }) => data),
+)
+
+export const queryRunDashboardSqlQuery = Universal(
+  (query) => (dashboardId: number, dashboardQueryMappingId: string) =>
+    query<ComputeRawClickhouseQuery>(
+      `{
+    data:runDashboardSqlQuery(dashboardId:${dashboardId}, dashboardQueryMappingId:"${dashboardQueryMappingId}") {
+      headers:columns
+      rows
+      types:columnTypes
+
+      clickhouseQueryId
+      queryId
+      dashboardQueryMappingId
+      queryEndTime
+      queryStartTime
+      summary
+    }
+  }`,
+      {
+        cache: false,
+      },
     ).then(({ data }) => data),
 )
 

@@ -1,6 +1,7 @@
 <script lang="ts">
   import Svg from 'webkit/ui/Svg/svelte'
-  import { queryComputeRawClickhouseQuery } from '$lib/api/query'
+  import { queryRunDashboardSqlQuery } from '$lib/api/query'
+  import { compressQuery, mutateCompressedQueryExecutionResult } from '$lib/api/dashboard/query'
   import Table from '$lib/QueryEditor/Visualisation/Table.svelte'
   import Chart from '$lib/QueryEditor/Visualisation/Chart/index.svelte'
   import { getDashboardEditor$Ctx } from '../ctx'
@@ -10,27 +11,41 @@
   import Parameter, { COLORS } from '$lib/Parameter'
 
   export let widget: App.Dashboard.QueryWidget
+  export let CachedData: any
 
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
 
-  let sqlData: any
+  $: sqlData = CachedData[widget.id] as any
 
+  $: dashboardEditor = $dashboardEditor$
   $: settings = parseQuerySettings(widget.query.settings)
   $: parameters = parseQueryParameters(widget.query.sqlQueryParameters)
 
-  $: if (process.browser) {
+  // $: if (process.browser) {
+  //   getData()
+  // }
+
+  function updateData() {
     getData()
+      .then((data) => {
+        const { headers, types, ...rest } = data
+        return compressQuery({ ...rest, columns: headers, columnTypes: types })
+      })
+      .then((compressed) =>
+        mutateCompressedQueryExecutionResult({
+          compressed,
+          dashboardId: dashboardEditor.dashboard.id,
+          dashboardQueryMappingId: widget.id,
+        }),
+      )
   }
 
   function getData() {
-    const query = widget.query as App.ApiQuery
-    console.log(query)
+    // const query = widget.query as App.ApiQuery
 
-    queryComputeRawClickhouseQuery({
-      sql: query.sqlQueryText,
-      parameters: JSON.stringify(query.sqlQueryParameters),
-    }).then((data) => {
+    return queryRunDashboardSqlQuery(dashboardEditor.dashboard.id, widget.id).then((data) => {
       sqlData = data
+      return data
     })
   }
 
@@ -53,11 +68,7 @@
   <header class="row v-center fluid gap-s">
     <h2 class="body-2">{widget.title}</h2>
 
-    <button
-      class="btn-3 mrg-a mrg--l expl-tooltip"
-      aria-label="Refresh data"
-      on:click={console.log}
-    >
+    <button class="btn-3 mrg-a mrg--l expl-tooltip" aria-label="Refresh data" on:click={updateData}>
       <Svg id="refresh" w="14" />
     </button>
 
