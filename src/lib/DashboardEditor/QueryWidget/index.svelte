@@ -2,6 +2,7 @@
   import Svg from 'webkit/ui/Svg/svelte'
   import { queryComputeRawClickhouseQuery } from '$lib/api/query'
   import Table from '$lib/QueryEditor/Visualisation/Table.svelte'
+  import Chart from '$lib/QueryEditor/Visualisation/Chart/index.svelte'
   import { getDashboardEditor$Ctx } from '../ctx'
   import { showVisualisationFullscreenDialog } from '$lib/QueryEditor/Visualisation/FullscreenDialog/index.svelte'
   import { parseQuerySettings, parseQueryParameters } from '$routes/(editor)/query/ctx'
@@ -37,6 +38,7 @@
     showVisualisationFullscreenDialog({
       title: widget.title,
       sqlData,
+      settings,
     })
   }
 
@@ -68,13 +70,19 @@
     </button>
   </header>
 
-  <parameters class="row gap-s">
-    {#each parameters as parameter, i}
-      <Parameter {parameter} color={COLORS[i]} onLinkClick={console.log} />
-    {/each}
-  </parameters>
+  {#if parameters.length}
+    <parameters class="row gap-s">
+      {#each parameters as parameter, i}
+        <Parameter {parameter} color={COLORS[i]} onLinkClick={console.log} />
+      {/each}
+    </parameters>
+  {/if}
 
-  <Table border={false} {sqlData} ColumnSettings={settings.columns} />
+  {#if settings.visualisation === 'Chart'}
+    <Chart {sqlData} ColumnSettings={settings.columns} metricsClass="$style.metrics" />
+  {:else}
+    <Table border={false} {sqlData} ColumnSettings={settings.columns} />
+  {/if}
 </query-widget>
 
 <style>
@@ -89,5 +97,15 @@
 
   Table {
     min-height: 0;
+  }
+
+  Chart {
+    flex: 1;
+    min-height: 0;
+    padding: 2px;
+  }
+
+  .metrics {
+    padding: 8px 8px 0;
   }
 </style>

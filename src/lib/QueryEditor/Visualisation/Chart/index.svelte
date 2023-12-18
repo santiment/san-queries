@@ -45,7 +45,8 @@
 
   let className = ''
   export { className as class }
-  export let sqlData: App.SqlData
+  export let metricsClass = ''
+  export let sqlData = { rows: [], types: [], headers: [] } as App.SqlData
   export let ColumnSettings: any
   export let columns = undefined as undefined | any
 
@@ -62,7 +63,7 @@
   }
 </script>
 
-<metrics class="row gap-s mrg-s mrg--b">
+<metrics class="row gap-s mrg-s mrg--b {metricsClass}">
   {#each metrics as metric}
     <Metric {metric} />
   {/each}
