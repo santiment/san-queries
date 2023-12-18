@@ -17,6 +17,13 @@ export function getTooltip() {
 
         return `${HH}:${mm}, ${MMMM} ${DD}, ${YYYY}`
       },
+
+      label: (ctx) => {
+        const { metric, yAxisID } = ctx.dataset
+        if (!metric.format) return
+
+        return metric.title + ': ' + metric.format(ctx.raw[yAxisID])
+      },
     },
 
     bodyFont: {

@@ -31,6 +31,7 @@ type Store = {
 
 export function parseQuerySettings(querySettings: App.ApiQuery['settings']) {
   const settings = {
+    visualisation: querySettings.visualisation || 'Table',
     columns: {},
   }
 
@@ -126,7 +127,13 @@ export function QueryEditor$$(apiQuery?: null | App.ApiQuery, sql = '') {
         queryEditor$.set(store)
       },
 
-      updateSettings(column: string, value: any) {
+      updateSettings(value: Record<string, any>) {
+        store.settings = { ...store.settings, ...value }
+
+        queryEditor$.set(store)
+      },
+
+      updateColumnSettings(column: string, value: any) {
         store.settings.columns[column] = { ...store.settings.columns[column], ...value }
 
         queryEditor$.set(store)

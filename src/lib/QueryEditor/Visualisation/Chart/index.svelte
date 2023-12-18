@@ -1,3 +1,43 @@
+<script lang="ts" context="module">
+  export function getChartColumns(sqlData: App.SqlData, ColumnSettings: Record<string, any>) {
+    const metrics = [] as any[]
+    const dateColumns = [] as any[]
+
+    let dateColumn: string
+
+    sqlData.headers.forEach((key, i) => {
+      const settings = ColumnSettings[key] || {}
+
+      const type = sqlData.types[i]
+      if (type.includes('Date')) {
+        dateColumns.push(key)
+
+        if (!dateColumn) dateColumn = i.toString()
+
+        return
+      }
+
+      if (type.includes('Int') === false && type.includes('Float') === false) {
+        return
+      }
+
+      let format = settings.formatter?.format
+      if (format.prototype) format = undefined
+
+      metrics.push({
+        key: i.toString(),
+        header: key,
+        title: settings.title || key,
+        valueKey: i,
+        color: COLORS[i],
+        format,
+      })
+    })
+
+    return { metrics, dateColumns, dateColumn: dateColumn! || '0' }
+  }
+</script>
+
 <script lang="ts">
   import Chart from '$lib/Chart/index.svelte'
   import { COLORS } from '$lib/Parameter'
@@ -7,40 +47,10 @@
   export { className as class }
   export let sqlData: App.SqlData
   export let ColumnSettings: any
+  export let columns = undefined as undefined | any
 
-  $: ({ metrics, dateColumn } = getMetrics(sqlData))
+  $: ({ metrics, dateColumn } = columns || getChartColumns(sqlData, ColumnSettings))
   $: data = getData(sqlData, dateColumn)
-
-  function getMetrics(sqlData: App.SqlData) {
-    const metrics = [] as any[]
-
-    let dateColumn = '0'
-    let isLookingForDate = true
-
-    sqlData.headers.forEach((key, i) => {
-      const settings = ColumnSettings[key] || {}
-
-      const type = sqlData.types[i]
-      if (isLookingForDate && type.includes('Date')) {
-        dateColumn = i.toString()
-        isLookingForDate = false
-        return
-      }
-
-      if (type.includes('Int') === false && type.includes('Float') === false) {
-        return
-      }
-
-      metrics.push({
-        key: i.toString(),
-        title: settings.title || key,
-        valueKey: i,
-        color: COLORS[i],
-      })
-    })
-
-    return { metrics, dateColumn }
-  }
 
   function getData({ rows }: App.SqlData, dateColumn: string) {
     return rows

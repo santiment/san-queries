@@ -3,7 +3,11 @@ import { getMinMax } from './minMax'
 import { getScales } from './scales'
 import { getTooltip } from './tooltip'
 
-export async function mountChart(node: HTMLCanvasElement, { data, xAxisKey, metrics }) {
+export async function mountChart(
+  node: HTMLCanvasElement,
+  { data, xAxisKey, metrics },
+  chart?: any,
+) {
   const { default: ChartJs } = await import('chart.js/auto')
 
   ChartJs.defaults.font.family = 'Proxima Nova'
@@ -17,7 +21,7 @@ export async function mountChart(node: HTMLCanvasElement, { data, xAxisKey, metr
   const xAxisLabels = data.map((row) => row[xAxisKey])
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  return new ChartJs(node, {
+  const settings = {
     type: 'line',
 
     plugins: [AXES_LAST_VALUE_PLUGIN],
@@ -52,6 +56,7 @@ export async function mountChart(node: HTMLCanvasElement, { data, xAxisKey, metr
         yAxisID: metric.key,
 
         borderColor: metric.color,
+        metric,
 
         pointRadius: 0,
 
@@ -61,5 +66,14 @@ export async function mountChart(node: HTMLCanvasElement, { data, xAxisKey, metr
         },
       })),
     },
-  })
+  }
+
+  if (chart) {
+    Object.assign(chart, settings)
+    chart.update()
+
+    return chart
+  }
+
+  return new ChartJs(node, settings)
 }

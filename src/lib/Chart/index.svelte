@@ -11,8 +11,13 @@
   export let xAxisKey = 'datetime' as string
 
   let chartNode: HTMLCanvasElement
+  let chart: any
 
-  $: BROWSER && mountChart(chartNode, { data, xAxisKey, metrics })
+  $: BROWSER && updateChart(chartNode, { data, xAxisKey, metrics })
+
+  async function updateChart(node: HTMLCanvasElement, vars: any) {
+    chart = await mountChart(node, vars, chart)
+  }
 </script>
 
 <chart class="column {className}">

@@ -49,6 +49,8 @@ declare global {
       dashboardQueryMappingId: string
 
       settings: {
+        visualisation?: 'Table' | 'Chart'
+
         columns?: Record<
           string,
           | undefined

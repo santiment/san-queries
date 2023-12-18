@@ -4,28 +4,36 @@
   import Control from './Control.svelte'
   import Table, { getTableColumns } from './Table.svelte'
   import TableControls from './Table/Controls.svelte'
-  import Chart from './Chart/index.svelte'
+  import Chart, { getChartColumns } from './Chart/index.svelte'
   import ControlsSection from './ControlsSection.svelte'
   import FormattingControl from './Controls/FormattingControl.svelte'
   import NoData from './NoData.svelte'
+  import { EventAutoSave$ } from '$routes/(editor)/query/events'
 
   const { queryEditor$ } = getQueryEditor$Ctx()
 
   let controls = {
-    visualisation: 'Table',
     sort: {} as any,
     props: {} as any,
   }
 
-  let ColumnSettings = {} as Record<string, Partial<{ title: string }>>
   let loading = false
 
   $: queryEditor = $queryEditor$
   $: ({ sqlData, settings } = queryEditor)
   $: tableColumns = getTableColumns(sqlData, settings.columns)
+  $: chartColumns = getChartColumns(sqlData, settings.columns)
+
+  function updateSettings(value: any) {
+    queryEditor$.updateSettings(value)
+
+    EventAutoSave$.dispatch()
+  }
 
   function updateColumnSettings(column: string, value: any) {
-    queryEditor$.updateSettings(column, value)
+    queryEditor$.updateColumnSettings(column, value)
+
+    EventAutoSave$.dispatch()
   }
 </script>
 
@@ -34,7 +42,7 @@
     <SpinLoader />
   {/if}
   <section class="column visualisation relative">
-    {#if controls.visualisation === 'Table'}
+    {#if settings.visualisation === 'Table'}
       <Table
         {...controls.props}
         columns={tableColumns}
@@ -43,7 +51,7 @@
         sort={controls.sort}
       />
     {:else}
-      <Chart class="" {sqlData} {ColumnSettings} />
+      <Chart class="" {sqlData} ColumnSettings={settings.columns} columns={chartColumns} />
     {/if}
 
     {#if sqlData.rows.length === 0}
@@ -52,20 +60,20 @@
   </section>
 
   <options class="column gap-l">
-    <ControlsSection title="Visualisation: {controls.visualisation}">
+    <ControlsSection title="Visualisation: {settings.visualisation}">
       <Control
         name="Visualization type"
         options={['Table', 'Chart']}
-        value={controls.visualisation}
+        value={settings.visualisation}
         onUpdate={(updated) => {
-          controls.visualisation = updated
-          controls = controls
+          updateSettings({ visualisation: updated })
         }}
       />
 
-      {#if controls.visualisation === 'Table'}
+      {#if settings.visualisation === 'Table'}
         <TableControls columns={tableColumns} bind:controls />
       {:else}
+        <!--
         <Control
           name="X axis column"
           options={['Default']}
@@ -75,6 +83,7 @@
             controls = controls
           }}
         />
+-->
       {/if}
     </ControlsSection>
 
@@ -88,7 +97,7 @@
           defaultValue={column}
           placeholder={column}
           onUpdate={(updated) => {
-            queryEditor$.updateSettings(column, { title: updated.trim() })
+            updateColumnSettings(column, { title: updated.trim() })
           }}
         />
 
@@ -99,7 +108,8 @@
           update={updateColumnSettings}
         />
 
-        {#if controls.visualisation === 'Chart'}
+        <!--
+        {#if settings.visualisation === 'Chart'}
           <Control
             name="Chart style"
             options={['Line', 'Bars']}
@@ -110,6 +120,7 @@
             }}
           />
         {/if}
+-->
       </ControlsSection>
     {/each}
   </options>

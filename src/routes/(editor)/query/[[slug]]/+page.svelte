@@ -120,6 +120,9 @@
     mutateUpdateSqlQuery(variables)
   })
   $eventQueryChanged
+
+  const eventAutoSave = EventAutoSave$(() => $queryEditor$.name && quickSave())
+  $eventAutoSave
 </script>
 
 <main class="column relative">
