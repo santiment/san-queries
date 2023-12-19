@@ -9,3 +9,13 @@ export const mutateAddDashboardGlobalParameter = (variables: any) =>
   }`,
     { variables },
   )
+
+export const mutateDeleteDashboardGlobalParameter = (variables: any) =>
+  mutate(
+    `mutation deleteDashboardGlobalParameter($dashboardId: Int!, $key: String!) {
+      deleteDashboardGlobalParameter(dashboardId:$dashboardId, key:$key) {
+        id
+      }
+  }`,
+    { variables },
+  )
