@@ -1,7 +1,11 @@
 <script lang="ts">
   import { getDashboardEditor$Ctx } from '$routes/(editor)/dashboard/[[slug]]/ctx'
   import { showEditGlobalParameterDialog$ } from '../EditGlobalParameterDialog.svelte'
-  import { mutateAddDashboardGlobalParameter, mutateDeleteDashboardGlobalParameter } from './api'
+  import {
+    mutateAddDashboardGlobalParameter,
+    mutateDeleteDashboardGlobalParameter,
+    mutateUpdateDashboardGlobalParameter,
+  } from './api'
   import Parameter, { COLORS } from '$lib/Parameter'
 
   const showEditGlobalParameterDialog = showEditGlobalParameterDialog$()
@@ -26,6 +30,20 @@
     })
   }
 
+  function onLinkClick(parameter) {
+    const { key } = parameter
+    showEditGlobalParameterDialog({ parameter }).then((newParameter) => {
+      dashboardEditor$.updateParameter(parameter, newParameter)
+
+      mutateUpdateDashboardGlobalParameter({
+        dashboardId,
+        key,
+        newKey: newParameter.key,
+        newValue: { string: newParameter.value },
+      })
+    })
+  }
+
   function onRemoveClick(parameter, i: number) {
     mutateDeleteDashboardGlobalParameter({ dashboardId, key: parameter.key }).then(() => {
       dashboardEditor$.removeParameter(parameter, i)
@@ -40,7 +58,7 @@
     <Parameter
       {parameter}
       color={COLORS[i]}
-      onLinkClick={console.log}
+      onLinkClick={() => onLinkClick(parameter)}
       onRemoveClick={() => onRemoveClick(parameter, i)}
     />
   {/each}

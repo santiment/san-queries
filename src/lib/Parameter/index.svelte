@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { noop } from 'webkit/utils'
   import Svg from 'webkit/ui/Svg/svelte'
 
   export let parameter: { key: string; value: string; global: boolean }
@@ -34,7 +33,7 @@
 
     <actions class="row">
       {#if onLinkClick}
-        <button class="link btn">
+        <button class="link btn" on:click|capture|stopPropagation={onLinkClick}>
           <Svg id="link" w="15" />
         </button>
       {/if}

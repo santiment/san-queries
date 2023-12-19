@@ -152,6 +152,12 @@ export function DashboardEditor$$(apiDashboard?: null | App.ApiDashboard) {
 
         dashboardEditor$.set(state)
       },
+
+      updateParameter(parameter: any, newParameter: any) {
+        Object.assign(parameter, newParameter)
+
+        dashboardEditor$.set(state)
+      },
     },
   })
 }
