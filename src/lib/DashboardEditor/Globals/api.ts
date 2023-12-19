@@ -29,3 +29,14 @@ export const mutateUpdateDashboardGlobalParameter = (variables: any) =>
   }`,
     { variables },
   )
+
+export const mutateAddDashboardGlobalParameterOverride = (variables: any) =>
+  mutate(
+    `mutation addDashboardGlobalParameterOverride($dashboardId: Int!,  $dashboardParameterKey:String!, $dashboardQueryMappingId:String!, $queryParameterKey:String!) {
+      addDashboardGlobalParameterOverride(dashboardId:$dashboardId, dashboardParameterKey:$dashboardParameterKey, dashboardQueryMappingId:$dashboardQueryMappingId, queryParameterKey:$queryParameterKey) {
+        id
+        parameters
+      }
+  }`,
+    { variables },
+  )

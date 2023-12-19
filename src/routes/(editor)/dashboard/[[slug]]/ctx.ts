@@ -20,7 +20,7 @@ type Store = {
     key: string
     value: number | string
     type: 'Text' | 'Number'
-    overrides: string[]
+    overrides: { dashboard_query_mapping_id: string; parameter: string }[]
   }[]
 }
 
@@ -75,6 +75,24 @@ function prepareStore(apiDashboard?: null | App.ApiDashboard) {
 
   normalizeGrid(sortLayout(layout))
 
+  const dashboardParameters = Object.keys(parameters).map((key) => {
+    const { overrides, ...rest } = parameters[key]
+    return {
+      ...rest,
+      key,
+      type: 'Text',
+      global: true,
+      overrides: overrides.reduce((acc, value) => {
+        let query = acc[value.dashboard_query_mapping_id]
+        if (!query) query = acc[value.dashboard_query_mapping_id] = {}
+
+        query[value.parameter] = true
+
+        return acc
+      }, {}),
+    }
+  })
+
   return {
     dashboard: apiDashboard,
 
@@ -84,15 +102,7 @@ function prepareStore(apiDashboard?: null | App.ApiDashboard) {
     widgets,
     layout,
 
-    parameters: Object.keys(parameters).map((key) => {
-      return {
-        key,
-        type: 'Text',
-        global: true,
-        ...parameters[key],
-      }
-    }),
-
+    parameters: dashboardParameters,
     isLegacy: apiDashboard?.isLegacy || false,
   }
 }

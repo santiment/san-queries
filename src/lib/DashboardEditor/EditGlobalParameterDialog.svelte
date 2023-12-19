@@ -13,7 +13,7 @@
   import { getDashboardEditor$Ctx } from '$routes/(editor)/dashboard/[[slug]]/ctx'
   import GlobalQuery from './GlobalQuery.svelte'
 
-  export let parameter = { key: '', value: '' as string | number, type: 'Text' }
+  export let parameter = { key: '', value: '' as string | number, type: 'Text', overrides: {} }
   export let DialogCtx: SAN.Dialog.Ctx
 
   const { key } = parameter
@@ -70,7 +70,7 @@
         <h3 class="body-1 txt-m">Link local parameters from queries added to this dashboard</h3>
 
         {#each queries as widget}
-          <GlobalQuery {widget} />
+          <GlobalQuery {widget} overrides={parameter.overrides} />
         {/each}
       </queries>
     {/if}

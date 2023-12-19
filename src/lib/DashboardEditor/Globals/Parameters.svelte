@@ -5,6 +5,7 @@
     mutateAddDashboardGlobalParameter,
     mutateDeleteDashboardGlobalParameter,
     mutateUpdateDashboardGlobalParameter,
+    mutateAddDashboardGlobalParameterOverride,
   } from './api'
   import Parameter, { COLORS } from '$lib/Parameter'
 
@@ -23,15 +24,17 @@
         dashboardId,
         key: parameter.key,
         value: { string: parameter.value },
-      }).then((parameter) => {
-        console.log(parameter)
-        // dashboardEditor$.addParameter(parameter)
+      }).then(() => {
+        dashboardEditor$.addParameter(parameter)
+
+        // overrideParameter(parameter)
       })
     })
   }
 
   function onLinkClick(parameter) {
     const { key } = parameter
+    console.log(parameter)
     showEditGlobalParameterDialog({ parameter }).then((newParameter) => {
       dashboardEditor$.updateParameter(parameter, newParameter)
 
@@ -40,6 +43,8 @@
         key,
         newKey: newParameter.key,
         newValue: { string: newParameter.value },
+      }).then(() => {
+        overrideParameter(parameter)
       })
     })
   }
@@ -48,6 +53,22 @@
     mutateDeleteDashboardGlobalParameter({ dashboardId, key: parameter.key }).then(() => {
       dashboardEditor$.removeParameter(parameter, i)
     })
+  }
+
+  function overrideParameter(parameter: any) {
+    const { overrides } = parameter
+    return Object.keys(overrides)
+      .flatMap((queryId) =>
+        Object.keys(overrides[queryId]).map((queryParameterKey) => ({
+          dashboardId,
+          dashboardParameterKey: parameter.key,
+          queryParameterKey,
+          dashboardQueryMappingId: queryId,
+        })),
+      )
+      .map((variables) => {
+        return mutateAddDashboardGlobalParameterOverride(variables)
+      })
   }
 </script>
 

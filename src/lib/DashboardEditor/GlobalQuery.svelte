@@ -5,8 +5,19 @@
   import { parseQueryParameters } from '$routes/(editor)/query/ctx'
 
   export let widget: any
+  export let overrides = {}
 
   $: parameters = parseQueryParameters(widget.query.sqlQueryParameters)
+
+  function onToggle(parameter) {
+    let query = overrides[widget.id]
+    if (!query) query = overrides[widget.id] = {}
+
+    if (query[parameter.key]) delete query[parameter.key]
+    else query[parameter.key] = true
+
+    overrides = overrides
+  }
 </script>
 
 <query class="column gap-s">
@@ -19,7 +30,10 @@
   <parameters class="row gap-xl">
     {#each parameters as parameter, i}
       <query-parameter class="row v-center gap-s">
-        <Checkbox />
+        <Checkbox
+          isActive={overrides[widget.id]?.[parameter.key]}
+          on:click={() => onToggle(parameter)}
+        />
 
         <Parameter {parameter} color={COLORS[i]} />
       </query-parameter>
