@@ -8,10 +8,7 @@
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
 
   $: dashboardEditor = $dashboardEditor$
-  $: parameters = Object.keys(dashboardEditor.dashboard?.parameters || {}).map((key) => {
-    const parameters = dashboardEditor.dashboard?.parameters || {}
-    return { key, value: parameters[key].value, type: 'Text' }
-  })
+  $: parameters = dashboardEditor.parameters
 
   function onAddGlobalParameterClick() {
     if (!dashboardEditor.dashboard?.id) return
@@ -21,7 +18,10 @@
         dashboardId: dashboardEditor.dashboard.id,
         key: parameter.key,
         value: { string: parameter.value },
-      }).then(console.log)
+      }).then((parameter) => {
+        console.log(parameter)
+        // dashboardEditor$.addParameter(parameter)
+      })
     })
   }
 </script>

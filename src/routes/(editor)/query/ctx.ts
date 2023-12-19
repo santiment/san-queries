@@ -29,9 +29,9 @@ type Store = {
   }
 }
 
-export function parseQuerySettings(querySettings: App.ApiQuery['settings']) {
+export function parseQuerySettings(querySettings?: App.ApiQuery['settings']) {
   const settings = {
-    visualisation: querySettings.visualisation || 'Table',
+    visualisation: querySettings?.visualisation || 'Table',
     columns: {},
   }
 

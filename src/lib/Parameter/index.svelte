@@ -18,7 +18,7 @@
   <color />
 
   {#if global}
-    <span class="caption txt-m">GP</span>
+    <span class="global caption txt-m">GP</span>
   {/if}
 
   {key}
@@ -93,5 +93,12 @@
     background: var(--porcelain);
     margin: -4px 4px;
     height: 100%;
+  }
+
+  .global {
+    color: var(--orange);
+    background: var(--orange-light-1);
+    padding: 0 4px;
+    border-radius: 2px;
   }
 </style>

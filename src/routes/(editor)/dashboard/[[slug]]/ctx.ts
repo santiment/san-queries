@@ -14,10 +14,24 @@ type Store = {
 
   widgets: App.Dashboard.Widget[]
   layout: SnapItem[]
+
+  parameters: {
+    global: true
+    key: string
+    value: number | string
+    type: 'Text' | 'Number'
+    overrides: string[]
+  }[]
 }
 
 function prepareStore(apiDashboard?: null | App.ApiDashboard) {
-  const { name = '', description = '', textWidgets = [], queries = [] } = apiDashboard || {}
+  const {
+    name = '',
+    description = '',
+    textWidgets = [],
+    queries = [],
+    parameters = {},
+  } = apiDashboard || {}
 
   let { layout = [] } = apiDashboard?.settings || {}
   let widgets = []
@@ -70,6 +84,15 @@ function prepareStore(apiDashboard?: null | App.ApiDashboard) {
     widgets,
     layout,
 
+    parameters: Object.keys(parameters).map((key) => {
+      return {
+        key,
+        type: 'Text',
+        global: true,
+        ...parameters[key],
+      }
+    }),
+
     isLegacy: apiDashboard?.isLegacy || false,
   }
 }
@@ -113,6 +136,21 @@ export function DashboardEditor$$(apiDashboard?: null | App.ApiDashboard) {
         state.layout.splice(index, 1)
 
         this.updateLayout()
+      },
+
+      addParameter(parameter: any) {
+        state.parameters.push({ ...parameter, global: true })
+
+        dashboardEditor$.set(state)
+      },
+
+      removeParameter(parameter: any, i?: number) {
+        const index = i ?? state.parameters.indexOf(parameter)
+        if (index < 0) return
+
+        state.parameters.splice(index, 1)
+
+        dashboardEditor$.set(state)
       },
     },
   })
