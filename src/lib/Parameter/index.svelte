@@ -6,8 +6,9 @@
   export let isAuthor = true
   export let onRemoveClick = null as null | (() => void)
   export let onLinkClick = null as null | (() => void)
+  export let globalParameter = null as null | any
 
-  $: ({ key, value, global = false } = parameter)
+  $: ({ key, value, global = false } = globalParameter || parameter)
   $: shortValue = value.toString()
 </script>
 

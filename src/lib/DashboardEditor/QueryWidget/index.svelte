@@ -20,10 +20,15 @@
   $: dashboardEditor = $dashboardEditor$
   $: settings = parseQuerySettings(widget.query.settings)
   $: parameters = parseQueryParameters(widget.query.sqlQueryParameters)
+  $: dashboardQueryParams = dashboardEditor.parameters.reduce((acc, value) => {
+    Object.keys(value.overrides[widget.id] || {}).forEach((key) => {
+      acc[key] = value
+    })
 
-  // $: if (process.browser) {
-  //   getData()
-  // }
+    return acc
+  }, {})
+
+  $: console.log({ dashboardQueryParams })
 
   function updateData() {
     getData()
@@ -84,7 +89,12 @@
   {#if parameters.length}
     <parameters class="row gap-s">
       {#each parameters as parameter, i}
-        <Parameter {parameter} color={COLORS[i]} onLinkClick={console.log} />
+        <Parameter
+          {parameter}
+          color={COLORS[i]}
+          globalParameter={dashboardQueryParams[parameter.key]}
+          onLinkClick={console.log}
+        />
       {/each}
     </parameters>
   {/if}
