@@ -168,6 +168,10 @@ export function DashboardEditor$$(apiDashboard?: null | App.ApiDashboard) {
 
         dashboardEditor$.set(state)
       },
+
+      unlinkGlobalParameter(parameter: any, globalParameter: any) {
+        dashboardEditor$.set(state)
+      },
     },
   })
 }

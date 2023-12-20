@@ -9,10 +9,16 @@
   import { parseQuerySettings, parseQueryParameters } from '$routes/(editor)/query/ctx'
   import { EventAutoSave$ } from '$routes/(editor)/query/events'
   import Parameter, { COLORS } from '$lib/Parameter'
+  import { showLinkGlobalParameterDialog$ } from './LinkGlobalParameterDialog.svelte'
+  import {
+    mutateAddDashboardGlobalParameterOverride,
+    mutateDeleteDashboardGlobalParameterOverride,
+  } from '../Globals/api'
 
   export let widget: App.Dashboard.QueryWidget
   export let CachedData: any
 
+  const showLinkGlobalParameterDialog = showLinkGlobalParameterDialog$()
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
 
   $: sqlData = CachedData[widget.id] as any
@@ -67,6 +73,50 @@
 
     EventAutoSave$.dispatch()
   }
+
+  function onParameterClick(parameter: any) {
+    const dashboardId = dashboardEditor.dashboard.id
+    const globalParameter = dashboardQueryParams[parameter.key]
+
+    const dashboardQueryMappingId = widget.id
+
+    showLinkGlobalParameterDialog({
+      widget,
+      parameter,
+      globalParameter,
+    }).then((newGlobalParameter) => {
+      if (globalParameter === newGlobalParameter) return
+
+      // Global parameter removed
+      if (!newGlobalParameter && globalParameter) {
+        return mutateDeleteDashboardGlobalParameterOverride({
+          dashboardId,
+          dashboardParameterKey: globalParameter.key,
+          dashboardQueryMappingId,
+        }).then(() => {
+          delete globalParameter.overrides[widget.id][parameter.key]
+          dashboardEditor$.unlinkGlobalParameter()
+        })
+      }
+
+      // Add global parameter
+      if (!globalParameter && newGlobalParameter) {
+        return mutateAddDashboardGlobalParameterOverride({
+          dashboardId,
+          dashboardParameterKey: newGlobalParameter.key,
+          queryParameterKey: parameter.key,
+          dashboardQueryMappingId,
+        }).then(() => {
+          let widgetOverrides = newGlobalParameter.overrides[widget.id]
+          if (!widgetOverrides) widgetOverrides = newGlobalParameter.overrides[widget.id] = {}
+
+          widgetOverrides[parameter.key] = true
+
+          dashboardEditor$.unlinkGlobalParameter()
+        })
+      }
+    })
+  }
 </script>
 
 <query-widget class="column border">
@@ -93,7 +143,7 @@
           {parameter}
           color={COLORS[i]}
           globalParameter={dashboardQueryParams[parameter.key]}
-          onLinkClick={console.log}
+          onLinkClick={() => onParameterClick(parameter)}
         />
       {/each}
     </parameters>
