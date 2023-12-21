@@ -51,9 +51,7 @@ export default defineConfig({
     'process.env.ICONS_PATH': JSON.stringify(process.env.ICONS_PATH),
 
     'process.env.BACKEND_URL': JSON.stringify(process.env.BACKEND_URL),
-    // 'process.env.GQL_SERVER_URL': JSON.stringify(GQL_SERVER_FALLBACK),
-
-    'process.env.GQL_SERVER_URL': `typeof window === 'undefined' ?"https://api-stage.santiment.net/graphql" : (location.search.includes('prod-access-level') ? "https://api.santiment.net/graphql" : "https://api-stage.santiment.net/graphql")`,
+    'process.env.GQL_SERVER_URL': JSON.stringify(GQL_SERVER_FALLBACK),
 
     'process.env.IS_STAGE_BACKEND': IS_STAGE_BACKEND,
     'process.env.IS_PROD_BACKEND': IS_PROD_BACKEND,
