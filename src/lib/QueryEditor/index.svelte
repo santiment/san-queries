@@ -46,7 +46,7 @@
   $errorsViewShortcut
 
   function updateSql() {
-    if (SqlEditorNode) {
+    if (SqlEditorNode && SqlEditorNode.getValue) {
       Object.assign(queryEditor, { sql: SqlEditorNode.getValue() })
     }
   }
