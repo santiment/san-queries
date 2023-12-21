@@ -22,12 +22,12 @@ podTemplate(label: 'sanqueries-production-deploy', containers: [
         
         def awsRegistry = "${env.aws_account_id}.dkr.ecr.eu-central-1.amazonaws.com"
         def sourceImage = "${awsRegistry}/san-queries"
-        def taggedSource = "${sourceImage}:stage"
+        def taggedSource = "${sourceImage}:production"
 
         /* Check if ECR image exists */
 
         container('awscli') {
-          def ecrimagecheck = sh(returnStatus:true, returnStdout: false, script: "aws ecr describe-images --repository-name san-queries --image-ids imageTag=stage" )
+          def ecrimagecheck = sh(returnStatus:true, returnStdout: false, script: "aws ecr describe-images --repository-name san-queries --image-ids imageTag=production" )
           if (ecrimagecheck != 0) {
             currentBuild.result = 'FAILED'
             error 'Missing imageId ${taggedSource} in ECR repository'
