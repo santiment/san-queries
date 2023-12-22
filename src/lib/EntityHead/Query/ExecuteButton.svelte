@@ -15,6 +15,7 @@
   let loading = false
   let tooltipNode: any
   let lastRunMs = 0
+  let currentTimer = 0
 
   function onExecuteClick() {
     if (loading) return
@@ -27,18 +28,24 @@
     EventQueryExecute$.dispatch()
 
     const promise = queryEditor$.querySqlData()
+    currentTimer = performance.now()
 
     onQueryExecute(promise)
 
-    promise.finally(() => {
-      loading = false
+    promise
+      .then(() => {
+        lastRunMs = performance.now() - currentTimer
+        currentTimer = 0
+      })
+      .finally(() => {
+        loading = false
 
-      EventRefreshUserCredits$.dispatch()
-    })
+        EventRefreshUserCredits$.dispatch()
+      })
   }
 
   function runTimer(node: HTMLElement) {
-    let ms = 0
+    let ms = performance.now() - currentTimer
 
     const runningTimer = window.setInterval(() => {
       ms += 27
@@ -51,8 +58,6 @@
 
     return {
       destroy() {
-        if (ms > 0) lastRunMs = ms
-
         window.clearInterval(runningTimer)
       },
     }

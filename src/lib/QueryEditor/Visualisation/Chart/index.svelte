@@ -22,7 +22,7 @@
       }
 
       let format = settings.formatter?.format
-      if (format.prototype) format = undefined
+      if (format?.prototype) format = undefined
 
       metrics.push({
         key: i.toString(),
