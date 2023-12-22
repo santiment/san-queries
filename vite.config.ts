@@ -1,5 +1,6 @@
 import { sveltekit } from '@sveltejs/kit/vite'
 import { defineConfig } from 'vitest/config'
+import { execSync } from 'node:child_process'
 
 const mode = process.env.NODE_ENV
 const dev = mode !== 'production'
@@ -16,6 +17,9 @@ const GQL_SERVER_FALLBACK = process.env.BACKEND_URL + '/graphql'
 
 const IS_STAGE_BACKEND = process.env.BACKEND_URL.includes('-stage')
 const IS_PROD_BACKEND = !IS_STAGE_BACKEND
+
+const GIT_HEAD =
+  process.env.GIT_HEAD || execSync('git rev-parse HEAD').toString().trim().slice(0, 7)
 
 const aliases = [
   { find: 'san-webkit', replacement: '/node_modules/san-webkit/' },
@@ -58,6 +62,9 @@ export default defineConfig({
 
     'process.env.API_FETCH_ORIGIN': JSON.stringify('https://app.santiment.net'),
     'process.env.SANBASE_ORIGIN': JSON.stringify(''),
+
+    'process.env.GIT_HEAD': JSON.stringify(GIT_HEAD),
+    'process.env.VERSION': JSON.stringify('2.0-' + GIT_HEAD),
   },
 
   clientDefines: {
