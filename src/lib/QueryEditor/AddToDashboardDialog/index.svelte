@@ -14,6 +14,9 @@
   import Dashboards from './Dashboard.svelte'
   import { queryGetUserDashboards } from '$lib/api/dashboard/get'
   import Svg from 'webkit/ui/Svg/svelte'
+  import { showNewDashboardDialog } from '../NewDashboardDialog/index.svelte'
+  import { mutateCreateDashboard } from '$lib/api/dashboard/create'
+  import { EventDashboardSaved$ } from '$routes/(editor)/query/events'
 
   export let queryEditor: App.QueryEditorStoreValue
   export let currentUser: App.CurrentUser
@@ -40,6 +43,17 @@
     onQueryAdd(dashboard)
   }
 
+  function onNewDashboardClick() {
+    showNewDashboardDialog().then((dashboard) => {
+      mutateCreateDashboard(dashboard).then((dashboard) => {
+        dashboards.push(dashboard)
+
+        dashboards = dashboards
+        EventDashboardSaved$.dispatch(dashboard)
+      })
+    })
+  }
+
   track.event('add_to_dashboard_dialog_open', {
     category: 'General',
 
@@ -62,7 +76,7 @@
     <Dashboards {dashboards} user={currentUser} {onAdd} />
   </div>
   <actions class="row">
-    <button class="btn-2 row hv-center gap-s">
+    <button class="btn-2 row hv-center gap-s" on:click={onNewDashboardClick}>
       <Svg id="plus-circle-filled" w="16" />
       New dashboard</button
     >
