@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { LayoutData } from './$types'
 
+  import { BROWSER } from 'esm-env'
   import { Customer$$ } from 'webkit/stores/customer'
   import { CurrentUser$$ } from 'webkit/stores/user'
   import { Device$$ } from 'webkit/stores/responsive'
@@ -11,6 +12,7 @@
   import FeatureWalkthrough from 'webkit/ui/FeatureWalkthrough/svelte'
   import OnlyOnDevice from 'webkit/ui/OnlyOnDevice.svelte'
   import NavHeader from '$lib/NavHeader/index.svelte'
+  import Tracking from './Tracking.svelte'
 
   export let data: LayoutData
 
@@ -31,10 +33,12 @@
   <slot />
 </screen>
 
-{#if process.browser}
+{#if BROWSER}
   <Dialogs />
   <FeatureWalkthrough />
   <Notifications />
+
+  <Tracking />
 {/if}
 
 <style lang="scss">

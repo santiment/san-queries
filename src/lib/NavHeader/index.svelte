@@ -27,8 +27,19 @@
 <header class="row v-center gap-s">
   <Product title="Queries" class="mrg-l mrg--r" />
 
-  <a href="/" class="btn-ghost"><Svg id="discord" w="16" h="12" /> Community</a>
-  <a href="/" class="btn-ghost"><Svg id="fire-filled" w="11" h="14" /> Explorer</a>
+  <a
+    href="https://santiment.net/discord"
+    class="btn-ghost"
+    data-source="navbar"
+    data-type="community"><Svg id="discord" w="16" h="12" /> Community</a
+  >
+
+  <a
+    href="https://app.santiment.net/explorer"
+    class="btn-ghost"
+    data-source="navbar"
+    data-type="explorer"><Svg id="fire-filled" w="11" h="14" /> Explorer</a
+  >
 
   <Tooltip position="bottom-start" activeClass="$style.active" let:trigger>
     <button use:trigger class="btn-ghost"><Svg id="plus-circle-filled" w="16" /> Create</button>
