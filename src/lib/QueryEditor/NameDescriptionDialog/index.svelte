@@ -7,6 +7,9 @@
 </script>
 
 <script lang="ts">
+  import { BROWSER } from 'esm-env'
+  import { onDestroy } from 'svelte'
+  import { track } from 'webkit/analytics'
   import Dialog from 'webkit/ui/Dialog'
   import Toggle from 'webkit/ui/Toggle.svelte'
   import Control from '$lib/QueryEditor/Visualisation/Control.svelte'
@@ -26,6 +29,22 @@
     DialogCtx.resolve({ name, description, isPublic })
     DialogCtx.close()
   }
+
+  track.event('query_title_description_dialog_open', {
+    category: 'General',
+
+    source_url: window.location.href,
+  })
+
+  onDestroy(() => {
+    if (BROWSER) {
+      track.event('query_title_description_dialog_close', {
+        category: 'General',
+
+        source_url: window.location.href,
+      })
+    }
+  })
 </script>
 
 <Dialog {...$$props} title="Update query">
