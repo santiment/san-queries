@@ -44,33 +44,47 @@ function prepareStore(apiDashboard?: null | App.ApiDashboard) {
     return { id: query.dashboardQueryMappingId, type: 'QUERY', title: query.name, query }
   }
 
+  console.log({ layout, queries })
+
   if (layout.length === 0) {
     widgets = textWidgets.map(mapTextWidget)
+    widgets = widgets.concat(queries.map(mapQueryWidget))
+
     layout = widgets.map((widget, i) => {
       const options = getGridItemOptions(widget)
       return setItemOptions([0, 1000 + i, 12, options.minRows], options)
     })
   } else {
     const IdToWidget = textWidgets.reduce((acc, v) => {
-      acc[v.id] = v
+      acc[v.id] = mapTextWidget(v)
       return acc
     }, {} as Record<string, any>)
 
     queries.forEach((query) => {
-      IdToWidget[query.dashboardQueryMappingId] = query
+      IdToWidget[query.dashboardQueryMappingId] = mapQueryWidget(query)
     })
 
     layout = layout
       .map(({ id, xywh }) => {
         const widget = IdToWidget[id]
         if (widget) {
-          if ('body' in widget) widgets.push(mapTextWidget(widget))
-          else widgets.push(mapQueryWidget(widget))
+          delete IdToWidget[id]
+
+          if ('body' in widget) widgets.push(widget)
+          else widgets.push(widget)
 
           return xywh.slice(0, 4)
         }
       })
       .filter(Boolean)
+
+    Object.values(IdToWidget).forEach((widget) => {
+      widgets.push(widget)
+
+      const options = getGridItemOptions(widget)
+      const gridItem = setItemOptions([0, 1000, 12, options.minRows], options)
+      layout.push(gridItem)
+    })
   }
 
   normalizeGrid(sortLayout(layout))
