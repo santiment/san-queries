@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { track } from 'webkit/analytics'
   import Tooltip from 'webkit/ui/Tooltip'
   import Svg from 'webkit/ui/Svg/svelte'
   import AccountStatus from 'webkit/ui/AccountStatus.svelte'
@@ -38,6 +39,12 @@
 
   const eventRefreshUserCredits = EventRefreshUserCredits$(updateCreditsData)
   $eventRefreshUserCredits
+
+  function onMyCreditsClick() {
+    track.event('left_menu_my_credits_click', {
+      category: 'Interaction',
+    })
+  }
 </script>
 
 {#if currentUser}
@@ -45,7 +52,9 @@
     Credits left: {creditsRemainingMonth}
 
     <Tooltip on="click" let:trigger clickaway>
-      <button use:trigger class="my-credits" use:preloadUserCredits>My credits</button>
+      <button use:trigger class="my-credits" use:preloadUserCredits on:click={onMyCreditsClick}
+        >My credits</button
+      >
 
       <credits-info slot="tooltip" class="column" let:close>
         <header class="row v-center justify body-1">
@@ -89,7 +98,12 @@
           Next renewal on {getNextMonthDate()}
 
           <div class="mrg-xxl mrg--t">
-            <a href="/pricing" class="btn-1 btn--orange mrg-s mrg--t">Upgrade for more credits</a>
+            <a
+              href="https://app.santiment.net/pricing"
+              data-source="my_credits"
+              data-type="upgrade_for_more_credits"
+              class="btn-1 btn--orange mrg-s mrg--t">Upgrade for more credits</a
+            >
           </div>
         </main>
       </credits-info>

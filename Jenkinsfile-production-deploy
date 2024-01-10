@@ -5,8 +5,8 @@ podTemplate(label: 'sanqueries-production-deploy', containers: [
       ]),
     containerTemplate(name: 'awscli', image: 'mikesir87/aws-cli', ttyEnabled: true, command: 'cat', envVars: [
       envVar(key: 'AWS_DEFAULT_REGION', value: 'eu-central-1'),
-      secretEnvVar(key: 'AWS_ACCESS_KEY_ID', secretName: 'sanqueries-ecr-env', secretKey: 'awsAccessKeyId'),
-      secretEnvVar(key: 'AWS_SECRET_ACCESS_KEY', secretName: 'sanqueries-ecr-env', secretKey: 'awsSecretAccessKey'),
+      secretEnvVar(key: 'AWS_ACCESS_KEY_ID', secretName: 'ecr-keys-env', secretKey: 'awsAccessKeyId'),
+      secretEnvVar(key: 'AWS_SECRET_ACCESS_KEY', secretName: 'ecr-keys-env', secretKey: 'awsSecretAccessKey'),
     ])
   ]) {
   node('sanqueries-production-deploy') {

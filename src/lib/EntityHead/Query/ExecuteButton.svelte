@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { track } from 'webkit/analytics'
   import { noop } from 'webkit/utils'
   import { CMD } from 'webkit/utils/os'
   import { GlobalShortcut$ } from 'webkit/utils/events'
@@ -84,8 +85,29 @@
     }
   }
 
-  const runShortcut = GlobalShortcut$('CMD+ENTER', onExecuteClick, false)
+  const runShortcut = GlobalShortcut$(
+    'CMD+ENTER',
+    () => {
+      trackQueryExecute('keyboard_shortcut')
+      onExecuteClick()
+    },
+    false,
+  )
   $runShortcut
+
+  function onExecuteButtonClick() {
+    trackQueryExecute()
+    onExecuteClick()
+  }
+
+  function trackQueryExecute(triggered_by = 'click') {
+    track.event('execute_query', {
+      category: 'Interaction',
+      source: 'query_editor',
+      triggered_by,
+      source_url: window.location.href,
+    })
+  }
 </script>
 
 <Tooltip
@@ -100,7 +122,7 @@
     use:trigger
     class="expl-tooltip {className}"
     class:loading
-    on:click={onExecuteClick}
+    on:click={onExecuteButtonClick}
     aria-label="{CMD} + Enter"
   >
     Execute

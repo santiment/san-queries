@@ -6,7 +6,7 @@ import { handleGdprAccess } from './(auth)/flow'
 
 let hasBooted = false
 
-console.log('hasBooted', { hasBooted }, 'checking new version')
+console.log('hasBooted', { hasBooted })
 
 function setupKitClientSession<T>(data: T) {
   if (process.browser) {
