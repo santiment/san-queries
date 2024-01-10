@@ -44,15 +44,33 @@
   <Tooltip position="bottom-start" activeClass="$style.active" let:trigger>
     <button use:trigger class="btn-ghost"><Svg id="plus-circle-filled" w="16" /> Create</button>
     <tooltip slot="tooltip" class="column">
-      <a href="/query/new" class="action btn-ghost"><Svg id="query" w="12" /> New query</a>
-      <a href="/dashboard/new" class="action btn-ghost">
+      <a href="/query/new" class="action btn-ghost" data-source="navbar" data-type="new_query"
+        ><Svg id="query" w="12" /> New query</a
+      >
+
+      <a
+        href="/dashboard/new"
+        class="action btn-ghost"
+        data-source="navbar"
+        data-type="new_dashboard"
+      >
         <Svg id="dashboard" w="12" /> New dashboard
       </a>
     </tooltip>
   </Tooltip>
 
-  <a href="/" class="btn-ghost mrg-a mrg--l">Academy</a>
-  <a href="/" class="btn-ghost">Pricing</a>
+  <a
+    href="https://academy.santiment.net/"
+    class="btn-ghost mrg-a mrg--l"
+    data-source="navbar"
+    data-type="academy">Academy</a
+  >
+  <a
+    href="https://app.santiment.net/pricing"
+    class="btn-ghost"
+    data-source="navbar"
+    data-type="pricing">Pricing</a
+  >
 
   <div class="br mrg-l mrg--l mrg--r" />
 
