@@ -190,11 +190,11 @@
 <section class="row v-center justify mrg-s mrg--b">
   <h2 class="txt-m">My Workspace</h2>
 
-  <actions class="row v-center">
-    <button class="btn-3 expl-tooltip" aria-label="New folder" on:click={onNewFolderClick}>
-      <Svg id="new-folder" w="12" />
-    </button>
-  </actions>
+  <!-- <actions class="row v-center"> -->
+  <!--   <button class="btn-3 expl-tooltip" aria-label="New folder" on:click={onNewFolderClick}> -->
+  <!--     <Svg id="new-folder" w="12" /> -->
+  <!--   </button> -->
+  <!-- </actions> -->
 </section>
 
 <!--
