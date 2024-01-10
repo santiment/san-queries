@@ -80,7 +80,7 @@
   }
 
   function onShare() {
-    showShareDialog({ entity: 'Query', feature: '', source: '' })
+    showShareDialog({ entity: 'Query', feature: 'query', source: 'query_head' })
   }
 
   function onMainActionClick() {
