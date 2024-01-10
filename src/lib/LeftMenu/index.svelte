@@ -36,6 +36,7 @@
         category: 'Interaction',
         tab: item.title,
         old_tab: tab.title,
+        source_url: window.location.href,
       })
 
       tab = item

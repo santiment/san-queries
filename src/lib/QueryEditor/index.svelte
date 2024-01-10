@@ -10,6 +10,7 @@
 
 <script lang="ts">
   // import Svg from 'webkit/ui/Svg/svelte'
+  import { track } from 'webkit/analytics'
   import Tabs from 'webkit/ui/Tabs'
   import { GlobalShortcut$ } from 'webkit/utils/events'
   import { getQueryEditor$Ctx } from '$routes/(editor)/query/ctx'
@@ -36,13 +37,34 @@
     queryEditor$.setSql(sql)
   }
 
-  const editorViewShortcut = GlobalShortcut$('CMD+1', () => (tab = TABS[0]), false)
+  const editorViewShortcut = GlobalShortcut$(
+    'CMD+1',
+    () => {
+      trackTabSelect(TABS[0], 'keyboard_shortcut')
+      tab = TABS[0]
+    },
+    false,
+  )
   $editorViewShortcut
 
-  const visulisationViewShortcut = GlobalShortcut$('CMD+2', () => (tab = TABS[1]), false)
+  const visulisationViewShortcut = GlobalShortcut$(
+    'CMD+2',
+    () => {
+      trackTabSelect(TABS[1], 'keyboard_shortcut')
+      tab = TABS[1]
+    },
+    false,
+  )
   $visulisationViewShortcut
 
-  const errorsViewShortcut = GlobalShortcut$('CMD+3', () => (tab = TABS[2]), false)
+  const errorsViewShortcut = GlobalShortcut$(
+    'CMD+3',
+    () => {
+      trackTabSelect(TABS[2], 'keyboard_shortcut')
+      tab = TABS[2]
+    },
+    false,
+  )
   $errorsViewShortcut
 
   function updateSql() {
@@ -58,6 +80,23 @@
 
   $: id = queryEditor.query?.id
   $: console.log(queryEditor, id)
+
+  function trackTabSelect(newTab: any, triggered_by = 'click') {
+    track.event('tab_select', {
+      category: 'Interaction',
+      source: 'query_editor',
+      triggered_by,
+      tab: newTab.title,
+      old_tab: tab.title,
+      source_url: window.location.href,
+    })
+  }
+
+  function onTabSelect(item: any) {
+    trackTabSelect(item)
+
+    tab = item
+  }
 </script>
 
 <Tabs
@@ -65,7 +104,7 @@
   tabClass="expl-tooltip"
   tabs={TABS}
   selected={tab}
-  onSelect={(item) => (tab = item)}
+  onSelect={onTabSelect}
 />
 
 <section class="column gap-m">

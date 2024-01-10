@@ -183,6 +183,7 @@
 
       type: item.type,
       id: item.id,
+      source_url: window.location.href,
     })
   }
 </script>
