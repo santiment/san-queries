@@ -23,7 +23,7 @@
   $: isPublished = isAuthor && dashboard?.isPublic
 
   function onShare() {
-    showShareDialog({ entity: 'Dashboard', feature: '', source: '' })
+    showShareDialog({ entity: 'Dashboard', feature: 'dashboard', source: 'dashboard_head' })
   }
 
   function onMainClick() {

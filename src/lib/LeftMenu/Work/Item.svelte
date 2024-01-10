@@ -57,6 +57,7 @@
   moreActions
   icon={isQuery ? 'query' : 'dashboard'}
   {link}
+  on:click
   on:dragstart={(e) => onItemDragStart(e, parent, item)}
   on:dragend={onItemDragEnd}
   {onRenameClick}

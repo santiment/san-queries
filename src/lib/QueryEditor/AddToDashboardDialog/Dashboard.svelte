@@ -3,14 +3,16 @@
   import Profile from 'webkit/ui/Profile/svelte'
   import Svg from 'webkit/ui/Svg/svelte'
 
-  export let queries = [] as Awaited<ReturnType<typeof queryGetUserQueries>>
-  export let onQueryAdd: (query: App.Dashboard.Query) => void
+  export let user = {}
+  export let dashboards = [] as Awaited<ReturnType<typeof queryGetUserQueries>>
+  export let onAdd: (query: App.Dashboard.Query) => void
 
   let addedSet = new Set()
+
   function onAddClick(item) {
     if (addedSet.has(item)) return
 
-    onQueryAdd(item)
+    onAdd(item)
 
     addedSet.add(item)
     addedSet = addedSet
@@ -23,35 +25,32 @@
 </script>
 
 <queries class="column gap-s">
-  {#each queries as item}
-    <query class="btn row v-center gap-s">
-      <Profile
-        class="c-fiord"
-        user={item.user}
-        source="queries_add_query_to_dashboard"
-        feature="query"
-      />
+  {#each dashboards as item}
+    <dashboard class="btn row v-center gap-s">
+      <Profile class="c-fiord" {user} source="query_to_dashboard" feature="dashboard" />
 
       <div class="br mrg" />
 
       <article class="row v-center gap-s">
-        <Svg id="table" w="12" />
+        <Svg id="dashboard" w="12" />
         <span class="single-line">{item.name}</span>
       </article>
 
-      <button class="btn-2 mrg-a mrg--l" on:click={() => onAddClick(item)}>
+      <button class="btn-2 mrg-a mrg--l txt-center" on:click={() => onAddClick(item)}>
         {#if addedSet.has(item)}
           <Svg id="checkmark-circle-filled" w="16" />
         {:else}
           Add
         {/if}
       </button>
-    </query>
+    </dashboard>
+  {:else}
+    No dashboards found
   {/each}
 </queries>
 
 <style>
-  query {
+  dashboard {
     height: 48px;
     border-radius: 8px;
     padding: 8px 12px;
@@ -79,5 +78,6 @@
     --bg: var(--white);
     --bg-hover: var(--white);
     fill: var(--green);
+    min-width: 65px;
   }
 </style>

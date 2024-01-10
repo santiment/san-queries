@@ -38,12 +38,23 @@
   import { writable } from 'svelte/store'
   import Search from 'webkit/ui/Search.svelte'
   import { debounce$$ } from 'webkit/utils/fn'
+  import { track } from 'webkit/analytics'
 
   export let tab: (typeof TABS)[number]
 
   const { search$ } = getSearch$Ctx()
 
-  const onSearch$ = debounce$$(250, (value: string) => search$.set(value.trim()))
+  const onSearch$ = debounce$$(250, (input: string) => {
+    const value = input.trim()
+    search$.set(value)
+
+    track.event('left_menu_search', {
+      category: 'Interaction',
+      input: value,
+      tab: tab.title,
+    })
+  })
+
   const onInput = ({ currentTarget }: Event) =>
     $onSearch$((currentTarget as HTMLInputElement).value)
 </script>

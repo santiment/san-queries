@@ -8,14 +8,20 @@
   import { showAddParameterDialog$ } from '$lib/Parameter/AddParameterDialog.svelte'
   import { getQueryEditor$Ctx } from '$routes/(editor)/query/ctx'
   import ExecutionStats from './ExecutionStats.svelte'
+  import { showAddQueryToDashboardDialog } from '$lib/DashboardEditor/AddQueryToDashboardDialog/index.svelte'
+  import { showAddToDashboardDialog } from './AddToDashboardDialog/index.svelte'
+  import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
+  import { mutateCreateDashboardQuery } from '$lib/api/dashboard/create'
 
   export let tab = TABS[0] as (typeof TABS)[number]
 
   const { queryEditor$ } = getQueryEditor$Ctx()
+  const { currentUser$ } = getCurrentUser$Ctx()
 
   const showAddParameterDialog = showAddParameterDialog$()
   const showSqlEditorFullscreenDialog = showSqlEditorFullscreenDialog$()
 
+  $: currentUser = $currentUser$
   $: queryEditor = $queryEditor$
   $: ({ parameters, sqlData } = queryEditor)
 
@@ -56,6 +62,17 @@
 
     downloadCsv(name, columns, sqlData.rows)
   }
+
+  function onAddToDashboardClick() {
+    showAddToDashboardDialog({
+      currentUser,
+      queryEditor,
+      onQueryAdd: (dashboard) => {
+        if (!queryEditor.query) return
+        mutateCreateDashboardQuery({ dashboardId: dashboard.id, queryId: queryEditor.query.id })
+      },
+    })
+  }
 </script>
 
 <header class="row justify gap-xl">
@@ -81,7 +98,9 @@
 
   <actions class="row gap-s c-waterloo nowrap">
     {#if tab === TABS[1]}
-      <button class="btn-2">Add to dashboard</button>
+      {#if currentUser}
+        <button class="btn-2" on:click={onAddToDashboardClick}>Add to dashboard</button>
+      {/if}
 
       <button
         class="download btn row v-center gap-s expl-tooltip"

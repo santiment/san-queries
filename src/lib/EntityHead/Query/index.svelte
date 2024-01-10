@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { track } from 'webkit/analytics'
   import { noop } from 'webkit/utils'
   import { getCurrentUser$Ctx } from 'webkit/stores/user'
   import Svg from 'webkit/ui/Svg/svelte'
@@ -29,8 +30,20 @@
     titleNode.textContent = ''
     typing = true
 
+    let startTime = performance.now()
+
     queryGenerateTitleBySql(queryEditor.sql)
       .then((data) => {
+        track.event('change_query_title', {
+          category: 'Interaction',
+
+          source: 'query_editor_header',
+          is_ai_suggestion: true,
+          ai_wait_time_ms: performance.now() - startTime,
+
+          source_url: window.location.href,
+        })
+
         const typewriter = Typewriter(data.title, titleNode)
 
         typewriter.start(() => {
@@ -67,7 +80,7 @@
   }
 
   function onShare() {
-    showShareDialog({ entity: 'Query', feature: '', source: '' })
+    showShareDialog({ entity: 'Query', feature: 'query', source: 'query_head' })
   }
 
   function onMainActionClick() {

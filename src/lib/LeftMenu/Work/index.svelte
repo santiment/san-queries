@@ -15,6 +15,7 @@
     EventQuerySaved$,
     EventDashboardSaved$,
   } from '$routes/(editor)/query/events'
+  import { track } from 'webkit/analytics'
 
   const { workspace$ } = getWorkspace$Ctx()
   const { search$ } = getSearch$Ctx()
@@ -174,16 +175,27 @@
 
     onItemDragEnd()
   }
+
+  function onItemClick(item: any) {
+    track.event('left_menu_item_click', {
+      category: 'Interaction',
+      tab: 'Work',
+
+      type: item.type,
+      id: item.id,
+      source_url: window.location.href,
+    })
+  }
 </script>
 
 <section class="row v-center justify mrg-s mrg--b">
   <h2 class="txt-m">My Workspace</h2>
 
-  <actions class="row v-center">
-    <button class="btn-3 expl-tooltip" aria-label="New folder" on:click={onNewFolderClick}>
-      <Svg id="new-folder" w="12" />
-    </button>
-  </actions>
+  <!-- <actions class="row v-center"> -->
+  <!--   <button class="btn-3 expl-tooltip" aria-label="New folder" on:click={onNewFolderClick}> -->
+  <!--     <Svg id="new-folder" w="12" /> -->
+  <!--   </button> -->
+  <!-- </actions> -->
 </section>
 
 <!--
@@ -213,6 +225,7 @@
       idx={i}
       {item}
       parent={dashboards}
+      on:click={() => onItemClick(item)}
       onItemDragStart={console.log}
       onItemDragEnd={console.log}
     />
@@ -225,6 +238,7 @@
       idx={i}
       {item}
       parent={queries}
+      on:click={() => onItemClick(item)}
       onItemDragStart={console.log}
       onItemDragEnd={console.log}
     />
