@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { track } from 'webkit/analytics'
   import MenuItem from '../MenuItem.svelte'
   import Folder from '../Folder.svelte'
   import { queryClickhouseMetadata } from './api'
@@ -35,6 +36,16 @@
       top,
     }
   }
+
+  function onItemClick(item) {
+    track.event('left_menu_item_click', {
+      category: 'Interaction',
+      tab: 'Data',
+
+      type: item.type,
+      id: item.id,
+    })
+  }
 </script>
 
 <h2 class="txt-m mrg-l mrg--b">Datasets</h2>
@@ -45,6 +56,7 @@
       <MenuItem
         icon="table"
         dataActions
+        on:click={() => onItemClick({ type: 'TABLE', id: item.n })}
         onExploreTableClick={(e) => onExploreTableClick(e, item)}
         isHoverActive={item === viewed?.item}
       >
@@ -54,12 +66,12 @@
   </Folder>
 {/if}
 
-{#if viewed}
-  <clickaway on:click={() => (viewed = null)} />
-  <div class="explore border box" style="top:{viewed.top + 5}px;left:{viewed.right}px">
-    <PreviewTable table={viewed.item.n} />
-  </div>
-{/if}
+<!-- {#if viewed} -->
+<!--   <clickaway on:click={() => (viewed = null)} /> -->
+<!--   <div class="explore border box" style="top:{viewed.top + 5}px;left:{viewed.right}px"> -->
+<!--     <PreviewTable table={viewed.item.n} /> -->
+<!--   </div> -->
+<!-- {/if} -->
 
 <style lang="scss">
   .explore {

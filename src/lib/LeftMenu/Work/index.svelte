@@ -15,6 +15,7 @@
     EventQuerySaved$,
     EventDashboardSaved$,
   } from '$routes/(editor)/query/events'
+  import { track } from 'webkit/analytics'
 
   const { workspace$ } = getWorkspace$Ctx()
   const { search$ } = getSearch$Ctx()
@@ -174,6 +175,16 @@
 
     onItemDragEnd()
   }
+
+  function onItemClick(item: any) {
+    track.event('left_menu_item_click', {
+      category: 'Interaction',
+      tab: 'Work',
+
+      type: item.type,
+      id: item.id,
+    })
+  }
 </script>
 
 <section class="row v-center justify mrg-s mrg--b">
@@ -213,6 +224,7 @@
       idx={i}
       {item}
       parent={dashboards}
+      on:click={() => onItemClick(item)}
       onItemDragStart={console.log}
       onItemDragEnd={console.log}
     />
@@ -225,6 +237,7 @@
       idx={i}
       {item}
       parent={queries}
+      on:click={() => onItemClick(item)}
       onItemDragStart={console.log}
       onItemDragEnd={console.log}
     />

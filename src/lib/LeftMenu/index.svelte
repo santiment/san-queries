@@ -4,6 +4,7 @@
   import Search, { Search$$ } from './Search.svelte'
   import MyCredits from './MyCredits.svelte'
   import { TABS } from './tabs'
+  import { track } from 'webkit/analytics'
 
   let className = ''
   export { className as class }
@@ -31,6 +32,12 @@
     scrollNode.scroll({ top: 0, behavior: isNewTab ? undefined : 'smooth' })
 
     if (isNewTab) {
+      track.event('left_menu_tab_select', {
+        category: 'Interaction',
+        tab: item.title,
+        old_tab: tab.title,
+      })
+
       tab = item
       search$.set('')
 

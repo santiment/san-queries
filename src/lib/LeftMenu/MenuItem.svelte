@@ -49,13 +49,14 @@
   {#if isHovered}
     <actions class="row">
       {#if dataActions}
-        <button class="btn-3 expl-tooltip" aria-label="Explore table" on:click={onExploreTableClick}
-          ><Svg id="eye" w="15" h="10" /></button
-        >
+        <!-- <button class="btn-3 expl-tooltip" aria-label="Explore table" on:click={onExploreTableClick} -->
+        <!--   ><Svg id="eye" w="15" h="10" /></button -->
+        <!-- > -->
 
-        <button class="btn-3 expl-tooltip" aria-label="Add to Favourites"
-          ><Svg id="star-filled" w="12" /></button
-        >
+        <!-- <button class="btn-3 expl-tooltip" aria-label="Add to Favourites" -->
+        <!--   ><Svg id="star-filled" w="12" /></button -->
+        <!-- > -->
+
         <button class="copy btn-3 expl-tooltip" aria-label="Copy to editor">
           <Svg id="right-arrow" w="11" h="6" />
         </button>
