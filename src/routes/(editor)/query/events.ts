@@ -58,3 +58,6 @@ export const EventAutoSave$ = createEvent$('AUTO_SAVE', 4000)
 export const EventSavingState$ = createEvent$<{ state: 'start' | 'success' | 'error' | 'hidden' }>(
   'SAVING_STATE',
 )
+
+export const EventQueryDeleted$ = createEvent$<{ id: number }>('QUERY_DELETED')
+export const EventDashboardDeleted$ = createEvent$<{ id: number }>('DASHBOARD_DELETED')

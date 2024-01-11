@@ -9,6 +9,7 @@
   import MenuItem from '../MenuItem.svelte'
   import Renamer from '$lib/Renamer.svelte'
   import { getWorkspace$Ctx } from './ctx'
+  import { getQueryEditor$Ctx } from '$routes/(editor)/query/ctx'
 
   export let idx: number
   export let item: ItemTreeType
@@ -37,7 +38,8 @@
   }
 
   function onDeleteClick() {
-    workspace$.deleteItem(parent, idx)
+    // console.log($queryEditor$)
+    workspace$.deleteItem(parent, idx, item)
   }
 
   // function onItemClick() {

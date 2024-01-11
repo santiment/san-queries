@@ -3,6 +3,8 @@
 
   import { noop } from 'webkit/utils'
   import Tooltip from 'webkit/ui/Tooltip'
+  import { onDestroy } from 'svelte'
+  import { BROWSER } from 'esm-env'
 
   export let icon = '' as Props['id']
   export let moreActions = false
@@ -19,10 +21,23 @@
   let isHovered = false
   let isMenuOpened = false
 
+  let TooltipNode: Tooltip
+
   $: if (!isMenuOpened) isHovered = false
 
   function onOpenInTabClick() {
     window.open(link, '_blank')
+  }
+
+  function _onDuplicateClick() {
+    TooltipNode?.close()
+    onDuplicateClick()
+  }
+
+  function _onDeleteClick() {
+    TooltipNode?.close()
+
+    onDeleteClick()
   }
 </script>
 
@@ -71,15 +86,23 @@
       {/if}
 
       {#if moreActions}
-        <Tooltip let:trigger on="click" position="bottom" clickaway bind:isOpened={isMenuOpened}>
+        <Tooltip
+          bind:this={TooltipNode}
+          let:trigger
+          on="click"
+          position="bottom"
+          clickaway
+          bind:isOpened={isMenuOpened}
+        >
           <button use:trigger class="more btn-3">
             <Svg id="vert-dots" w="3" h="12" />
           </button>
 
           <svelte:fragment slot="tooltip">
-            <button class="btn-ghost" on:click={onRenameClick}>Rename</button>
-            <button class="btn-ghost" on:click={onDuplicateClick}>Duplicate</button>
-            <button class="btn-ghost" on:click={onDeleteClick}>Delete</button>
+            <button class="btn-ghost" on:click|stopPropagation={onRenameClick}>Rename</button>
+            <button class="btn-ghost" on:click|stopPropagation={_onDuplicateClick}>Duplicate</button
+            >
+            <button class="btn-ghost" on:click|stopPropagation={_onDeleteClick}>Delete</button>
           </svelte:fragment>
         </Tooltip>
       {/if}

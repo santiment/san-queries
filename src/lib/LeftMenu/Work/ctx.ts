@@ -1,3 +1,5 @@
+import { mutateDeleteSqlQuery } from '$lib/api/query/delete'
+import { EventQueryDeleted$ } from '$routes/(editor)/query/events'
 import {
   TreeItemType,
   type FolderTreeType,
@@ -122,7 +124,15 @@ export function Workspace$$() {
         update(tree)
       },
 
-      deleteItem(folder: FolderTreeType, idx: number) {
+      deleteItem(folder: FolderTreeType, idx: number, item: ItemTreeType) {
+        if (item.id) {
+          if (item.type === 'QUERY') {
+            EventQueryDeleted$.dispatch({ id: item.id as number })
+          } else if (item.type === 'DASHBOARD') {
+          }
+        }
+
+        console.log({ folder })
         folder.children.splice(idx, 1)
         update(tree)
       },

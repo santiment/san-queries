@@ -14,6 +14,8 @@
     EventDashboardChanged$,
     EventQuerySaved$,
     EventDashboardSaved$,
+    EventQueryDeleted$,
+    EventDashboardDeleted$,
   } from '$routes/(editor)/query/events'
   import { track } from 'webkit/analytics'
 
@@ -106,6 +108,38 @@
 
   const eventDashboardSaved = EventDashboardSaved$(changeOrCreateDashboard)
   $eventDashboardSaved
+
+  const eventQueryDeleted = EventQueryDeleted$(deleteQuery)
+  $eventQueryDeleted
+
+  function deleteQuery({ id }: { id: number }) {
+    queryGetUserQueries().then((queries) => {
+      queries.some((query, i) => {
+        if (query.id === id) {
+          queries.splice(i, 1)
+          return true
+        }
+      })
+
+      loadQueries()
+    })
+  }
+
+  const eventDashboardDeleted = EventDashboardDeleted$(deleteDashboard)
+  $eventDashboardDeleted
+
+  function deleteDashboard({ id }: { id: number }) {
+    queryGetUserDashboards().then((items) => {
+      items.some((item, i) => {
+        if (item.id === id) {
+          items.splice(i, 1)
+          return true
+        }
+      })
+
+      loadDashboards()
+    })
+  }
 
   function filterTree(input: RegExp, tree: WorkspaceTreeType) {
     return tree
@@ -224,7 +258,7 @@
     <Item
       idx={i}
       {item}
-      parent={dashboards}
+      parent={{ children: dashboards }}
       on:click={() => onItemClick(item)}
       onItemDragStart={console.log}
       onItemDragEnd={console.log}
@@ -237,7 +271,7 @@
     <Item
       idx={i}
       {item}
-      parent={queries}
+      parent={{ children: queries }}
       on:click={() => onItemClick(item)}
       onItemDragStart={console.log}
       onItemDragEnd={console.log}
