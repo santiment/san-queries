@@ -5,8 +5,11 @@
 
     let dateColumn: string
 
+    let colorId = 0
     sqlData.headers.forEach((key, i) => {
       const settings = ColumnSettings[key] || {}
+
+      if (settings.isHiddenOnChart) return
 
       const type = sqlData.types[i]
       if (type.includes('Date')) {
@@ -29,8 +32,9 @@
         header: key,
         title: settings.title || key,
         valueKey: i,
-        color: COLORS[i],
+        color: COLORS[colorId++],
         format,
+        node: settings.chartNode,
       })
     })
 

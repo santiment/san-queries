@@ -27,6 +27,7 @@ export async function mountChart(
     plugins: [AXES_LAST_VALUE_PLUGIN],
 
     options: {
+      animation: false,
       maintainAspectRatio: false,
       responsive: true,
 
@@ -50,8 +51,10 @@ export async function mountChart(
 
     data: {
       labels: xAxisLabels,
-      datasets: metrics.map((metric) => ({
+      datasets: metrics.map((metric, i) => ({
         data,
+        order: metric.node === 'Bars' ? 1000 : i,
+        type: getMetricType(metric.node),
         label: metric.title,
         yAxisID: metric.key,
 
@@ -59,6 +62,25 @@ export async function mountChart(
         metric,
 
         pointRadius: 0,
+
+        fill: {
+          target: metric.node === 'Area' ? 'stack' : 'none',
+        },
+        backgroundColor(context) {
+          const chart = context.chart
+          const { ctx, chartArea } = chart
+
+          if (!chartArea) return metric.color
+          if (metric.node !== 'Area') return metric.color
+
+          const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top)
+
+          // gradient.addColorStop(0.5, metric.color + '33')
+          gradient.addColorStop(1, metric.color + 'ff')
+          gradient.addColorStop(0, metric.color + '00')
+
+          return gradient
+        },
 
         parsing: {
           yAxisKey: metric.key,
@@ -76,4 +98,16 @@ export async function mountChart(
   }
 
   return new ChartJs(node, settings)
+}
+
+function getMetricType(chartNode?: string) {
+  switch (chartNode) {
+    case 'Bars':
+      return 'bar'
+
+    // case 'Area':
+    // return 'area'
+    default:
+      return
+  }
 }

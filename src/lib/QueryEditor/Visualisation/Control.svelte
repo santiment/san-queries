@@ -1,6 +1,7 @@
 <script lang="ts">
   import Svg from 'webkit/ui/Svg/svelte'
   import Tooltip from 'webkit/ui/Tooltip'
+  import Checkbox from 'webkit/ui/Checkbox.svelte'
 
   export let name: string
   export let options = null as null | any[]
@@ -9,6 +10,7 @@
   export let placeholder = ''
   export let defaultValue = ''
   export let textarea = false
+  export let checkbox = false
 
   function onInput(e: Event) {
     const inputNode = e.currentTarget as HTMLInputElement
@@ -74,6 +76,10 @@
       on:blur={onInputBlur}
       rows={8}
     />
+  {:else if checkbox}
+    <button class="checkbox btn-ghost row v-center gap-s" on:click={() => onUpdate(!value)}>
+      <Checkbox as="span" isActive={value} /> Is visible
+    </button>
   {:else}
     <input
       type="text"
@@ -111,5 +117,16 @@
 
   textarea {
     resize: vertical;
+  }
+
+  .checkbox {
+    padding: 6px 8px;
+    --color: var(--black);
+    --color-hover: var(--green);
+    --bg-hover: var(--porcelain);
+  }
+
+  Checkbox {
+    --bg: var(--white);
   }
 </style>

@@ -108,19 +108,25 @@
           update={updateColumnSettings}
         />
 
-        <!--
         {#if settings.visualisation === 'Chart'}
           <Control
             name="Chart style"
-            options={['Line', 'Bars']}
-            value={'Line'}
-            onUpdate={(_updated) => {
-              // controls.visualisation = updated
-              // controls = controls
+            options={['Line', 'Bars', 'Area']}
+            value={columnSettings.chartNode || 'Line'}
+            onUpdate={(updated) => {
+              updateColumnSettings(column, { chartNode: updated })
+            }}
+          />
+
+          <Control
+            checkbox
+            name="Displayed on chart"
+            value={!columnSettings.isHiddenOnChart}
+            onUpdate={(updated) => {
+              updateColumnSettings(column, { isHiddenOnChart: !updated })
             }}
           />
         {/if}
--->
       </ControlsSection>
     {/each}
   </options>
