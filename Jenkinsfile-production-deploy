@@ -17,12 +17,17 @@ podTemplate(label: 'sanqueries-production-deploy', containers: [
           string(
             credentialsId: 'aws_account_id',
             variable: 'aws_account_id'
+          ),
+          file(
+            credentialsId: 'production_kubeconfig',
+            variable: 'production_kubeconfig'
           )
         ]){
         
         def awsRegistry = "${env.aws_account_id}.dkr.ecr.eu-central-1.amazonaws.com"
         def sourceImage = "${awsRegistry}/san-queries"
         def taggedSource = "${sourceImage}:production"
+        def kubectl = "kubectl --kubeconfig='${env.production_kubeconfig}' --context=jenkins"
 
         /* Check if ECR image exists */
 
@@ -37,8 +42,8 @@ podTemplate(label: 'sanqueries-production-deploy', containers: [
         /* Deploy the image */
 
         container('kubectl') {
-          sh "kubectl version"
-          sh "kubectl rollout restart deployment/san-queries -n default"
+          sh "${kubectl} version"
+          sh "${kubectl} rollout restart deployment/san-queries -n default"
         }
       }
     }
