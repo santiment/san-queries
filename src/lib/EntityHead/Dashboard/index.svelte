@@ -58,9 +58,10 @@
 
     if (isAuthor) {
       if (!isPublished) {
-        if (dashboard) dashboard.isPublic = true
-
-        showDashboardPublishedDialog()
+        if (dashboard) {
+          dashboard.isPublic = true
+          showDashboardPublishedDialog()
+        }
         return saveDashboard()
       }
     }
