@@ -57,11 +57,13 @@
     <Svg {id} {w} {h} />
     {title}
 
+    <!-- 
     <svelte:fragment slot="after">
       <button class="btn mrg-a mrg--l">
         <Svg id="collapse" w="12" />
       </button>
     </svelte:fragment>
+ -->
   </Tabs>
 
   <Search {tab} />

@@ -79,7 +79,7 @@
     />
 
     <ContentEditable
-      value={dashboardEditor.description}
+      value={dashboardEditor.description || ''}
       class="body-2"
       placeholder="Add description here..."
       onBlur={onDescriptionChange}

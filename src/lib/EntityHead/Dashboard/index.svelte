@@ -17,6 +17,7 @@
     EventDashboardDeleted$,
     EventDashboardSaved$,
     EventDashboardUpdateQueries$,
+    EventSavingState$,
   } from '$routes/(editor)/query/events'
   import { goto } from '$app/navigation'
   import { mutateDeleteDashboard } from '$lib/api/dashboard/delete'
@@ -24,6 +25,7 @@
   import { startDashboardSaveFlow } from '$routes/(editor)/dashboard/[[slug]]/flow'
   import { getSEOLinkFromIdAndTitle } from 'san-webkit/lib/utils/url'
   import { notifications$ } from 'san-webkit/lib/ui/Notifications'
+  import { mutateUpdateDashboard } from '$lib/api/dashboard/create'
 
   export let dashboard = null as null | App.ApiDashboard
   export let author: SAN.Author | null
@@ -117,6 +119,7 @@ This action can't be undone`)
     })
       .then((apiDashboard) => {
         EventDashboardSaved$.dispatch(apiDashboard)
+        EventSavingState$.dispatch({ state: 'success' })
 
         return goto('/dashboard/' + getSEOLinkFromIdAndTitle(apiDashboard.id, apiDashboard.name))
       })
@@ -150,6 +153,28 @@ This action can't be undone`)
 
     EventDashboardUpdateQueries$.dispatch()
   }
+
+  let TooltipNode: Tooltip
+  function onUnpublishClick() {
+    TooltipNode?.close()
+    const dashboardEditor = $dashboardEditor$
+
+    dashboardEditor.dashboard!.isPublic = false
+
+    startDashboardSaveFlow(dashboardEditor).then((apiDashboard) => {
+      dashboardEditor$.setApiDashboard(apiDashboard)
+      EventSavingState$.dispatch({ state: 'success' })
+
+      notifications$.show({
+        type: 'info',
+        title: 'Dashboard was unpublished',
+      })
+    })
+  }
+
+  function onPublishUpdatesClick() {
+    TooltipNode?.close()
+  }
 </script>
 
 <Head {author}>
@@ -166,18 +191,22 @@ This action can't be undone`)
 
   <svelte:fragment slot="main-action-wrap" let:classes>
     {#if isPublished}
-      <Tooltip let:trigger on="click" position="bottom" clickaway>
+      <!-- 
+      <Tooltip bind:this={TooltipNode} let:trigger on="click" position="bottom" clickaway>
         <button use:trigger class="update btn-1">
           Update
 
           <Svg id="arrow-down" w="8" h="5" class="mrg-m mrg--l" />
         </button>
 
-        <svelte:fragment slot="tooltip" let:close>
-          <button class="btn-ghost" on:click={close}>Publish updates</button>
-          <button class="btn-ghost" on:click={close}>Unpublish</button>
+        <svelte:fragment slot="tooltip">
+          <button class="btn-ghost" on:click={onPublishUpdatesClick}>Publish updates</button>
+          <button class="btn-ghost" on:click={onUnpublishClick}>Unpublish</button>
         </svelte:fragment>
       </Tooltip>
+ -->
+
+      <button class={classes} on:click={onUnpublishClick}> Unpublish </button>
     {:else}
       <button class={classes} on:click={onMainClick} class:loading={isMigrating}>
         {isAuthor ? (isLegacy ? 'Migrate' : 'Publish') : 'Share'}
@@ -190,7 +219,7 @@ This action can't be undone`)
       {#if isAuthor}
         <button
           class="btn-3 expl-tooltip"
-          aria-label="Update queries"
+          aria-label="Refresh queries"
           on:click={onUpdateQueriesClick}
         >
           <Svg id="refresh" w="16" />
