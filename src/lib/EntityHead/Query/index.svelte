@@ -9,6 +9,11 @@
   import ExecuteButton from './ExecuteButton.svelte'
   import Head from '../index.svelte'
   import Menu from './Menu.svelte'
+  import { startSaveQueryFlow } from '$routes/(editor)/query/flow'
+  import { goto } from '$app/navigation'
+  import { getSEOLinkFromIdAndTitle } from 'san-webkit/lib/utils/url'
+  import { notifications$ } from 'san-webkit/lib/ui/Notifications'
+  import { EventQuerySaved$, EventSavingState$ } from '$routes/(editor)/query/events'
 
   export let author: SAN.Author | null
   export let quickSave = noop
@@ -87,6 +92,29 @@
   function onMainActionClick() {
     if (mainActionLabel === 'Execute') return
   }
+
+  function onDuplicateClick() {
+    track.event('query_editor_duplicate_click', {
+      category: 'Interaction',
+
+      source_url: window.location.href,
+    })
+
+    startSaveQueryFlow({ ...queryEditor, query: null }, queryEditor.query?.isPublic)
+      .then((apiQuery) => {
+        EventQuerySaved$.dispatch(apiQuery)
+        EventSavingState$.dispatch({ state: 'success' })
+
+        return goto('/query/' + getSEOLinkFromIdAndTitle(apiQuery.id, apiQuery.name))
+      })
+      .then(() =>
+        notifications$.show({
+          type: 'success',
+          title: 'Query duplicated!',
+          dismissAfter: 5000,
+        }),
+      )
+  }
 </script>
 
 <Head {author} onMainClick={onMainActionClick}>
@@ -114,9 +142,13 @@
 
   <svelte:fragment slot="actions">
     {#if isAuthor}
-      <button class="btn-3"><Svg id="copy" w="16" /></button>
+      <button class="btn-3 expl-tooltip" aria-label="Duplicate query" on:click={onDuplicateClick}
+        ><Svg id="copy" w="16" /></button
+      >
     {:else}
-      <button class="btn-3"><Svg id="refresh" w="16" /></button>
+      <button class="btn-3 expl-tooltip" aria-label="Refresh query"
+        ><Svg id="refresh" w="16" /></button
+      >
     {/if}
 
     <button class="btn-3 expl-tooltip" aria-label="Share" on:click={onShare}>

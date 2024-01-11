@@ -15,6 +15,7 @@
   import { startLegacyMigrationFlow } from '$lib/api/dashboard/legacy'
   import {
     EventDashboardDeleted$,
+    EventDashboardSaved$,
     EventDashboardUpdateQueries$,
   } from '$routes/(editor)/query/events'
   import { goto } from '$app/navigation'
@@ -114,9 +115,12 @@ This action can't be undone`)
       widgets: dashboardEditor.widgets.map((widget) => ({ ...widget, id: null })),
       dashboard: null,
     })
-      .then((apiDashboard) =>
-        goto('/dashboard/' + getSEOLinkFromIdAndTitle(apiDashboard.id, apiDashboard.name)),
-      )
+      .then((apiDashboard) => {
+        EventDashboardSaved$.dispatch(apiDashboard)
+
+        return goto('/dashboard/' + getSEOLinkFromIdAndTitle(apiDashboard.id, apiDashboard.name))
+      })
+
       .then(() => {
         notifications$.show({
           type: 'success',
