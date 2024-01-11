@@ -38,7 +38,7 @@ export function getScales(metrics: string[], MinMax: any) {
       paddingRight: 20,
 
       ticks: {
-        padding: 0,
+        padding: 1,
 
         stepSize: (max - min) / 5,
 

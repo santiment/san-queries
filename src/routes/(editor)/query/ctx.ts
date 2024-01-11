@@ -39,11 +39,13 @@ export function parseQuerySettings(querySettings?: App.ApiQuery['settings']) {
 
   if (querySettings.columns) {
     Object.keys(querySettings.columns).forEach((key) => {
-      const { title, formatter } = querySettings.columns[key]
+      const { title, formatter, isHiddenOnChart, chartNode } = querySettings.columns[key]
 
       settings.columns[key] = {
         title,
         formatter: Formatter[formatter],
+        isHiddenOnChart,
+        chartNode,
       }
     })
   }

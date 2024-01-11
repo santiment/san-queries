@@ -7,8 +7,12 @@ export function serializeQuerySettings(settings: App.QueryEditorStoreValue['sett
   return {
     ...settings,
     columns: Object.keys(settings.columns).reduce((acc, key) => {
-      const { title, formatter } = settings.columns[key]
+      const { title, formatter, isHiddenOnChart, chartNode } = settings.columns[key]
       acc[key] = { title, formatter: formatter?.key }
+
+      if (isHiddenOnChart) acc[key].isHiddenOnChart = true
+      if (chartNode) acc[key].chartNode = chartNode
+
       return acc
     }, {} as any),
   } as App.ApiQuery['settings']
