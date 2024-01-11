@@ -11,6 +11,8 @@
   import Comments from './Comments.svelte'
   import Head from '../index.svelte'
   import { noop } from 'san-webkit/lib/utils'
+  import { track } from 'san-webkit/lib/analytics'
+  import { startLegacyMigrationFlow } from '$lib/api/dashboard/legacy'
 
   export let dashboard = null as null | App.ApiDashboard
   export let author: SAN.Author | null
@@ -21,12 +23,36 @@
   $: currentUser = $currentUser$
   $: isAuthor = currentUser?.id === author?.id
   $: isPublished = isAuthor && dashboard?.isPublic
+  $: isLegacy = isAuthor && dashboard?.isLegacy
 
   function onShare() {
     showShareDialog({ entity: 'Dashboard', feature: 'dashboard', source: 'dashboard_head' })
   }
 
+  let isMigrating = false
   function onMainClick() {
+    if (isLegacy) {
+      if (isMigrating) return
+
+      isMigrating = true
+
+      track.event('migrate_legacy_dashboard', {
+        category: 'Interaction',
+        id: dashboard?.id,
+
+        source_url: window.location.href,
+      })
+
+      if (dashboard) {
+        startLegacyMigrationFlow(dashboard).then(() => {
+          isMigrating = false
+          window.location.reload()
+        })
+      }
+
+      return
+    }
+
     if (isAuthor) {
       if (!isPublished) {
         if (dashboard) dashboard.isPublic = true
@@ -65,33 +91,35 @@
         </svelte:fragment>
       </Tooltip>
     {:else}
-      <button class={classes} on:click={onMainClick}>
-        {isAuthor ? 'Publish' : 'Share'}
+      <button class={classes} on:click={onMainClick} class:loading={isMigrating}>
+        {isAuthor ? (isLegacy ? 'Migrate' : 'Publish') : 'Share'}
       </button>
     {/if}
   </svelte:fragment>
 
   <svelte:fragment slot="actions">
-    {#if isAuthor}
-      <button class="btn-3 expl-tooltip" aria-label="Update queries">
-        <Svg id="refresh" w="16" />
-      </button>
-      <button class="btn-3 expl-tooltip" aria-label="Share" on:click={onShare}>
-        <Svg id="share-dots" w="16" />
-      </button>
+    {#if !isLegacy}
+      {#if isAuthor}
+        <button class="btn-3 expl-tooltip" aria-label="Update queries">
+          <Svg id="refresh" w="16" />
+        </button>
+        <button class="btn-3 expl-tooltip" aria-label="Share" on:click={onShare}>
+          <Svg id="share-dots" w="16" />
+        </button>
 
-      <Dropdown
-        let:trigger
-        actions={[
-          ['Duplicate', console.log],
-          ['Delete', console.log],
-          ['Reset', console.log],
-        ]}
-      >
-        <button use:trigger class="btn-3"><Svg id="vert-dots" w="3" h="16" /></button>
-      </Dropdown>
-    {:else if currentUser}
-      <button class="btn-3"><Svg id="copy" w="16" /></button>
+        <Dropdown
+          let:trigger
+          actions={[
+            ['Duplicate', console.log],
+            ['Delete', console.log],
+            ['Reset', console.log],
+          ]}
+        >
+          <button use:trigger class="btn-3"><Svg id="vert-dots" w="3" h="16" /></button>
+        </Dropdown>
+      {:else if currentUser}
+        <button class="btn-3"><Svg id="copy" w="16" /></button>
+      {/if}
     {/if}
   </svelte:fragment>
 </Head>

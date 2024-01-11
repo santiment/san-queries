@@ -73,7 +73,9 @@
 </script>
 
 <parameters class="row gap-s mrg-l mrg--b">
-  <button class="btn-2" on:click={onAddGlobalParameterClick}>Add global parameter</button>
+  {#if !dashboardEditor.isLegacy}
+    <button class="btn-2" on:click={onAddGlobalParameterClick}>Add global parameter</button>
+  {/if}
 
   {#each parameters as parameter, i}
     <Parameter
