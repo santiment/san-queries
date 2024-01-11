@@ -18,7 +18,11 @@
   import Errors from './Errors/index.svelte'
   import SQLEditor from '$lib/SQLEditor/index.svelte'
   import VisualisationTab from './Visualisation/index.svelte'
-  import { EventQuerySave$, EventQueryExecute$ } from '$routes/(editor)/query/events'
+  import {
+    EventQuerySave$,
+    EventQueryExecute$,
+    EventTableInsertSql$,
+  } from '$routes/(editor)/query/events'
 
   export let tab = TABS[0] as (typeof TABS)[number]
 
@@ -96,6 +100,16 @@
     trackTabSelect(item)
 
     tab = item
+  }
+
+  const eventTableInsertSql = EventTableInsertSql$(onDataInsertSql)
+  $eventTableInsertSql
+
+  function onDataInsertSql({ text }: { text: string }) {
+    const editor = SqlEditorNode?.getEditor()
+    if (!editor) return
+
+    editor.trigger('keyboard', 'type', { text })
   }
 </script>
 

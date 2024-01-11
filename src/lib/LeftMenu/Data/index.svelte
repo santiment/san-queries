@@ -6,6 +6,7 @@
   import { onMount } from 'svelte'
   import { getSearch$Ctx } from '../Search.svelte'
   import PreviewTable from './PreviewTable.svelte'
+  import { EventTableInsertSql$ } from '$routes/(editor)/query/events'
 
   const { search$ } = getSearch$Ctx()
 
@@ -46,6 +47,8 @@
       id: item.id,
       source_url: window.location.href,
     })
+
+    EventTableInsertSql$.dispatch({ text: item.id })
   }
 </script>
 

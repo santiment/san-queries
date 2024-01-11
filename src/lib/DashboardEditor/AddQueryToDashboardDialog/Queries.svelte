@@ -1,14 +1,24 @@
 <script lang="ts">
   import type { queryGetUserQueries } from '$lib/api/query/get'
+  import { track } from 'san-webkit/lib/analytics'
   import Profile from 'webkit/ui/Profile/svelte'
   import Svg from 'webkit/ui/Svg/svelte'
 
+  export let tab: any
   export let queries = [] as Awaited<ReturnType<typeof queryGetUserQueries>>
   export let onQueryAdd: (query: App.Dashboard.Query) => void
 
   let addedSet = new Set()
   function onAddClick(item) {
     if (addedSet.has(item)) return
+
+    track.event('add_query_to_dashboard', {
+      category: 'Interaction',
+      source: 'add_queries_to_dashboard_dialog',
+
+      tab: tab.title,
+      source_url: window.location.href,
+    })
 
     onQueryAdd(item)
 
@@ -36,7 +46,7 @@
 
       <article class="row v-center gap-s">
         <Svg id="table" w="12" />
-        <span class="single-line">{item.name}</span>
+        <span class="single-line">{item.name || 'Untitled query'}</span>
       </article>
 
       <button class="btn-2 mrg-a mrg--l" on:click={() => onAddClick(item)}>

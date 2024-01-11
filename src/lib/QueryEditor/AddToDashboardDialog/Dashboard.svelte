@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { queryGetUserQueries } from '$lib/api/query/get'
+  import { track } from 'san-webkit/lib/analytics'
   import Profile from 'webkit/ui/Profile/svelte'
   import Svg from 'webkit/ui/Svg/svelte'
 
@@ -21,6 +22,13 @@
       addedSet.delete(item)
       addedSet = addedSet
     }, 2000)
+
+    track.event('add_query_to_dashboard', {
+      category: 'Interaction',
+      source: 'add_query_to_dashboard_dialog',
+
+      source_url: window.location.href,
+    })
   }
 </script>
 

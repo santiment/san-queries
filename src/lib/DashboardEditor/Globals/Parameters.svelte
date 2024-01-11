@@ -8,6 +8,7 @@
     mutateAddDashboardGlobalParameterOverride,
   } from './api'
   import Parameter, { COLORS } from '$lib/Parameter'
+  import { track } from 'san-webkit/lib/analytics'
 
   const showEditGlobalParameterDialog = showEditGlobalParameterDialog$()
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
@@ -18,6 +19,13 @@
 
   function onAddGlobalParameterClick() {
     if (!dashboardId) return
+
+    track.event('add_global_parameter_click', {
+      category: 'Interaction',
+      dashboard_id: dashboardId,
+
+      source_url: window.location.href,
+    })
 
     showEditGlobalParameterDialog().then((parameter) => {
       mutateAddDashboardGlobalParameter({
