@@ -88,11 +88,20 @@
 
   function onDownloadCsvClick() {
     console.log($queryEditor$)
-    const { name, sqlData } = $queryEditor$
+
+    const { query, name, sqlData } = $queryEditor$
 
     const columns = sqlData.headers.map((title, i) => ({ title, format: (v) => v[i] }))
 
     downloadCsv(name, columns, sqlData.rows)
+
+    track.event('download', {
+      category: 'Interaction',
+      type: 'csv',
+      source: 'query_editor_visualisation',
+      id: query?.id,
+      source_url: window.location.href,
+    })
   }
 
   function onAddToDashboardClick() {

@@ -3,8 +3,6 @@
 
   import { noop } from 'webkit/utils'
   import Tooltip from 'webkit/ui/Tooltip'
-  import { onDestroy } from 'svelte'
-  import { BROWSER } from 'esm-env'
 
   export let icon = '' as Props['id']
   export let moreActions = false
