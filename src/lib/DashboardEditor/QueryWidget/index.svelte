@@ -7,7 +7,7 @@
   import { getDashboardEditor$Ctx } from '../ctx'
   import { showVisualisationFullscreenDialog } from '$lib/QueryEditor/Visualisation/FullscreenDialog/index.svelte'
   import { parseQuerySettings, parseQueryParameters } from '$routes/(editor)/query/ctx'
-  import { EventAutoSave$ } from '$routes/(editor)/query/events'
+  import { EventAutoSave$, EventDashboardUpdateQueries$ } from '$routes/(editor)/query/events'
   import Parameter, { COLORS } from '$lib/Parameter'
   import { showLinkGlobalParameterDialog$ } from './LinkGlobalParameterDialog.svelte'
   import {
@@ -50,6 +50,9 @@
         }),
       )
   }
+
+  const eventDashboardUpdateQueries = EventDashboardUpdateQueries$(updateData)
+  $eventDashboardUpdateQueries
 
   function getData() {
     // const query = widget.query as App.ApiQuery

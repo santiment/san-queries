@@ -13,7 +13,10 @@
   import { noop } from 'san-webkit/lib/utils'
   import { track } from 'san-webkit/lib/analytics'
   import { startLegacyMigrationFlow } from '$lib/api/dashboard/legacy'
-  import { EventDashboardDeleted$ } from '$routes/(editor)/query/events'
+  import {
+    EventDashboardDeleted$,
+    EventDashboardUpdateQueries$,
+  } from '$routes/(editor)/query/events'
   import { goto } from '$app/navigation'
   import { mutateDeleteDashboard } from '$lib/api/dashboard/delete'
 
@@ -111,6 +114,15 @@ This action can't be undone`)
       goto('/dashboard/new')
     }
   }
+
+  function onUpdateQueriesClick() {
+    track.event('dashboard_editor_update_queries_click', {
+      category: 'Interaction',
+      source_url: window.location.href,
+    })
+
+    EventDashboardUpdateQueries$.dispatch()
+  }
 </script>
 
 <Head {author}>
@@ -149,7 +161,11 @@ This action can't be undone`)
   <svelte:fragment slot="actions">
     {#if !isLegacy}
       {#if isAuthor}
-        <button class="btn-3 expl-tooltip" aria-label="Update queries">
+        <button
+          class="btn-3 expl-tooltip"
+          aria-label="Update queries"
+          on:click={onUpdateQueriesClick}
+        >
           <Svg id="refresh" w="16" />
         </button>
         <button class="btn-3 expl-tooltip" aria-label="Share" on:click={onShare}>
