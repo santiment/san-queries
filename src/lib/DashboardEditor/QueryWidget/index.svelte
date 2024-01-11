@@ -34,12 +34,17 @@
     return acc
   }, {})
 
-  $: console.log({ dashboardQueryParams })
+  // $: console.log({ dashboardQueryParams })
 
   function updateData() {
+    if (!widget.id) return
+
     getData()
       .then((data) => {
         const { headers, types, ...rest } = data
+
+        CachedData[widget.id] = data
+
         return compressQuery({ ...rest, columns: headers, columnTypes: types })
       })
       .then((compressed) =>
@@ -157,6 +162,10 @@
   {:else}
     <Table border={false} {sqlData} ColumnSettings={settings.columns} />
   {/if}
+
+  {#if !sqlData}
+    <no-data class="c-waterloo">Refresh query to get data</no-data>
+  {/if}
 </query-widget>
 
 <style>
@@ -181,5 +190,15 @@
 
   .metrics {
     padding: 8px 8px 0;
+  }
+
+  no-data {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--athens);
+    padding: 6px 10px;
+    border-radius: 4px;
   }
 </style>

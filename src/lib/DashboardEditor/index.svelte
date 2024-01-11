@@ -38,6 +38,7 @@
       })
 
       CachedData = result
+      console.log(CachedData)
     })
   }
 

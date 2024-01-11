@@ -36,11 +36,15 @@ export function DashboardEditor$$(defaultWidgets = [] as App.Dashboard.Widget[],
       },
 
       addWidget(widget: App.Dashboard.Widget) {
+        widget.scrollTo = true
+
         const options = getGridItemOptions(widget)
         const gridItem = setItemOptions([0, 1000, 12, options.minRows], options)
 
         state.layout.push(gridItem as SAN.SnapGrid.Item)
         state.widgets.push(widget)
+
+        console.log(123, widget)
 
         updateLayout()
 

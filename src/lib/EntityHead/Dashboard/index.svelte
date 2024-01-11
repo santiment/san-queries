@@ -19,6 +19,10 @@
   } from '$routes/(editor)/query/events'
   import { goto } from '$app/navigation'
   import { mutateDeleteDashboard } from '$lib/api/dashboard/delete'
+  import { getDashboardEditor$Ctx } from '$routes/(editor)/dashboard/[[slug]]/ctx'
+  import { startDashboardSaveFlow } from '$routes/(editor)/dashboard/[[slug]]/flow'
+  import { getSEOLinkFromIdAndTitle } from 'san-webkit/lib/utils/url'
+  import { notifications$ } from 'san-webkit/lib/ui/Notifications'
 
   export let dashboard = null as null | App.ApiDashboard
   export let author: SAN.Author | null
@@ -95,11 +99,30 @@ This action can't be undone`)
     EventDashboardDeleted$.dispatch(dashboard)
   }
 
+  const { dashboardEditor$ } = getDashboardEditor$Ctx()
+
   function onDuplicateClick() {
     track.event('dashboard_editor_menu_duplicate_click', {
       category: 'Interaction',
       source_url: window.location.href,
     })
+
+    const dashboardEditor = $dashboardEditor$
+
+    startDashboardSaveFlow({
+      ...dashboardEditor,
+      widgets: dashboardEditor.widgets.map((widget) => ({ ...widget, id: null })),
+      dashboard: null,
+    })
+      .then((apiDashboard) =>
+        goto('/dashboard/' + getSEOLinkFromIdAndTitle(apiDashboard.id, apiDashboard.name)),
+      )
+      .then(() => {
+        notifications$.show({
+          type: 'success',
+          title: 'Dashboard duplicated!',
+        })
+      })
   }
 
   const eventDashboardDeleted = EventDashboardDeleted$(onDashboardDeleted)
