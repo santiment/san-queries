@@ -13,6 +13,9 @@
   import { noop } from 'san-webkit/lib/utils'
   import { track } from 'san-webkit/lib/analytics'
   import { startLegacyMigrationFlow } from '$lib/api/dashboard/legacy'
+  import { EventDashboardDeleted$ } from '$routes/(editor)/query/events'
+  import { goto } from '$app/navigation'
+  import { mutateDeleteDashboard } from '$lib/api/dashboard/delete'
 
   export let dashboard = null as null | App.ApiDashboard
   export let author: SAN.Author | null
@@ -62,13 +65,58 @@
       }
     }
   }
+
+  function onMenuClick() {
+    track.event('dashboard_editor_menu_open', {
+      category: 'Interaction',
+      source_url: window.location.href,
+    })
+  }
+
+  let DropdownNode: Dropdown
+
+  function onDeleteClick() {
+    if (!dashboard) return
+
+    DropdownNode.close()
+    track.event('dashboard_editor_menu_delete_click', {
+      category: 'Interaction',
+      source_url: window.location.href,
+    })
+
+    const isConfirmed = confirm(`Delete this dashboard?
+This action can't be undone`)
+    if (!isConfirmed) return
+
+    EventDashboardDeleted$.dispatch(dashboard)
+  }
+
+  function onDuplicateClick() {
+    track.event('dashboard_editor_menu_duplicate_click', {
+      category: 'Interaction',
+      source_url: window.location.href,
+    })
+  }
+
+  const eventDashboardDeleted = EventDashboardDeleted$(onDashboardDeleted)
+  $eventDashboardDeleted
+
+  function onDashboardDeleted({ id }: { id: number }) {
+    mutateDeleteDashboard(id)
+
+    // const selectedQuery = dashboardEDito
+
+    if (dashboard?.id === id) {
+      goto('/dashboard/new')
+    }
+  }
 </script>
 
 <Head {author}>
   <LikeButton
     id={dashboard?.id}
     type={VoteType.Dashboard}
-    votes={dashboard?.votes}
+    votes={dashboard?.votes || { userVotes: 0, totalVotes: 0 }}
     onVote={console.log}
     source="queries_dashboard_vote"
     disabled={!dashboard?.id}
@@ -108,14 +156,16 @@
         </button>
 
         <Dropdown
+          bind:this={DropdownNode}
           let:trigger
           actions={[
-            ['Duplicate', console.log],
-            ['Delete', console.log],
-            ['Reset', console.log],
+            ['Duplicate', onDuplicateClick],
+            ['Delete', onDeleteClick],
           ]}
         >
-          <button use:trigger class="btn-3"><Svg id="vert-dots" w="3" h="16" /></button>
+          <button on:click={onMenuClick} use:trigger class="btn-3"
+            ><Svg id="vert-dots" w="3" h="16" /></button
+          >
         </Dropdown>
       {:else if currentUser}
         <button class="btn-3"><Svg id="copy" w="16" /></button>
