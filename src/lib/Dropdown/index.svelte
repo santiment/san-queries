@@ -1,10 +1,16 @@
 <script lang="ts">
   import Tooltip from 'webkit/ui/Tooltip'
 
+  let TooltipNode: Tooltip
+
   export let actions = [] as [string, () => void][]
+
+  export function close() {
+    TooltipNode?.close()
+  }
 </script>
 
-<Tooltip let:trigger on="click">
+<Tooltip bind:this={TooltipNode} let:trigger on="click">
   <slot {trigger} />
 
   <svelte:fragment slot="tooltip">

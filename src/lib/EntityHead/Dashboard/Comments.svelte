@@ -25,7 +25,7 @@
 
 <CommentsButton
   class={className}
-  count={dashboard?.commentsCount}
+  count={dashboard?.commentsCount || 0}
   on:click={() => (isOpened = !!dashboard)}
 />
 

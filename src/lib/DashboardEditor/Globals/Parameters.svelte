@@ -82,7 +82,9 @@
 
 <parameters class="row gap-s mrg-l mrg--b">
   {#if !dashboardEditor.isLegacy}
-    <button class="btn-2" on:click={onAddGlobalParameterClick}>Add global parameter</button>
+    <button class="btn-2" class:disabled={!dashboardId} on:click={onAddGlobalParameterClick}
+      >Add global parameter</button
+    >
   {/if}
 
   {#each parameters as parameter, i}

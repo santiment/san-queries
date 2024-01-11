@@ -1,9 +1,9 @@
 import { mutate } from 'webkit/api'
 
 export function mutateDeleteSqlQuery(id: number | string) {
-  return mutate<SAN.API.Query<'createSqlQuery', App.ApiQuery>>(
+  return mutate<SAN.API.Query<'deleteSqlQuery', { id: number }>>(
     `mutation {
     deleteSqlQuery(id:${id}) { id }
   }`,
-  ).then(({ createSqlQuery }) => createSqlQuery)
+  ).then(({ deleteSqlQuery }) => deleteSqlQuery)
 }

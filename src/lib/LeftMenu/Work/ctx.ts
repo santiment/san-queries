@@ -1,5 +1,5 @@
 import { mutateDeleteSqlQuery } from '$lib/api/query/delete'
-import { EventQueryDeleted$ } from '$routes/(editor)/query/events'
+import { EventDashboardDeleted$, EventQueryDeleted$ } from '$routes/(editor)/query/events'
 import {
   TreeItemType,
   type FolderTreeType,
@@ -129,6 +129,7 @@ export function Workspace$$() {
           if (item.type === 'QUERY') {
             EventQueryDeleted$.dispatch({ id: item.id as number })
           } else if (item.type === 'DASHBOARD') {
+            EventDashboardDeleted$.dispatch({ id: item.id as number })
           }
         }
 
