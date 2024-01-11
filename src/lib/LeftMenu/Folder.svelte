@@ -40,6 +40,7 @@
       <Renamer {title} {onRename} bind:isRenaming />
     </button>
 
+    <!-- 
     {#if isHovered || isRenaming}
       <button
         class="rename btn-3"
@@ -50,6 +51,7 @@
         <Svg id="pencil" w="12" />
       </button>
     {/if}
+ -->
   </folder-head>
 
   {#if isOpened}

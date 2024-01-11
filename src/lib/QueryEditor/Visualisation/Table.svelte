@@ -53,16 +53,19 @@
   import { FormatType, Formatter } from './Controls/FormattingControl.svelte'
   import type { ComponentType } from 'svelte'
 
+  const defaultSqlData = { rows: [], types: [], headers: [] }
+
   let className = ''
   export { className as class }
-  export let sqlData = { rows: [], types: [], headers: [] } as App.SqlData
+  export let sqlData = defaultSqlData as App.SqlData
   export let ColumnSettings = {} as any
   export let border = true
   export let columns = undefined as undefined | TableColumn[]
   export let onSortClick = noop as any
   export let sort = { column: undefined, dir: 'desc' as 'desc' | 'asc' }
 
-  $: tableColumns = columns || getTableColumns(sqlData, ColumnSettings)
+  $: if (!sqlData) sqlData = defaultSqlData
+  $: tableColumns = columns || getTableColumns(sqlData || defaultSqlData, ColumnSettings)
 </script>
 
 <table-widget class="column {className}" class:border>

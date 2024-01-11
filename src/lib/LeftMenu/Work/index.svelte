@@ -28,7 +28,21 @@
     hoverNode: HTMLElement | null
   }
 
-  $: tree = $workspace$
+  // $: tree = $workspace$
+  $: tree = {
+    children: [
+      {
+        type: 'FOLDER',
+        name: 'My Dashboards',
+        children: dashboards,
+      },
+      {
+        type: 'FOLDER',
+        name: 'My Queries',
+        children: queries,
+      },
+    ],
+  }
   $: filteredTree = search$.modify($search$, tree.children, filterTree)
 
   let queries = [] as any[]
@@ -232,18 +246,19 @@
   <!-- </actions> -->
 </section>
 
-<!--
 {#each filteredTree as item, i (item)}
   {@const { type } = item}
   {#if type === TreeItemType.FOLDER}
-    <Folder
-      folder={item}
-      title={item.name}
-      on:dragover={onFolderDragOver}
-      on:drop={(e) => onFolderDrop(e, item)}
-    >
+    <Folder folder={item} title={item.name}>
       {#each item.children as child, i (child)}
-        <Item idx={i} item={child} parent={item} {onItemDragStart} {onItemDragEnd} />
+        <Item
+          idx={i}
+          item={child}
+          parent={item}
+          on:click={() => onItemClick(child)}
+          onItemDragStart={console.log}
+          onItemDragEnd={console.log}
+        />
       {/each}
     </Folder>
   {:else}
@@ -251,8 +266,7 @@
   {/if}
 {/each}
 
--->
-
+<!-- 
 <Folder title="My Dashboards">
   {#each dashboards as item, i}
     <Item
@@ -278,6 +292,7 @@
     />
   {/each}
 </Folder>
+ -->
 
 <style lang="scss">
   .expl-tooltip {

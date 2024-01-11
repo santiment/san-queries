@@ -7,7 +7,7 @@
   import { getDashboardEditor$Ctx } from '../ctx'
   import { showVisualisationFullscreenDialog } from '$lib/QueryEditor/Visualisation/FullscreenDialog/index.svelte'
   import { parseQuerySettings, parseQueryParameters } from '$routes/(editor)/query/ctx'
-  import { EventAutoSave$ } from '$routes/(editor)/query/events'
+  import { EventAutoSave$, EventDashboardUpdateQueries$ } from '$routes/(editor)/query/events'
   import Parameter, { COLORS } from '$lib/Parameter'
   import { showLinkGlobalParameterDialog$ } from './LinkGlobalParameterDialog.svelte'
   import {
@@ -34,12 +34,17 @@
     return acc
   }, {})
 
-  $: console.log({ dashboardQueryParams })
+  // $: console.log({ dashboardQueryParams })
 
   function updateData() {
+    if (!widget.id) return
+
     getData()
       .then((data) => {
         const { headers, types, ...rest } = data
+
+        CachedData[widget.id] = data
+
         return compressQuery({ ...rest, columns: headers, columnTypes: types })
       })
       .then((compressed) =>
@@ -50,6 +55,9 @@
         }),
       )
   }
+
+  const eventDashboardUpdateQueries = EventDashboardUpdateQueries$(updateData)
+  $eventDashboardUpdateQueries
 
   function getData() {
     // const query = widget.query as App.ApiQuery
@@ -154,6 +162,10 @@
   {:else}
     <Table border={false} {sqlData} ColumnSettings={settings.columns} />
   {/if}
+
+  {#if !sqlData}
+    <no-data class="c-waterloo">Refresh query to get data</no-data>
+  {/if}
 </query-widget>
 
 <style>
@@ -178,5 +190,15 @@
 
   .metrics {
     padding: 8px 8px 0;
+  }
+
+  no-data {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--athens);
+    padding: 6px 10px;
+    border-radius: 4px;
   }
 </style>

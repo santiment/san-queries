@@ -143,6 +143,8 @@ export function DashboardEditor$$(apiDashboard?: null | App.ApiDashboard) {
       },
 
       addWidget(widget: App.Dashboard.Widget) {
+        widget.scrolOnMount = true
+
         const options = getGridItemOptions(widget)
         const gridItem = setItemOptions([0, 1000, 12, options.minRows], options)
 

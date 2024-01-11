@@ -13,9 +13,19 @@
   import { noop } from 'san-webkit/lib/utils'
   import { track } from 'san-webkit/lib/analytics'
   import { startLegacyMigrationFlow } from '$lib/api/dashboard/legacy'
-  import { EventDashboardDeleted$ } from '$routes/(editor)/query/events'
+  import {
+    EventDashboardDeleted$,
+    EventDashboardSaved$,
+    EventDashboardUpdateQueries$,
+    EventSavingState$,
+  } from '$routes/(editor)/query/events'
   import { goto } from '$app/navigation'
   import { mutateDeleteDashboard } from '$lib/api/dashboard/delete'
+  import { getDashboardEditor$Ctx } from '$routes/(editor)/dashboard/[[slug]]/ctx'
+  import { startDashboardSaveFlow } from '$routes/(editor)/dashboard/[[slug]]/flow'
+  import { getSEOLinkFromIdAndTitle } from 'san-webkit/lib/utils/url'
+  import { notifications$ } from 'san-webkit/lib/ui/Notifications'
+  import { mutateUpdateDashboard } from '$lib/api/dashboard/create'
 
   export let dashboard = null as null | App.ApiDashboard
   export let author: SAN.Author | null
@@ -92,11 +102,34 @@ This action can't be undone`)
     EventDashboardDeleted$.dispatch(dashboard)
   }
 
+  const { dashboardEditor$ } = getDashboardEditor$Ctx()
+
   function onDuplicateClick() {
     track.event('dashboard_editor_menu_duplicate_click', {
       category: 'Interaction',
       source_url: window.location.href,
     })
+
+    const dashboardEditor = $dashboardEditor$
+
+    startDashboardSaveFlow({
+      ...dashboardEditor,
+      widgets: dashboardEditor.widgets.map((widget) => ({ ...widget, id: null })),
+      dashboard: null,
+    })
+      .then((apiDashboard) => {
+        EventDashboardSaved$.dispatch(apiDashboard)
+        EventSavingState$.dispatch({ state: 'success' })
+
+        return goto('/dashboard/' + getSEOLinkFromIdAndTitle(apiDashboard.id, apiDashboard.name))
+      })
+
+      .then(() => {
+        notifications$.show({
+          type: 'success',
+          title: 'Dashboard duplicated!',
+        })
+      })
   }
 
   const eventDashboardDeleted = EventDashboardDeleted$(onDashboardDeleted)
@@ -110,6 +143,37 @@ This action can't be undone`)
     if (dashboard?.id === id) {
       goto('/dashboard/new')
     }
+  }
+
+  function onUpdateQueriesClick() {
+    track.event('dashboard_editor_update_queries_click', {
+      category: 'Interaction',
+      source_url: window.location.href,
+    })
+
+    EventDashboardUpdateQueries$.dispatch()
+  }
+
+  let TooltipNode: Tooltip
+  function onUnpublishClick() {
+    TooltipNode?.close()
+    const dashboardEditor = $dashboardEditor$
+
+    dashboardEditor.dashboard!.isPublic = false
+
+    startDashboardSaveFlow(dashboardEditor).then((apiDashboard) => {
+      dashboardEditor$.setApiDashboard(apiDashboard)
+      EventSavingState$.dispatch({ state: 'success' })
+
+      notifications$.show({
+        type: 'info',
+        title: 'Dashboard was unpublished',
+      })
+    })
+  }
+
+  function onPublishUpdatesClick() {
+    TooltipNode?.close()
   }
 </script>
 
@@ -127,18 +191,22 @@ This action can't be undone`)
 
   <svelte:fragment slot="main-action-wrap" let:classes>
     {#if isPublished}
-      <Tooltip let:trigger on="click" position="bottom" clickaway>
+      <!-- 
+      <Tooltip bind:this={TooltipNode} let:trigger on="click" position="bottom" clickaway>
         <button use:trigger class="update btn-1">
           Update
 
           <Svg id="arrow-down" w="8" h="5" class="mrg-m mrg--l" />
         </button>
 
-        <svelte:fragment slot="tooltip" let:close>
-          <button class="btn-ghost" on:click={close}>Publish updates</button>
-          <button class="btn-ghost" on:click={close}>Unpublish</button>
+        <svelte:fragment slot="tooltip">
+          <button class="btn-ghost" on:click={onPublishUpdatesClick}>Publish updates</button>
+          <button class="btn-ghost" on:click={onUnpublishClick}>Unpublish</button>
         </svelte:fragment>
       </Tooltip>
+ -->
+
+      <button class={classes} on:click={onUnpublishClick}> Unpublish </button>
     {:else}
       <button class={classes} on:click={onMainClick} class:loading={isMigrating}>
         {isAuthor ? (isLegacy ? 'Migrate' : 'Publish') : 'Share'}
@@ -149,7 +217,11 @@ This action can't be undone`)
   <svelte:fragment slot="actions">
     {#if !isLegacy}
       {#if isAuthor}
-        <button class="btn-3 expl-tooltip" aria-label="Update queries">
+        <button
+          class="btn-3 expl-tooltip"
+          aria-label="Refresh queries"
+          on:click={onUpdateQueriesClick}
+        >
           <Svg id="refresh" w="16" />
         </button>
         <button class="btn-3 expl-tooltip" aria-label="Share" on:click={onShare}>
