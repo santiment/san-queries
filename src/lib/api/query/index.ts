@@ -63,7 +63,7 @@ export const queryExecutionStats = Universal(
           data:getClickhouseQueryExecutionStats(clickhouseQueryId:"${clickhouseQueryId}") {
             creditsCost
             readGb
-
+            readRows
             insertedAt
             queryDurationMs
           }

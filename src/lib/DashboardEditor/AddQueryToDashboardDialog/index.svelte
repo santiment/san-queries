@@ -15,6 +15,10 @@
   import Queries from './Queries.svelte'
   import { debounce$$ } from 'san-webkit/lib/utils/fn'
   import { Search$$ } from '$lib/LeftMenu/Search.svelte'
+  import { track } from 'san-webkit/lib/analytics'
+  import { onDestroy } from 'svelte'
+  import { browser } from '$app/environment'
+  import { BROWSER } from 'esm-env'
 
   export let onQueryAdd: (query: App.Dashboard.Query) => void
 
@@ -33,10 +37,22 @@
   $: filteredQueries = search$.apply($search$, queries, filterQueries)
 
   function filterQueries(input: RegExp, query: (typeof queries)[number]) {
-    return query.name.search(input) >= 0
+    return query.name?.search(input) >= 0
   }
 
+  let tab = tabs[0]
   function onTabSelect(item: (typeof tabs)[number]) {
+    track.event('tab_select', {
+      category: 'Interaction',
+      source: 'add_queries_to_dashboard_dialog',
+
+      tab: item.title,
+      old_tab: tab.title,
+      source_url: window.location.href,
+    })
+
+    tab = item
+
     if (item.title === 'My queries') {
       queryGetUserQueries().then(setter)
     } else {
@@ -44,9 +60,37 @@
     }
   }
 
-  const onSearch$ = debounce$$(250, (value: string) => search$.set(value.trim()))
+  const onSearch$ = debounce$$(250, (value: string) => {
+    search$.set(value.trim())
+
+    track.event('search', {
+      category: 'Interaction',
+
+      input: value,
+      source: 'add_queries_to_dashboard_dialog',
+
+      tab: tab.title,
+      source_url: window.location.href,
+    })
+  })
   const onInput = ({ currentTarget }: Event) =>
     $onSearch$((currentTarget as HTMLInputElement).value)
+
+  track.event('add_queries_to_dashboard_dialog_open', {
+    category: 'General',
+
+    source_url: window.location.href,
+  })
+
+  onDestroy(() => {
+    if (BROWSER) {
+      track.event('add_queries_to_dashboard_dialog_close', {
+        category: 'General',
+
+        source_url: window.location.href,
+      })
+    }
+  })
 </script>
 
 <Dialog {...$$props} title="Add queries to this dashboard">
@@ -58,7 +102,7 @@
 
     <Search class="mrg-xl mrg--t mrg--b" big placeholder="Search for a query" on:input={onInput} />
 
-    <Queries queries={filteredQueries} {onQueryAdd} />
+    <Queries {tab} queries={filteredQueries} {onQueryAdd} />
   </div>
 </Dialog>
 

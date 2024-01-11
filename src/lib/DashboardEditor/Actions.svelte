@@ -3,6 +3,7 @@
   import { getDashboardEditor$Ctx } from './ctx'
   import { showAddQueryToDashboardDialog } from './AddQueryToDashboardDialog/index.svelte'
   import { EventAutoSave$ } from '$routes/(editor)/query/events'
+  import { track } from 'san-webkit/lib/analytics'
 
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
 
@@ -11,11 +12,25 @@
   // }
 
   function onTextClick() {
+    track.event('add_dashboard_widget_click', {
+      category: 'Interaction',
+      type: 'TEXT',
+
+      source_url: window.location.href,
+    })
+
     dashboardEditor$.addWidget({ type: 'TEXT', value: '' })
     EventAutoSave$.dispatch()
   }
 
   function onQueryClick() {
+    track.event('add_dashboard_widget_click', {
+      category: 'Interaction',
+      type: 'QUERY',
+
+      source_url: window.location.href,
+    })
+
     showAddQueryToDashboardDialog({
       onQueryAdd: (apiQuery: App.ApiQuery) => {
         dashboardEditor$.addWidget({ type: 'QUERY', title: apiQuery.name, query: apiQuery })

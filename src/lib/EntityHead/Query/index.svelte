@@ -8,6 +8,7 @@
   import { queryGenerateTitleBySql } from './api'
   import ExecuteButton from './ExecuteButton.svelte'
   import Head from '../index.svelte'
+  import Menu from './Menu.svelte'
 
   export let author: SAN.Author | null
   export let quickSave = noop
@@ -121,7 +122,10 @@
     <button class="btn-3 expl-tooltip" aria-label="Share" on:click={onShare}>
       <Svg id="share-dots" w="16" />
     </button>
-    <button class="btn-3"><Svg id="vert-dots" w="3" h="16" /></button>
+
+    {#if isAuthor}
+      <Menu />
+    {/if}
   </svelte:fragment>
 </Head>
 

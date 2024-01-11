@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { PageData } from './$types'
 
-  import { tick } from 'svelte'
+  import { setContext, tick } from 'svelte'
   import { queryGetSqlQuery } from '$lib/api/query/get'
   import { mutateUpdateSqlQuery } from '$lib/api/query/update'
   import { GlobalShortcut$ } from 'webkit/utils/events'
@@ -112,6 +112,7 @@
 
     onSave(undefined, isPublic, isForced)
   }
+  setContext('quickSave', quickSave)
 
   const saveShortcut = GlobalShortcut$('CMD+S', () => quickSave(true), false)
   $saveShortcut

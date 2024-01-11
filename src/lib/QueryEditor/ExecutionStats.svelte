@@ -2,8 +2,18 @@
   import Tooltip from 'webkit/ui/Tooltip'
   import Svg from 'webkit/ui/Svg/svelte'
   import { queryExecutionStats } from '$lib/api/query'
+  import { track } from 'san-webkit/lib/analytics'
 
   export let sqlData: App.SqlData
+
+  function onButtonClick() {
+    track.event('query_stats_click', {
+      category: 'Interaction',
+      source_url: window.location.href,
+      was_executed: !!sqlData.clickhouseQueryId,
+      id: sqlData.clickhouseQueryId,
+    })
+  }
 </script>
 
 <Tooltip
@@ -15,6 +25,7 @@
   openDelay={sqlData.clickhouseQueryId ? 0 : 99999}
 >
   <button
+    on:click={onButtonClick}
     use:trigger
     class="btn-3 expl-tooltip"
     class:adjusted={!sqlData.clickhouseQueryId}
