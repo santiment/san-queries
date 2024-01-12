@@ -24,6 +24,10 @@
   newAppTooltipsCtx()
 </script>
 
+<svelte:head>
+  <title>Santiment Queries</title>
+</svelte:head>
+
 <svelte:window on:resize={device$.onResize} />
 
 <OnlyOnDevice desktop>
