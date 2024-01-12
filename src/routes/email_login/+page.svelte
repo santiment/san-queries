@@ -21,7 +21,7 @@
         currentUser$.set(currentUser)
         customer$.refetch()
 
-        goto(currentUser.privacyPolicyAccepted ? '/' : '/gdpr')
+        goto('/')
 
         // trackSignupLogin(currentUser.firstLogin, LoginType.EMAIL)
       })

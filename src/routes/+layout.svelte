@@ -13,6 +13,7 @@
   import OnlyOnDevice from 'webkit/ui/OnlyOnDevice.svelte'
   import NavHeader from '$lib/NavHeader/index.svelte'
   import Tracking from './Tracking.svelte'
+  import Gdpr from '$lib/Gdpr.svelte'
 
   export let data: LayoutData
 
@@ -30,7 +31,9 @@
 </OnlyOnDevice>
 
 <screen class="row">
-  <slot />
+  <Gdpr>
+    <slot />
+  </Gdpr>
 </screen>
 
 {#if BROWSER}
