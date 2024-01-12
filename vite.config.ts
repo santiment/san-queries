@@ -61,7 +61,7 @@ export default defineConfig({
     'process.env.IS_PROD_BACKEND': IS_PROD_BACKEND,
 
     'process.env.API_FETCH_ORIGIN': JSON.stringify('https://app.santiment.net'),
-    'process.env.SANBASE_ORIGIN': JSON.stringify(''),
+    // 'process.env.SANBASE_ORIGIN': JSON.stringify(''),
 
     'process.env.GIT_HEAD': JSON.stringify(GIT_HEAD),
     'process.env.VERSION': JSON.stringify('2.0-' + GIT_HEAD),
