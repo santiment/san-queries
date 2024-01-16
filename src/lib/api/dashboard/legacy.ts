@@ -30,6 +30,9 @@ export async function startLegacyMigrationFlow(dashboard: App.ApiDashboard) {
         name,
         sql: sql.query,
         parameters,
+        settings: {
+          visualisation: settings?.type === 'CHART' ? 'Chart' : 'Table',
+        },
       }).then((query) => {
         // dashboard.queries.push(query)
         return mutateCreateDashboardQuery({
