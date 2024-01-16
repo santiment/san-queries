@@ -1,3 +1,4 @@
+import { query } from 'san-webkit/lib/api'
 import { mutateCreateSqlQuery } from '../query/create'
 import { mutateCreateDashboardQuery } from './create'
 
@@ -26,3 +27,15 @@ export async function startLegacyMigrationFlow(dashboard: App.ApiDashboard) {
     }),
   )
 }
+
+export const queryLegacyDashboardCache = (id: number) =>
+  query<any>(`{
+  cache:getDashboardCache(id:${id}) {
+    panels {
+      id
+      headers:columns
+      rows
+      types:columnTypes
+    }
+  }
+}`).then((data) => data.cache.panels)

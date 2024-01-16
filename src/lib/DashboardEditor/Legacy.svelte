@@ -5,11 +5,13 @@
   import { normalizeGrid, sortLayout } from 'webkit/ui/SnapGrid/layout'
   import { queryComputeRawClickhouseQuery } from '$lib/api/query'
   import Table from '$lib/QueryEditor/Visualisation/Table.svelte'
+  import Chart from '$lib/QueryEditor/Visualisation/Chart/index.svelte'
   import { Formatter } from '$lib/QueryEditor/Visualisation/Controls/FormattingControl.svelte'
+  import { queryLegacyDashboardCache } from '$lib/api/dashboard/legacy'
 
   export let dashboard: App.ApiDashboard
 
-  let panelsData = [] as App.SqlData[]
+  let panelsData = {} as Record<string, App.SqlData>
 
   $: panels = dashboard.panels!
   $: layout = getLayout(panels)
@@ -18,15 +20,29 @@
   $: if (panels) getPanelsData()
   $: console.log(dashboard)
 
-  function getPanelsData() {
-    panelsData = []
+  async function getPanelsData() {
+    panelsData = {}
 
-    panels.forEach((panel, i) => {
+    try {
+      const cache = await queryLegacyDashboardCache(dashboard.id)
+
+      cache.forEach((cache: any) => {
+        panelsData[cache.id] = cache
+      })
+
+      panelsData = panelsData
+    } catch (e) {
+      console.error(e)
+    }
+
+    panels.forEach((panel) => {
+      if (panelsData[panel.id]) return
+
       queryComputeRawClickhouseQuery({
         sql: panel.sql.query,
         parameters: JSON.stringify(panel.sql.parameters || ''),
       }).then((data) => {
-        panelsData[i] = data
+        panelsData[panel.id] = data
         panelsData = panelsData
       })
     })
@@ -80,6 +96,7 @@
   }
 
   import TextWidget from '$lib/DashboardEditor/TextWidget/index.svelte'
+  import ControlsSection from '$lib/QueryEditor/Visualisation/ControlsSection.svelte'
 </script>
 
 <Grid tag="widgets" cols={6} {layout} let:i let:gridItem rowSize={100} minCols={3} readonly>
@@ -95,14 +112,22 @@
         <h2 class="body-2">{widget.name}</h2>
       </header>
 
-      {#if panelsData[i]}
-        {@const sqlData = panelsData[i]}
+      {#if panelsData[widget.id]}
+        {@const sqlData = panelsData[widget.id]}
 
-        <Table
-          border={false}
-          {sqlData}
-          ColumnSettings={mapColumnSettingsToData(ColumnsSettings[i], sqlData)}
-        />
+        {#if widget.settings?.type === 'CHART'}
+          <Chart
+            {sqlData}
+            ColumnSettings={mapColumnSettingsToData(ColumnsSettings[i], sqlData)}
+            metricsClass="$style.metrics"
+          />
+        {:else}
+          <Table
+            border={false}
+            {sqlData}
+            ColumnSettings={mapColumnSettingsToData(ColumnsSettings[i], sqlData)}
+          />
+        {/if}
       {/if}
     </widget>
   {/if}
@@ -138,5 +163,9 @@
 
   widget > :global(text-widget) {
     flex: 1;
+  }
+
+  .metrics {
+    padding: 8px 8px 0;
   }
 </style>
