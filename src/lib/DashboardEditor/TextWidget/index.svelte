@@ -7,6 +7,7 @@
   // import 'medium-editor'
 
   export let widget: App.Dashboard.TextWidget
+  export let readonly = false
 
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
 
@@ -38,9 +39,11 @@
   />
   <!-- <ContentEditable /> -->
 
-  <button class="close btn-3" on:click={onCloseClick}>
-    <Svg id="close" w="12" />
-  </button>
+  {#if !readonly}
+    <button class="close btn-3" on:click={onCloseClick}>
+      <Svg id="close" w="12" />
+    </button>
+  {/if}
 </text-widget>
 
 <style>

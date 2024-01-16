@@ -16,6 +16,7 @@
   $: ColumnsSettings = getColumnsSettings(panels)
 
   $: if (panels) getPanelsData()
+  $: console.log(dashboard)
 
   function getPanelsData() {
     panelsData = []
@@ -69,25 +70,42 @@
 
     return settings
   }
+
+  function mapTextWidget(widget: any) {
+    widget.value = `# ${widget.name}
+
+      ${widget.settings?.columns?.[0]?.title}`
+
+    return widget
+  }
+
+  import TextWidget from '$lib/DashboardEditor/TextWidget/index.svelte'
 </script>
 
 <Grid tag="widgets" cols={6} {layout} let:i let:gridItem rowSize={100} minCols={3} readonly>
   {@const widget = panels[i]}
-  <widget use:gridItem class="column border">
-    <header class="row v-center fluid gap-s">
-      <h2 class="body-2">{widget.name}</h2>
-    </header>
 
-    {#if panelsData[i]}
-      {@const sqlData = panelsData[i]}
+  {#if widget.settings?.type === 'TEXT'}
+    <widget use:gridItem class="column text">
+      <TextWidget readonly widget={mapTextWidget(widget)} />
+    </widget>
+  {:else}
+    <widget use:gridItem class="column border">
+      <header class="row v-center fluid gap-s">
+        <h2 class="body-2">{widget.name}</h2>
+      </header>
 
-      <Table
-        border={false}
-        {sqlData}
-        ColumnSettings={mapColumnSettingsToData(ColumnsSettings[i], sqlData)}
-      />
-    {/if}
-  </widget>
+      {#if panelsData[i]}
+        {@const sqlData = panelsData[i]}
+
+        <Table
+          border={false}
+          {sqlData}
+          ColumnSettings={mapColumnSettingsToData(ColumnsSettings[i], sqlData)}
+        />
+      {/if}
+    </widget>
+  {/if}
 </Grid>
 
 <legacy-caption class="row hv-center c-red">
@@ -112,5 +130,13 @@
 
   Table {
     max-height: calc(100% - 57px);
+  }
+
+  .text {
+    pointer-events: none;
+  }
+
+  widget > :global(text-widget) {
+    flex: 1;
   }
 </style>
