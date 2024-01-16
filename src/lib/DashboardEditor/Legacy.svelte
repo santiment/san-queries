@@ -1,13 +1,11 @@
 <script lang="ts">
-  import type { SnapItem } from 'webkit/ui/SnapGrid/types'
-
   import Grid from 'webkit/ui/SnapGrid/Grid.svelte'
-  import { normalizeGrid, sortLayout } from 'webkit/ui/SnapGrid/layout'
   import { queryComputeRawClickhouseQuery } from '$lib/api/query'
   import Table from '$lib/QueryEditor/Visualisation/Table.svelte'
   import Chart from '$lib/QueryEditor/Visualisation/Chart/index.svelte'
+  import TextWidget from '$lib/DashboardEditor/TextWidget/index.svelte'
   import { Formatter } from '$lib/QueryEditor/Visualisation/Controls/FormattingControl.svelte'
-  import { queryLegacyDashboardCache } from '$lib/api/dashboard/legacy'
+  import { queryLegacyDashboardCache, getLayout } from '$lib/api/dashboard/legacy'
 
   export let dashboard: App.ApiDashboard
 
@@ -48,17 +46,6 @@
     })
   }
 
-  function getLayout(panels: App.LegacyPanel[]) {
-    const layout = panels.map((panel) => {
-      const { layout } = panel.settings || {}
-      return (layout || [0, 1000, 6, 5]) as any as SnapItem
-    })
-
-    normalizeGrid(sortLayout(layout))
-
-    return layout
-  }
-
   function getColumnsSettings(panels: App.LegacyPanel[]) {
     return panels.map((panel: any) => {
       if (!panel.settings) return []
@@ -94,9 +81,6 @@
 
     return widget
   }
-
-  import TextWidget from '$lib/DashboardEditor/TextWidget/index.svelte'
-  import ControlsSection from '$lib/QueryEditor/Visualisation/ControlsSection.svelte'
 </script>
 
 <Grid tag="widgets" cols={6} {layout} let:i let:gridItem rowSize={100} minCols={3} readonly>
