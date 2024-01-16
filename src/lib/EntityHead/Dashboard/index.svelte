@@ -206,7 +206,9 @@ This action can't be undone`)
       </Tooltip>
  -->
 
-      <button class={classes} on:click={onUnpublishClick}> Unpublish </button>
+      <button class={classes} on:click={isLegacy ? onMainClick : onUnpublishClick}>
+        {isLegacy ? 'Migrate' : 'Unpublish'}
+      </button>
     {:else}
       <button class={classes} on:click={onMainClick} class:loading={isMigrating}>
         {isAuthor ? (isLegacy ? 'Migrate' : 'Publish') : 'Share'}
