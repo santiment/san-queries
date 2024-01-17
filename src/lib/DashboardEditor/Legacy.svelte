@@ -1,45 +1,49 @@
 <script lang="ts">
-  import type { SnapItem } from 'webkit/ui/SnapGrid/types'
-
   import Grid from 'webkit/ui/SnapGrid/Grid.svelte'
-  import { normalizeGrid, sortLayout } from 'webkit/ui/SnapGrid/layout'
   import { queryComputeRawClickhouseQuery } from '$lib/api/query'
   import Table from '$lib/QueryEditor/Visualisation/Table.svelte'
+  import Chart from '$lib/QueryEditor/Visualisation/Chart/index.svelte'
+  import TextWidget from '$lib/DashboardEditor/TextWidget/index.svelte'
   import { Formatter } from '$lib/QueryEditor/Visualisation/Controls/FormattingControl.svelte'
+  import { queryLegacyDashboardCache, getLayout } from '$lib/api/dashboard/legacy'
 
   export let dashboard: App.ApiDashboard
 
-  let panelsData = [] as App.SqlData[]
+  let panelsData = {} as Record<string, App.SqlData>
 
   $: panels = dashboard.panels!
   $: layout = getLayout(panels)
   $: ColumnsSettings = getColumnsSettings(panels)
 
   $: if (panels) getPanelsData()
+  $: console.log(dashboard)
 
-  function getPanelsData() {
-    panelsData = []
+  async function getPanelsData() {
+    panelsData = {}
 
-    panels.forEach((panel, i) => {
+    try {
+      const cache = await queryLegacyDashboardCache(dashboard.id)
+
+      cache.forEach((cache: any) => {
+        panelsData[cache.id] = cache
+      })
+
+      panelsData = panelsData
+    } catch (e) {
+      console.error(e)
+    }
+
+    panels.forEach((panel) => {
+      if (panelsData[panel.id]) return
+
       queryComputeRawClickhouseQuery({
         sql: panel.sql.query,
         parameters: JSON.stringify(panel.sql.parameters || ''),
       }).then((data) => {
-        panelsData[i] = data
+        panelsData[panel.id] = data
         panelsData = panelsData
       })
     })
-  }
-
-  function getLayout(panels: App.LegacyPanel[]) {
-    const layout = panels.map((panel) => {
-      const { layout } = panel.settings || {}
-      return (layout || [0, 1000, 6, 5]) as any as SnapItem
-    })
-
-    normalizeGrid(sortLayout(layout))
-
-    return layout
   }
 
   function getColumnsSettings(panels: App.LegacyPanel[]) {
@@ -69,25 +73,48 @@
 
     return settings
   }
+
+  function mapTextWidget(widget: any) {
+    widget.value = `# ${widget.name}
+
+      ${widget.settings?.columns?.[0]?.title}`
+
+    return widget
+  }
 </script>
 
 <Grid tag="widgets" cols={6} {layout} let:i let:gridItem rowSize={100} minCols={3} readonly>
   {@const widget = panels[i]}
-  <widget use:gridItem class="column border">
-    <header class="row v-center fluid gap-s">
-      <h2 class="body-2">{widget.name}</h2>
-    </header>
 
-    {#if panelsData[i]}
-      {@const sqlData = panelsData[i]}
+  {#if widget.settings?.type === 'TEXT'}
+    <widget use:gridItem class="column text">
+      <TextWidget readonly widget={mapTextWidget(widget)} />
+    </widget>
+  {:else}
+    <widget use:gridItem class="column border">
+      <header class="row v-center fluid gap-s">
+        <h2 class="body-2">{widget.name}</h2>
+      </header>
 
-      <Table
-        border={false}
-        {sqlData}
-        ColumnSettings={mapColumnSettingsToData(ColumnsSettings[i], sqlData)}
-      />
-    {/if}
-  </widget>
+      {#if panelsData[widget.id]}
+        {@const sqlData = panelsData[widget.id]}
+
+        {#if widget.settings?.type === 'CHART'}
+          <Chart
+            {sqlData}
+            ColumnSettings={mapColumnSettingsToData(ColumnsSettings[i], sqlData)}
+            metricsClass="$style.metrics"
+          />
+        {:else}
+          <Table
+            border={false}
+            {sqlData}
+            ColumnSettings={mapColumnSettingsToData(ColumnsSettings[i], sqlData)}
+          />
+        {/if}
+      {/if}
+    </widget>
+  {/if}
 </Grid>
 
 <legacy-caption class="row hv-center c-red">
@@ -112,5 +139,17 @@
 
   Table {
     max-height: calc(100% - 57px);
+  }
+
+  .text {
+    pointer-events: none;
+  }
+
+  widget > :global(text-widget) {
+    flex: 1;
+  }
+
+  .metrics {
+    padding: 8px 8px 0;
   }
 </style>

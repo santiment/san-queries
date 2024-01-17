@@ -47,7 +47,10 @@
         console.log(apiDashboard)
 
         data.apiDashboard = apiDashboard
-        dashboardEditor$.setApiDashboard(apiDashboard)
+
+        if (dashboardEditor.dashboard?.id !== apiDashboard.id) {
+          dashboardEditor$.setApiDashboard(apiDashboard)
+        }
 
         EventDashboardSaved$.dispatch(apiDashboard)
 

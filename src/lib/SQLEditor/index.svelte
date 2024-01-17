@@ -20,6 +20,7 @@
     model: monacoEditor.ITextModel
     viewState: monacoEditor.ICodeEditorViewState
   }>
+  export let onModelChange = undefined as any
 
   let editorNode: HTMLElement
   let EditorCtx: EditorCtxType
@@ -78,6 +79,10 @@
 
         editor.onDidBlurEditorText(onBlur)
         editor.onDidFocusEditorWidget(onFocus)
+
+        if (onModelChange) {
+          editor.onDidChangeModelContent(onModelChange)
+        }
 
         if (id) {
           saveEditorState(editor, id)

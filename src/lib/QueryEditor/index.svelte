@@ -22,7 +22,10 @@
     EventQuerySave$,
     EventQueryExecute$,
     EventTableInsertSql$,
+    EventAutoSave$,
   } from '$routes/(editor)/query/events'
+  import { getDateFormats, getTimeFormats } from 'san-webkit/lib/utils/dates'
+  import { getContext } from 'svelte'
 
   export let tab = TABS[0] as (typeof TABS)[number]
 
@@ -111,6 +114,25 @@
 
     editor.trigger('keyboard', 'type', { text })
   }
+
+  const quickSave = getContext('quickSave')
+  function onModelChange() {
+    if (queryEditor.name) {
+      return EventAutoSave$.dispatch()
+    }
+
+    if (SqlEditorNode && SqlEditorNode.getValue) {
+      const now = new Date()
+      const { DD, MMM, YYYY } = getDateFormats(now)
+      const { HH, mm } = getTimeFormats(now)
+
+      Object.assign(queryEditor, {
+        name: `${MMM} ${DD}, ${YYYY}, ${HH}:${mm}`,
+        sql: SqlEditorNode.getValue(),
+      })
+      quickSave?.()
+    }
+  }
 </script>
 
 <Tabs
@@ -132,6 +154,7 @@
         value={sql}
         {parameters}
         onValueChange={onEditorValueChange}
+        {onModelChange}
       />
     {/key}
   {:else if tab === TABS[1]}

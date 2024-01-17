@@ -54,7 +54,7 @@ export const EventDashboardSaved$ = createEvent$<{ id: number; name: string }>('
 
 export const EventRefreshUserCredits$ = createEvent$('REFRESH_USER_CREDITS')
 
-export const EventAutoSave$ = createEvent$('AUTO_SAVE', 4000)
+export const EventAutoSave$ = createEvent$('AUTO_SAVE', 3000)
 export const EventSavingState$ = createEvent$<{ state: 'start' | 'success' | 'error' | 'hidden' }>(
   'SAVING_STATE',
 )

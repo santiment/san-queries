@@ -28,12 +28,17 @@ export const queryGetDashboard = Universal(
 
 export const queryGetUserDashboards = Universal(
   (query) => () =>
-    query<SAN.API.Query<'dashboards', any[]>>(`{
+    query<SAN.API.Query<'dashboards', any[]>>(
+      `{
         dashboards:getUserDashboards(page:1, pageSize:100) {
           id
           name
         }
-      }`).then(({ dashboards }) => dashboards),
+      }`,
+      {
+        cacheTime: 3,
+      },
+    ).then(({ dashboards }) => dashboards),
 )
 
 declare global {
