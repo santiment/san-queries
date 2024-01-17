@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { PageData } from './$types'
 
-  import { setContext, tick } from 'svelte'
+  import { onMount, setContext, tick } from 'svelte'
   import { queryGetSqlQuery } from '$lib/api/query/get'
   import { mutateUpdateSqlQuery } from '$lib/api/query/update'
   import { GlobalShortcut$ } from 'webkit/utils/events'
@@ -20,6 +20,8 @@
     EventAutoSave$,
   } from '../events'
   import { saveEditorState } from '$lib/SQLEditor/utils'
+  import { page } from '$app/stores'
+  import { BROWSER } from 'esm-env'
 
   export let data: PageData
 
@@ -124,6 +126,33 @@
 
   const eventAutoSave = EventAutoSave$(() => $queryEditor$.name && quickSave())
   $eventAutoSave
+
+  $: if (BROWSER) parseSharedData($page)
+
+  function parseSharedData(page: any) {
+    const sharedData = page.url.searchParams.get('data')
+
+    if (!sharedData) return
+
+    try {
+      const data = JSON.parse(sharedData)
+
+      queryEditor$.setApiQuery({
+        name: data.name,
+        sqlQueryText: data.sql,
+        sqlQueryParameters: data.parameters,
+      })
+
+      window.history.replaceState(history.state, '', '/query/new')
+
+      const editor = QueryEditorNode?.getEditor()
+      if (!editor) return
+
+      editor.setValue(data.sql)
+    } catch (e) {
+      console.error(e)
+    }
+  }
 </script>
 
 <main class="column relative">
