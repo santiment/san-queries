@@ -13,11 +13,16 @@ export const QUERY_FRAGMENT = `id
 
 export const queryGetSqlQuery = Universal(
   (query) => (id: number) =>
-    query<SAN.API.Query<'query', App.ApiQuery>>(`{
+    query<SAN.API.Query<'query', App.ApiQuery>>(
+      `{
         query:getSqlQuery(id:${id}) {
           ${QUERY_FRAGMENT}
         }
-      }`).then(({ query }) => query),
+      }`,
+      {
+        cacheTime: 3,
+      },
+    ).then(({ query }) => query),
 )
 
 export const queryGetUserQueries = Universal(

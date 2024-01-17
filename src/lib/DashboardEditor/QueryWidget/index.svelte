@@ -7,6 +7,7 @@
   import { getDashboardEditor$Ctx } from '../ctx'
   import { showVisualisationFullscreenDialog } from '$lib/QueryEditor/Visualisation/FullscreenDialog/index.svelte'
   import { parseQuerySettings, parseQueryParameters } from '$routes/(editor)/query/ctx'
+  import { getSEOLinkFromIdAndTitle } from 'san-webkit/lib/utils/url'
   import { EventAutoSave$, EventDashboardUpdateQueries$ } from '$routes/(editor)/query/events'
   import Parameter, { COLORS } from '$lib/Parameter'
   import { showLinkGlobalParameterDialog$ } from './LinkGlobalParameterDialog.svelte'
@@ -129,7 +130,9 @@
 
 <query-widget class="column border">
   <header class="row v-center fluid gap-s">
-    <h2 class="body-2">{widget.title}</h2>
+    <h2 class="body-2">
+      <a href="/query/{getSEOLinkFromIdAndTitle(widget.query.id, widget.title)}">{widget.title}</a>
+    </h2>
 
     <button class="btn-3 mrg-a mrg--l expl-tooltip" aria-label="Refresh data" on:click={updateData}>
       <Svg id="refresh" w="14" />

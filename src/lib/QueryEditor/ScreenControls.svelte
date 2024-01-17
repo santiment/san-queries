@@ -156,10 +156,11 @@
 
     {#if tab === TABS[0]}
       <a
-        class="btn-3"
+        class="btn-3 expl-tooltip"
         href="https://academy.santiment.net/santiment-queries/"
         data-source="query_editor_sql"
         data-type="documentation"
+        aria-label="Documentation"
       >
         <Svg id="report" w="16" />
       </a>
