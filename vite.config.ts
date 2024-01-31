@@ -1,4 +1,5 @@
 import { sveltekit } from '@sveltejs/kit/vite'
+import basicSsl from '@vitejs/plugin-basic-ssl'
 import { defineConfig } from 'vitest/config'
 import { execSync } from 'node:child_process'
 
@@ -27,7 +28,7 @@ const aliases = [
 ]
 
 export default defineConfig({
-  plugins: [sveltekit()],
+  plugins: [dev && process.argv.includes('--https') && basicSsl(), sveltekit()],
 
   test: {
     include: ['src/**/*.{test,spec}.{js,ts}'],
