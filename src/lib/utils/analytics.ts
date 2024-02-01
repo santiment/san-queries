@@ -11,6 +11,8 @@ export function trackSignupLogin(isFirstLogin: boolean, method: LoginType) {
 
   if (isFirstLogin) {
     trackSignupFinish(method, [Tracker.GA, Tracker.AMPLITUDE])
+
+    window.onGdprAccept = () => trackSignupFinish(method, [Tracker.SAN])
   } else {
     trackLoginFinish(method)
   }

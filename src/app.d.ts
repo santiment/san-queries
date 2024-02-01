@@ -24,6 +24,7 @@ declare global {
 
   interface Window {
     authMethod?: string
+    onGdprAccept?: () => void
   }
 }
 
