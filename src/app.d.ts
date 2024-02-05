@@ -21,6 +21,11 @@ declare global {
 
     export type RequestEvent = import('webkit/api').RequestEvent | undefined
   }
+
+  interface Window {
+    authMethod?: string
+    onGdprAccept?: () => void
+  }
 }
 
 declare module 'vitest/config' {
