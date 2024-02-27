@@ -46,6 +46,8 @@
   }
 
   function onSave(queryEditor = $queryEditor$, isPublic?: boolean, isForced = false) {
+    if (!isAuthor) return
+
     const isNew = !queryEditor.query
 
     EventSavingState$.dispatch({ state: 'start' })
@@ -95,6 +97,8 @@
   }
 
   function onQueryNameClick() {
+    if (!isAuthor) return
+
     const queryEditor = $queryEditor$
     showNameDescriptionDialog({ queryEditor }).then((updated) => {
       // const { id } = queryEditor.query || {}
@@ -159,7 +163,7 @@
 </script>
 
 <main class="column relative">
-  <QueryHead {author} {onQueryExecute} {quickSave} on:click={onQueryNameClick} />
+  <QueryHead {author} {isAuthor} {onQueryExecute} {quickSave} on:click={onQueryNameClick} />
 
   <slot />
 

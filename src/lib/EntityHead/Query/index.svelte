@@ -18,6 +18,7 @@
   export let author: SAN.Author | null
   export let quickSave = noop
   export let onQueryExecute = noop
+  export let isAuthor = false
 
   const { currentUser$ } = getCurrentUser$Ctx()
   const { queryEditor$ } = getQueryEditor$Ctx()
@@ -28,7 +29,7 @@
   $: queryEditor = $queryEditor$
   $: currentUser = $currentUser$
   $: isAuthor = currentUser?.id === author?.id
-  $: mainActionLabel = isAuthor ? 'Execute' : currentUser ? 'Duplicate' : 'Log in to duplicate'
+  $: mainActionLabel = currentUser ? 'Execute' : 'Log in to duplicate'
 
   function onGenerateTitleClick() {
     if (typing) return
@@ -118,13 +119,15 @@
 </script>
 
 <Head {author} onMainClick={onMainActionClick}>
-  <button
-    class="ai btn mrg-s mrg--l expl-tooltip"
-    aria-label="Ask AI to write the title based on your query"
-    on:click={onGenerateTitleClick}
-  >
-    ✨
-  </button>
+  {#if isAuthor}
+    <button
+      class="ai btn mrg-s mrg--l expl-tooltip"
+      aria-label="Ask AI to write the title based on your query"
+      on:click={onGenerateTitleClick}
+    >
+      ✨
+    </button>
+  {/if}
 
   <button bind:this={titleNode} class="title btn body-2" class:typing on:click>
     {queryEditor.name || 'Untitled query'}
@@ -141,15 +144,17 @@
   </svelte:fragment>
 
   <svelte:fragment slot="actions">
-    {#if isAuthor}
-      <button class="btn-3 expl-tooltip" aria-label="Duplicate query" on:click={onDuplicateClick}
-        ><Svg id="copy" w="16" /></button
-      >
+    <!-- {#if isAuthor} -->
+    <button class="btn-3 expl-tooltip" aria-label="Duplicate query" on:click={onDuplicateClick}
+      ><Svg id="copy" w="16" /></button
+    >
+    <!--
     {:else}
       <button class="btn-3 expl-tooltip" aria-label="Refresh query"
         ><Svg id="refresh" w="16" /></button
       >
     {/if}
+-->
 
     <button class="btn-3 expl-tooltip" aria-label="Share" on:click={onShare}>
       <Svg id="share-dots" w="16" />

@@ -145,7 +145,7 @@
 />
 
 <section class="column gap-m">
-  <ScreenControls {tab} />
+  <ScreenControls {readonly} {tab} />
 
   {#if tab === TABS[0]}
     {#key id}

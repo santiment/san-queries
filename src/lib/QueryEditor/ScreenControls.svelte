@@ -16,6 +16,7 @@
   import ParameterInfoTooltip from './ParameterInfoTooltip.svelte'
 
   export let tab = TABS[0] as (typeof TABS)[number]
+  export let readonly = false
 
   const { queryEditor$ } = getQueryEditor$Ctx()
   const { currentUser$ } = getCurrentUser$Ctx()
@@ -35,7 +36,7 @@
         source_url: window.location.href,
       })
 
-      showSqlEditorFullscreenDialog()
+      showSqlEditorFullscreenDialog({ readonly })
     } else {
       if (sqlData) {
         track.event('fullscreen', {
@@ -57,6 +58,8 @@
       category: 'Interaction',
       source_url: window.location.href,
     })
+
+    if (readonly) return
 
     showAddParameterDialog({ strict: true }).then((parameter) => {
       queryEditor$.addParameter(parameter)
@@ -128,6 +131,7 @@
     {#each parameters as parameter, i}
       <Parameter
         {parameter}
+        isAuthor={!readonly}
         color={COLORS[i]}
         on:click={() => onParameterClick(parameter)}
         onRemoveClick={() => onParameterRemove(i, parameter)}

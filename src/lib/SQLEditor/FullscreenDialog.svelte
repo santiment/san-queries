@@ -12,6 +12,7 @@
   import SQLEditor from './index.svelte'
 
   export let title = 'Untitled query'
+  export let readonly = false
 
   const { queryEditor$ } = getQueryEditor$Ctx()
 
@@ -23,7 +24,7 @@
 </script>
 
 <Dialog {...$$props} {title}>
-  <SQLEditor value={$queryEditor$.sql} onValueChange={onEditorValueChange} {id} />
+  <SQLEditor {readonly} value={$queryEditor$.sql} onValueChange={onEditorValueChange} {id} />
 </Dialog>
 
 <style lang="scss">
