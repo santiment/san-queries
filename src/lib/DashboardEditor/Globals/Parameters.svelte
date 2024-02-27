@@ -10,6 +10,8 @@
   import Parameter, { COLORS } from '$lib/Parameter'
   import { track } from 'san-webkit/lib/analytics'
 
+  export let isAuthor = false
+
   const showEditGlobalParameterDialog = showEditGlobalParameterDialog$()
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
 
@@ -81,7 +83,7 @@
 </script>
 
 <parameters class="row gap-s mrg-l mrg--b">
-  {#if !dashboardEditor.isLegacy}
+  {#if isAuthor && !dashboardEditor.isLegacy}
     <button class="btn-2" class:disabled={!dashboardId} on:click={onAddGlobalParameterClick}
       >Add global parameter</button
     >
@@ -89,6 +91,7 @@
 
   {#each parameters as parameter, i}
     <Parameter
+      {isAuthor}
       {parameter}
       color={COLORS[i]}
       onLinkClick={() => onLinkClick(parameter)}

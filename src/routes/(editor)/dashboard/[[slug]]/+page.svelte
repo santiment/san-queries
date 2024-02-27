@@ -25,6 +25,7 @@
   $: dashboardEditor = $dashboardEditor$
   $: ({ dashboard } = dashboardEditor)
   $: author = dashboard?.user || $currentUser$
+  $: isAuthor = author?.id === $currentUser$?.id
 
   $: updateDashboard(data.apiDashboard)
 
@@ -87,7 +88,7 @@
 <main class="column">
   <DashboardHead {dashboard} {author} {saveDashboard} />
 
-  <DashboardEditor />
+  <DashboardEditor {isAuthor} />
 </main>
 
 <style>

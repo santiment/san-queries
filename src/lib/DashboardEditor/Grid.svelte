@@ -12,6 +12,7 @@
   import { EventAutoSave$ } from '$routes/(editor)/query/events'
 
   export let CachedData: any
+  export let isAuthor = false
 
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
   const { device$ } = getDevice$Ctx()
@@ -71,16 +72,18 @@
 
   <widget use:hook={widget} use:gridItem class="column">
     {#if widget.type === 'TEXT'}
-      <TextWidget {widget} />
+      <TextWidget readonly={!isAuthor} {widget} />
     {:else if widget.type === 'HEADING'}
       <HeadingWidget {widget} />
     {:else if widget.type === 'QUERY'}
-      <QueryWidget {widget} {CachedData} />
+      <QueryWidget isDashboardAuthor={isAuthor} {widget} {CachedData} />
     {:else if widget.type === 'IMAGE'}
       <ImageWidget {widget} />
     {/if}
 
-    <Resizer onEnd={onLayoutChange} />
+    {#if isAuthor}
+      <Resizer onEnd={onLayoutChange} />
+    {/if}
   </widget>
 </Grid>
 

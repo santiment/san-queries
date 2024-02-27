@@ -1,5 +1,6 @@
 <script lang="ts">
   import Svg from 'webkit/ui/Svg/svelte'
+  import Profile from 'webkit/ui/Profile/svelte'
   import { queryRunDashboardSqlQuery } from '$lib/api/query'
   import { compressQuery, mutateCompressedQueryExecutionResult } from '$lib/api/dashboard/query'
   import Table from '$lib/QueryEditor/Visualisation/Table.svelte'
@@ -18,6 +19,7 @@
 
   export let widget: App.Dashboard.QueryWidget
   export let CachedData: any
+  export let isDashboardAuthor = false
 
   const showLinkGlobalParameterDialog = showLinkGlobalParameterDialog$()
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
@@ -130,6 +132,12 @@
 
 <query-widget class="column border">
   <header class="row v-center fluid gap-s">
+    {#if widget.user}
+      <Profile user={widget.user} source="dashboard" feature="query" />
+
+      <div class="divider" />
+    {/if}
+
     <h2 class="body-2">
       <a href="/query/{getSEOLinkFromIdAndTitle(widget.query.id, widget.title)}">{widget.title}</a>
     </h2>
@@ -142,9 +150,11 @@
       <Svg id="fullscreen" w="14" />
     </button>
 
-    <button class="close btn-3 expl-tooltip" aria-label="Remove widget" on:click={onCloseClick}>
-      <Svg id="close" w="12" />
-    </button>
+    {#if isDashboardAuthor}
+      <button class="close btn-3 expl-tooltip" aria-label="Remove widget" on:click={onCloseClick}>
+        <Svg id="close" w="12" />
+      </button>
+    {/if}
   </header>
 
   {#if parameters.length}
@@ -203,5 +213,11 @@
     background: var(--athens);
     padding: 6px 10px;
     border-radius: 4px;
+  }
+
+  .divider {
+    height: 32px;
+    width: 1px;
+    background: var(--mystic);
   }
 </style>

@@ -19,6 +19,7 @@
 
   let className = ''
   export { className as class }
+  export let isAuthor = false
 
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
 
@@ -86,16 +87,18 @@
     />
   </header>
 
-  <Globals />
+  <Globals {isAuthor} />
 
   {#if dashboardEditor.isLegacy && dashboardEditor.dashboard}
     {#if BROWSER}
       <Legacy dashboard={dashboardEditor.dashboard} />
     {/if}
   {:else}
-    <Grid {CachedData} />
+    <Grid {isAuthor} {CachedData} />
 
-    <Actions />
+    {#if isAuthor}
+      <Actions />
+    {/if}
   {/if}
 </main>
 
