@@ -32,8 +32,11 @@
 
   let QueryEditorNode: QueryEditor
 
+  $: currentUser = $currentUser$
   $: ({ apiQuery } = data)
   $: updateQuery(apiQuery)
+  $: author = apiQuery?.user || currentUser
+  $: isAuthor = currentUser?.id === author?.id
 
   function updateQuery(apiQuery: any) {
     const query = $queryEditor$.query
@@ -156,11 +159,11 @@
 </script>
 
 <main class="column relative">
-  <QueryHead author={$currentUser$} {onQueryExecute} {quickSave} on:click={onQueryNameClick} />
+  <QueryHead {author} {onQueryExecute} {quickSave} on:click={onQueryNameClick} />
 
   <slot />
 
-  <QueryEditor bind:this={QueryEditorNode} />
+  <QueryEditor readonly={!isAuthor} bind:this={QueryEditorNode} />
 </main>
 
 <style>

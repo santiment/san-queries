@@ -28,6 +28,7 @@
   import { getContext } from 'svelte'
 
   export let tab = TABS[0] as (typeof TABS)[number]
+  export let readonly = false
 
   const { queryEditor$ } = getQueryEditor$Ctx()
 
@@ -153,6 +154,7 @@
         {id}
         value={sql}
         {parameters}
+        {readonly}
         onValueChange={onEditorValueChange}
         {onModelChange}
       />
