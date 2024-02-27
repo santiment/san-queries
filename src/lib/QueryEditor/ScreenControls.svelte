@@ -106,27 +106,11 @@
       source_url: window.location.href,
     })
   }
-
-  function onAddToDashboardClick() {
-    showAddToDashboardDialog({
-      currentUser,
-      queryEditor,
-      onQueryAdd: (dashboard) => {
-        if (!queryEditor.query) return
-        mutateCreateDashboardQuery({ dashboardId: dashboard.id, queryId: queryEditor.query.id })
-      },
-    })
-  }
 </script>
 
 <header class="row justify gap-xl">
   <parameters class="row gap-s">
-    <button class="parameter btn row v-center gap-s c-waterloo" on:click={onAddParameterClick}>
-      <Svg id="braces" w="16" />
-      Parameter
-    </button>
-
-    <ParameterInfoTooltip />
+    <!-- <ParameterInfoTooltip /> -->
 
     {#each parameters as parameter, i}
       <Parameter
@@ -140,10 +124,17 @@
   </parameters>
 
   <actions class="row gap-s c-waterloo nowrap">
+    {#if !readonly}
+      <button class="parameter btn-2 row v-center gap-s c-waterloo" on:click={onAddParameterClick}>
+        <Svg id="braces" w="16" />
+        Add Parameter
+      </button>
+    {/if}
+
     {#if tab === TABS[1]}
-      {#if currentUser}
-        <button class="btn-2" on:click={onAddToDashboardClick}>Add to dashboard</button>
-      {/if}
+      <!-- {#if currentUser} -->
+      <!--   <button class="btn-2" on:click={onAddToDashboardClick}>Add to dashboard</button> -->
+      <!-- {/if} -->
 
       <button
         class="download btn row v-center gap-s expl-tooltip"
@@ -194,7 +185,9 @@
   }
 
   .btn-2 {
-    --border: var(--green);
+    --border: var(--mystic);
+    --fill: var(--waterloo);
+    --color: var(--black);
   }
 
   .expl-tooltip {

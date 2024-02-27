@@ -14,6 +14,8 @@
   import { getSEOLinkFromIdAndTitle } from 'san-webkit/lib/utils/url'
   import { notifications$ } from 'san-webkit/lib/ui/Notifications'
   import { EventQuerySaved$, EventSavingState$ } from '$routes/(editor)/query/events'
+  import { showAddToDashboardDialog } from '$lib/QueryEditor/AddToDashboardDialog/index.svelte'
+  import { mutateCreateDashboardQuery } from '$lib/api/dashboard/create'
 
   export let author: SAN.Author | null
   export let quickSave = noop
@@ -116,6 +118,17 @@
         }),
       )
   }
+
+  function onAddToDashboardClick() {
+    showAddToDashboardDialog({
+      currentUser,
+      queryEditor,
+      onQueryAdd: (dashboard) => {
+        if (!queryEditor.query) return
+        mutateCreateDashboardQuery({ dashboardId: dashboard.id, queryId: queryEditor.query.id })
+      },
+    })
+  }
 </script>
 
 <Head {author} onMainClick={onMainActionClick}>
@@ -139,6 +152,13 @@
     {:else}
       <button class={classes} on:click={onMainActionClick}>
         {mainActionLabel}
+      </button>
+    {/if}
+
+    {#if $currentUser$}
+      <button class="add-to-dashboard row hv-center btn-2 btn--s" on:click={onAddToDashboardClick}>
+        <Svg id="plus" w="10" />
+        To a dashboard
       </button>
     {/if}
   </svelte:fragment>
@@ -183,5 +203,12 @@
     50% {
       opacity: 0;
     }
+  }
+
+  .add-to-dashboard {
+    gap: 10px;
+    padding-left: 16px;
+    background: var(--athens);
+    fill: var(--waterloo);
   }
 </style>
