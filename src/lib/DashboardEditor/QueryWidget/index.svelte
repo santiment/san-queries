@@ -50,12 +50,14 @@
 
         return compressQuery({ ...rest, columns: headers, columnTypes: types })
       })
-      .then((compressed) =>
-        mutateCompressedQueryExecutionResult({
-          compressed,
-          dashboardId: dashboardEditor.dashboard.id,
-          dashboardQueryMappingId: widget.id,
-        }),
+      .then(
+        (compressed) =>
+          isDashboardAuthor &&
+          mutateCompressedQueryExecutionResult({
+            compressed,
+            dashboardId: dashboardEditor.dashboard.id,
+            dashboardQueryMappingId: widget.id,
+          }),
       )
   }
 
