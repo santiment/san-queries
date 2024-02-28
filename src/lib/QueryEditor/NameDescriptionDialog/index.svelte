@@ -52,7 +52,7 @@
     <Control
       name="Name"
       value={name}
-      placeholder="Name of the parameter"
+      placeholder="Name of the query"
       onUpdate={(value) => (name = value)}
     >
       <AIButton
