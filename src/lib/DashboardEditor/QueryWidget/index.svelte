@@ -132,14 +132,17 @@
 
 <query-widget class="column border">
   <header class="row v-center fluid gap-s">
-    {#if widget.user}
-      <Profile user={widget.user} source="dashboard" feature="query" />
+    {#if widget.query.user}
+      <Profile user={widget.query.user} source="dashboard" feature="query" />
 
       <div class="divider" />
     {/if}
 
     <h2 class="body-2">
-      <a href="/query/{getSEOLinkFromIdAndTitle(widget.query.id, widget.title)}">{widget.title}</a>
+      <a
+        href="/query/{getSEOLinkFromIdAndTitle(widget.query.id, widget.title)}"
+        class:disabled={!widget.query.isPublic}>{widget.title}</a
+      >
     </h2>
 
     <button class="btn-3 mrg-a mrg--l expl-tooltip" aria-label="Refresh data" on:click={updateData}>
@@ -183,7 +186,7 @@
 
 <style>
   header {
-    padding: 12px 18px 0 12px;
+    padding: 12px 18px 12px 12px;
   }
 
   parameters {

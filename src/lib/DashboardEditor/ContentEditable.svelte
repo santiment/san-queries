@@ -9,6 +9,7 @@
   export let value = ''
   export let onChange = noop
   export let onBlur = noop
+  export let readonly = false
 
   function onInputBlur(e: Event) {
     const node = e.currentTarget as HTMLElement
@@ -24,6 +25,8 @@
   }
 
   function onInput(e: Event) {
+    if (readonly) return
+
     const node = e.currentTarget as HTMLElement
 
     const text = (node.textContent || '').trim()
@@ -36,7 +39,7 @@
   <svelte:element
     this={as}
     class="{className} relative"
-    contenteditable="true"
+    contenteditable={readonly ? 'false' : 'true'}
     {placeholder}
     on:blur={onInputBlur}
     on:input={onInput}

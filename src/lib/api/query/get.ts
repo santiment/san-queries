@@ -9,7 +9,9 @@ export const QUERY_FRAGMENT = `id
       settings
       sqlQueryParameters
       sqlQueryText
-      dashboardQueryMappingId`
+      dashboardQueryMappingId
+    user { id username avatarUrl }
+      `
 
 export const queryGetSqlQuery = Universal(
   (query) => (id: number) =>
@@ -22,7 +24,6 @@ export const queryGetSqlQuery = Universal(
       `{
         query:getSqlQuery(id:${id}) {
           ${QUERY_FRAGMENT}
-          user { id username avatarUrl }
         }
       }`,
       {
@@ -43,7 +44,6 @@ export const queryGetUserQueries = Universal(
         `{
         queries:getUserQueries(page:1, pageSize:100) {
           ${QUERY_FRAGMENT}
-          user { id username avatarUrl }
         }
       }`,
         {
@@ -64,7 +64,6 @@ export const queryGetPublicQueries = Universal(
         `{
         queries:getPublicQueries(page:1, pageSize:100) {
           ${QUERY_FRAGMENT}
-          user { id username avatarUrl }
         }
       }`,
         {

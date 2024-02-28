@@ -65,7 +65,7 @@
   let:gridItem
   rowSize={26}
   minCols={3}
-  readonly={device.isMobile}
+  readonly={device.isMobile || !isAuthor}
   {onLayoutChange}
 >
   {@const widget = widgets[i]}
