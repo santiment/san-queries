@@ -19,6 +19,7 @@
 
   let className = ''
   export { className as class }
+  export let isAuthor = false
 
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
 
@@ -76,26 +77,32 @@
       class="h4 txt-m mrg-s mrg--b"
       placeholder="Add your title here..."
       onBlur={onTitleChange}
+      readonly={!isAuthor}
     />
 
-    <ContentEditable
-      value={dashboardEditor.description || ''}
-      class="body-2"
-      placeholder="Add description here..."
-      onBlur={onDescriptionChange}
-    />
+    {#if isAuthor || dashboardEditor.description}
+      <ContentEditable
+        value={dashboardEditor.description || ''}
+        class="body-2"
+        placeholder="Add description here..."
+        onBlur={onDescriptionChange}
+        readonly={!isAuthor}
+      />
+    {/if}
   </header>
 
-  <Globals />
+  <Globals {isAuthor} />
 
   {#if dashboardEditor.isLegacy && dashboardEditor.dashboard}
     {#if BROWSER}
       <Legacy dashboard={dashboardEditor.dashboard} />
     {/if}
   {:else}
-    <Grid {CachedData} />
+    <Grid {isAuthor} {CachedData} />
 
-    <Actions />
+    {#if isAuthor}
+      <Actions />
+    {/if}
   {/if}
 </main>
 

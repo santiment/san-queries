@@ -31,12 +31,17 @@
   }
 </script>
 
-<text-widget class="row border body-2 relative" on:focusout={onBlur}>
-  <Editor
-    bind:editor
-    placeholder="Add your text here..."
-    html={widget.value ? markdownToHTML(widget.value) : undefined}
-  />
+<text-widget class="row body-2 relative" on:focusout={onBlur}>
+  {#if readonly}
+    {@const html = markdownToHTML(widget.value)}
+    <div class="text">{@html html}</div>
+  {:else}
+    <Editor
+      bind:editor
+      placeholder="Add your text here..."
+      html={widget.value ? markdownToHTML(widget.value) : undefined}
+    />
+  {/if}
   <!-- <ContentEditable /> -->
 
   {#if !readonly}
@@ -47,7 +52,8 @@
 </text-widget>
 
 <style>
-  Editor {
+  Editor,
+  .text {
     padding: 16px 48px 16px 24px;
     overflow: auto;
   }
@@ -56,5 +62,10 @@
     position: absolute;
     top: 10px;
     right: 16px;
+  }
+
+  text-widget {
+    background: var(--athens);
+    border-radius: 4px;
   }
 </style>

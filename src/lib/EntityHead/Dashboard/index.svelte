@@ -26,6 +26,10 @@
   import { getSEOLinkFromIdAndTitle } from 'san-webkit/lib/utils/url'
   import { notifications$ } from 'san-webkit/lib/ui/Notifications'
   import { mutateUpdateDashboard } from '$lib/api/dashboard/create'
+  import {
+    mutateAddDashboardGlobalParameter,
+    mutateAddDashboardGlobalParameterOverride,
+  } from '$lib/DashboardEditor/Globals/api'
 
   export let dashboard = null as null | App.ApiDashboard
   export let author: SAN.Author | null
@@ -74,6 +78,8 @@
         }
         return saveDashboard()
       }
+    } else {
+      onShare()
     }
   }
 
@@ -117,6 +123,36 @@ This action can't be undone`)
       widgets: dashboardEditor.widgets.map((widget) => ({ ...widget, id: null })),
       dashboard: null,
     })
+      .then((apiDashboard) =>
+        Promise.all(
+          dashboardEditor.parameters
+            .filter((v) => v.global)
+            .map((parameter) =>
+              mutateAddDashboardGlobalParameter({
+                dashboardId: apiDashboard.id,
+                key: parameter.key,
+                value: {
+                  string: parameter.value,
+                },
+              }).then(
+                () =>
+                  parameter.overrides &&
+                  Promise.all(
+                    Object.keys(parameter.overrides)
+                      .flatMap((queryId) =>
+                        Object.keys(parameter.overrides[queryId]).map((queryParameterKey) => ({
+                          dashboardId: apiDashboard.id,
+                          dashboardParameterKey: parameter.key,
+                          queryParameterKey,
+                          dashboardQueryMappingId: queryId,
+                        })),
+                      )
+                      .map((variables) => mutateAddDashboardGlobalParameterOverride(variables)),
+                  ),
+              ),
+            ),
+        ).then(() => apiDashboard),
+      )
       .then((apiDashboard) => {
         EventDashboardSaved$.dispatch(apiDashboard)
         EventSavingState$.dispatch({ state: 'success' })
@@ -243,7 +279,7 @@ This action can't be undone`)
           >
         </Dropdown>
       {:else if currentUser}
-        <button class="btn-3"><Svg id="copy" w="16" /></button>
+        <button on:click={onDuplicateClick} class="btn-3"><Svg id="copy" w="16" /></button>
       {/if}
     {/if}
   </svelte:fragment>

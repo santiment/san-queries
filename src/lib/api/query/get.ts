@@ -9,11 +9,18 @@ export const QUERY_FRAGMENT = `id
       settings
       sqlQueryParameters
       sqlQueryText
-      dashboardQueryMappingId`
+      dashboardQueryMappingId
+    user { id username avatarUrl }
+      `
 
 export const queryGetSqlQuery = Universal(
   (query) => (id: number) =>
-    query<SAN.API.Query<'query', App.ApiQuery>>(
+    query<
+      SAN.API.Query<
+        'query',
+        App.ApiQuery & { user: { id: number; username: string; avatarUrl?: string } }
+      >
+    >(
       `{
         query:getSqlQuery(id:${id}) {
           ${QUERY_FRAGMENT}
@@ -37,7 +44,6 @@ export const queryGetUserQueries = Universal(
         `{
         queries:getUserQueries(page:1, pageSize:100) {
           ${QUERY_FRAGMENT}
-          user { id username avatarUrl }
         }
       }`,
         {
@@ -58,7 +64,6 @@ export const queryGetPublicQueries = Universal(
         `{
         queries:getPublicQueries(page:1, pageSize:100) {
           ${QUERY_FRAGMENT}
-          user { id username avatarUrl }
         }
       }`,
         {

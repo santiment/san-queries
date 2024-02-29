@@ -28,6 +28,7 @@
   import { getContext } from 'svelte'
 
   export let tab = TABS[0] as (typeof TABS)[number]
+  export let readonly = false
 
   const { queryEditor$ } = getQueryEditor$Ctx()
 
@@ -144,7 +145,7 @@
 />
 
 <section class="column gap-m">
-  <ScreenControls {tab} />
+  <ScreenControls {readonly} {tab} />
 
   {#if tab === TABS[0]}
     {#key id}
@@ -153,6 +154,7 @@
         {id}
         value={sql}
         {parameters}
+        {readonly}
         onValueChange={onEditorValueChange}
         {onModelChange}
       />

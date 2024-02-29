@@ -21,6 +21,7 @@
     viewState: monacoEditor.ICodeEditorViewState
   }>
   export let onModelChange = undefined as any
+  export let readonly = false
 
   let editorNode: HTMLElement
   let EditorCtx: EditorCtxType
@@ -29,6 +30,7 @@
 
   $: EditorCtx?.updateParameters(parameters)
   $: setValue(value)
+  $: editor && editor.updateOptions({ readOnly: readonly })
 
   function setValue(value: string) {
     // editor?.setValue(value)

@@ -16,6 +16,7 @@
     EventSavingState$,
   } from '$routes/(editor)/query/events'
   import { mutateUpdateDashboard } from '$lib/api/dashboard/create'
+  import { getDateFormats, getTimeFormats } from 'san-webkit/lib/utils/dates'
 
   export let data: PageData
 
@@ -25,6 +26,7 @@
   $: dashboardEditor = $dashboardEditor$
   $: ({ dashboard } = dashboardEditor)
   $: author = dashboard?.user || $currentUser$
+  $: isAuthor = author?.id === $currentUser$?.id
 
   $: updateDashboard(data.apiDashboard)
 
@@ -36,6 +38,14 @@
 
   function saveDashboard(isForced = false) {
     EventSavingState$.dispatch({ state: 'start' })
+
+    if (!dashboardEditor.name) {
+      const now = new Date()
+      const { DD, MMM, YYYY } = getDateFormats(now)
+      const { HH, mm } = getTimeFormats(now)
+
+      dashboardEditor.name = `${MMM} ${DD}, ${YYYY}, ${HH}:${mm}`
+    }
 
     if (dashboardEditor.isLegacy) {
       console.log(dashboardEditor)
@@ -80,14 +90,14 @@
   })
   $eventDashboardChanged
 
-  const eventAutoSave = EventAutoSave$(() => dashboardEditor.name && saveDashboard())
+  const eventAutoSave = EventAutoSave$(() => saveDashboard())
   $eventAutoSave
 </script>
 
 <main class="column">
   <DashboardHead {dashboard} {author} {saveDashboard} />
 
-  <DashboardEditor />
+  <DashboardEditor {isAuthor} />
 </main>
 
 <style>

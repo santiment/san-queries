@@ -1,5 +1,6 @@
 <script lang="ts">
   import Svg from 'webkit/ui/Svg/svelte'
+  import Profile from 'webkit/ui/Profile/svelte'
   import { queryRunDashboardSqlQuery } from '$lib/api/query'
   import { compressQuery, mutateCompressedQueryExecutionResult } from '$lib/api/dashboard/query'
   import Table from '$lib/QueryEditor/Visualisation/Table.svelte'
@@ -18,6 +19,7 @@
 
   export let widget: App.Dashboard.QueryWidget
   export let CachedData: any
+  export let isDashboardAuthor = false
 
   const showLinkGlobalParameterDialog = showLinkGlobalParameterDialog$()
   const { dashboardEditor$ } = getDashboardEditor$Ctx()
@@ -48,12 +50,14 @@
 
         return compressQuery({ ...rest, columns: headers, columnTypes: types })
       })
-      .then((compressed) =>
-        mutateCompressedQueryExecutionResult({
-          compressed,
-          dashboardId: dashboardEditor.dashboard.id,
-          dashboardQueryMappingId: widget.id,
-        }),
+      .then(
+        (compressed) =>
+          isDashboardAuthor &&
+          mutateCompressedQueryExecutionResult({
+            compressed,
+            dashboardId: dashboardEditor.dashboard.id,
+            dashboardQueryMappingId: widget.id,
+          }),
       )
   }
 
@@ -130,8 +134,17 @@
 
 <query-widget class="column border">
   <header class="row v-center fluid gap-s">
+    {#if widget.query.user}
+      <Profile user={widget.query.user} source="dashboard" feature="query" />
+
+      <div class="divider" />
+    {/if}
+
     <h2 class="body-2">
-      <a href="/query/{getSEOLinkFromIdAndTitle(widget.query.id, widget.title)}">{widget.title}</a>
+      <a
+        href="/query/{getSEOLinkFromIdAndTitle(widget.query.id, widget.title)}"
+        class:disabled={!widget.query.isPublic}>{widget.title}</a
+      >
     </h2>
 
     <button class="btn-3 mrg-a mrg--l expl-tooltip" aria-label="Refresh data" on:click={updateData}>
@@ -142,9 +155,11 @@
       <Svg id="fullscreen" w="14" />
     </button>
 
-    <button class="close btn-3 expl-tooltip" aria-label="Remove widget" on:click={onCloseClick}>
-      <Svg id="close" w="12" />
-    </button>
+    {#if isDashboardAuthor}
+      <button class="close btn-3 expl-tooltip" aria-label="Remove widget" on:click={onCloseClick}>
+        <Svg id="close" w="12" />
+      </button>
+    {/if}
   </header>
 
   {#if parameters.length}
@@ -173,7 +188,7 @@
 
 <style>
   header {
-    padding: 12px 18px 0 12px;
+    padding: 12px 18px 12px 12px;
   }
 
   parameters {
@@ -203,5 +218,11 @@
     background: var(--athens);
     padding: 6px 10px;
     border-radius: 4px;
+  }
+
+  .divider {
+    height: 32px;
+    width: 1px;
+    background: var(--mystic);
   }
 </style>
