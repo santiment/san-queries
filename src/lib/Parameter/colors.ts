@@ -1,7 +1,9 @@
 export const COLORS = [
+  '#14c393', // jungle-green,
+
+  '#5275FF', // BLUE
   '#FF5B5B', // RED
   '#FFCB47', // YELLOW
-  '#5275FF', // BLUE
   // '#FF8450', // SALMON
   '#F47BF7', // PURPLE
   '#785549', // BROWN
@@ -12,7 +14,6 @@ export const COLORS = [
   '#AC948C', // BROWN-GRAY
   '#222222', // BLACK
 
-  '#14c393', // jungle-green,
   '#7a859e', // waterloo
   '#174d4a', // jungle-green-dark-3
   '#ffe7ca', // texas-rose-light-2

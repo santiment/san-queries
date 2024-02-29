@@ -32,7 +32,7 @@
         header: key,
         title: settings.title || key,
         valueKey: i,
-        color: COLORS[colorId++],
+        color: settings.chartColor || COLORS[colorId++],
         format,
         node: settings.chartNode,
       })

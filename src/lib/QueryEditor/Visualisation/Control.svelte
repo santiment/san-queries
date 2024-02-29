@@ -52,19 +52,21 @@
       </options>
 
       <svelte:fragment slot="tooltip" let:close>
-        {#if defaultValue}
-          <button class="btn-ghost" on:click={() => (onUpdate(), close())}>
-            {defaultValue}
-          </button>
-        {/if}
+        <slot name="dropdown">
+          {#if defaultValue}
+            <button class="btn-ghost" on:click={() => (onUpdate(), close())}>
+              {defaultValue}
+            </button>
+          {/if}
 
-        {#each options as option}
-          <button class="btn-ghost" on:click={() => (onUpdate(option), close())}>
-            <slot {option}>
-              {option}
-            </slot>
-          </button>
-        {/each}
+          {#each options as option}
+            <button class="btn-ghost" on:click={() => (onUpdate(option), close())}>
+              <slot {option}>
+                {option}
+              </slot>
+            </button>
+          {/each}
+        </slot>
       </svelte:fragment>
     </Tooltip>
   {:else if textarea}

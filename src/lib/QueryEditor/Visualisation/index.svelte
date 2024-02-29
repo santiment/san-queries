@@ -9,6 +9,7 @@
   import FormattingControl from './Controls/FormattingControl.svelte'
   import NoData from './NoData.svelte'
   import { EventAutoSave$ } from '$routes/(editor)/query/events'
+  import ColorControl from './Controls/ColorControl.svelte'
 
   const { queryEditor$ } = getQueryEditor$Ctx()
 
@@ -126,6 +127,8 @@
               updateColumnSettings(column, { isHiddenOnChart: !updated })
             }}
           />
+
+          <ColorControl {column} settings={columnSettings} update={updateColumnSettings} />
         {/if}
       </ControlsSection>
     {/each}
