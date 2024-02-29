@@ -10,7 +10,7 @@ export const load: LayoutLoad = (event) => {
   setupKitClientSession(data)
 
   if (!data.currentUser) {
-    if (event.route.id?.startsWith('/(editor)/')) {
+    if (event.route.id?.startsWith('/(editor)/') && event.url.pathname.includes('/new')) {
       throw redirect(302, '/sign-up')
     }
   }
