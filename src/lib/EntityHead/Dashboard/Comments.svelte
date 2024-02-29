@@ -11,6 +11,7 @@
   const { currentUser$ } = getCurrentUser$Ctx()
 
   let isOpened = false
+  $: count = dashboard?.commentsCount ?? 0
 
   function start(node: HTMLElement) {
     setTimeout(() => node.classList.add('$style.opened'), 10)
@@ -21,13 +22,13 @@
     node.classList.remove('$style.opened')
     return { duration: 500 }
   }
+
+  function onNewComment(_: any, comments: any[]) {
+    count = comments.length
+  }
 </script>
 
-<CommentsButton
-  class={className}
-  count={dashboard?.commentsCount || 0}
-  on:click={() => (isOpened = !!dashboard)}
-/>
+<CommentsButton class={className} {count} on:click={() => (isOpened = !!dashboard)} />
 
 {#if isOpened}
   <comments class="column" in:start out:end>
@@ -40,7 +41,7 @@
         type={CommentsType.Dashboard}
         commentsFor={dashboard}
         currentUser={$currentUser$}
-        onNewComment={console.log}
+        {onNewComment}
       />
     </main>
   </comments>
