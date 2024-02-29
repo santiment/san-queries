@@ -18,6 +18,7 @@
     EventDashboardDeleted$,
   } from '$routes/(editor)/query/events'
   import { track } from 'webkit/analytics'
+  import { page as page$ } from '$app/stores'
 
   const { workspace$ } = getWorkspace$Ctx()
   const { search$ } = getSearch$Ctx()
@@ -44,6 +45,8 @@
     ],
   }
   $: filteredTree = search$.modify($search$, tree.children, filterTree)
+  $: page = $page$
+  $: pathname = page.url.pathname
 
   let queries = [] as any[]
   let dashboards = [] as any[]
@@ -254,6 +257,7 @@
         <Item
           idx={i}
           item={child}
+          {pathname}
           parent={item}
           on:click={() => onItemClick(child)}
           onItemDragStart={console.log}

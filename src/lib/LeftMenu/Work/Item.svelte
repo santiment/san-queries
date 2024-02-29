@@ -16,6 +16,7 @@
   export let parent: any // FolderTreeType
   export let onItemDragEnd: any
   export let onItemDragStart: any
+  export let pathname = ''
 
   const { workspace$ } = getWorkspace$Ctx()
 
@@ -59,6 +60,7 @@
   moreActions
   icon={isQuery ? 'query' : 'dashboard'}
   {link}
+  isHoverActive={pathname === link}
   on:click
   on:dragstart={(e) => onItemDragStart(e, parent, item)}
   on:dragend={onItemDragEnd}
