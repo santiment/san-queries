@@ -108,7 +108,7 @@
           update={updateColumnSettings}
         />
 
-        {#if settings.visualisation === 'Chart'}
+        {#if settings.visualisation === 'Chart' && i.toString() !== chartColumns.dateColumn}
           <Control
             name="Chart style"
             options={['Line', 'Bars', 'Area']}
