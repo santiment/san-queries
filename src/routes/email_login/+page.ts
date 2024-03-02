@@ -18,8 +18,24 @@ export const load: PageLoad = async ({ parent, url: { searchParams } }) => {
   // customerData$.refetch()
   // goto(data.privacyPolicyAccepted ? '/' : '/gdpr')
 
+  let successRedirect = '/'
+
+  try {
+    const url = searchParams.get('success_redirect_url')
+    if (url) {
+      const successRedirectUrl = new URL(url)
+
+      if (successRedirectUrl.hostname.endsWith('.santiment.net')) {
+        successRedirect = successRedirectUrl.pathname
+      }
+    }
+  } catch (e) {
+    console.error(e)
+  }
+
   return {
     email: searchParams.get('email') as string,
     token: searchParams.get('token') as string,
+    successRedirect,
   }
 }

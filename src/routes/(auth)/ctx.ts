@@ -26,7 +26,23 @@ export function startEthLoginFlow(currentUser$: SAN.CurrentUserStore) {
         title: 'You are logged in!',
       })
 
-      goto('/query/new')
+      try {
+        const from = new URLSearchParams(window.location.search).get('from')
+
+        let successRedirect = '/'
+
+        if (from) {
+          const url = new URL(from)
+
+          if (url.hostname.endsWith('.santiment.net')) {
+            successRedirect = url.pathname
+          }
+        }
+
+        goto(successRedirect)
+      } catch (e) {
+        goto('/query/new')
+      }
 
       // trackSignupLogin(user.firstLogin, LoginType.METAMASK)
 

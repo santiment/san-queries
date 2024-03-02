@@ -11,7 +11,8 @@ export const load: LayoutLoad = (event) => {
 
   if (!data.currentUser) {
     if (event.route.id?.startsWith('/(editor)/') && event.url.pathname.includes('/new')) {
-      throw redirect(302, '/sign-up')
+      // if (event.route.id?.startsWith('/(editor)/')) {
+      throw redirect(302, '/sign-up?from=' + encodeURIComponent(event.url.href))
     }
   }
 

@@ -14,14 +14,14 @@
   const { customer$ } = getCustomer$Ctx()
 
   if (process.browser) {
-    const { email, token } = data
+    const { email, token, successRedirect } = data
 
     mutateVerifyEmail(email as string, token as string)
       .then((currentUser) => {
         currentUser$.set(currentUser)
         customer$.refetch()
 
-        goto('/')
+        goto(successRedirect)
 
         // trackSignupLogin(currentUser.firstLogin, LoginType.EMAIL)
       })
