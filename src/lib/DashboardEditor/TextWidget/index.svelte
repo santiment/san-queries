@@ -33,7 +33,7 @@
 
 <text-widget class="row body-2 relative" on:focusout={onBlur}>
   {#if readonly}
-    {@const html = markdownToHTML(widget.value)}
+    {@const html = markdownToHTML(widget.value || '')}
     <div class="text">{@html html}</div>
   {:else}
     <Editor
