@@ -1,8 +1,11 @@
 import { getContext, setContext } from 'svelte'
 import { writable } from 'svelte/store'
-import { queryComputeRawClickhouseQuery } from '$lib/api/query'
-import { serializeParameters } from '$lib/api/query/utilts'
+import { queryRunSqlQuery } from '$lib/api/query'
 import { Formatter } from '$lib/QueryEditor/Visualisation/Controls/FormattingControl.svelte'
+import { mutateUpdateSqlQuery } from '$lib/api/query/update'
+import { mutateCreateSqlQuery } from '$lib/api/query/create'
+import { mutateStoreQueryExecution } from './[[slug]]/api'
+import { compressQuery } from '$lib/api/dashboard/query'
 
 export const CTX = 'QueryEditor$$'
 
@@ -98,16 +101,33 @@ export function QueryEditor$$(apiQuery?: null | App.ApiQuery, sql = '') {
         queryEditor$.set(store)
       },
       querySqlData() {
-        return queryComputeRawClickhouseQuery({
-          sql: store.sql.trim(),
-          parameters: serializeParameters(store.parameters),
-        }).then((data) => {
-          store.sqlData = data
+        const id = store.query?.id
+        const sql = store.sql.trim()
 
-          queryEditor$.set(store)
+        const promise = id
+          ? mutateUpdateSqlQuery({ id, sql, parameters: store.parameters })
+          : mutateCreateSqlQuery({ name: store.name, sql, parameters: store.parameters }).then(
+              (query) => Object.assign(store.query, query),
+            )
 
-          return data
-        })
+        // return queryComputeRawClickhouseQuery({
+        //   sql: store.sql.trim(),
+        //   parameters: serializeParameters(store.parameters),
+        // })
+        return promise
+          .then((query) => queryRunSqlQuery(query.id))
+          .then((data) => {
+            const { headers, types, ...rest } = data
+
+            compressQuery({ ...rest, columns: headers, columnTypes: types }).then((compressed) =>
+              mutateStoreQueryExecution({ queryId: store.query!.id, compressed }),
+            )
+            store.sqlData = data
+
+            queryEditor$.set(store)
+
+            return data
+          })
       },
 
       setSql(sql: (typeof store)['sql']) {

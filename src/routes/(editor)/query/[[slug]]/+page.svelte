@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { PageData } from './$types'
 
-  import { onMount, setContext, tick } from 'svelte'
+  import { setContext, tick } from 'svelte'
   import { queryGetSqlQuery } from '$lib/api/query/get'
   import { mutateUpdateSqlQuery } from '$lib/api/query/update'
   import { GlobalShortcut$ } from 'webkit/utils/events'
@@ -22,6 +22,7 @@
   import { saveEditorState } from '$lib/SQLEditor/utils'
   import { page } from '$app/stores'
   import { BROWSER } from 'esm-env'
+  import { queryGetCachedQueryExecutions } from './api'
 
   export let data: PageData
 
@@ -37,12 +38,27 @@
   $: updateQuery(apiQuery)
   $: author = apiQuery?.user || currentUser
   $: isAuthor = currentUser?.id === author?.id
+  $: queryId = apiQuery?.id
+
+  $: process.browser && queryId && getCache(queryId)
 
   function updateQuery(apiQuery: any) {
     const query = $queryEditor$.query
     if (query?.id === apiQuery?.id) return
 
     tick().then(() => queryEditor$.setApiQuery(apiQuery))
+  }
+
+  function getCache(queryId: number) {
+    tick()
+      .then(() => queryGetCachedQueryExecutions(queryId))
+      .then((cache) => {
+        if (!cache) return
+        if (queryId !== apiQuery?.id) return
+
+        const data = cache[0]
+        if (data) $queryEditor$.sqlData = data?.result
+      })
   }
 
   function onSave(queryEditor = $queryEditor$, isPublic?: boolean, isForced = false) {

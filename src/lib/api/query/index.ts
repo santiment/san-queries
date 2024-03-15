@@ -48,6 +48,24 @@ export const queryComputeRawClickhouseQuery = Universal(
       ).then(({ data }) => data),
 )
 
+export const queryRunSqlQuery = Universal(
+  (query) => (queryId: number) =>
+    query<ComputeRawClickhouseQuery>(`{
+  data:runSqlQuery(id: ${queryId}) {
+    types:columnTypes
+    rows
+    headers:columns
+
+    queryId
+    clickhouseQueryId
+
+    queryEndTime
+    queryStartTime
+    summary
+  }
+}`).then(({ data }) => data),
+)
+
 type QueryExecutionStats = {
   creditsCost: number
   readGb: number
