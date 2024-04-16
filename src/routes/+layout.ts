@@ -1,8 +1,7 @@
 import type { LayoutLoad } from './$types'
 
-import '../setup'
 import { redirect } from '@sveltejs/kit'
-import { setupKitClientSession } from 'webkit/utils/kit'
+import { setupKitClientSession } from 'san-webkit/lib/utils/kit'
 
 export const load: LayoutLoad = (event) => {
   const { data } = event

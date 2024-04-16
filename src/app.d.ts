@@ -1,5 +1,4 @@
 /// <reference types="san-webkit" />
-/// <reference types="san-webkit/.storybook/mock/index" />
 
 import type { DeviceInfoType } from 'san-webkit/lib/stores/responsive'
 
@@ -18,20 +17,25 @@ declare global {
     // interface PageData {}
     // interface Platform {}
     //
+  }
 
-    export type RequestEvent = import('webkit/api').RequestEvent | undefined
+  type Empty<T> = null | undefined | T
+
+  type Author = {
+    id: number
+    username?: App.Empty<string>
+    avatarUrl?: App.Empty<string>
+  }
+
+  type SqlData = {
+    columns: string[]
+    columnTypes: string[]
+    rows: (number | string | null)[][]
   }
 
   interface Window {
     authMethod?: string
     onGdprAccept?: () => void
-  }
-}
-
-declare module 'vitest/config' {
-  export interface UserConfig {
-    clientDefines?: Record<string, any>
-    serverDefines?: Record<string, any>
   }
 }
 

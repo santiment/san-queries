@@ -1,5 +1,5 @@
 <script>
-  import LoginPrompt from 'webkit/ui/LoginPrompt/index.svelte'
+  import LoginPrompt from 'san-webkit/lib/ui/LoginPrompt/index.svelte'
   import { page } from '$app/stores'
   import { getAuthCtx } from '../ctx'
 

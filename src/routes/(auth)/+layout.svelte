@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { getCustomer$Ctx } from 'webkit/stores/customer'
-  import { getCurrentUser$Ctx } from 'webkit/stores/user'
+  import { getCustomer$Ctx } from 'san-webkit/lib/stores/customer'
+  import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
   import { setAuthCtx, startEthLoginFlow } from './ctx'
 
   const { currentUser$ } = getCurrentUser$Ctx()

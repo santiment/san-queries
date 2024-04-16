@@ -1,8 +1,6 @@
-import { setSessionValue } from 'webkit/stores/utils'
-import { notifications$ } from 'webkit/ui/Notifications'
-import { goto } from '$app/navigation'
-
-import { mutate } from 'webkit/api'
+import { setSessionValue } from 'san-webkit/lib/stores/utils'
+import { notifications$ } from 'san-webkit/lib/ui/Notifications'
+import { mutate } from 'san-webkit/lib/api'
 
 const mutateLogout = () =>
   mutate(`mutation {

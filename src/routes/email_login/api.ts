@@ -1,5 +1,5 @@
-import { CURRENT_USER_FRAGMENT } from 'webkit/stores/user'
-import { mutate } from 'webkit/api'
+import { CURRENT_USER_FRAGMENT } from 'san-webkit/lib/stores/user'
+import { mutate } from 'san-webkit/lib/api'
 // import { CURRENT_USER_FRAGMENT } from '.'
 //
 

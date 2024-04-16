@@ -1,5 +1,5 @@
 <script>
-  import EmailLogin from 'webkit/ui/LoginPrompt/EmailLogin.svelte'
+  import EmailLogin from 'san-webkit/lib/ui/LoginPrompt/EmailLogin.svelte'
 </script>
 
 <EmailLogin />

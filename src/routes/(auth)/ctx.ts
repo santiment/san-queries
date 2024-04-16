@@ -1,7 +1,7 @@
 import { getContext, setContext } from 'svelte'
 import { goto } from '$app/navigation'
-import { notifications$ } from 'webkit/ui/Notifications'
-import { ethLoginMutation } from 'webkit/api/login'
+import { notifications$ } from 'san-webkit/lib/ui/Notifications'
+import { ethLoginMutation } from 'san-webkit/lib/api/login'
 import { CURRENT_USER_FRAGMENT } from 'san-webkit/lib/stores/user'
 
 const CTX = 'authCtx'

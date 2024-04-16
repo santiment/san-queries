@@ -1,15 +1,14 @@
 <script lang="ts">
-  import type { LayoutData } from './$types'
-
-  import OnlyOnDevice from 'webkit/ui/OnlyOnDevice.svelte'
-  import LeftMenu from '$lib/LeftMenu/index.svelte'
-  import { Workspace$$ } from '$lib/LeftMenu/Work/ctx'
-
-  Workspace$$()
+  import OnlyOnDevice from 'san-webkit/lib/ui/OnlyOnDevice.svelte'
+  // import EditorSidebar from '$lib/EditorSidebar/index.svelte'
 </script>
 
-<OnlyOnDevice desktop>
-  <LeftMenu />
-</OnlyOnDevice>
+<screen class="flex flex-1">
+  <OnlyOnDevice desktop>
+    <!-- <EditorSidebar /> -->
+  </OnlyOnDevice>
 
-<slot />
+  <main class="flex flex-1 flex-col">
+    <slot />
+  </main>
+</screen>

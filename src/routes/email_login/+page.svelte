@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { getCustomer$Ctx } from 'webkit/stores/customer'
-  import { getCurrentUser$Ctx } from 'webkit/stores/user'
+  import { getCustomer$Ctx } from 'san-webkit/lib/stores/customer'
+  import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
   // import { LoginType } from 'webkit/analytics/events/general'
   import { goto } from '$app/navigation'
   import { mutateVerifyEmail } from './api'
