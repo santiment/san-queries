@@ -1,4 +1,4 @@
-FROM node:16 AS builder
+FROM node:20 AS builder
 
 ARG BACKEND_URL
 ARG API_FETCH_ORIGIN
