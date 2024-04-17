@@ -16,13 +16,19 @@
   const { id, name, description } = dashboardEditor
 
   function onTitleBlur(name: string) {
-    if (id) return changeIndicatorCtx.emit.changed()
+    if (id) {
+      dashboardEditor.name.$ = name
+      return changeIndicatorCtx.emit.changed()
+    }
 
     saveEmptyDashboard({ name })
   }
 
   function onDescriptionBlur(description: string) {
-    if (id) return changeIndicatorCtx.emit.changed()
+    if (id) {
+      dashboardEditor.description.$ = description
+      return changeIndicatorCtx.emit.changed()
+    }
 
     saveEmptyDashboard({ description })
   }
