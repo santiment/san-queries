@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { getCustomer$Ctx } from 'webkit/stores/customer'
-  import Gdpr from 'webkit/ui/LoginPrompt/Gdpr.svelte'
-  import { getCurrentUser$Ctx } from 'webkit/stores/user'
+  import { getCustomer$Ctx } from 'san-webkit/lib/stores/customer'
+  import Gdpr from 'san-webkit/lib/ui/LoginPrompt/Gdpr.svelte'
+  import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
   import { page } from '$app/stores'
   import { goto } from '$app/navigation'
 

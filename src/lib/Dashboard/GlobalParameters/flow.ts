@@ -1,0 +1,160 @@
+import type { TUnwrappedChange, TUnwrappedChanges } from './utils'
+
+import { useObserveFnCall } from '$lib/ui/utils/state.svelte'
+import { concat, exhaustMap, filter, from, mergeMap, of, pipe, tap } from 'rxjs'
+import {
+  mutateAddDashboardGlobalParameter,
+  mutateAddDashboardGlobalParameterOverride,
+  mutateDeleteDashboardGlobalParameter,
+  mutateDeleteDashboardGlobalParameterOverride,
+  mutateUpdateDashboardGlobalParameter,
+} from './api'
+
+export const createAddGlobalParameterOverrides$ = (
+  dashboardId: number,
+  dashboardParameterKey: string,
+  added: TUnwrappedChange,
+) =>
+  from(added).pipe(
+    mergeMap(([dashboardQueryMappingId, queryParameterKey]) =>
+      mutateAddDashboardGlobalParameterOverride()({
+        dashboardId,
+        dashboardParameterKey,
+        dashboardQueryMappingId,
+        queryParameterKey,
+      }),
+    ),
+  )
+
+export const createDeleteGlobalParameterOverrides$ = (
+  dashboardId: number,
+  dashboardParameterKey: string,
+  deleted: TUnwrappedChange,
+) =>
+  from(deleted).pipe(
+    mergeMap(([dashboardQueryMappingId]) =>
+      mutateDeleteDashboardGlobalParameterOverride()({
+        dashboardId,
+        dashboardParameterKey,
+        dashboardQueryMappingId,
+      }),
+    ),
+  )
+
+export function useCreateGlobalParameterFlow() {
+  const createGlobalParameter = useObserveFnCall<{
+    dashboard: { id: number }
+    parameter: { key: string; value: number | string }
+    overrides: TUnwrappedChanges
+    onComplete: () => void
+  }>(() =>
+    exhaustMap(({ dashboard, parameter, overrides, onComplete }) =>
+      concat(
+        mutateAddDashboardGlobalParameter()({
+          dashboardId: dashboard.id,
+          key: parameter.key,
+          value: { string: parameter.value },
+        }),
+        createAddGlobalParameterOverrides$(dashboard.id, parameter.key, overrides.added),
+        of(null).pipe(tap(onComplete)),
+      ),
+    ),
+  )
+
+  return { createGlobalParameter }
+}
+
+export function useUpdateGlobalParameterFlow() {
+  const updateGlobalParameter = useObserveFnCall<{
+    dashboard: { id: number }
+    oldKey: string
+    parameter: { key: string; value: number | string }
+    overrides: TUnwrappedChanges
+    onComplete: () => void
+  }>(() =>
+    exhaustMap(({ dashboard, oldKey, parameter, overrides, onComplete }) =>
+      concat(
+        mutateUpdateDashboardGlobalParameter()({
+          dashboardId: dashboard.id,
+          key: oldKey,
+          newKey: parameter.key,
+          newValue: { string: parameter.value },
+        }),
+
+        createDeleteGlobalParameterOverrides$(dashboard.id, parameter.key, overrides.deleted),
+        createAddGlobalParameterOverrides$(dashboard.id, parameter.key, overrides.added),
+
+        of(null).pipe(tap(onComplete)),
+      ),
+    ),
+  )
+
+  return { updateGlobalParameter }
+}
+
+export function useDeleteGlobalParameterFlow() {
+  const deleteGlobalParameter = useObserveFnCall<{
+    dashboard: { id: number }
+    parameter: { key: string; value: number | string }
+    onComplete?: () => void
+  }>(() =>
+    exhaustMap(({ dashboard, parameter, onComplete }) =>
+      mutateDeleteDashboardGlobalParameter()({
+        dashboardId: dashboard.id,
+        key: parameter.key,
+      }).pipe(tap(onComplete)),
+    ),
+  )
+
+  return { deleteGlobalParameter }
+}
+
+export function useLinkGlobalParameterFlow() {
+  const linkGlobalParameter = useObserveFnCall<{
+    dashboard: { id: number }
+    dashboardQueryMappingId: string
+    queryParameterKey: string
+    oldParameterKey?: string
+    newParameterKey?: string
+
+    onComplete: () => void
+  }>(() =>
+    pipe(
+      filter(({ dashboard }) => !!dashboard.id),
+      filter(({ oldParameterKey, newParameterKey }) => oldParameterKey !== newParameterKey),
+      exhaustMap(
+        ({
+          dashboard,
+          dashboardQueryMappingId,
+          oldParameterKey,
+          newParameterKey,
+          queryParameterKey,
+          onComplete,
+        }) =>
+          concat(
+            // Order matters - delete should be first, then adding new link
+            oldParameterKey
+              ? mutateDeleteDashboardGlobalParameterOverride()({
+                  dashboardId: dashboard.id,
+                  dashboardParameterKey: oldParameterKey,
+                  dashboardQueryMappingId,
+                })
+              : of(null),
+
+            newParameterKey
+              ? mutateAddDashboardGlobalParameterOverride()({
+                  dashboardId: dashboard.id,
+                  dashboardParameterKey: newParameterKey,
+                  dashboardQueryMappingId,
+                  queryParameterKey,
+                })
+              : of(null),
+
+            of(null).pipe(tap(onComplete)),
+          ),
+      ),
+    ),
+  )
+
+  return { linkGlobalParameter }
+}

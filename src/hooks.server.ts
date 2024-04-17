@@ -1,14 +1,13 @@
 import type { Handle, HandleServerError } from '@sveltejs/kit'
 
 import { redirect } from '@sveltejs/kit'
-// import * as Sentry from '@sentry/node'
 import UAParser from 'ua-parser-js'
-import { Device } from 'webkit/responsive'
-import { getDeviceInfo } from 'webkit/stores/responsive'
-import { queryCustomer } from 'webkit/stores/customer'
-import { COOKIE_POLICY_ACCEPTED } from 'webkit/ui/ManageCookiesDialog/index.svelte'
+import { Device } from 'san-webkit/lib/responsive'
+import { getDeviceInfo } from 'san-webkit/lib/stores/responsive'
+import { queryCustomer } from 'san-webkit/lib/stores/customer'
+import { COOKIE_POLICY_ACCEPTED } from 'san-webkit/lib/ui/ManageCookiesDialog/index.svelte'
 import { queryCurrentUser } from '$lib/api/user'
-// import { initSentry } from '$lib/sentry'
+import { UniQuery } from '$lib/api'
 
 function normalizeDeviceType(type: string | undefined): Device {
   switch (type) {
@@ -21,14 +20,14 @@ function normalizeDeviceType(type: string | undefined): Device {
   }
 }
 
-// NOTE: If the `throw redirect()` was called, server hook will be run twice (first time for initial page, second time for redirected one) [@vanguard | 10 Jan, 2023]
 export const handle: Handle = async ({ event, resolve }) => {
   const customerPromise = queryCustomer(event)
 
-  const { currentUser } = await queryCurrentUser(event).catch(() => {
+  const currentUser = await queryCurrentUser(UniQuery(event.fetch))().catch(() => {
     console.log('currentUser query error')
-    return {} as { currentUser: null }
+    return null
   })
+
   const theme = currentUser?.settings.theme === 'nightmode' ? 'night-mode' : ''
 
   const userAgent = UAParser(event.request.headers.get('user-agent') as any)
@@ -46,13 +45,7 @@ export const handle: Handle = async ({ event, resolve }) => {
   })
 }
 
-// initSentry(Sentry, process.env.PRODUCTION_SENTRY_DSN || process.env.STAGE_SENTRY_DSN, {
-//   is_server: true,
-// })
-
 export const handleError: HandleServerError = ({ error }: any) => {
-  // Sentry.captureException(error, { extra: { event: normalizeEventError(event) } })
-
   const { message } = error as Error
   console.error(error)
 

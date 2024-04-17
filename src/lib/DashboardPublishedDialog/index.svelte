@@ -1,15 +1,15 @@
 <script context="module" lang="ts">
-  import { dialogs } from 'webkit/ui/Dialog'
+  import { dialogs } from 'san-webkit/lib/ui/Dialog'
   import Component from './index.svelte'
 
-  export const showDashboardPublishedDialog = () => dialogs.__show(Component)
+  export const showDashboardPublishedDialog$ = () => dialogs.__WithCtx(Component)
 </script>
 
 <script lang="ts">
-  import Svg from 'webkit/ui/Svg/svelte'
-  import Dialog from 'webkit/ui/Dialog'
-  import { showShareDialog } from 'webkit/ui/Share/index.svelte'
-  import { copy } from 'webkit/utils'
+  import Dialog from 'san-webkit/lib/ui/Dialog'
+  import { showShareDialog } from 'san-webkit/lib/ui/Share/index.svelte'
+  import { copy } from 'san-webkit/lib/utils'
+  import Svg from '$lib/ui/Svg.svelte'
 
   let copyLabel = 'Copy link'
   function onCopy() {
@@ -51,13 +51,13 @@
   <h2 class="h4 txt-m mrg-s mrg--b">Your dashboard is published!</h2>
   <p class="c-waterloo mrg-xl mrg--b">Now everyone can see it in “Explorer” page</p>
 
-  <actions class="row gap-l">
+  <actions class="flex gap-4">
     <button class="btn-1 btn--s" on:click={onCopy}>
       <Svg id="link" w="16" />
       {copyLabel}
     </button>
 
-    <button class="btn-2 btn--s" on:click={onShare}>
+    <button class="btn-2 btn--s !h-8 !px-2" on:click={onShare}>
       <Svg id="share-dots" w="14" h="16" />
       Share
     </button>

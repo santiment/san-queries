@@ -1,23 +1,22 @@
-import type { PageLoad } from '../../$types'
-
-import { queryGetSqlQuery } from '$lib/api/query/get'
 import { redirect } from '@sveltejs/kit'
-
-import { getIdFromSEOLink } from 'webkit/utils/url'
+import { getIdFromSEOLink } from 'san-webkit/lib/utils/url'
+import { UniQuery } from '$lib/api/index.js'
+import { queryGetSqlQuery } from './api.js'
 
 export const ssr = false
 
-export const load: PageLoad = async (event) => {
-  const { slug } = event.params
+export const load = async (event) => {
+  const { slug = 'new' } = event.params
 
   if (slug === 'new') return
 
   const queryId = getIdFromSEOLink(slug)
+
   if (Number.isInteger(queryId) === false) {
     throw redirect(302, '/query/new')
   }
 
-  const apiQuery = await queryGetSqlQuery(queryId, event as App.RequestEvent)
+  const apiQuery = await queryGetSqlQuery(UniQuery(event.fetch))(queryId)
 
   return {
     apiQuery,

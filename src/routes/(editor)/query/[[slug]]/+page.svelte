@@ -1,180 +1,60 @@
 <script lang="ts">
   import type { PageData } from './$types'
+  import type { ComponentProps } from 'svelte'
 
-  import { onMount, setContext, tick } from 'svelte'
-  import { queryGetSqlQuery } from '$lib/api/query/get'
-  import { mutateUpdateSqlQuery } from '$lib/api/query/update'
-  import { GlobalShortcut$ } from 'webkit/utils/events'
-  import { getTimeFormats } from 'webkit/utils/dates'
-  import { getCurrentUser$Ctx } from 'webkit/stores/user'
-  import { QueryHead } from '$lib/EntityHead'
-  import QueryEditor, { TABS } from '$lib/QueryEditor/index.svelte'
-  import { showNameDescriptionDialog } from '$lib/QueryEditor/NameDescriptionDialog/index.svelte'
-  import { QueryEditor$$ } from '../ctx'
-  import { startSaveQueryFlow, startUpdateQueryEditorFlow } from '../flow'
+  import { ss, ssd, useStore } from 'svelte-runes'
+  import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
+  import { GlobalShortcut$ } from 'san-webkit/lib/utils/events'
+  import QueryEditor from '$lib/QueryEditor/QueryEditor.svelte'
+  import { useSaveIndicatorCtx } from '$lib/SaveIndicator/index.svelte'
+  import { useChangeIndicatorCtx } from '$lib/ChangeIndicator'
+  import { useQueryDuplicateFlow } from '$lib/QueryEditor/flow/duplicate.svelte'
+  import { useQueryDeleteFlow } from '$lib/QueryEditor/flow/delete.svelte'
   import {
-    EventQuerySave$,
-    EventQueryChanged$,
-    EventQuerySaved$,
-    EventSavingState$,
-    EventAutoSave$,
-  } from '../events'
-  import { saveEditorState } from '$lib/SQLEditor/utils'
-  import { page } from '$app/stores'
-  import { BROWSER } from 'esm-env'
+    useAutoSaveFlow,
+    useSaveEmptyFlow,
+    useSaveFlow,
+  } from '$lib/QueryEditor/flow/autoSave.svelte'
 
-  export let data: PageData
-
-  let defaultSql = ''
-
+  let { data }: { data: PageData } = $props()
   const { currentUser$ } = getCurrentUser$Ctx()
-  const { queryEditor$ } = QueryEditor$$(data.apiQuery, defaultSql)
+  const _saveIndicatorCtx = useSaveIndicatorCtx()
+  const changeIndicatorCtx = useChangeIndicatorCtx()
+  const QueryEditorRef = ss<QueryEditor>()
+  const apiQuery = ssd(() => data.apiQuery)
 
-  let QueryEditorNode: QueryEditor
+  $inspect(data)
 
-  $: currentUser = $currentUser$
-  $: ({ apiQuery } = data)
-  $: updateQuery(apiQuery)
-  $: author = apiQuery?.user || currentUser
-  $: isAuthor = currentUser?.id === author?.id
+  let currentUser = $currentUser$
+  let isAuthor = ssd(() => (apiQuery.$ ? +apiQuery.$.user.id === +currentUser?.id! : true))
 
-  function updateQuery(apiQuery: any) {
-    const query = $queryEditor$.query
-    if (query?.id === apiQuery?.id) return
+  useAutoSaveFlow(QueryEditorRef, isAuthor)
+  const { saveQuery } = useSaveFlow(QueryEditorRef, isAuthor)
+  const { saveEmptyQuery } = useSaveEmptyFlow(apiQuery, QueryEditorRef)
+  const { onDuplicateClick } = useQueryDuplicateFlow(apiQuery, QueryEditorRef)
+  const { onDeleteClick } = useQueryDeleteFlow(apiQuery)
 
-    tick().then(() => queryEditor$.setApiQuery(apiQuery))
-  }
+  useStore(GlobalShortcut$('CMD+S', () => saveQuery(), false))
 
-  function onSave(queryEditor = $queryEditor$, isPublic?: boolean, isForced = false) {
-    if (!isAuthor) return
+  const onSqlChange: NonNullable<ComponentProps<QueryEditor>['onSqlChange']> = (
+    saveEditorState,
+  ) => {
+    if (apiQuery.$) return changeIndicatorCtx.emit.changed()
 
-    const isNew = !queryEditor.query
-
-    EventSavingState$.dispatch({ state: 'start' })
-
-    startSaveQueryFlow(queryEditor, isPublic, isForced)
-      .then((apiQuery) => {
-        if (isNew) {
-          const editor = QueryEditorNode?.getEditor()
-          saveEditorState(editor, apiQuery.id)
-        }
-
-        startUpdateQueryEditorFlow(queryEditor$, apiQuery)
-
-        queryGetSqlQuery(apiQuery.id).then((data) => Object.assign(data, apiQuery))
-
-        EventQuerySaved$.dispatch(apiQuery)
-        EventSavingState$.dispatch({ state: 'success' })
-      })
-      .catch(() => {
-        EventSavingState$.dispatch({ state: 'hidden' })
-      })
-  }
-
-  function onQueryExecute(promise: any) {
-    promise
-      .then(() => {
-        QueryEditorNode.$set({ tab: TABS[1] })
-      })
-      .catch((error) => {
-        const errors = Array.isArray(error) ? error : [error]
-
-        errors.forEach((error) => {
-          const { message, details = message } = error
-          const { HH, mm, ss } = getTimeFormats(new Date())
-
-          queryEditor$.addError({
-            date: `${HH}:${mm}:${ss}`,
-            details: details.replace('FORMAT JSONCompact', '').trim(),
-          })
-        })
-
-        QueryEditorNode.$set({ tab: TABS[2] })
-      })
-      .finally(() => {
-        quickSave()
-      })
-  }
-
-  function onQueryNameClick() {
-    if (!isAuthor) return
-
-    const queryEditor = $queryEditor$
-    showNameDescriptionDialog({ queryEditor }).then((updated) => {
-      // const { id } = queryEditor.query || {}
-
-      queryEditor.name = updated.name
-      queryEditor.description = updated.description
-
-      queryEditor$.set(queryEditor)
-
-      quickSave(false, updated.isPublic)
-      // if (id) {
-      // EventQueryChanged$.dispatch({ ...updated, id })
-      // }
-      // onSave({ ...queryEditor, ...updated }, updated.isPublic)
-    })
-  }
-
-  function quickSave(isForced = false, isPublic = undefined) {
-    EventQuerySave$.dispatch()
-
-    onSave(undefined, isPublic, isForced)
-  }
-  setContext('quickSave', quickSave)
-
-  const saveShortcut = GlobalShortcut$('CMD+S', () => quickSave(true), false)
-  $saveShortcut
-
-  const eventQueryChanged = EventQueryChanged$((variables) => {
-    mutateUpdateSqlQuery(variables)
-  })
-  $eventQueryChanged
-
-  const eventAutoSave = EventAutoSave$(() => $queryEditor$.name && quickSave())
-  $eventAutoSave
-
-  $: if (BROWSER) parseSharedData($page)
-
-  function parseSharedData(page: any) {
-    const sharedData = page.url.searchParams.get('data')
-
-    if (!sharedData) return
-
-    try {
-      const data = JSON.parse(sharedData)
-
-      queryEditor$.setApiQuery({
-        name: data.name,
-        sqlQueryText: data.sql,
-        sqlQueryParameters: data.parameters,
-      })
-
-      window.history.replaceState(history.state, '', '/query/new')
-
-      const editor = QueryEditorNode?.getEditor()
-      if (!editor) return
-
-      editor.setValue(data.sql)
-    } catch (e) {
-      console.error(e)
-    }
+    return saveEmptyQuery(saveEditorState)
   }
 </script>
 
-<main class="column relative">
-  <QueryHead {author} {isAuthor} {onQueryExecute} {quickSave} on:click={onQueryNameClick} />
-
-  <slot />
-
-  <QueryEditor readonly={!isAuthor} bind:this={QueryEditorNode} />
-</main>
-
-<style>
-  main {
-    flex: 1;
-    padding: 0 24px;
-    min-width: 0;
-    height: calc(100vh - 65px);
-  }
-</style>
+{#key apiQuery.$?.id}
+  <QueryEditor
+    bind:this={QueryEditorRef.$}
+    query={apiQuery.$}
+    {currentUser}
+    isAuthor={isAuthor.$}
+    {onDuplicateClick}
+    {onDeleteClick}
+    {onSqlChange}
+    onSaveClick={saveQuery}
+    onParametersChange={() => changeIndicatorCtx.emit.changed()}
+  ></QueryEditor>
+{/key}

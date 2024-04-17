@@ -1,89 +1,98 @@
 <script context="module" lang="ts">
-  import { dialogs } from 'webkit/ui/Dialog'
+  import { dialogs } from 'san-webkit/lib/ui/Dialog'
   import Component from './index.svelte'
 
-  export const showNameDescriptionDialog = (props: any) =>
-    dialogs.__show(Component, { ...props, strict: true })
+  export const showNameDescriptionDialog$ = () => dialogs.__WithCtx(Component)
 </script>
 
 <script lang="ts">
-  import { BROWSER } from 'esm-env'
-  import { onDestroy } from 'svelte'
-  import { track } from 'webkit/analytics'
-  import Dialog from 'webkit/ui/Dialog'
-  import Toggle from 'webkit/ui/Toggle.svelte'
-  import Control from '$lib/QueryEditor/Visualisation/Control.svelte'
+  import { track } from 'san-webkit/lib/analytics'
+  import Dialog from 'san-webkit/lib/ui/Dialog'
+  import Toggle from 'san-webkit/lib/ui/Toggle.svelte'
+  import * as Field from '$lib/ui/Field'
+  import Button from '$lib/ui/Button.svelte'
+  import { useChangeIndicatorCtx } from '$lib/ChangeIndicator'
   import AIButton from './AIButton.svelte'
+  import { useQueryEditorCtx } from '../ctx'
 
-  export let queryEditor: App.QueryEditorStoreValue
-  export let DialogCtx: SAN.Dialog.Ctx
-  export let isAuthor = true
+  let { DialogCtx, isAuthor = false, ...rest }: { DialogCtx: any; isAuthor?: boolean } = $props()
 
-  const query = queryEditor.query as App.ApiQuery
+  const { queryEditor } = useQueryEditorCtx()
+  const changeIndicatorCtx = useChangeIndicatorCtx()
 
-  const { sql } = queryEditor
-  let { name, description } = queryEditor
-  let { isPublic } = query || {}
+  const sql = queryEditor.sql.$
+
+  let name = $state(queryEditor.name.$)
+  let description = $state(queryEditor.description.$)
+  let isPublic = $state(queryEditor.isPublic.$)
 
   function onUpdateClick() {
+    queryEditor.name.$ = name.trim()
+    queryEditor.description.$ = description.trim()
+    queryEditor.isPublic.$ = isPublic
+
+    changeIndicatorCtx.emit.changed()
+
     DialogCtx.resolve({ name, description, isPublic })
     DialogCtx.close()
   }
 
-  track.event('query_title_description_dialog_open', {
-    category: 'General',
+  $effect(() => {
+    track.event('query_title_description_dialog_open', {
+      category: 'General',
+      source_url: window.location.href,
+    })
 
-    source_url: window.location.href,
-  })
-
-  onDestroy(() => {
-    if (BROWSER) {
+    return () => {
       track.event('query_title_description_dialog_close', {
         category: 'General',
-
         source_url: window.location.href,
       })
     }
   })
 </script>
 
-<Dialog {...$$props} title="Update query">
-  <div class="dialog-body column gap-l">
-    <Control
+<Dialog {...rest} {DialogCtx} title="Update query" class="w-[480px]">
+  <div class="dialog-body flex flex-col gap-4">
+    <Field.Input
+      id="query-name"
       name="Name"
       value={name}
       placeholder="Name of the query"
-      onUpdate={(value) => (name = value)}
+      oninput={({target}) => name = (target as HTMLInputElement).value}
     >
-      <AIButton
-        slot="label"
-        {sql}
-        label="Name query using AI"
-        onSuggestion={(data) => {
-          name = data.title
-        }}
-      />
-    </Control>
+      {#snippet labelSlot()}
+        <AIButton
+          {sql}
+          label="Name query using AI"
+          onSuggestion={(data) => {
+            name = data.title
+          }}
+        />
+      {/snippet}
+    </Field.Input>
 
-    <Control
+    <Field.Input
+      id="query-description"
       textarea
       name="Description"
       value={description}
-      onUpdate={(value) => (description = value)}
+      oninput={({target}) => description = (target as HTMLInputElement).value}
     >
-      <AIButton
-        slot="label"
-        {sql}
-        label="Describe query using AI"
-        onSuggestion={(data) => {
-          description = data.description
-        }}
-      />
-    </Control>
+      {#snippet labelSlot()}
+        <AIButton
+          {sql}
+          label="Describe query using AI"
+          onSuggestion={(data) => {
+            description = data.description
+          }}
+        />
+      {/snippet}
+    </Field.Input>
 
-    <actions class="row gap-l mrg-l mrg--t">
+    <actions class="mt-4 flex gap-4">
       <button class="btn-1" on:click={onUpdateClick} class:disabled={false}> Update </button>
-      <button class="btn-2" on:click={() => DialogCtx.close()}>Cancel</button>
+      <Button variant="border" onclick={() => DialogCtx.close()}>Cancel</Button>
 
       {#if isAuthor && isPublic !== undefined}
         <button class="btn mrg-a mrg--l row v-center" on:click={() => (isPublic = !isPublic)}>
@@ -94,9 +103,3 @@
     </actions>
   </div>
 </Dialog>
-
-<style lang="scss">
-  Dialog {
-    width: 480px;
-  }
-</style>

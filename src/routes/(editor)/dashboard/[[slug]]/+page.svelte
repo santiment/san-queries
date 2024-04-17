@@ -1,112 +1,46 @@
 <script lang="ts">
   import type { PageData } from './$types'
 
-  import { tick } from 'svelte'
-  import { getCurrentUser$Ctx } from 'webkit/stores/user'
-  import { GlobalShortcut$ } from 'webkit/utils/events'
-  import { DashboardHead } from '$lib/EntityHead'
-  import DashboardEditor from '$lib/DashboardEditor/index.svelte'
-  import { DashboardEditor$$ } from './ctx'
-  import { startDashboardSaveFlow } from './flow'
-  import { getSEOLinkFromIdAndTitle } from 'san-webkit/lib/utils/url'
-  import {
-    EventAutoSave$,
-    EventDashboardChanged$,
-    EventDashboardSaved$,
-    EventSavingState$,
-  } from '$routes/(editor)/query/events'
-  import { mutateUpdateDashboard } from '$lib/api/dashboard/create'
-  import { getDateFormats, getTimeFormats } from 'san-webkit/lib/utils/dates'
+  import { ss, ssd, useStore } from 'svelte-runes'
+  import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
+  import { GlobalShortcut$ } from 'san-webkit/lib/utils/events'
+  import Dashboard from '$lib/Dashboard/Dashboard.svelte'
+  import { useSaveIndicatorCtx } from '$lib/SaveIndicator/index.svelte'
+  import { useChangeIndicatorCtx } from '$lib/ChangeIndicator'
+  import { useDashboardDuplicateFlow } from '$lib/Dashboard/flow/duplicate'
+  import { useAutoSaveFlow, useSaveEmptyFlowCtx, useSaveFlow } from '$lib/Dashboard/flow/save'
+  import { useDashboardDeleteFlow } from '$lib/Dashboard/flow/delete'
 
-  export let data: PageData
+  let { data }: { data: PageData } = $props()
 
+  const apiDashboard = ssd(() => data.apiDashboard)
   const { currentUser$ } = getCurrentUser$Ctx()
-  const { dashboardEditor$ } = DashboardEditor$$(data.apiDashboard)
+  const changeIndicatorCtx = useChangeIndicatorCtx()
+  const _saveIndicatorCtx = useSaveIndicatorCtx()
+  const EditorRef = ss<Dashboard>()
 
-  $: dashboardEditor = $dashboardEditor$
-  $: ({ dashboard } = dashboardEditor)
-  $: author = dashboard?.user || $currentUser$
-  $: isAuthor = author?.id === $currentUser$?.id
+  $inspect(data)
 
-  $: updateDashboard(data.apiDashboard)
+  let currentUser = $currentUser$
+  let isAuthor = ssd(() => (apiDashboard.$ ? +apiDashboard.$.user.id === +currentUser?.id! : true))
 
-  function updateDashboard(apiDashboard: (typeof data)['apiDashboard']) {
-    if (dashboard?.id === apiDashboard?.id) return
+  useAutoSaveFlow(EditorRef, isAuthor)
+  const { saveEmptyDashboard } = useSaveEmptyFlowCtx(apiDashboard)
+  const { saveDashboard } = useSaveFlow(EditorRef, isAuthor)
+  const { onDuplicateClick } = useDashboardDuplicateFlow(apiDashboard)
+  const { onDeleteClick } = useDashboardDeleteFlow(apiDashboard)
 
-    tick().then(() => dashboardEditor$.setApiDashboard(apiDashboard))
-  }
-
-  function saveDashboard(isForced = false) {
-    EventSavingState$.dispatch({ state: 'start' })
-
-    if (!dashboardEditor.name) {
-      const now = new Date()
-      const { DD, MMM, YYYY } = getDateFormats(now)
-      const { HH, mm } = getTimeFormats(now)
-
-      dashboardEditor.name = `${MMM} ${DD}, ${YYYY}, ${HH}:${mm}`
-    }
-
-    if (dashboardEditor.isLegacy) {
-      console.log(dashboardEditor)
-      return
-    }
-
-    startDashboardSaveFlow(dashboardEditor, isForced)
-      .then((apiDashboard) => {
-        console.log(apiDashboard)
-
-        data.apiDashboard = apiDashboard
-
-        if (dashboardEditor.dashboard?.id !== apiDashboard.id) {
-          dashboardEditor$.setApiDashboard(apiDashboard)
-        }
-
-        EventDashboardSaved$.dispatch(apiDashboard)
-
-        window.history.replaceState(
-          '',
-          history.state,
-          '/dashboard/' + getSEOLinkFromIdAndTitle(apiDashboard.id, apiDashboard.name),
-        )
-
-        EventSavingState$.dispatch({ state: 'success' })
-      })
-      .catch(() => {
-        EventSavingState$.dispatch({ state: 'hidden' })
-      })
-  }
-
-  const saveShortcut = GlobalShortcut$('CMD+S', () => saveDashboard(true), false)
-  $saveShortcut
-
-  const eventDashboardChanged = EventDashboardChanged$(({ id, name, description }) => {
-    if (name !== undefined) dashboardEditor.name = name
-    if (description !== undefined) dashboardEditor.description = description
-
-    dashboardEditor$.set(dashboardEditor)
-
-    saveDashboard(!id)
-  })
-  $eventDashboardChanged
-
-  const eventAutoSave = EventAutoSave$(() => saveDashboard())
-  $eventAutoSave
+  useStore(GlobalShortcut$('CMD+S', () => saveDashboard(), false))
 </script>
 
-<main class="column">
-  <DashboardHead {dashboard} {author} {saveDashboard} />
-
-  <DashboardEditor {isAuthor} />
-</main>
-
-<style>
-  main {
-    flex: 1;
-    padding: 0 24px;
-  }
-
-  DashboardEditor {
-    padding-top: 0 !important;
-  }
-</style>
+{#key apiDashboard.$?.id}
+  <Dashboard
+    bind:this={EditorRef.$}
+    dashboard={apiDashboard.$}
+    isAuthor={isAuthor.$}
+    {currentUser}
+    {onDuplicateClick}
+    {onDeleteClick}
+    onLayoutChange={() => changeIndicatorCtx.emit.changed()}
+  ></Dashboard>
+{/key}

@@ -1,35 +1,21 @@
 import { sveltekit } from '@sveltejs/kit/vite'
-import basicSsl from '@vitejs/plugin-basic-ssl'
 import { defineConfig } from 'vitest/config'
 import { execSync } from 'node:child_process'
 
 const mode = process.env.NODE_ENV
 const dev = mode !== 'production'
 
-process.env.MEDIA_PATH = '/webkit'
-process.env.ICONS_PATH = process.env.MEDIA_PATH + '/icons'
+const BACKEND_URL = process.env.BACKEND_URL || 'https://api.santiment.net'
+const GQL_SERVER_FALLBACK = BACKEND_URL + '/graphql'
 
-// const BACKEND_URL = process.env.BACKEND_URL || 'https://api.santiment.net'
-
-const BACKEND_URL = process.env.BACKEND_URL || 'https://api-stage.santiment.net'
-process.env.BACKEND_URL = BACKEND_URL
-
-const GQL_SERVER_FALLBACK = process.env.BACKEND_URL + '/graphql'
-
-const IS_STAGE_BACKEND = process.env.BACKEND_URL.includes('-stage')
+const IS_STAGE_BACKEND = BACKEND_URL.includes('-stage')
 const IS_PROD_BACKEND = !IS_STAGE_BACKEND
 
 const GIT_HEAD =
   process.env.GIT_HEAD || execSync('git rev-parse HEAD').toString().trim().slice(0, 7)
 
-const aliases = [
-  { find: 'san-webkit', replacement: '/node_modules/san-webkit/' },
-  { find: 'san-studio', replacement: '/node_modules/san-studio/' },
-]
-
 export default defineConfig({
-  plugins: [dev && process.argv.includes('--https') && basicSsl(), sveltekit()],
-
+  plugins: [sveltekit()],
   test: {
     include: ['src/**/*.{test,spec}.{js,ts}'],
   },
@@ -38,41 +24,22 @@ export default defineConfig({
     port: 3000,
   },
 
-  resolve: {
-    alias: [
-      { find: 'webkit', replacement: '/node_modules/san-webkit/lib/' },
-      { find: 'studio', replacement: '/node_modules/san-studio/lib/' },
-    ].concat(aliases),
-  },
-
   define: {
-    'process.browser': false,
-
     'process.env.NODE_ENV': mode === 'production' ? '"production"' : '"development"',
     'process.env.IS_DEV_MODE': dev,
     'process.env.IS_PROD_MODE': !dev,
 
-    'process.env.MEDIA_PATH': JSON.stringify(process.env.MEDIA_PATH),
-    'process.env.ICONS_PATH': JSON.stringify(process.env.ICONS_PATH),
-
-    'process.env.BACKEND_URL': JSON.stringify(process.env.BACKEND_URL),
+    'process.env.MEDIA_PATH': JSON.stringify('/webkit'),
+    'process.env.BACKEND_URL': JSON.stringify(BACKEND_URL),
     'process.env.GQL_SERVER_URL': JSON.stringify(GQL_SERVER_FALLBACK),
+    'process.env.NODE_GQL_SERVER_URL': JSON.stringify(process.env.NODE_GQL_SERVER_URL),
 
     'process.env.IS_STAGE_BACKEND': IS_STAGE_BACKEND,
     'process.env.IS_PROD_BACKEND': IS_PROD_BACKEND,
 
     'process.env.API_FETCH_ORIGIN': JSON.stringify('https://app.santiment.net'),
-    // 'process.env.SANBASE_ORIGIN': JSON.stringify(''),
 
     'process.env.GIT_HEAD': JSON.stringify(GIT_HEAD),
-    'process.env.VERSION': JSON.stringify('2.0-' + GIT_HEAD),
-  },
-
-  clientDefines: {
-    'process.browser': true,
-  },
-
-  serverDefines: {
-    'process.env.GQL_SERVER_URL': JSON.stringify(process.env.GQL_SERVER_URL || GQL_SERVER_FALLBACK),
+    'process.env.VERSION': JSON.stringify('2.5-' + GIT_HEAD),
   },
 })

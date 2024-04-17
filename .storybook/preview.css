@@ -1,4 +1,0 @@
-#storybook-root:not([hidden]) {
-  display: flex;
-  flex-direction: column;
-}

@@ -1,7 +1,7 @@
 import { getContext, setContext } from 'svelte'
 import { goto } from '$app/navigation'
-import { notifications$ } from 'webkit/ui/Notifications'
-import { ethLoginMutation } from 'webkit/api/login'
+import { notifications$ } from 'san-webkit/lib/ui/Notifications'
+import { ethLoginMutation } from 'san-webkit/lib/api/login'
 import { CURRENT_USER_FRAGMENT } from 'san-webkit/lib/stores/user'
 
 const CTX = 'authCtx'
@@ -26,7 +26,23 @@ export function startEthLoginFlow(currentUser$: SAN.CurrentUserStore) {
         title: 'You are logged in!',
       })
 
-      goto('/query/new')
+      try {
+        const from = new URLSearchParams(window.location.search).get('from')
+
+        let successRedirect = '/'
+
+        if (from) {
+          const url = new URL(from)
+
+          if (url.hostname.endsWith('.santiment.net')) {
+            successRedirect = url.pathname
+          }
+        }
+
+        goto(successRedirect)
+      } catch (e) {
+        goto('/query/new')
+      }
 
       // trackSignupLogin(user.firstLogin, LoginType.METAMASK)
 

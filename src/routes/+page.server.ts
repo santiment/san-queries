@@ -1,7 +1,5 @@
-import type { PageServerLoad } from './$types'
-
 import { redirect } from '@sveltejs/kit'
 
-export const load: PageServerLoad = async ({ url }) => {
+export const load = async ({ url }) => {
   throw redirect(302, `/query/new${url.search}`)
 }

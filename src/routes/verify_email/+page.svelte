@@ -1,8 +1,8 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
-  import { mutate } from 'webkit/api'
-  import { getCurrentUser$Ctx } from 'webkit/stores/user'
-  import { notifications$ } from 'webkit/ui/Notifications'
+  import { mutate } from 'san-webkit/lib/api'
+  import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
+  import { notifications$ } from 'san-webkit/lib/ui/Notifications'
 
   export let data: import('./$types').PageData
 

@@ -1,12 +1,12 @@
 <script lang="ts">
-  import type { CurrentUserType } from 'webkit/stores/user'
+  import type { CurrentUserType } from 'san-webkit/lib/stores/user'
 
   import { BROWSER } from 'esm-env'
-  import { getCurrentUser$Ctx } from 'webkit/stores/user'
-  import { updateAmplitude } from 'webkit/analytics/amplitude'
-  import { startLinksListener } from 'webkit/analytics/links'
-  import { trackPageView } from 'webkit/analytics/events/general'
-  import { parseAuthSearchParams } from 'webkit/utils/auth'
+  import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
+  import { updateAmplitude } from 'san-webkit/lib/analytics/amplitude'
+  import { startLinksListener } from 'san-webkit/lib/analytics/links'
+  import { trackPageView } from 'san-webkit/lib/analytics/events/general'
+  import { parseAuthSearchParams } from 'san-webkit/lib/utils/auth'
   import { page } from '$app/stores'
   import { trackSignupLogin } from '$lib/utils/analytics'
 
