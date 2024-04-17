@@ -1,10 +1,10 @@
-# Svelte project template
+# san-queries
 
 ## Requirements
 
 Following tools should be pre-installed:
 
-- [Node.js](https://nodejs.org/en/) >= v16.18.0 – JavaScript runtime environment
+- [Node.js](https://nodejs.org/en/) >= v20.10.0 – JavaScript runtime environment
 - [pnpm](https://pnpm.io/) >= v7.x – package manager
 
 ## Installation
