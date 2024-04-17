@@ -4,6 +4,7 @@
   import Cell from './Cell.svelte'
   import HCell from './HCell.svelte'
   import { useTableSort, type Column, type TSortController } from './state.svelte'
+  import Pagination, { useTablePagination } from './Pagination'
   import { useTableFilter } from './Filter/state.svelte'
   import { cn } from '../utils'
 
@@ -30,7 +31,8 @@
     sorted,
     onSortClick,
   } = useTableSort({ ...sortedDefaults, sortController, data, onSortClick: _onSortClick })
-  let { rows } = useTableFilter({ data: sortedRows, columns })
+  let { rows: filteredRows } = useTableFilter({ data: sortedRows, columns })
+  let { rows, page, pageSize } = useTablePagination(filteredRows)
 </script>
 
 <paged-table class={cn('block flex-1 overflow-auto')}>
@@ -68,4 +70,5 @@
     </tbody>
   </Table>
 </paged-table>
-<section class="flex gap-4 text-nowrap"></section>
+
+<Pagination totalItems={filteredRows.$.length} {page} {pageSize}></Pagination>

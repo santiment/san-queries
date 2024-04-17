@@ -302,6 +302,11 @@ loading-spin,
   display: none;
 }
 
+input,
+textarea {
+  color: var(--black);
+  background: var(--white);
+}
 input::placeholder,
 textarea::placeholder {
   color: var(--casper);
