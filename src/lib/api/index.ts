@@ -25,12 +25,9 @@ export const RxQuery = <T>(
     map((result) => {
       const { data, error, errors } = result.response as { data: T[]; error?: any; errors?: any }
 
-      // TODO: Remove after reporting createDashboardQuery issue to Ivan
-      if (!data) {
-        const queryError = error || errors
+      const queryError = error || errors
 
-        if (queryError) throw queryError
-      }
+      if (queryError) throw queryError
 
       return options?.map ? options.map(data) : data
     }),

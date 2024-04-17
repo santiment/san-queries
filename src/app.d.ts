@@ -17,20 +17,20 @@ declare global {
     // interface PageData {}
     // interface Platform {}
     //
-  }
 
-  type Empty<T> = null | undefined | T
+    type Empty<T> = null | undefined | T
 
-  type Author = {
-    id: number
-    username?: App.Empty<string>
-    avatarUrl?: App.Empty<string>
-  }
+    type Author = {
+      id: number
+      username?: App.Empty<string>
+      avatarUrl?: App.Empty<string>
+    }
 
-  type SqlData = {
-    columns: string[]
-    columnTypes: string[]
-    rows: (number | string | null)[][]
+    type SqlData = {
+      columns: string[]
+      columnTypes: string[]
+      rows: (number | string | null)[][]
+    }
   }
 
   interface Window {

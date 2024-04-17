@@ -35,8 +35,8 @@ dependencies:
     specifier: ^7.8.1
     version: 7.8.1
   san-webkit:
-    specifier: github:santiment/san-webkit#cb29444
-    version: github.com/santiment/san-webkit/cb29444(@types/gtag.js@0.0.4)(@types/medium-editor@5.0.8)(@types/stripe-v3@3.1.33)(ethers@5.7.2)(marked@6.0.0)(medium-editor@5.23.3)(node-fetch@2.7.0)(react-dom@18.2.0)(react@18.2.0)(svelte@5.0.0-next.99)(turndown@7.1.3)
+    specifier: github:santiment/san-webkit#15afa8a
+    version: github.com/santiment/san-webkit/15afa8a(@types/gtag.js@0.0.4)(@types/medium-editor@5.0.8)(@types/stripe-v3@3.1.33)(ethers@5.7.2)(marked@6.0.0)(medium-editor@5.23.3)(node-fetch@2.7.0)(react-dom@18.2.0)(react@18.2.0)(svelte@5.0.0-next.99)(turndown@7.1.3)
   svelte-runes:
     specifier: ^0.0.3
     version: 0.0.3(svelte@5.0.0-next.99)
@@ -9682,9 +9682,9 @@ packages:
       typescript: 5.4.5
     dev: true
 
-  github.com/santiment/san-webkit/cb29444(@types/gtag.js@0.0.4)(@types/medium-editor@5.0.8)(@types/stripe-v3@3.1.33)(ethers@5.7.2)(marked@6.0.0)(medium-editor@5.23.3)(node-fetch@2.7.0)(react-dom@18.2.0)(react@18.2.0)(svelte@5.0.0-next.99)(turndown@7.1.3):
-    resolution: {tarball: https://codeload.github.com/santiment/san-webkit/tar.gz/cb29444}
-    id: github.com/santiment/san-webkit/cb29444
+  github.com/santiment/san-webkit/15afa8a(@types/gtag.js@0.0.4)(@types/medium-editor@5.0.8)(@types/stripe-v3@3.1.33)(ethers@5.7.2)(marked@6.0.0)(medium-editor@5.23.3)(node-fetch@2.7.0)(react-dom@18.2.0)(react@18.2.0)(svelte@5.0.0-next.99)(turndown@7.1.3):
+    resolution: {tarball: https://codeload.github.com/santiment/san-webkit/tar.gz/15afa8a}
+    id: github.com/santiment/san-webkit/15afa8a
     name: san-webkit
     version: 0.0.1
     peerDependencies:

@@ -78,7 +78,7 @@
     "monaco-editor": "^0.47.0",
     "prettier-plugin-tailwindcss": "^0.5.11",
     "rxjs": "^7.8.1",
-    "san-webkit": "github:santiment/san-webkit#cb29444",
+    "san-webkit": "github:santiment/san-webkit#15afa8a",
     "svelte-runes": "^0.0.3",
     "tailwind-merge": "^2.2.1",
     "ua-parser-js": "^1.0.37",
