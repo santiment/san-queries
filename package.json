@@ -15,7 +15,8 @@
   },
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build",
+    "build": "npm run webkit && npm run get-schema && vite build",
+    "get-schema": "node scripts/schema.js --run",
     "preview": "vite preview",
     "test": "npm run test:integration && npm run test:unit",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
