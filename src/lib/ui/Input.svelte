@@ -4,12 +4,14 @@
   import { cn } from './utils'
 
   let {
+    class: className,
     type = 'text',
     placeholder = '',
     icon,
     iconSize,
     ...rest
   }: HTMLInputAttributes & {
+    class?: string
     type?: 'text' | 'number'
     placeholder?: string
     icon?: string
@@ -18,10 +20,10 @@
 </script>
 
 <div
-  class="relative flex items-center rounded border fill-casper
- focus-within:border-green focus-within:fill-green
- hover:border-green
-  "
+  class={cn(
+    'relative flex items-center rounded border bg-white fill-casper focus-within:border-green focus-within:fill-green hover:border-green',
+    className,
+  )}
 >
   {#if icon}
     <Svg id={icon} w={iconSize} class="absolute left-2.5"></Svg>
@@ -31,6 +33,6 @@
     {...rest}
     {type}
     {placeholder}
-    class={cn('w-full rounded py-[5px] pl-2.5 pr-3 outline-none', icon && 'pl-8')}
+    class={cn('w-full rounded bg-transparent py-[5px] pl-2.5 pr-3 outline-none', icon && 'pl-8')}
   />
 </div>
