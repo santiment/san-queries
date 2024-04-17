@@ -1,7 +1,8 @@
 import { redirect } from '@sveltejs/kit'
 import { getIdFromSEOLink } from 'san-webkit/lib/utils/url'
 import { UniQuery } from '$lib/api/index.js'
-import { queryGetSqlQuery } from './api.js'
+import { queryGetSqlQuery } from './api'
+import { gotoQueryPage } from './utils'
 
 export const ssr = false
 
@@ -16,7 +17,11 @@ export const load = async (event) => {
     throw redirect(302, '/query/new')
   }
 
-  const apiQuery = await queryGetSqlQuery(UniQuery(event.fetch))(queryId)
+  const preloaded = gotoQueryPage.get()
+  const apiQuery =
+    preloaded?.apiQuery === undefined
+      ? await queryGetSqlQuery(UniQuery(event.fetch))(queryId)
+      : preloaded?.apiQuery
 
   return {
     apiQuery,

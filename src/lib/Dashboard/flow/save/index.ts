@@ -8,7 +8,8 @@ import { useSaveIndicatorCtx } from '$lib/SaveIndicator/index.svelte'
 import { useObserveFnCall } from '$lib/ui/utils/state.svelte'
 import { useChangeIndicatorCtx } from '$lib/ChangeIndicator'
 import { createCtx } from '$lib/ctx'
-import { getPlaceholderName } from '$lib/utils'
+import { getPlaceholderName, replaceSeoLink } from '$lib/utils'
+import { gotoDashboardPage } from '$routes/(editor)/dashboard/[[slug]]/utils'
 
 const createSave$ = (
   dashboardEditor: undefined | App.DashboardEditor,
@@ -20,7 +21,7 @@ const createSave$ = (
     ),
     tap(() => saveIndicatorCtx.emit.saving()),
     mergeMap((dashboard) => mutateUpdateDashboard()(dashboard)),
-    tap(replaceSeoLink),
+    tap((dashboard) => replaceSeoLink('/dashboard/', dashboard.id, dashboard.name)),
 
     delay(1500),
     tap(() => saveIndicatorCtx.emit.success()),
@@ -55,14 +56,6 @@ export function useAutoSaveFlow(EditorRef: SS<DashboardEditor>, isAuthor: SS<boo
   )
 }
 
-function replaceSeoLink(apiQuery: Pick<App.ApiDashboard, 'id' | 'name'>) {
-  window.history.replaceState(
-    history.state,
-    '',
-    '/dashboard/' + getSEOLinkFromIdAndTitle(apiQuery.id, apiQuery.name),
-  )
-}
-
 export const useSaveEmptyFlowCtx = createCtx(
   'useSaveEmptyFlowCtx',
   (apiDashboard?: SS<undefined | App.ApiDashboard>) => {
@@ -78,14 +71,15 @@ export const useSaveEmptyFlowCtx = createCtx(
             name: name || getPlaceholderName(),
             description,
           }).pipe(
-            tap((_apiDashboard) => (apiDashboard!.$ = _apiDashboard)),
-            tap(replaceSeoLink),
+            // tap((_apiDashboard) => (apiDashboard!.$ = _apiDashboard)),
+            tap(changePage),
             tap(onComplete),
           ),
         ),
       ),
     )
 
+    // TODO: Maybe use sveltekit's history state ?
     function postponeAction(action: string) {
       window.NEW_DASHBOARD_POSTPONED = () => {
         delete window.NEW_DASHBOARD_POSTPONED
@@ -98,3 +92,8 @@ export const useSaveEmptyFlowCtx = createCtx(
     return { saveEmptyDashboard, postponeAction, getPostponedAction }
   },
 )
+
+function changePage(apiDashboard: App.ApiDashboard) {
+  const href = '/dashboard/' + getSEOLinkFromIdAndTitle(apiDashboard.id, apiDashboard.name)
+  gotoDashboardPage(href, { apiDashboard })
+}
