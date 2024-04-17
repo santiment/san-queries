@@ -18,7 +18,7 @@ COPY ./ /app
 RUN pnpm i
 RUN pnpm build
 
-FROM node:16
+FROM node:20
 
 COPY --from=builder /app/ /app/
 
