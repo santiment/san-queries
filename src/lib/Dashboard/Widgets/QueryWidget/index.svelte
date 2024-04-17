@@ -90,11 +90,13 @@
     {/if}
 
     {#if sqlData}
-      {#if queryVisualisation === 'Chart'}
-        <Chart {sqlData} settings={columnSettings}></Chart>
-      {:else}
-        <Table {sqlData} settings={columnSettings}></Table>
-      {/if}
+      {#key sqlData}
+        {#if queryVisualisation === 'Chart'}
+          <Chart {sqlData} settings={columnSettings}></Chart>
+        {:else}
+          <Table {sqlData} settings={columnSettings}></Table>
+        {/if}
+      {/key}
     {:else if !isLoading}
       <div class="rounded bg-athens px-5 py-3 text-center">
         <h3 class="text-xl font-bold">No data</h3>
