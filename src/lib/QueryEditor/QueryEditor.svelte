@@ -188,7 +188,9 @@
       {#if selectedTab === TABS[0]}
         <EditorTab {readonly} {onSqlChange}></EditorTab>
       {:else if selectedTab === TABS[1]}
-        <VisualisationTab sqlData={sqlData.$} {readonly}></VisualisationTab>
+        {#key sqlData.$}
+          <VisualisationTab sqlData={sqlData.$} {readonly}></VisualisationTab>
+        {/key}
       {:else}
         <ErrorsTab {errors}></ErrorsTab>
       {/if}
