@@ -2,6 +2,8 @@ import type * as monaco from 'monaco-editor'
 
 import { languages } from 'monaco-editor'
 
+const fetchSchema = (path: string) => fetch(path).then((response) => response.json())
+
 export function getKeywordsSchema(language: monaco.languages.IMonarchLanguage) {
   let sort = 0
   return (language.keywords as string[]).map((word) => ({
@@ -14,7 +16,7 @@ export function getKeywordsSchema(language: monaco.languages.IMonarchLanguage) {
 }
 
 export function getTablesSchema() {
-  return import('$static/schema/tables.json').then(({ default: data }) => {
+  return fetchSchema('/schema/tables.json').then((data) => {
     let sort = 0
     return (data as [string, string][]).map(([name, engine]) => ({
       label: name,
@@ -28,7 +30,7 @@ export function getTablesSchema() {
 }
 
 export function getColumnsSchema() {
-  return import('$static/schema/table-columns.json').then(({ default: data }) => {
+  return fetchSchema('/schema/table-columns.json').then((data) => {
     let sort = 0
     return (data as [string, [string, string][]][])
       .map(([table, columns]) =>
@@ -45,7 +47,7 @@ export function getColumnsSchema() {
 }
 
 export function getFunctionsSchema() {
-  return import('$static/schema/functions.json').then(({ default: data }) => {
+  return fetchSchema('/schema/functions.json').then((data) => {
     let sort = 0
 
     return (data as string[]).map((name) => ({

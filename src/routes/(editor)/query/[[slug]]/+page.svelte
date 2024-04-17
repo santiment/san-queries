@@ -23,14 +23,12 @@
   const QueryEditorRef = ss<QueryEditor>()
   const apiQuery = ssd(() => data.apiQuery)
 
-  $inspect(data)
-
   let currentUser = $currentUser$
   let isAuthor = ssd(() => (apiQuery.$ ? +apiQuery.$.user.id === +currentUser?.id! : true))
 
   useAutoSaveFlow(QueryEditorRef, isAuthor)
   const { saveQuery } = useSaveFlow(QueryEditorRef, isAuthor)
-  const { saveEmptyQuery } = useSaveEmptyFlow(apiQuery, QueryEditorRef)
+  const { saveEmptyQuery } = useSaveEmptyFlow(QueryEditorRef)
   const { onDuplicateClick } = useQueryDuplicateFlow(apiQuery, QueryEditorRef)
   const { onDeleteClick } = useQueryDeleteFlow(apiQuery)
 

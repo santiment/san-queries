@@ -1,7 +1,8 @@
 import { redirect } from '@sveltejs/kit'
 import { getIdFromSEOLink } from 'san-webkit/lib/utils/url'
-import { UniQuery } from '$lib/api/index.js'
-import { queryGetDashboard } from './api.js'
+import { UniQuery } from '$lib/api/index'
+import { queryGetDashboard } from './api'
+import { gotoDashboardPage } from './utils'
 
 export const ssr = false
 
@@ -16,7 +17,11 @@ export const load = async (event) => {
     throw redirect(302, '/dashboard/new')
   }
 
-  const apiDashboard = await queryGetDashboard(UniQuery(event.fetch))(dashboardId)
+  const preloaded = gotoDashboardPage.get()
+  const apiDashboard =
+    preloaded?.apiDashboard === undefined
+      ? await queryGetDashboard(UniQuery(event.fetch))(dashboardId)
+      : preloaded.apiDashboard
 
   return {
     apiDashboard,

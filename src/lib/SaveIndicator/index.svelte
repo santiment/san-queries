@@ -47,7 +47,6 @@
 
   let _state = useObservable(state$)
   let state = $derived(_state.$)
-  $inspect(state)
 </script>
 
 {#if state !== EventType.Hidden}

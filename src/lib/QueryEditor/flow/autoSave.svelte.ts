@@ -7,7 +7,9 @@ import { mutateCreateSqlQuery, mutateUpdateSqlQuery } from '../api'
 import { useChangeIndicatorCtx } from '$lib/ChangeIndicator'
 import { useObserveFnCall } from '$lib/ui/utils/state.svelte'
 import { getSEOLinkFromIdAndTitle } from 'san-webkit/lib/utils/url'
-import { getPlaceholderName } from '$lib/utils'
+import { getPlaceholderName, replaceSeoLink } from '$lib/utils'
+import { goto, preloadData, pushState, replaceState } from '$app/navigation'
+import { gotoQueryPage } from '$routes/(editor)/query/[[slug]]/utils'
 
 const createSave$ = (
   queryEditor: App.QueryEditor,
@@ -17,7 +19,7 @@ const createSave$ = (
     filter((data): data is App.QueryEditor & { id: number } => !!data && !!data.id),
     tap(() => saveIndicatorCtx.emit.saving()),
     mergeMap((query) => mutateUpdateSqlQuery()(query)),
-    tap(replaceSeoLink),
+    tap((query) => replaceSeoLink('/query/', query.id, query.name)),
 
     delay(1500),
     tap(() => saveIndicatorCtx.emit.success()),
@@ -38,10 +40,7 @@ export function useSaveFlow(QueryEditorRef: SS<QueryEditorSvelte>, isAuthor: SS<
   return { saveQuery }
 }
 
-export function useSaveEmptyFlow(
-  apiQuery: SS<undefined | App.ApiQuery>,
-  QueryEditorRef: SS<QueryEditorSvelte>,
-) {
+export function useSaveEmptyFlow(QueryEditorRef: SS<QueryEditorSvelte>) {
   const saveEmptyQuery = useObserveFnCall<(id: number) => void>(() =>
     pipe(
       exhaustMap((saveEditorState) =>
@@ -51,8 +50,7 @@ export function useSaveEmptyFlow(
           isPublic: true,
         }).pipe(
           tap((apiQuery) => saveEditorState(apiQuery.id)),
-          tap((_apiQuery) => (apiQuery.$ = _apiQuery)),
-          tap(replaceSeoLink),
+          tap(changePage),
         ),
       ),
     ),
@@ -74,10 +72,7 @@ export function useAutoSaveFlow(QueryEditorRef: SS<QueryEditorSvelte>, isAuthor:
   )
 }
 
-function replaceSeoLink(apiQuery: Pick<App.ApiQuery, 'id' | 'name'>) {
-  window.history.replaceState(
-    history.state,
-    '',
-    '/query/' + getSEOLinkFromIdAndTitle(apiQuery.id, apiQuery.name),
-  )
+function changePage(apiQuery: App.ApiQuery) {
+  const href = '/query/' + getSEOLinkFromIdAndTitle(apiQuery.id, apiQuery.name)
+  gotoQueryPage(href, { apiQuery })
 }
