@@ -47,12 +47,16 @@
     variant && 'rounded-md px-5 py-1.5',
     variant && icon && 'px-3',
     variant === 'fill' && 'bg-green fill-white-day text-white-day hover:bg-green-hover',
-    variant === 'border' && 'border bg-white py-[5px] hover:border-green hover:fill-green',
+
+    variant === 'border' && 'border bg-white py-[5px]',
+    variant === 'border' && !rest.disabled && 'hover:border-green hover:fill-green',
+
     variant === 'ghost' && 'px-3 hover:bg-athens hover:text-green',
+
     iconOnRight && 'flex-row-reverse',
     !variant && !children && icon && 'size-8 justify-center hover:fill-green',
     explanation && 'expl-tooltip',
-    rest.disabled && 'cursor-not-allowed bg-athens text-mystic hover:bg-athens',
+    rest.disabled && 'cursor-not-allowed bg-athens fill-mystic text-mystic hover:bg-athens',
     className,
   )}
 >

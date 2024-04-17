@@ -45,7 +45,7 @@
     <Field.Select
       name="Chart style"
       options={['Line', 'Bars', 'Area'] as const}
-      value={columnSettings.chartNode ?? 'Line'}
+      value={columnSettings?.chartNode ?? 'Line'}
       onChange={(chartNode) => {
         querySettingsCtx.applyColumnSettings(column, { chartNode })
       }}
@@ -54,7 +54,7 @@
     <Control.Checkbox
       name="visibility"
       {column}
-      value={columnSettings.isHiddenOnChart ?? true}
+      value={columnSettings?.isHiddenOnChart ?? true}
       onChange={(isVisible) => {
         querySettingsCtx.applyColumnSettings(column, { isHiddenOnChart: !isVisible })
       }}

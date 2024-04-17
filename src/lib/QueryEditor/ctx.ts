@@ -31,7 +31,7 @@ export const ColumnSettingsSchema = z
 export const QuerySettingsSchema = z
   .object({
     visualisation: z.enum(['Table', 'Chart']).catch('Table'),
-    columns: z.record(z.string(), ColumnSettingsSchema.catch({})).default({}),
+    columns: z.record(z.string(), ColumnSettingsSchema.optional().catch({})).default({}),
     sort: z.object({ column: z.string(), dir: z.enum(['asc', 'desc']).catch('desc') }).optional(),
   })
   .default({})
