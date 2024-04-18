@@ -62,7 +62,7 @@ export const useDahboardSqlDataCtx = createCtx(
       return of(dashboard).pipe(
         filter((data): data is App.ApiDashboard => !!data?.id),
         switchMap(({ id }) => queryGetCachedDashboardQueriesExecutions()(id)),
-        switchMap((cache) => from(cache).pipe(scanCache$)),
+        switchMap((cache) => (cache.length ? from(cache).pipe(scanCache$) : of({}))),
         tap(setCacheData),
       )
     })
