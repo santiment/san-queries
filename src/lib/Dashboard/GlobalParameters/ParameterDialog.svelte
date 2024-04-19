@@ -50,6 +50,7 @@
 
   function onApproveClick() {
     if (!dashboardEditor.id) return
+    if (dashboardEditor.readonly) return
     if (isLoading) return
 
     isLoading = true
@@ -71,9 +72,9 @@
   }
 </script>
 
-<Dialog {...rest} {DialogCtx} title="{isNew ? 'Edit' : 'Add'} global parameter" class="w-[480px]">
+<Dialog {...rest} {DialogCtx} title="{isNew ? 'Add' : 'Edit'} global parameter" class="w-[480px]">
   <Form bind:parameter {DialogCtx} {isLoading} {onApproveClick}>
-    {#if queries.length}
+    {#if dashboardEditor.isAuthor && queries.length}
       <queries class="flex flex-col gap-4">
         <h3 class="text-base font-medium">
           Link local parameters from queries added to this dashboard

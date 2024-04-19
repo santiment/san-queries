@@ -1,29 +1,28 @@
 <script lang="ts" context="module">
-  const CTX = 'useSelectedRows'
+  import { Set } from 'svelte/reactivity'
+  import { createCtx } from '$lib/ctx'
 
-  export function useSelectedRows() {
+  export const useSelectedRowsCtx = createCtx('useSelectedRowsCtx', () => {
     const selections = new Set<any>()
 
-    return setContext(CTX, { selections })
-  }
-
-  useSelectedRows.getCtx = () => getContext(CTX) as ReturnType<typeof useSelectedRows>
+    return { selections }
+  })
 </script>
 
 <script lang="ts">
   import Checkbox from '$lib/ui/Checkbox'
-  import { getContext, setContext } from 'svelte'
-  import { Set } from 'svelte/reactivity'
+  import { untrack } from 'svelte'
 
   let { row }: { row: any } = $props()
 
-  const { selections } = useSelectedRows.getCtx()
+  const { selections } = useSelectedRowsCtx()
+
+  const onChange = (next: boolean) =>
+    untrack(() => {
+      next ? selections.add(row) : selections.delete(row)
+    })
 </script>
 
 <div class="flex items-center">
-  <Checkbox
-    onChange={(next) => {
-      next ? selections.add(row) : selections.delete(row)
-    }}
-  ></Checkbox>
+  <Checkbox {onChange}></Checkbox>
 </div>
