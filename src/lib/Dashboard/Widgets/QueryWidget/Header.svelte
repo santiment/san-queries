@@ -4,6 +4,7 @@
   import Button from '$lib/ui/Button.svelte'
   import { useDeleteDashboardQueryFlow } from '$lib/Dashboard/flow/widgets'
   import { useDashboardEditorCtx } from '$lib/Dashboard/ctx'
+  import { useDataFlowSqlDataCtx } from '$lib/DataFlow/ctx/sqlData.svelte'
 
   let {
     widget,
@@ -12,6 +13,7 @@
     user,
     readonly = true,
     onRefreshClick,
+    onQueryChangesClick,
   }: {
     widget: App.Dashboard.QueryWidget
     id: number | string
@@ -19,14 +21,12 @@
     user: App.Author
     readonly?: boolean
     onRefreshClick: () => void
+    onQueryChangesClick: () => void
   } = $props()
 
   const { dashboardEditor } = useDashboardEditorCtx()
   const { deleteDashboardQuery } = useDeleteDashboardQueryFlow()
-
-  let promptNewRefresh = false
-  function onPromptRefreshClick() {}
-  function mountPrompt() {}
+  const { changedParameters, mountRefreshPrompt } = useDataFlowSqlDataCtx()
 
   function onDeleteClick() {
     const dashboardId = dashboardEditor.id
@@ -41,21 +41,21 @@
 
   <div class="h-8 border-l"></div>
 
-  <h2 class="mr-auto text-base">
+  <h2 class="single-line mr-auto min-w-0 text-base">
     <a href="/query/{getSEOLinkFromIdAndTitle(id, name)}">{name}</a>
   </h2>
 
-  {#if promptNewRefresh}
+  {#if changedParameters.size > 0}
     <Button
       icon="refresh"
       iconSize={14}
       iconOnRight
       class="rounded-xl p-3 py-1 pr-[9px] transition duration-200 hover:fill-green-hover hover:text-green-hover"
-      onclick={onPromptRefreshClick}
+      onclick={onQueryChangesClick}
     >
       <span
         class="max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300"
-        use:mountPrompt>Query selections</span
+        use:mountRefreshPrompt>Query changes</span
       >
     </Button>
   {:else}
