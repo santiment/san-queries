@@ -12,7 +12,7 @@ export const useDashboardParametersCtx = createCtx(
         parameters.$.flatMap((parameter) =>
           [...parameter.overrides.entries()].map(([widgetId, widgetParameterKey]) => [
             createWidgetIdParameterKey(widgetId, widgetParameterKey),
-            [parameter] as const, // NOTE: Wrapping it inside new array to invalidate reference in a key block
+            [parameter] as const,
           ]),
         ),
       )
@@ -31,7 +31,6 @@ export const useDashboardParametersCtx = createCtx(
 function parseParameters(apiParameters: App.ApiDashboard['parameters']) {
   return Object.keys(apiParameters).map((key) => {
     const { overrides, ...rest } = apiParameters[key]
-
     return {
       ...rest,
       key,

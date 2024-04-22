@@ -49,9 +49,7 @@
     {shortValue.length > 10 ? `${shortValue.slice(0, 4)}...${shortValue.slice(-3)}` : shortValue}
   </span>
 
-  {#if onEditClick || onLinkClick || (isAuthor && onRemoveClick)}
-    <div class="ml-3 mr-1 h-full border-l"></div>
-  {/if}
+  <div class="ml-3 mr-1 h-full border-l"></div>
 
   {#if onEditClick}
     <Button icon="pencil" iconSize="14" onclick={onEditClick}></Button>

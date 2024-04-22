@@ -27,7 +27,7 @@
 
   const columns = $derived(
     isSelectable
-      ? [{ key: 'selection-checkboxes', Cell, Header, className: 'pr-1' }, ...dataColumns.$]
+      ? [{ title: 'selection-checkboxes', Cell, Header, className: 'pr-1' }].concat(dataColumns.$)
       : dataColumns.$,
   )
 </script>

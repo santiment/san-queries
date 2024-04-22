@@ -10,7 +10,6 @@
   import ExecutionTime from './ExecutionTime.svelte'
   import { showNameDescriptionDialog$ } from './NameDescriptionDialog/index.svelte'
   import { useQueryEditorCtx } from './ctx'
-  import { showAddToDashboardDialog$ } from './AddToDashboardDialog/index.svelte'
 
   let {
     author,
@@ -34,13 +33,6 @@
 
   const { queryEditor } = useQueryEditorCtx()
   const showNameDescriptionDialog = showNameDescriptionDialog$()
-  const showAddToDashboardDialog = showAddToDashboardDialog$()
-
-  function onAddToDashboardClick() {
-    if (queryEditor.id) {
-      showAddToDashboardDialog({ queryId: queryEditor.id })
-    }
-  }
 
   function onShareClick() {
     showShareDialog({ entity: 'Query', feature: 'query', source: 'query_head' })
@@ -77,7 +69,6 @@
         icon="plus"
         iconSize="10"
         class="ml-4 bg-athens fill-waterloo hover:text-green"
-        onclick={onAddToDashboardClick}
       >
         To dashboard
       </Button>

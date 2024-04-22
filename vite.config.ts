@@ -5,7 +5,7 @@ import { execSync } from 'node:child_process'
 const mode = process.env.NODE_ENV
 const dev = mode !== 'production'
 
-const BACKEND_URL = process.env.BACKEND_URL || 'https://api-stage.santiment.net'
+const BACKEND_URL = process.env.BACKEND_URL || 'https://api.santiment.net'
 const GQL_SERVER_FALLBACK = BACKEND_URL + '/graphql'
 
 const IS_STAGE_BACKEND = BACKEND_URL.includes('-stage')
