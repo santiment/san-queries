@@ -18,6 +18,7 @@
   import { track } from 'san-webkit/lib/analytics'
   import { showParameterDialog$ } from '$lib/ParameterDialog/index.svelte'
   import { useExecuteButtonCtx } from './ExecuteButton.svelte'
+  import CsvDownload from './VisualisationTab/CsvDownload.svelte'
   import FullscreenButton from './Fullscreen/Button.svelte'
   import { useQueryExecuteFlow } from './flow/execute.svelte'
   import { useStoreSqlDataCache } from './flow/dataCache'
@@ -154,15 +155,7 @@
           </Button>
         {/if}
 
-        {#if selectedTab === TABS[1]}
-          <Button
-            icon="download"
-            class="px-2 text-waterloo hover:fill-green hover:text-green"
-            explanation="Download CSV"
-          >
-            CSV
-          </Button>
-        {/if}
+        <CsvDownload sqlData={sqlData.$} {selectedTab}></CsvDownload>
 
         <ExecutionStats {stats}>
           {#snippet children({ action, trigger })}
