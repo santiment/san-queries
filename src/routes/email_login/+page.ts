@@ -16,7 +16,6 @@ export const load: PageLoad = async ({ parent, url: { searchParams } }) => {
   // const data = await mutateVerifyEmail(email, token)
   // currentUser.set(data)
   // customerData$.refetch()
-  // goto(data.privacyPolicyAccepted ? '/' : '/gdpr')
 
   let successRedirect = '/'
 
