@@ -27,7 +27,7 @@
   useAutoSaveFlow(EditorRef, isAuthor)
   const { saveEmptyDashboard } = useSaveEmptyFlowCtx(apiDashboard)
   const { saveDashboard } = useSaveFlow(EditorRef, isAuthor)
-  const { onDuplicateClick } = useDashboardDuplicateFlow(apiDashboard)
+  const { onDuplicateClick } = useDashboardDuplicateFlow(EditorRef)
   const { onDeleteClick } = useDashboardDeleteFlow(apiDashboard)
 
   useStore(GlobalShortcut$('CMD+S', () => saveDashboard(), false))

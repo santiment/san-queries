@@ -17,7 +17,7 @@ export const useDashboardWidgetsCtx = createCtx(
       ...textWidgets.map(mapTextWidget),
       ...queries.map(mapQueryWidget),
       ...(dataFlowSettings?.layoutWidgets || []).map(mapCustomWidget).filter(Boolean),
-    ])
+    ] as (App.Dashboard.QueryWidget | App.Dashboard.TextWidget)[])
 
     return {
       widgets,

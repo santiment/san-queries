@@ -15,16 +15,18 @@ export const createAddGlobalParameterOverrides$ = (
   dashboardParameterKey: string,
   added: TUnwrappedChange,
 ) =>
-  from(added).pipe(
-    mergeMap(([dashboardQueryMappingId, queryParameterKey]) =>
-      mutateAddDashboardGlobalParameterOverride()({
-        dashboardId,
-        dashboardParameterKey,
-        dashboardQueryMappingId,
-        queryParameterKey,
-      }),
-    ),
-  )
+  added.length
+    ? from(added).pipe(
+        mergeMap(([dashboardQueryMappingId, queryParameterKey]) =>
+          mutateAddDashboardGlobalParameterOverride()({
+            dashboardId,
+            dashboardParameterKey,
+            dashboardQueryMappingId,
+            queryParameterKey,
+          }),
+        ),
+      )
+    : of(null)
 
 export const createDeleteGlobalParameterOverrides$ = (
   dashboardId: number,
