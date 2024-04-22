@@ -11,6 +11,7 @@
   import { useDataFlowCtx } from '$lib/DataFlow/ctx'
   import { useSelectedRowsCtx } from '$lib/Visualization/Table/Selectable/Cell.svelte'
   import { useDataFlowSqlDataCtx } from '$lib/DataFlow/ctx/sqlData.svelte'
+  import Visualisation from './Visualisation.svelte'
 
   let {
     dashboardId,
@@ -32,8 +33,6 @@
   const { selections } = useSelectedRowsCtx()
 
   let parameters = $derived(parseQueryParameters(widget.query.sqlQueryParameters))
-  let columnSettings = ssd(() => settings.$.columns)
-  let queryVisualisation = $derived(settings.$.visualisation)
 
   // TODO: Is there a way to guarantee that flowNode is available at all times? (before widget render?)
   let flowNode = $derived(FlowNodeByWidgetId.get(widget.id))
@@ -91,7 +90,14 @@
 </script>
 
 <section class="flex min-h-0 flex-1 flex-col rounded border bg-white">
-  <Header {widget} {...widget.query} {currentUser} {readonly} {onRefreshClick} {onQueryChangesClick}
+  <Header
+    {widget}
+    {...widget.query}
+    {sqlData}
+    {currentUser}
+    {readonly}
+    {onRefreshClick}
+    {onQueryChangesClick}
   ></Header>
 
   {#if parameters.length}
@@ -134,11 +140,7 @@
 
     {#if sqlData}
       {#key sqlData}
-        {#if queryVisualisation === 'Chart'}
-          <Chart {sqlData} settings={columnSettings}></Chart>
-        {:else}
-          <Table {sqlData} settings={columnSettings} {isSelectable}></Table>
-        {/if}
+        <Visualisation {widget} {sqlData} {isSelectable}></Visualisation>
       {/key}
     {:else if !isLoading}
       <div class="rounded bg-athens px-5 py-3 text-center">

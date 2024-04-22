@@ -5,6 +5,7 @@
   import { useDeleteDashboardQueryFlow } from '$lib/Dashboard/flow/widgets'
   import { useDashboardEditorCtx } from '$lib/Dashboard/ctx'
   import { useDataFlowSqlDataCtx } from '$lib/DataFlow/ctx/sqlData.svelte'
+  import { showQueryWidgetFullscreenDialog$ } from './FullscreenDialog.svelte'
 
   let {
     widget,
@@ -14,11 +15,13 @@
     readonly = true,
     onRefreshClick,
     onQueryChangesClick,
+    sqlData,
   }: {
     widget: App.Dashboard.QueryWidget
     id: number | string
     name: string
     user: App.Author
+    sqlData: App.SqlData
     readonly?: boolean
     onRefreshClick: () => void
     onQueryChangesClick: () => void
@@ -27,12 +30,17 @@
   const { dashboardEditor } = useDashboardEditorCtx()
   const { deleteDashboardQuery } = useDeleteDashboardQueryFlow()
   const { changedParameters, mountRefreshPrompt } = useDataFlowSqlDataCtx()
+  const showQueryWidgetFullscreenDialog = showQueryWidgetFullscreenDialog$()
 
   function onDeleteClick() {
     const dashboardId = dashboardEditor.id
     if (!dashboardId) return
 
     deleteDashboardQuery({ dashboardId, widget })
+  }
+
+  function onFullscreenClick() {
+    showQueryWidgetFullscreenDialog({ widget, sqlData })
   }
 </script>
 
@@ -63,7 +71,8 @@
     ></Button>
   {/if}
 
-  <Button explanation="Open fullscreen" icon="fullscreen" iconSize={14}></Button>
+  <Button explanation="Open fullscreen" icon="fullscreen" iconSize={14} onclick={onFullscreenClick}
+  ></Button>
 
   {#if !readonly}
     <Button explanation="Remove widget" icon="close" iconSize={12} onclick={onDeleteClick}></Button>
