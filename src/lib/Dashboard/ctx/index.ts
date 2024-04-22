@@ -4,11 +4,10 @@ import { DashboardSettingsSchema_v1, type TDashboardSettings } from './schema'
 import { shareLayout, useDashboardLayoutCtx } from './layout'
 import { useDashboardParametersCtx } from './parameters'
 import { mapQueryWidget, mapTextWidget, parseWidgets, useDashboardWidgetsCtx } from './widgets'
-import { parseDataFlowSettings, shareDataFlow } from './dataFlow'
 
 export const useDashboardEditorCtx = createCtx(
   'useDashboardEditorCtx',
-  (apiDashboard?: App.ApiDashboard, isAuthor = false) => {
+  (apiDashboard?: App.ApiDashboard) => {
     const {
       id,
       name,
@@ -24,16 +23,12 @@ export const useDashboardEditorCtx = createCtx(
     const settingsResult = DashboardSettingsSchema_v1.safeParse(apiDashboard?.settings)
     const settings = settingsResult.success ? settingsResult.data : { layout: [] }
 
-    const dataFlowSettings = parseDataFlowSettings(apiDashboard?.settings?.dataFlow)
     const { parameters } = useDashboardParametersCtx(apiDashboard?.parameters)
-    const { widgets } = useDashboardWidgetsCtx(apiDashboard, dataFlowSettings)
+    const { widgets } = useDashboardWidgetsCtx(apiDashboard)
     const { layout } = useDashboardLayoutCtx(widgets.$, settings.layout)
 
     return {
       dashboardEditor: {
-        isAuthor,
-        readonly: !isAuthor,
-
         id,
         name: ss(name || ''),
         description: ss(description || ''),
@@ -44,8 +39,6 @@ export const useDashboardEditorCtx = createCtx(
         layout,
 
         parameters,
-
-        dataFlowSettings,
         // settings: querySettingsCtx.settings,
         // parameters,
       },
@@ -55,7 +48,6 @@ export const useDashboardEditorCtx = createCtx(
 
 export function unwrapState(
   dashboardEditor: ReturnType<typeof useDashboardEditorCtx>['dashboardEditor'],
-  dataFlowCtx?: any,
 ) {
   const { id, name, description, isPublic, widgets, layout, parameters, isLegacy } = dashboardEditor
 
@@ -73,7 +65,6 @@ export function unwrapState(
     settings: {
       version: 2,
       layout: shareLayout(widgets.$, layout.$),
-      dataFlow: shareDataFlow(dataFlowCtx),
     },
   }
 }

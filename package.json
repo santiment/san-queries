@@ -73,7 +73,7 @@
   "dependencies": {
     "@popsql/monaco-sql-languages": "^0.1.0",
     "@sveltejs/adapter-node": "^5.0.1",
-    "@xyflow/svelte": "^0.0.41",
+    "@xyflow/svelte": "^0.0.39",
     "chart.js": "^4.4.2",
     "esm-env": "^1.0.0",
     "monaco-editor": "^0.47.0",
@@ -83,7 +83,6 @@
     "svelte-runes": "^0.0.3",
     "tailwind-merge": "^2.2.1",
     "ua-parser-js": "^1.0.37",
-    "uuid": "^9.0.1",
     "zod": "^3.22.4"
   },
   "pnpm": {

@@ -2,15 +2,11 @@ import { Map } from 'svelte/reactivity'
 import {
   Subject,
   catchError,
-  delay,
-  exhaustMap,
   filter,
   from,
-  groupBy,
   map,
   mergeMap,
   of,
-  pipe,
   scan,
   switchMap,
   takeUntil,
@@ -27,15 +23,14 @@ import { createCtx } from '$lib/ctx'
 import { ss, useObserve } from 'svelte-runes'
 
 import { useDashboardEditorCtx } from '$lib/Dashboard/ctx'
-import { queryGetCachedQueryExecutions, queryRunRawSqlQuery } from '$lib/QueryEditor/api'
+import { queryGetCachedQueryExecutions } from '$lib/QueryEditor/api'
 import { compressData } from '$lib/utils/compress'
 
 const createSqlDataState = (
   initial: Partial<{ isLoading: boolean; default: null | App.SqlData }> = {},
 ) => ({
   isLoading: ss(initial.isLoading ?? true),
-  defaultData: ss(initial.default || null),
-  displayedData: ss(initial.default || null),
+  default: ss(initial.default || null),
 })
 
 export const useDahboardSqlDataCtx = createCtx(
@@ -53,10 +48,8 @@ export const useDahboardSqlDataCtx = createCtx(
     useObserve(() => {
       function setCacheData(CacheByWidgetId: Record<string, TDashboardSqlData>) {
         dashboardData.forEach((state, key) => {
-          const data = CacheByWidgetId[key] || null
           state.isLoading.$ = false
-          state.defaultData.$ = data
-          state.displayedData.$ = data
+          state.default.$ = CacheByWidgetId[key] || null
         })
       }
 
@@ -69,7 +62,7 @@ export const useDahboardSqlDataCtx = createCtx(
       return of(dashboard).pipe(
         filter((data): data is App.ApiDashboard => !!data?.id),
         switchMap(({ id }) => queryGetCachedDashboardQueriesExecutions()(id)),
-        switchMap((cache) => (cache.length ? from(cache).pipe(scanCache$) : of({}))),
+        switchMap((cache) => from(cache).pipe(scanCache$)),
         tap(setCacheData),
       )
     })
@@ -103,81 +96,34 @@ export const useDahboardSqlDataCtx = createCtx(
 
     const refreshDashboardQueryData = useObserveFnCall<{ dashboardId: number; widgetId: string }>(
       () =>
-        pipe(
-          groupBy(({ widgetId }) => widgetId),
-          mergeMap((grouped) =>
-            grouped.pipe(
-              exhaustMap(({ dashboardId, widgetId }) =>
-                of(null).pipe(
-                  tap(() => (dashboardData.get(widgetId)!.isLoading.$ = true)),
-                  mergeMap(() => queryRunDashboardSqlQuery()(dashboardId, widgetId)),
-                  tap((data) => {
-                    const state = dashboardData.get(widgetId)!
-                    state.defaultData.$ = data
-                    state.displayedData.$ = data
-                    state.isLoading.$ = false
-                  }),
-                  mergeMap((data) => from(compressData(data))),
-                  mergeMap((compressedData) =>
-                    mutateStoreDashboardQueryExecution()({
-                      compressedData,
-                      dashboardId,
-                      dashboardQueryMappingId: widgetId,
-                    }),
-                  ),
-                  catchError(() =>
-                    of(null).pipe(tap(() => (dashboardData.get(widgetId)!.isLoading.$ = false))),
-                  ),
-                  takeUntil(deletedSubject.pipe(filter((deletedId) => deletedId === widgetId))),
-                ),
-              ),
+        mergeMap(({ dashboardId, widgetId }) =>
+          of(widgetId).pipe(
+            tap(() => (dashboardData.get(widgetId)!.isLoading.$ = true)),
+            switchMap(() => queryRunDashboardSqlQuery()(dashboardId, widgetId)),
+            tap((data) => {
+              const state = dashboardData.get(widgetId)!
+              state.default.$ = data
+              state.isLoading.$ = false
+            }),
+            switchMap((data) => from(compressData(data))),
+            switchMap((compressedData) =>
+              mutateStoreDashboardQueryExecution()({
+                compressedData,
+                dashboardId,
+                dashboardQueryMappingId: widgetId,
+              }),
             ),
+            catchError(() =>
+              of(null).pipe(tap(() => (dashboardData.get(widgetId)!.isLoading.$ = false))),
+            ),
+            takeUntil(deletedSubject.pipe(filter((deletedId) => deletedId === widgetId))),
           ),
         ),
-    )
-
-    const queryRawSql = useObserveFnCall<{
-      widgetId: string
-      sql: string
-      parameters: null | Record<string, any>
-      isDefault: boolean
-      onComplete?: () => void
-    }>(() =>
-      pipe(
-        groupBy(({ widgetId }) => widgetId),
-        mergeMap((grouped) =>
-          grouped.pipe(
-            switchMap(({ widgetId, sql, parameters, isDefault, onComplete }) =>
-              of(null).pipe(
-                tap(() => (dashboardData.get(widgetId)!.isLoading.$ = true)),
-                mergeMap(() =>
-                  isDefault
-                    ? of(dashboardData.get(widgetId)!.defaultData.$).pipe(delay(500))
-                    : queryRunRawSqlQuery()({ sql, parameters }),
-                ),
-                tap((data) => {
-                  const state = dashboardData.get(widgetId)!
-                  state.displayedData.$ = data
-                  state.isLoading.$ = false
-                }),
-                tap(onComplete),
-
-                catchError(() =>
-                  of(null).pipe(tap(() => (dashboardData.get(widgetId)!.isLoading.$ = false))),
-                ),
-                takeUntil(deletedSubject.pipe(filter((deletedId) => deletedId === widgetId))),
-              ),
-            ),
-          ),
-        ),
-      ),
     )
 
     return {
       dashboardData,
       refreshDashboardQueryData,
-      queryRawSql,
-
       emit: {
         queryAdded: (added: { widgetId: string; queryId: number }) => addedSubject.next(added),
         queryDeleted: (dashboardQueryMappingId: string) =>

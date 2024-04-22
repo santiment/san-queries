@@ -51,13 +51,10 @@ export const useDashboardLayoutCtx = createCtx(
         update()
       },
       addItem(widget: any) {
-        // TODO: call in widgets ctx addWidget
-        if (!widget) return
-
         widget.scrolOnMount = true
 
         const options = getGridItemOptions(widget)
-        const gridItem = setItemOptions([0, 1000, options.maxCols ?? 12, options.minRows], options)
+        const gridItem = setItemOptions([0, 1000, 12, options.minRows], options)
 
         layout.$.push(gridItem as any)
         update()

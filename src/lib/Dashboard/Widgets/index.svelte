@@ -4,7 +4,6 @@
 
   import TextWidget from './TextWidget.svelte'
   import QueryWidget from './QueryWidget/index.svelte'
-  import AssetSelectorWidget from './AssetSelectorWidget/index.svelte'
   import { useDashboardEditorCtx } from '../ctx/index'
   import Toolbar from './Toolbar.svelte'
 
@@ -43,7 +42,7 @@
     {:else if widget.type === 'QUERY'}
       <QueryWidget dashboardId={dashboardEditor.id} {readonly} {widget} />
     {:else if widget.type === 'ASSET_SELECTOR'}
-      <AssetSelectorWidget {readonly} {widget}></AssetSelectorWidget>
+      <!-- <AssetSelectorWidget {readonly} {widget}></AssetSelectorWidget> -->
 
       <!-- 
     {:else if widget.type === 'HEADING'}

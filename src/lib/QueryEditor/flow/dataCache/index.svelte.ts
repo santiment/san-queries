@@ -29,6 +29,7 @@ export function useGetSqlDataCache(
   useObserve(() =>
     of(queryId).pipe(
       filter((id): id is number => !!id),
+      tap((v) => console.log({ v })),
       switchMap((id) =>
         queryGetCachedQueryExecutions()(id).pipe(
           map((cache) => (cache[0] ? cache[0].result : undefined)),

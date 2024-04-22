@@ -17,7 +17,7 @@
   const filter = $derived(columnFilter.get(column.title))
 </script>
 
-<Popover class="flex-col gap-2" portal={null}>
+<Popover class="flex-col gap-2">
   {#snippet children({ trigger, action, open })}
     <button
       use:action={trigger}
