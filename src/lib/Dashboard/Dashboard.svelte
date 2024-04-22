@@ -7,7 +7,6 @@
   import Widgets from './Widgets/index.svelte'
   import GlobalParameters from './GlobalParameters/index.svelte'
   import { useDahboardSqlDataCtx } from './flow/sqlData/index.svelte'
-  import { useDataFlowCtx } from '$lib/DataFlow/ctx'
 
   let {
     dashboard,
@@ -27,14 +26,13 @@
     onLayoutChange: () => void
   } & Pick<ComponentProps<Header>, 'onSaveClick' | 'onDuplicateClick' | 'onDeleteClick'> = $props()
 
-  const { dashboardEditor } = useDashboardEditorCtx(dashboard, isAuthor)
+  const { dashboardEditor } = useDashboardEditorCtx(dashboard)
   const dahboardSqlDataCtx = useDahboardSqlDataCtx(dashboard)
-  const dataFlowCtx = useDataFlowCtx()
 
   let readonly = $derived(!isAuthor)
 
   export function getState() {
-    return untrack(() => unwrapState(dashboardEditor, dataFlowCtx))
+    return untrack(() => unwrapState(dashboardEditor))
   }
 </script>
 

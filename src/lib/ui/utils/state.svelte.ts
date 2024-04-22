@@ -1,10 +1,6 @@
 import { untrack } from 'svelte'
 import { Subject, share, type Observable, type UnaryFunction } from 'rxjs'
 
-export function useOnClient(fn: () => void) {
-  $effect(() => untrack(fn))
-}
-
 export function useObserveFnCall<Data = undefined>(
   fn: <T>() => UnaryFunction<T extends Observable<unknown> ? any : Observable<Data>, any>,
 ) {

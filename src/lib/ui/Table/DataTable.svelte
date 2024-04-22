@@ -55,7 +55,7 @@
     <tbody class="divide-y">
       {#each rows.$ as row}
         <Row>
-          {#each columns as column (column.key)}
+          {#each columns as column (column.title)}
             {@const { valueKey, Cell: Component, className } = column}
             <Cell class={className}>
               {#if Component}
