@@ -40,7 +40,7 @@
     actions[getPostponedAction()]?.()
   })
 
-  const SAN_TEAM = new Set([1273])
+  const SAN_TEAM = new Set([1273, 144899, 1700])
 </script>
 
 <toolbar
