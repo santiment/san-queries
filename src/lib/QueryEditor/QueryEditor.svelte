@@ -87,8 +87,12 @@
   type TError = { message: string; details?: string }
   export function addErrors(error: TError | TError[]) {
     const _errors = (Array.isArray(error) ? error : [error]).map((error) => {
-      const { message, details = message } = error
+      let { message, details = message } = error
       const { HH, mm, ss } = getTimeFormats(new Date())
+
+      if (details.includes('ajax error')) {
+        details = 'Network request failed'
+      }
 
       return {
         date: `${HH}:${mm}:${ss}`,
