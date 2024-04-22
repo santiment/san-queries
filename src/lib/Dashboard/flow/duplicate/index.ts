@@ -90,8 +90,8 @@ export function useDashboardDuplicateFlow(EditorRef: SS<DashboardEditor>) {
               ),
             ),
             mergeMap(() =>
-              forkJoin(
-                dashboardEditor.parameters.map((parameter) =>
+              concat(
+                ...dashboardEditor.parameters.map((parameter) =>
                   createAddGlobalParameterOverrides$(
                     dashboardId,
                     parameter.key,
@@ -104,13 +104,13 @@ export function useDashboardDuplicateFlow(EditorRef: SS<DashboardEditor>) {
               ),
             ),
 
-            tap((v) => console.log('widgets', v)),
             map(() => ({ id: dashboardId, name })),
           ),
         ),
 
-        tap(({ id, name }) => goto('/dashboard/' + getSEOLinkFromIdAndTitle(id, name))),
         tap(() => saveIndicatorCtx.emit.success()),
+        delay(1000),
+        tap(({ id, name }) => goto('/dashboard/' + getSEOLinkFromIdAndTitle(id, name))),
         tap(() =>
           notifications$.show({
             type: 'success',
