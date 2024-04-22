@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ssd } from 'svelte-runes'
+  import { ssd, useObservable } from 'svelte-runes'
   import Parameter from '$lib/ui/Parameter'
   import Chart from '$lib/Visualization/Chart'
   import Table from '$lib/Visualization/Table'
@@ -8,6 +8,10 @@
   import { useDashboardParametersCtx } from '$lib/Dashboard/ctx/parameters'
   import Header from './Header.svelte'
   import { showLinkGlobalParameterDialog$ } from './LinkGlobalParameterDialog.svelte'
+  import { useDataFlowCtx } from '$lib/DataFlow/ctx'
+  import { useSelectedRowsCtx } from '$lib/Visualization/Table/Selectable/Cell.svelte'
+  import { useDataFlowSqlDataCtx } from '$lib/DataFlow/ctx/sqlData.svelte'
+  import Visualisation from './Visualisation.svelte'
 
   let {
     dashboardId,
@@ -23,16 +27,41 @@
 
   const showLinkGlobalParameterDialog = showLinkGlobalParameterDialog$()
   const { dashboardData, refreshDashboardQueryData } = useDahboardSqlDataCtx()
+  const { FlowNodeByWidgetId } = useDataFlowCtx()
   const { settings } = useQuerySettingsCtx(widget.query.settings)
   const { parameters: globalParameters, globalParameterOverrides } = useDashboardParametersCtx()
+  const { selections } = useSelectedRowsCtx()
 
   let parameters = $derived(parseQueryParameters(widget.query.sqlQueryParameters))
-  let columnSettings = ssd(() => settings.$.columns)
-  let queryVisualisation = $derived(settings.$.visualisation)
-  let dataState = $derived(dashboardData.get(widget.id))
 
-  let sqlData = $derived(dataState?.default.$)
+  // TODO: Is there a way to guarantee that flowNode is available at all times? (before widget render?)
+  let flowNode = $derived(FlowNodeByWidgetId.get(widget.id))
+  let flowState = $state.frozen({ isSelectable: true })
+  let isSelectable = $derived(flowState.isSelectable)
+  const { changedParameters, queryParameterChanges } = useDataFlowSqlDataCtx(
+    widget,
+    ssd(() => flowNode),
+  )
+
+  let dataState = $derived(dashboardData.get(widget.id))
+  let sqlData = $derived(dataState?.displayedData.$)
   let isLoading = $derived(dataState?.isLoading.$ ?? false)
+
+  $effect(() => {
+    flowNode?.setInputs(parameters)
+  })
+  $effect(() => {
+    flowNode?.setOutputs(dataState?.defaultData.$)
+  })
+  $effect(() => {
+    flowNode?._state.next({ selections: [...selections] })
+  })
+  $effect(() => {
+    const subscriber = flowNode?.state$.subscribe((value) => {
+      flowState = value
+    })
+    return () => subscriber?.unsubscribe()
+  })
 
   function onLinkClick(parameter: (typeof parameters)[number], globalParameter: any) {
     const queryWidgetId = widget.id
@@ -54,10 +83,22 @@
   function onRefreshClick() {
     refreshDashboardQueryData({ dashboardId, widgetId: widget.id })
   }
+
+  function onQueryChangesClick() {
+    queryParameterChanges()
+  }
 </script>
 
 <section class="flex min-h-0 flex-1 flex-col rounded border bg-white">
-  <Header {widget} {...widget.query} {currentUser} {readonly} {onRefreshClick}></Header>
+  <Header
+    {widget}
+    {...widget.query}
+    {sqlData}
+    {currentUser}
+    {readonly}
+    {onRefreshClick}
+    {onQueryChangesClick}
+  ></Header>
 
   {#if parameters.length}
     <section class="flex gap-2 px-3 pb-3">
@@ -69,8 +110,16 @@
           <Parameter
             global={!!global}
             parameter={global || parameter}
-            onLinkClick={() => onLinkClick(parameter, global)}
-          ></Parameter>
+            onLinkClick={readonly ? undefined : () => onLinkClick(parameter, global)}
+          >
+            {#if changedParameters.has(parameter.key)}
+              <span
+                class="absolute right-[-5px] top-[-10px] rounded-sm bg-green-light-1 px-1 text-[10px] text-green"
+              >
+                Changed
+              </span>
+            {/if}
+          </Parameter>
         {/key}
       {/each}
     </section>
@@ -91,11 +140,7 @@
 
     {#if sqlData}
       {#key sqlData}
-        {#if queryVisualisation === 'Chart'}
-          <Chart {sqlData} settings={columnSettings}></Chart>
-        {:else}
-          <Table {sqlData} settings={columnSettings}></Table>
-        {/if}
+        <Visualisation {widget} {sqlData} {isSelectable}></Visualisation>
       {/key}
     {:else if !isLoading}
       <div class="rounded bg-athens px-5 py-3 text-center">

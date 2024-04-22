@@ -20,7 +20,6 @@
 
     queryEditor.sql.$ = value
 
-    console.log({ value })
     onSqlChange?.((queryId) => untrack(() => SqlEditorRef?.saveState(queryId)))
   }
 </script>

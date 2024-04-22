@@ -1,14 +1,18 @@
 <script lang="ts">
   import { showAddQueryToDashboardDialog$ } from '$lib/AddQueryToDashboardDialog/index.svelte'
   import Svg from '$lib/ui/Svg.svelte'
+  import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
   import { useDashboardEditorCtx } from '../ctx'
   import { useSaveEmptyFlowCtx } from '../flow/save'
   import { useAddTextWidgetToDashboardFlow } from '../flow/widgets'
+  import { showDataFlowDialog$ } from '$lib/DataFlow/Dialog/index.svelte'
 
+  const { currentUser$ } = getCurrentUser$Ctx()
   const { dashboardEditor } = useDashboardEditorCtx()
   const showAddQueryToDashboardDialog = showAddQueryToDashboardDialog$()
   const { addTextWidgetToDashboard } = useAddTextWidgetToDashboardFlow()
   const { saveEmptyDashboard, postponeAction, getPostponedAction } = useSaveEmptyFlowCtx()
+  const showDataFlowDialog = showDataFlowDialog$()
 
   function onTextClick() {
     const dashboardId = dashboardEditor.id
@@ -35,6 +39,8 @@
     const actions = { onTextClick, onQueryClick }
     actions[getPostponedAction()]?.()
   })
+
+  const SAN_TEAM = new Set([1273, 144899, 1700])
 </script>
 
 <toolbar
@@ -48,6 +54,15 @@
     <Svg id="editor/title" w="16" />
     Text
   </button>
+
+  {#if SAN_TEAM.has(+($currentUser$?.id as number))}
+    <div class="mx-3 h-10 border-l"></div>
+
+    <button class="btn" on:click={() => showDataFlowDialog()}>
+      <Svg id="share-dots" w="16" />
+      Data Flow
+    </button>
+  {/if}
 </toolbar>
 
 <style>

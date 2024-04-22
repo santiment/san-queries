@@ -13,9 +13,12 @@
     tooltip,
     class: className,
 
+    portal,
+
     placement = 'bottom',
     onOpenChange,
   }: {
+    portal?: null
     class?: string
     placement?: NonNullable<FloatingConfig>['placement']
     onOpenChange?: CreatePopoverProps['onOpenChange']
@@ -38,6 +41,7 @@
     states,
     elements: { trigger, content, close },
   } = createPopover({
+    portal,
     forceVisible: true,
     onOpenChange,
     positioning: { placement },

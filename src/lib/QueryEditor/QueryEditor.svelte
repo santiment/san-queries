@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { TRawSqlData } from './api'
 
+  import { ss, useObservable } from 'svelte-runes'
   import Button from '$lib/ui/Button.svelte'
   import Header from './Header.svelte'
   import Tabs, { TABS, type TabType } from './Tabs.svelte'
@@ -17,7 +18,8 @@
   import { track } from 'san-webkit/lib/analytics'
   import { showParameterDialog$ } from '$lib/ParameterDialog/index.svelte'
   import { useExecuteButtonCtx } from './ExecuteButton.svelte'
-  import { ss, useObservable } from 'svelte-runes'
+  import CsvDownload from './VisualisationTab/CsvDownload.svelte'
+  import FullscreenButton from './Fullscreen/Button.svelte'
   import { useQueryExecuteFlow } from './flow/execute.svelte'
   import { useStoreSqlDataCache } from './flow/dataCache'
   import { useGetSqlDataCache } from './flow/dataCache/index.svelte'
@@ -85,8 +87,12 @@
   type TError = { message: string; details?: string }
   export function addErrors(error: TError | TError[]) {
     const _errors = (Array.isArray(error) ? error : [error]).map((error) => {
-      const { message, details = message } = error
+      let { message, details = message } = error
       const { HH, mm, ss } = getTimeFormats(new Date())
+
+      if (details.includes('ajax error')) {
+        details = 'Network request failed'
+      }
 
       return {
         date: `${HH}:${mm}:${ss}`,
@@ -153,15 +159,7 @@
           </Button>
         {/if}
 
-        {#if selectedTab === TABS[1]}
-          <Button
-            icon="download"
-            class="px-2 text-waterloo hover:fill-green hover:text-green"
-            explanation="Download CSV"
-          >
-            CSV
-          </Button>
-        {/if}
+        <CsvDownload sqlData={sqlData.$} {selectedTab}></CsvDownload>
 
         <ExecutionStats {stats}>
           {#snippet children({ action, trigger })}
@@ -173,9 +171,7 @@
           <Button icon="report" href="https://academy.santiment.net/santiment-queries/"></Button>
         {/if}
 
-        {#if selectedTab !== TABS[2]}
-          <Button icon="fullscreen" iconSize="14" explanation="Fullscreen"></Button>
-        {/if}
+        <FullscreenButton {readonly} {selectedTab} sqlData={sqlData.$}></FullscreenButton>
       </div>
     </div>
 

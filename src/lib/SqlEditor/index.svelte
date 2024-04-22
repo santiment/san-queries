@@ -79,7 +79,6 @@
     })
 
     return () => {
-      console.log('on destroy run', id)
       saveState()
       ctx?.editor.dispose()
     }
