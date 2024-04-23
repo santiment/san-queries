@@ -103,6 +103,8 @@
 
       <Button icon="share-dots" explanation="Share" onclick={onShareClick} />
 
+      <Button icon="copy" explanation="Duplicate" onclick={onDuplicateClick} />
+
       <Popover placement="bottom-end">
         {#snippet children({ action, trigger })}
           <Button icon="vert-dots" {action} actionArgs={trigger} />

@@ -175,7 +175,9 @@ export const useDataFlowCtx = createCtx('useDataFlowCtx', () => {
       const sourceNode = findNode(connection.source, nodes)
       const targetNode = findNode(connection.target, nodes)
 
-      sourceNode?.data.instance.onNewOutputConnection?.(targetNode, connection, { nodes, edges })
+      if (targetNode && sourceNode) {
+        sourceNode?.data.instance.onNewOutputConnection?.(targetNode, connection, { nodes, edges })
+      }
     })
   }
 
