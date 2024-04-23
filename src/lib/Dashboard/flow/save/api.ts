@@ -17,21 +17,13 @@ export const DASHBOARD_FRAGMENT = `
 `
 
 export const mutateCreateDashboard = Fetcher(
-  ({
-    name,
-    description,
-    settings,
-  }: {
-    name: string
-    description?: string
-    settings?: App.Dashboard.ApiSettings
-  }) => ({
-    schema: `mutation ($name: String!, $description: String, $settings: json) {
-    data:createDashboard(name:$name, description:$description, settings: $settings) {
+  ({ name, description }: { name: string; description?: string }) => ({
+    schema: `mutation ($name: String!, $description: String) {
+    data:createDashboard(name:$name, description:$description) {
       ${DASHBOARD_FRAGMENT}
     }
   }`,
-    variables: { name, description, settings: settings ? JSON.stringify(settings) : undefined },
+    variables: { name, description },
   }),
   (gql: { data: App.ApiDashboard }) => gql.data,
 )
