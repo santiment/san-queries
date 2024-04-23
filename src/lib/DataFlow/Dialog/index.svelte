@@ -12,6 +12,7 @@
   import { useDataFlowCtx } from '../ctx'
   import { SelectColumnFlowNode } from '../nodes/Interaction/SelectColumnFlowNode'
   import { AssetSelectorFlowNode } from '../nodes/AssetSelector'
+  import { TypeIdToCustomFlowNode } from '../nodes'
 
   let {
     ...rest
@@ -31,7 +32,9 @@
     e.preventDefault()
 
     const key = e.dataTransfer!.getData('application/my-app')
-    const schema = { SelectColumnFlowNode, AssetSelectorFlowNode }[key]
+    const schema = TypeIdToCustomFlowNode.get(key)
+
+    console.log({ schema })
 
     if (!schema) return
 

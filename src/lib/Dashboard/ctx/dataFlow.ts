@@ -23,16 +23,18 @@ export function shareDataFlow(dataFlowCtx?: any) {
       let widget
 
       if (instance) {
-        if (FlOW_WIDGET_NODES.has(instance?.constructor)) {
-          return {
-            id: node.id,
-            type: CustomFlowNodeTypeId.get(instance.constructor),
-          }
-        } else if (LAYOUT_FlOW_NODES.has(instance?.constructor)) {
+        if (instance.getWidgetValue) {
           return {
             id: node.id,
             type: CustomFlowNodeTypeId.get(instance.constructor),
             data: instance.getWidgetValue(),
+          }
+        }
+
+        if (FlOW_WIDGET_NODES.has(instance?.constructor)) {
+          return {
+            id: node.id,
+            type: CustomFlowNodeTypeId.get(instance.constructor),
           }
         }
       }
@@ -102,6 +104,8 @@ export function parseDataFlowSettings(
   const { settings, widgets, connections } = result.success
     ? result.data
     : { settings: {}, widgets: [], connections: [] }
+
+  console.log(result.data)
 
   const layoutWidgets = widgets
     .map((widget) => {

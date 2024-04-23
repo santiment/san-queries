@@ -1,4 +1,9 @@
 <script lang="ts">
+  import { CustomFlowNodeTypeId } from '../nodes'
+  import { AssetSelectorFlowNode } from '../nodes/AssetSelector'
+  import { SelectColumnAlertFlowNode } from '../nodes/Interaction/SelectColumnAlertFlowNode'
+  import { SelectColumnFlowNode } from '../nodes/Interaction/SelectColumnFlowNode'
+
   let { dragCtx }: { dragCtx: { dragged: { x: number; y: number } } } = $props()
 
   function dragstartHandler(e: DragEvent, schema: any) {
@@ -10,7 +15,7 @@
     // dragCtx.dragged.y = e.clientX - top
   }
 
-  const wrap = (schema) => (e) => dragstartHandler(e, schema)
+  const wrap = (schema) => (e) => dragstartHandler(e, CustomFlowNodeTypeId.get(schema))
 </script>
 
 <aside class="flex min-w-[300px] flex-col divide-y border-l">
@@ -20,7 +25,7 @@
     <div class="flex flex-col gap-2">
       <!-- <span draggable="true" ondragstart={dragstartHandler}> Query widget </span> -->
 
-      <span draggable="true" ondragstart={wrap('AssetSelectorFlowNode')}> Asset selector </span>
+      <span draggable="true" ondragstart={wrap(AssetSelectorFlowNode)}> Asset selector </span>
     </div>
   </section>
   <!-- 
@@ -37,7 +42,11 @@
     <h2>Interactions</h2>
 
     <div class="flex flex-col gap-2">
-      <span draggable="true" ondragstart={wrap('SelectColumnFlowNode')}> Select column </span>
+      <span draggable="true" ondragstart={wrap(SelectColumnFlowNode)}> Select column </span>
+
+      <span draggable="true" ondragstart={wrap(SelectColumnAlertFlowNode)}>
+        Column data to alert
+      </span>
     </div>
   </section>
 
