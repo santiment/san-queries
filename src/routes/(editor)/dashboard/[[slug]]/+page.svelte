@@ -5,6 +5,7 @@
   import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
   import { GlobalShortcut$ } from 'san-webkit/lib/utils/events'
   import Dashboard from '$lib/Dashboard/Dashboard.svelte'
+  import SaveIndicator from '$lib/SaveIndicator'
   import { useSaveIndicatorCtx } from '$lib/SaveIndicator/index.svelte'
   import { useChangeIndicatorCtx } from '$lib/ChangeIndicator'
   import { useDashboardDuplicateFlow } from '$lib/Dashboard/flow/duplicate'
@@ -32,6 +33,8 @@
 
   useStore(GlobalShortcut$('CMD+S', () => saveDashboard(), false))
 </script>
+
+<SaveIndicator></SaveIndicator>
 
 {#key apiDashboard.$?.id}
   <Dashboard
