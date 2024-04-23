@@ -1,6 +1,5 @@
 <script lang="ts">
   import { untrack, type ComponentProps } from 'svelte'
-  import SaveIndicator from '$lib/SaveIndicator'
   import Header from './Header.svelte'
   import Title from './Title.svelte'
   import { unwrapState, useDashboardEditorCtx } from './ctx/index'
@@ -37,8 +36,6 @@
     return untrack(() => unwrapState(dashboardEditor, dataFlowCtx))
   }
 </script>
-
-<SaveIndicator></SaveIndicator>
 
 <article class="flex flex-col gap-4 p-6 pb-20">
   <Header

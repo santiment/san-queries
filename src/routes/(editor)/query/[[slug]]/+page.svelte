@@ -6,6 +6,7 @@
   import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
   import { GlobalShortcut$ } from 'san-webkit/lib/utils/events'
   import QueryEditor from '$lib/QueryEditor/QueryEditor.svelte'
+  import SaveIndicator from '$lib/SaveIndicator'
   import { useSaveIndicatorCtx } from '$lib/SaveIndicator/index.svelte'
   import { useChangeIndicatorCtx } from '$lib/ChangeIndicator'
   import { useQueryDuplicateFlow } from '$lib/QueryEditor/flow/duplicate.svelte'
@@ -42,6 +43,8 @@
     return saveEmptyQuery(saveEditorState)
   }
 </script>
+
+<SaveIndicator></SaveIndicator>
 
 {#key apiQuery.$?.id}
   <QueryEditor

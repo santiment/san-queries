@@ -6,8 +6,11 @@ import { notifications$ } from 'san-webkit/lib/ui/Notifications'
 import { goto } from '$app/navigation'
 import { useObserveFnCall } from '$lib/ui/utils/state.svelte'
 import { mutateDeleteSqlQuery } from '../api'
+import { useEditorSidebarCtx } from '$lib/EditorSidebar/ctx'
 
 export function useQueryDeleteFlow(apiQuery: SS<undefined | App.ApiQuery>) {
+  const editorSidebarCtx = useEditorSidebarCtx()
+
   const onDeleteClick = useObserveFnCall(() =>
     pipe(
       map(() => apiQuery.$),
@@ -20,6 +23,7 @@ export function useQueryDeleteFlow(apiQuery: SS<undefined | App.ApiQuery>) {
           tap(() =>
             notifications$.show({ type: 'info', title: 'Query deleted', dismissAfter: 5000 }),
           ),
+          tap(() => editorSidebarCtx.emit.refreshQueries()),
         ),
       ),
     ),

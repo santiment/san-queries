@@ -19,6 +19,7 @@
 
 <a
   href="https://app.santiment.net/profile/{user.id}"
+  target="_blank"
   class={cn('group flex items-center gap-2', className)}
 >
   <div

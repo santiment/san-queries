@@ -10,6 +10,7 @@ import { useChangeIndicatorCtx } from '$lib/ChangeIndicator'
 import { createCtx } from '$lib/ctx'
 import { getPlaceholderName, replaceSeoLink } from '$lib/utils'
 import { gotoDashboardPage } from '$routes/(editor)/dashboard/[[slug]]/utils'
+import { useEditorSidebarCtx } from '$lib/EditorSidebar/ctx'
 
 const createSave$ = (
   dashboardEditor: undefined | App.DashboardEditor,
@@ -59,6 +60,8 @@ export function useAutoSaveFlow(EditorRef: SS<DashboardEditor>, isAuthor: SS<boo
 export const useSaveEmptyFlowCtx = createCtx(
   'useSaveEmptyFlowCtx',
   (apiDashboard?: SS<undefined | App.ApiDashboard>) => {
+    const editorSidebarCtx = useEditorSidebarCtx()
+
     const saveEmptyDashboard = useObserveFnCall<{
       name?: string
       description?: string
@@ -74,6 +77,7 @@ export const useSaveEmptyFlowCtx = createCtx(
             // tap((_apiDashboard) => (apiDashboard!.$ = _apiDashboard)),
             tap(changePage),
             tap(onComplete),
+            tap(() => editorSidebarCtx.emit.refreshDashboards()),
           ),
         ),
       ),

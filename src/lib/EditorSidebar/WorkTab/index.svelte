@@ -6,8 +6,12 @@
   import Folder from '../Folder.svelte'
   import Item from './Item.svelte'
   import { applySearch } from './search'
+  import { useEditorSidebarCtx } from '../ctx'
+  import { useObserve } from 'svelte-runes'
 
   let { search = '' } = $props()
+
+  const { refreshDashboards$, refreshQueries$ } = useEditorSidebarCtx()
 
   type TDashboards = (TEntity & { type: 'dashboard' })[]
   type TQueries = (TEntity & { type: 'query' })[]
@@ -53,6 +57,9 @@
       ),
     ),
   )
+
+  useObserve(() => refreshDashboards$.pipe(tap(loadDashboards)))
+  useObserve(() => refreshQueries$.pipe(tap(loadQueries)))
 
   $effect(() => {
     loadQueries()

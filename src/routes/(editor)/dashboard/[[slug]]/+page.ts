@@ -20,8 +20,12 @@ export const load = async (event) => {
   const preloaded = gotoDashboardPage.get()
   const apiDashboard =
     preloaded?.apiDashboard === undefined
-      ? await queryGetDashboard(UniQuery(event.fetch))(dashboardId)
+      ? await queryGetDashboard(UniQuery(event.fetch))(dashboardId).catch(() => null)
       : preloaded.apiDashboard
+
+  if (!apiDashboard) {
+    throw redirect(302, '/dashboard/new')
+  }
 
   return {
     apiDashboard,

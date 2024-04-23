@@ -7,7 +7,6 @@
   import Tabs, { TABS, type TabType } from './Tabs.svelte'
   import ErrorsTab from './ErrorsTab.svelte'
   import EditorTab from './EditorTab.svelte'
-  import SaveIndicator from '$lib/SaveIndicator'
   import ExecutionStats, { useExecutionStatsCtx } from './ExecutionStats'
   import VisualisationTab from './VisualisationTab/index.svelte'
   import { cn } from '$lib/ui/utils'
@@ -126,8 +125,6 @@
     })
   }
 </script>
-
-<SaveIndicator></SaveIndicator>
 
 <article class="flex max-h-[calc(100vh-65px)] min-w-0 flex-1 flex-col p-6 pb-0">
   <Header

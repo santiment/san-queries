@@ -10,6 +10,7 @@ import { getSEOLinkFromIdAndTitle } from 'san-webkit/lib/utils/url'
 import { getPlaceholderName, replaceSeoLink } from '$lib/utils'
 import { goto, preloadData, pushState, replaceState } from '$app/navigation'
 import { gotoQueryPage } from '$routes/(editor)/query/[[slug]]/utils'
+import { useEditorSidebarCtx } from '$lib/EditorSidebar/ctx'
 
 const createSave$ = (
   queryEditor: App.QueryEditor,
@@ -41,6 +42,8 @@ export function useSaveFlow(QueryEditorRef: SS<QueryEditorSvelte>, isAuthor: SS<
 }
 
 export function useSaveEmptyFlow(QueryEditorRef: SS<QueryEditorSvelte>) {
+  const editorSidebarCtx = useEditorSidebarCtx()
+
   const saveEmptyQuery = useObserveFnCall<(id: number) => void>(() =>
     pipe(
       exhaustMap((saveEditorState) =>
@@ -51,6 +54,7 @@ export function useSaveEmptyFlow(QueryEditorRef: SS<QueryEditorSvelte>) {
         }).pipe(
           tap((apiQuery) => saveEditorState(apiQuery.id)),
           tap(changePage),
+          tap(() => editorSidebarCtx.emit.refreshQueries()),
         ),
       ),
     ),
