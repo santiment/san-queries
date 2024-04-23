@@ -25,6 +25,7 @@ import { mutateCreateDashboard, mutateUpdateDashboard } from '../save/api'
 import { mutateAddDashboardGlobalParameter } from '$lib/Dashboard/GlobalParameters/api'
 import { createAddGlobalParameterOverrides$ } from '$lib/Dashboard/GlobalParameters/flow'
 import { mutateAddDashboardTextWidget, mutateCreateDashboardQuery } from '../widgets/api'
+import { useEditorSidebarCtx } from '$lib/EditorSidebar/ctx'
 
 function substituteDashboard(dashboardEditor: App.DashboardEditor) {
   let stringified = JSON.stringify({
@@ -56,6 +57,7 @@ function substituteDashboard(dashboardEditor: App.DashboardEditor) {
 
 export function useDashboardDuplicateFlow(EditorRef: SS<DashboardEditor>) {
   const saveIndicatorCtx = useSaveIndicatorCtx()
+  const editorSidebarCtx = useEditorSidebarCtx()
 
   const onDuplicateClick = useObserveFnCall(() => {
     const createDuplicateWidgets$ = (
@@ -137,6 +139,7 @@ export function useDashboardDuplicateFlow(EditorRef: SS<DashboardEditor>) {
             dismissAfter: 5000,
           }),
         ),
+        tap(() => editorSidebarCtx.emit.refreshDashboards()),
 
         catchError((e) =>
           of(null).pipe(
