@@ -9,12 +9,14 @@ import { goto } from '$app/navigation'
 import { useSaveIndicatorCtx } from '$lib/SaveIndicator/index.svelte'
 import { useObserveFnCall } from '$lib/ui/utils/state.svelte'
 import { mutateCreateSqlQuery } from '../api'
+import { useEditorSidebarCtx } from '$lib/EditorSidebar/ctx'
 
 export function useQueryDuplicateFlow(
   apiQuery: SS<undefined | App.ApiQuery>,
   QueryEditorRef: SS<QueryEditor>,
 ) {
   const saveIndicatorCtx = useSaveIndicatorCtx()
+  const editorSidebarCtx = useEditorSidebarCtx()
 
   let isDuplicating = ss(false)
 
@@ -38,6 +40,7 @@ export function useQueryDuplicateFlow(
               dismissAfter: 5000,
             }),
           ),
+          tap(() => editorSidebarCtx.emit.refreshQueries()),
 
           catchError(() =>
             of(null).pipe(

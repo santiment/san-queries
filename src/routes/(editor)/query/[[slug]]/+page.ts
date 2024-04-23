@@ -20,8 +20,12 @@ export const load = async (event) => {
   const preloaded = gotoQueryPage.get()
   const apiQuery =
     preloaded?.apiQuery === undefined
-      ? await queryGetSqlQuery(UniQuery(event.fetch))(queryId)
+      ? await queryGetSqlQuery(UniQuery(event.fetch))(queryId).catch(() => null)
       : preloaded?.apiQuery
+
+  if (!apiQuery) {
+    throw redirect(302, '/query/new')
+  }
 
   return {
     apiQuery,
