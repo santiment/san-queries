@@ -1,12 +1,17 @@
-import { BehaviorSubject, distinctUntilChanged, scan, share, shareReplay } from 'rxjs'
+import { BehaviorSubject, distinctUntilChanged, scan, share, shareReplay, tap } from 'rxjs'
 import { GenericFlowNode, type TInputs } from '../GenericNode/node'
 import { getOutgoers, type Connection, type Edge, type Node } from '@xyflow/svelte'
 import { SelectColumnFlowNode } from '../Interaction/SelectColumnFlowNode'
+import { SelectColumnAlertFlowNode } from '../Interaction/SelectColumnAlertFlowNode'
 
 type TNodeInput = {}
 export type TCanvasNode = Node & { data: { instance: QueryWidgetFlowNode } }
 
-type TState = Partial<{ isSelectable: boolean; selections: any[][] }>
+type TState = Partial<{
+  isSelectable: boolean
+  selections: any[][]
+  alert$: null | BehaviorSubject<{ type: any }>
+}>
 export class QueryWidgetFlowNode extends GenericFlowNode<any, any> {
   type = 'Query Widget'
   name = 'Untitled'
@@ -16,11 +21,14 @@ export class QueryWidgetFlowNode extends GenericFlowNode<any, any> {
     scan((state, value) => Object.assign({}, state, value), {
       isSelectable: false,
       selections: [],
+      alert$: null,
     }),
 
     distinctUntilChanged(
       (prev, current) =>
-        prev.isSelectable === current.isSelectable && prev.selections === current.selections,
+        prev.isSelectable === current.isSelectable &&
+        prev.selections === current.selections &&
+        prev.alert$ === current.alert$,
     ),
     shareReplay(1),
   )
@@ -79,6 +87,8 @@ export class QueryWidgetFlowNode extends GenericFlowNode<any, any> {
   public onNewOutputConnection(targetNode: Node, connection: Connection) {
     if (checkIsSelectColumnNode(targetNode)) {
       this._state.next({ isSelectable: true })
+    } else if (checkIsAlertNode(targetNode)) {
+      this._state.next({ alert$: targetNode.data.instance.state$ })
     }
 
     super.onNewOutputConnection(targetNode, connection)
@@ -95,7 +105,12 @@ export class QueryWidgetFlowNode extends GenericFlowNode<any, any> {
     this._state.next({
       isSelectable: getOutgoers(this.node, nodes, edges).some(checkIsSelectColumnNode),
     })
+
+    if (checkIsAlertNode(targetNode)) {
+      this._state.next({ alert$: null })
+    }
   }
 }
 
 const checkIsSelectColumnNode = (node: Node) => node.data.instance instanceof SelectColumnFlowNode
+const checkIsAlertNode = (node: Node) => node.data.instance instanceof SelectColumnAlertFlowNode

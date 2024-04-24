@@ -215,6 +215,11 @@ export const useDataFlowCtx = createCtx('useDataFlowCtx', () => {
       })
     }
 
+    if (deleted.edges.length) {
+      const deletedEdges = new Set(deleted.edges.map(({ id }) => id))
+      flowConnections.$ = flowConnections.$.filter((edge) => deletedEdges.has(edge.id) === false)
+    }
+
     const data = { nodes: flowNodes.$, edges: flowConnections.$ }
     deleted.edges.forEach((edge) => {
       const sourceNode = findNode(edge.source, flowNodes.$)

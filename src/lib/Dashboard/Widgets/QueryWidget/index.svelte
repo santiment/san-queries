@@ -38,6 +38,7 @@
   let flowNode = $derived(FlowNodeByWidgetId.get(widget.id))
   let flowState = $state.frozen({ isSelectable: true })
   let isSelectable = $derived(flowState.isSelectable)
+  let alert = $state.frozen(null)
   const { changedParameters, queryParameterChanges } = useDataFlowSqlDataCtx(
     widget,
     ssd(() => flowNode),
@@ -59,6 +60,17 @@
   $effect(() => {
     const subscriber = flowNode?.state$.subscribe((value) => {
       flowState = value
+    })
+    return () => subscriber?.unsubscribe()
+  })
+  $effect(() => {
+    if (!flowState?.alert$) {
+      alert = null
+      return
+    }
+
+    const subscriber = flowState?.alert$?.subscribe((value) => {
+      alert = value
     })
     return () => subscriber?.unsubscribe()
   })
@@ -93,6 +105,7 @@
   <Header
     {widget}
     {...widget.query}
+    {alert}
     {sqlData}
     {currentUser}
     {readonly}
