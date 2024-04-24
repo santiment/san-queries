@@ -4,6 +4,7 @@ import PercentChange from './PercentChange.svelte'
 import Labels from './Labels/index.svelte'
 import Address from './Address.svelte'
 import TimeSince from './TimeSince.svelte'
+import { keyify } from '$lib/utils/object'
 
 export const FormatType = {
   // NOTE: Values should not be changed!!! [@vanguard]
@@ -17,14 +18,6 @@ export const FormatType = {
   LABELS: 7,
 } as const
 
-type Keyified<T> = { [K in keyof T]: T[K] & { key: K } }
-export function keyify<T>(object: T): Keyified<T> {
-  for (const key in object) {
-    const value = object[key] as { key: string }
-    value.key = key
-  }
-  return object as Keyified<T>
-}
 const Format = <K extends string, F, C>(title: K, fn: F, Component?: C) =>
   ({ title, format: fn, Component }) as const
 

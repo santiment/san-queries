@@ -30,7 +30,8 @@ export abstract class GenericFlowNode<
 
   public inputs$ = new BehaviorSubject({} as Partial<Record<string, unknown>>)
   public outputs$ = new BehaviorSubject({} as Partial<Record<string, unknown>>)
-  processed$: null | Subscription = null
+  process$: null | Observable<any> = null
+  processed: null | Subscription = null
 
   constructor(node: TCanvasNode) {
     this.node = node
@@ -50,7 +51,8 @@ export abstract class GenericFlowNode<
       shareReplay(1),
     )
 
-    this.processed$ = process$.subscribe((processed) => this.outputs$.next(processed))
+    this.process$ = process$
+    this.processed = process$.subscribe((processed) => this.outputs$.next(processed))
   }
 
   public onNewOutputConnection(targetNode: TCanvasNode, connection: Connection) {
@@ -82,7 +84,10 @@ export abstract class GenericFlowNode<
   }
 
   public destroy() {
-    this.processed$?.unsubscribe()
+    this.processed?.unsubscribe()
+
+    // TODO: Complete process$ on destroy
+    // this.process$.complete()
     this.inputs$.complete()
     this.outputs$.complete()
 

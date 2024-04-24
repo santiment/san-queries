@@ -1,4 +1,9 @@
-import { CustomFlowNodeTypeId, FlOW_WIDGET_NODES, LAYOUT_FlOW_NODES } from '$lib/DataFlow/nodes'
+import {
+  CustomFlowNodeTypeId,
+  FlOW_WIDGET_NODES,
+  LAYOUT_FlOW_NODES,
+  TypeIdToCustomFlowNode,
+} from '$lib/DataFlow/nodes'
 import { AssetSelectorFlowNode } from '$lib/DataFlow/nodes/AssetSelector'
 import { z } from 'zod'
 
@@ -18,16 +23,18 @@ export function shareDataFlow(dataFlowCtx?: any) {
       let widget
 
       if (instance) {
+        if (instance.getWidgetValue) {
+          return {
+            id: node.id,
+            type: CustomFlowNodeTypeId.get(instance.constructor),
+            data: instance.getWidgetValue(),
+          }
+        }
+
         if (FlOW_WIDGET_NODES.has(instance?.constructor)) {
           return {
             id: node.id,
-            type: CustomFlowNodeTypeId.indexOf(instance.constructor),
-          }
-        } else if (LAYOUT_FlOW_NODES.has(instance?.constructor)) {
-          return {
-            id: node.id,
-            type: CustomFlowNodeTypeId.indexOf(instance.constructor),
-            data: instance.getWidgetValue(),
+            type: CustomFlowNodeTypeId.get(instance.constructor),
           }
         }
       }
@@ -68,7 +75,7 @@ export const DashboardDataFlowSchema_v0 = z
       .array(
         z.object({
           id: z.string(),
-          type: z.number(),
+          type: z.coerce.string().catch(''),
           data: z.any().optional(),
         }),
       )
@@ -100,7 +107,7 @@ export function parseDataFlowSettings(
 
   const layoutWidgets = widgets
     .map((widget) => {
-      const type = CustomFlowNodeTypeId[widget.type]
+      const type = TypeIdToCustomFlowNode.get(widget.type)
       if (!type) return
 
       if (type === AssetSelectorFlowNode) {
@@ -115,7 +122,7 @@ export function parseDataFlowSettings(
 
   const flowWidgets = widgets
     .map((widget) => {
-      const type = CustomFlowNodeTypeId[widget.type]
+      const type = TypeIdToCustomFlowNode.get(widget.type)
       if (!type) return
 
       widget.type = type

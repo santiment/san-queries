@@ -14,6 +14,7 @@ import { useDashboardLayoutCtx } from '$lib/Dashboard/ctx/layout'
 import { useDashboardWidgetsCtx } from '$lib/Dashboard/ctx/widgets'
 import { AssetSelectorFlowNode } from '../nodes/AssetSelector'
 import { getConnectionId } from '../nodes/GenericNode/node'
+import { SelectColumnAlertFlowNode } from '../nodes/Interaction/SelectColumnAlertFlowNode'
 
 export function createNode(
   createInstance: (node: TCanvasNode) => TCanvasNode['data']['instance'],
@@ -91,6 +92,18 @@ export const useDataFlowCtx = createCtx('useDataFlowCtx', () => {
             id,
             position,
           })
+
+          // FlowNodeByWidgetId.set(id, node.data.instance)
+
+          flowNodes.$.push(node)
+        } else if (item.type === SelectColumnAlertFlowNode) {
+          const node = createNode(
+            (canvasNode) => new SelectColumnAlertFlowNode(canvasNode, { data: item.data }),
+            {
+              id,
+              position,
+            },
+          )
 
           // FlowNodeByWidgetId.set(id, node.data.instance)
 
@@ -175,6 +188,7 @@ export const useDataFlowCtx = createCtx('useDataFlowCtx', () => {
       const sourceNode = findNode(connection.source, nodes)
       const targetNode = findNode(connection.target, nodes)
 
+      // TODO: Old saved connections (that are now invalid) still will trigger subscription
       if (targetNode && sourceNode) {
         sourceNode?.data.instance.onNewOutputConnection?.(targetNode, connection, { nodes, edges })
       }
@@ -200,6 +214,11 @@ export const useDataFlowCtx = createCtx('useDataFlowCtx', () => {
       flowNodes.$ = flowNodes.$.filter((node) => {
         return !deletedInstances.has(node.data.instance)
       })
+    }
+
+    if (deleted.edges.length) {
+      const deletedEdges = new Set(deleted.edges.map(({ id }) => id))
+      flowConnections.$ = flowConnections.$.filter((edge) => deletedEdges.has(edge.id) === false)
     }
 
     const data = { nodes: flowNodes.$, edges: flowConnections.$ }
