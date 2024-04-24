@@ -80,6 +80,7 @@
     "prettier-plugin-tailwindcss": "^0.5.11",
     "rxjs": "^7.8.1",
     "san-webkit": "github:santiment/san-webkit#15afa8a",
+    "san-studio": "github:santiment/san-studio#93d6d71",
     "svelte-runes": "^0.0.3",
     "tailwind-merge": "^2.2.1",
     "ua-parser-js": "^1.0.37",

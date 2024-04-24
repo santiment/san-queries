@@ -38,6 +38,7 @@
   let flowNode = $derived(FlowNodeByWidgetId.get(widget.id))
   let flowState = $state.frozen({ isSelectable: true })
   let isSelectable = $derived(flowState.isSelectable)
+
   const { changedParameters, queryParameterChanges } = useDataFlowSqlDataCtx(
     widget,
     ssd(() => flowNode),

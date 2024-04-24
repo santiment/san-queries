@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getCustomer$Ctx } from 'san-webkit/lib/stores/customer'
   import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
-  // import { LoginType } from 'webkit/analytics/events/general'
+  // import { LoginType } from 'san-webkit/lib/analytics/events/general'
   import { goto } from '$app/navigation'
   import { mutateVerifyEmail } from './api'
   // import { tick } from 'svelte'
