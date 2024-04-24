@@ -1,5 +1,6 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
+  import { BROWSER } from 'esm-env'
   import { mutate } from 'san-webkit/lib/api'
   import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
   import { notifications$ } from 'san-webkit/lib/ui/Notifications'
@@ -8,7 +9,7 @@
 
   const { currentUser$ } = getCurrentUser$Ctx()
 
-  if (process.browser) {
+  if (BROWSER) {
     const { emailCandidate, token } = data
 
     mutate(

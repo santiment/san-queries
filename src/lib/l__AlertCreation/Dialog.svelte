@@ -19,6 +19,7 @@
   import CategorySceenLayout from './CategorySceenLayout.svelte'
   import RestrictionMessage from './RestrictionMessage.svelte'
   import { CATEGORIES, normalizeCategory } from './categories'
+  import { BROWSER } from 'esm-env'
 
   export let alert: null | App.Alerts.ApiAlert = null
   export let source = ''
@@ -29,7 +30,7 @@
   let category = alert ? assignCategory(alert) : null
   let hasRestriction = true
 
-  if (process.browser) checkUserRestriction()
+  if (BROWSER) checkUserRestriction()
 
   function checkUserRestriction() {
     queryUserAlerts().then(({ currentUser }) => {

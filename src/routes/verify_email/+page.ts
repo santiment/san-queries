@@ -1,3 +1,4 @@
+import { BROWSER } from 'esm-env'
 import type { PageLoad } from './$types'
 
 import { redirect } from '@sveltejs/kit'
@@ -9,7 +10,7 @@ export const load: PageLoad = async ({ parent, url: { searchParams } }) => {
   const { currentUser } = session
 
   if (!currentUser) throw redirect(307, '/')
-  if (!process.browser) return
+  if (!BROWSER) return
 
   return {
     emailCandidate: searchParams.get('emailCandidate') as string,
