@@ -34,8 +34,6 @@
     const key = e.dataTransfer!.getData('application/my-app')
     const schema = TypeIdToCustomFlowNode.get(key)
 
-    console.log({ schema })
-
     if (!schema) return
 
     const viewportNode = document.querySelector('.svelte-flow__viewport') as null | HTMLElement

@@ -30,7 +30,6 @@
 
     const target = get(process$)
     const { type } = get(state$)
-    console.log({ target, type })
 
     if (type === 'wallet_movement') {
       const address = target.address[0]

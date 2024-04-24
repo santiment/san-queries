@@ -105,8 +105,6 @@ export function parseDataFlowSettings(
     ? result.data
     : { settings: {}, widgets: [], connections: [] }
 
-  console.log(result.data)
-
   const layoutWidgets = widgets
     .map((widget) => {
       const type = TypeIdToCustomFlowNode.get(widget.type)
