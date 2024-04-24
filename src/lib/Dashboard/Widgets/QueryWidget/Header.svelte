@@ -6,14 +6,13 @@
   import { useDashboardEditorCtx } from '$lib/Dashboard/ctx'
   import { useDataFlowSqlDataCtx } from '$lib/DataFlow/ctx/sqlData.svelte'
   import { showQueryWidgetFullscreenDialog$ } from './FullscreenDialog.svelte'
-  import { useSelectedRowsCtx } from '$lib/Visualization/Table/Selectable/Cell.svelte'
+  import AlertButton from './AlertButton.svelte'
 
   let {
     widget,
     id,
     name,
     user,
-    alert,
     readonly = true,
     onRefreshClick,
     onQueryChangesClick,
@@ -24,7 +23,6 @@
     name: string
     user: App.Author
     sqlData: App.SqlData
-    alert: null | { type: string }
     readonly?: boolean
     onRefreshClick: () => void
     onQueryChangesClick: () => void
@@ -34,7 +32,6 @@
   const { deleteDashboardQuery } = useDeleteDashboardQueryFlow()
   const { changedParameters, mountRefreshPrompt } = useDataFlowSqlDataCtx()
   const showQueryWidgetFullscreenDialog = showQueryWidgetFullscreenDialog$()
-  const { selections } = useSelectedRowsCtx()
 
   function onDeleteClick() {
     const dashboardId = dashboardEditor.id
@@ -57,18 +54,7 @@
     <a href="/query/{getSEOLinkFromIdAndTitle(id, name)}">{name}</a>
   </h2>
 
-  {#if alert}
-    <Button variant="border" icon="alert" class="relative">
-      Create alert
-      {#if selections.size}
-        <span
-          class="absolute left-[-8px] top-[-8px] flex size-5 items-center justify-center rounded-full bg-green-light-1 text-[10px] text-green"
-        >
-          {selections.size}
-        </span>
-      {/if}
-    </Button>
-  {/if}
+  <AlertButton {widget}></AlertButton>
 
   {#if changedParameters.size > 0}
     <Button

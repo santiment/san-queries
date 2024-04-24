@@ -6,9 +6,9 @@ type Alert = {
   type: 'asset' | 'address' | 'watchlist' | 'screener'
 }
 
-// type Input = { slug: { type: string } }
+type Input = { column: any }
 // type Output = { slug: { type: string } }
-export class SelectColumnAlertFlowNode extends GenericFlowNode<any, any> {
+export class SelectColumnAlertFlowNode extends GenericFlowNode<Input, any> {
   type = 'Column data to alert'
   name = 'Column data to alert'
 
@@ -17,16 +17,26 @@ export class SelectColumnAlertFlowNode extends GenericFlowNode<any, any> {
 
   public Component = () => import('./index.svelte')
 
+  inputs = {
+    column: { type: 'Any' },
+  }
+
   constructor(node: Node, ctx: any) {
     super(node)
 
-    const alert = ctx.data || { type: 'asset' }
+    const alert = ctx.data || { type: 'metric_signal' }
     this._state = new BehaviorSubject(alert)
     this.state$ = this._state
   }
 
-  public process() {
-    return {}
+  public process({ state, inputs }) {
+    if (state.type === 'metric_signal') {
+      return { slug: Array.from(new Set(inputs?.column || [])) }
+    }
+
+    if (state.type === 'wallet_movement') {
+      return { address: Array.from(new Set(inputs?.column || [])) }
+    }
   }
 
   public getWidgetValue() {

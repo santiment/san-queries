@@ -30,6 +30,8 @@ export default defineConfig({
     'process.env.IS_PROD_MODE': !dev,
 
     'process.env.MEDIA_PATH': JSON.stringify('/webkit'),
+    'process.env.ICONS_PATH': JSON.stringify('/webkit/icons'),
+
     'process.env.BACKEND_URL': JSON.stringify(BACKEND_URL),
     'process.env.GQL_SERVER_URL': JSON.stringify(GQL_SERVER_FALLBACK),
     'process.env.NODE_GQL_SERVER_URL': JSON.stringify(process.env.NODE_GQL_SERVER_URL),

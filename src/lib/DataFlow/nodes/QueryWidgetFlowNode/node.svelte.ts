@@ -10,7 +10,7 @@ export type TCanvasNode = Node & { data: { instance: QueryWidgetFlowNode } }
 type TState = Partial<{
   isSelectable: boolean
   selections: any[][]
-  alert$: null | BehaviorSubject<{ type: any }>
+  alertInstance: null | any
 }>
 export class QueryWidgetFlowNode extends GenericFlowNode<any, any> {
   type = 'Query Widget'
@@ -21,14 +21,14 @@ export class QueryWidgetFlowNode extends GenericFlowNode<any, any> {
     scan((state, value) => Object.assign({}, state, value), {
       isSelectable: false,
       selections: [],
-      alert$: null,
+      alertInstance: null,
     }),
 
     distinctUntilChanged(
       (prev, current) =>
         prev.isSelectable === current.isSelectable &&
         prev.selections === current.selections &&
-        prev.alert$ === current.alert$,
+        prev.alertInstance === current.alertInstance,
     ),
     shareReplay(1),
   )
@@ -88,7 +88,7 @@ export class QueryWidgetFlowNode extends GenericFlowNode<any, any> {
     if (checkIsSelectColumnNode(targetNode)) {
       this._state.next({ isSelectable: true })
     } else if (checkIsAlertNode(targetNode)) {
-      this._state.next({ alert$: targetNode.data.instance.state$ })
+      this._state.next({ alertInstance: targetNode.data.instance })
     }
 
     super.onNewOutputConnection(targetNode, connection)
@@ -107,7 +107,7 @@ export class QueryWidgetFlowNode extends GenericFlowNode<any, any> {
     })
 
     if (checkIsAlertNode(targetNode)) {
-      this._state.next({ alert$: null })
+      this._state.next({ alertInstance: null })
     }
   }
 }

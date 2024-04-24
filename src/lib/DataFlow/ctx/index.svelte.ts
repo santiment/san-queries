@@ -188,6 +188,7 @@ export const useDataFlowCtx = createCtx('useDataFlowCtx', () => {
       const sourceNode = findNode(connection.source, nodes)
       const targetNode = findNode(connection.target, nodes)
 
+      // TODO: Old saved connections (that are now invalid) still will trigger subscription
       if (targetNode && sourceNode) {
         sourceNode?.data.instance.onNewOutputConnection?.(targetNode, connection, { nodes, edges })
       }
