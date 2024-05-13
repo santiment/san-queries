@@ -8,6 +8,7 @@
   import { showGlobalParameterDialog$ } from './GlobalParameters/ParameterDialog.svelte'
   import { useDashboardEditorCtx } from './ctx/index'
   import { useToggleDashboardPublicity } from './flow/publicity'
+  import Comments from './Comments.svelte'
 
   let {
     dashboard,
@@ -73,7 +74,8 @@
   {#if dashboard}
     <div class="ml-3 flex h-[32px] gap-3 border-l fill-fiord pl-3 text-waterloo">
       <Button icon="rocket" class="gap-1.5">{dashboard.votes.totalVotes}</Button>
-      <Button icon="comment" class="gap-1.5">{dashboard.commentsCount}</Button>
+      <!-- <Button icon="comment" class="gap-1.5">{dashboard.commentsCount}</Button> -->
+      <Comments count={dashboard.commentsCount} commentsFor={dashboard}></Comments>
     </div>
   {/if}
 
