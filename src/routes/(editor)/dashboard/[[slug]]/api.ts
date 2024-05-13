@@ -25,7 +25,7 @@ declare global {
       user: App.Author
 
       commentsCount: number
-      votes: { totalVotes: number }
+      votes: { totalVotes: number; userVotes: number }
 
       textWidgets: ApiTextWidget[]
       queries: ApiQueryWidget[]
