@@ -15,7 +15,7 @@
   import OnlyOnDevice from 'san-webkit/lib/ui/OnlyOnDevice.svelte'
   import NavHeader from '$lib/ui/NavHeader'
   import Gdpr from '$lib/Gdpr.svelte'
-  // import Tracking from './Tracking.svelte'
+  import Tracking from './Tracking.svelte'
 
   export let data: LayoutData
 
@@ -45,7 +45,7 @@
   <FeatureWalkthrough />
   <Notifications />
 
-  <!-- <Tracking /> -->
+  <Tracking />
 {/if}
 
 <style lang="postcss">
