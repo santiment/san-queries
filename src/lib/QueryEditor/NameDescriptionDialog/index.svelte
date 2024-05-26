@@ -91,11 +91,11 @@
     </Field.Input>
 
     <actions class="mt-4 flex gap-4">
-      <button class="btn-1" on:click={onUpdateClick} class:disabled={false}> Update </button>
+      <button class="btn-1" onclick={onUpdateClick} class:disabled={false}> Update </button>
       <Button variant="border" onclick={() => DialogCtx.close()}>Cancel</Button>
 
       {#if isAuthor && isPublic !== undefined}
-        <button class="btn mrg-a mrg--l row v-center" on:click={() => (isPublic = !isPublic)}>
+        <button class="btn mrg-a mrg--l row v-center" onclick={() => (isPublic = !isPublic)}>
           {isPublic ? 'Public' : 'Private'}
           <Toggle isActive={isPublic} class="mrg-m mrg--l" />
         </button>

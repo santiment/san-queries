@@ -11,6 +11,7 @@ import { createCtx } from '$lib/ctx'
 import { getPlaceholderName, replaceSeoLink } from '$lib/utils'
 import { gotoDashboardPage } from '$routes/(editor)/dashboard/[[slug]]/utils'
 import { useEditorSidebarCtx } from '$lib/EditorSidebar/ctx'
+import { exhaustMapWithTrailing } from 'rxjs-exhaustmap-with-trailing'
 
 const createSave$ = (
   dashboardEditor: undefined | App.DashboardEditor,
@@ -36,7 +37,7 @@ export function useSaveFlow(EditorRef: SS<DashboardEditor>, isAuthor: SS<boolean
   const saveDashboard = useObserveFnCall(() =>
     pipe(
       filter(() => isAuthor.$),
-      exhaustMap(() => createSave$(EditorRef.$?.getState(), saveIndicatorCtx)),
+      exhaustMapWithTrailing(() => createSave$(EditorRef.$?.getState(), saveIndicatorCtx)),
     ),
   )
 
@@ -52,7 +53,7 @@ export function useAutoSaveFlow(EditorRef: SS<DashboardEditor>, isAuthor: SS<boo
     changeIndicatorCtx.onChange$.pipe(
       filter(() => isAuthor.$),
       debounceTime(1500),
-      exhaustMap(() => createSave$(EditorRef.$?.getState(), saveIndicatorCtx)),
+      exhaustMapWithTrailing(() => createSave$(EditorRef.$?.getState(), saveIndicatorCtx)),
     ),
   )
 }

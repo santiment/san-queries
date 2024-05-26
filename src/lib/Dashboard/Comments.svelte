@@ -31,7 +31,7 @@
   <comments class="column" in:start out:end>
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-static-element-interactions -->
-    <clickaway on:click={() => (isOpened = false)} />
+    <clickaway onclick={() => (isOpened = false)} />
 
     <main class="column mrg-a mrg--l">
       <Comments
