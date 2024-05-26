@@ -5,6 +5,7 @@ import { shareLayout, useDashboardLayoutCtx } from './layout'
 import { useDashboardParametersCtx } from './parameters'
 import { mapQueryWidget, mapTextWidget, parseWidgets, useDashboardWidgetsCtx } from './widgets'
 import { parseDataFlowSettings, shareDataFlow } from './dataFlow'
+import type { useDahboardSqlDataCtx } from '../flow/sqlData/index.svelte'
 
 export const useDashboardEditorCtx = createCtx(
   'useDashboardEditorCtx',
@@ -56,6 +57,7 @@ export const useDashboardEditorCtx = createCtx(
 export function unwrapState(
   dashboardEditor: ReturnType<typeof useDashboardEditorCtx>['dashboardEditor'],
   dataFlowCtx?: any,
+  dashboardData?: ReturnType<typeof useDahboardSqlDataCtx>['dashboardData'],
 ) {
   const { id, name, description, isPublic, widgets, layout, parameters, isLegacy } = dashboardEditor
 
@@ -75,6 +77,10 @@ export function unwrapState(
       layout: shareLayout(widgets.$, layout.$),
       dataFlow: shareDataFlow(dataFlowCtx),
     },
+
+    queriesData: Array.from(dashboardData?.values() || []).map((data) =>
+      Object.assign({}, data.defaultData.$),
+    ),
   }
 }
 

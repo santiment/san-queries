@@ -33,7 +33,9 @@
   let readonly = $derived(!isAuthor)
 
   export function getState() {
-    return untrack(() => unwrapState(dashboardEditor, dataFlowCtx))
+    return untrack(() =>
+      unwrapState(dashboardEditor, dataFlowCtx, dahboardSqlDataCtx.dashboardData),
+    )
   }
 </script>
 

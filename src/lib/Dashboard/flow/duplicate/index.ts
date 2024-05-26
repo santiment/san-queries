@@ -3,9 +3,7 @@ import type DashboardEditor from '$lib/Dashboard/Dashboard.svelte'
 import {
   Observable,
   catchError,
-  concat,
   concatAll,
-  concatMap,
   delay,
   exhaustMap,
   filter,
@@ -29,6 +27,8 @@ import { mutateAddDashboardGlobalParameter } from '$lib/Dashboard/GlobalParamete
 import { createAddGlobalParameterOverrides$ } from '$lib/Dashboard/GlobalParameters/flow'
 import { mutateAddDashboardTextWidget, mutateCreateDashboardQuery } from '../widgets/api'
 import { useEditorSidebarCtx } from '$lib/EditorSidebar/ctx'
+import { mutateStoreDashboardQueryExecution } from '../sqlData/api'
+import { compressData } from '$lib/utils/compress'
 
 function substituteDashboard(dashboardEditor: App.DashboardEditor) {
   let stringified = JSON.stringify({
@@ -39,12 +39,20 @@ function substituteDashboard(dashboardEditor: App.DashboardEditor) {
     })),
   })
 
+  const alias = {} as Record<string, strin | string>
+
   return {
     replaceOldWidgetIds(oldToNewWidgetId: [string, string][]) {
       for (const [oldId, newId] of oldToNewWidgetId) {
         if (!oldId) continue
+
+        alias[oldId] = newId
         stringified = stringified.replaceAll(oldId, newId)
       }
+    },
+
+    getNewWidgetId(oldId: string): null | stirng {
+      return alias[oldId] ?? null
     },
 
     getSettings() {
@@ -122,6 +130,33 @@ export function useDashboardDuplicateFlow(EditorRef: SS<DashboardEditor>) {
               from(substituted.getParameters()).pipe(
                 map(({ key, overrides }) =>
                   createAddGlobalParameterOverrides$(dashboardId, key, overrides),
+                ),
+                concatAll(),
+                toArray(),
+              ),
+            ),
+
+            mergeMap(() =>
+              from(
+                dashboardEditor.queriesData.map((data) => ({
+                  ...data,
+                  // @ts-expect-error
+                  dashboardQueryMappingId: substituted.getNewWidgetId(data.dashboardQueryMappingId),
+                })),
+              ).pipe(
+                mergeMap((data) =>
+                  from(
+                    compressData(data).then(
+                      (compressed) => [data.dashboardQueryMappingId, compressed] as const,
+                    ),
+                  ),
+                ),
+                map(([dashboardQueryMappingId, compressedData]) =>
+                  mutateStoreDashboardQueryExecution()({
+                    compressedData,
+                    dashboardId,
+                    dashboardQueryMappingId,
+                  }).pipe(catchError(() => of(null))),
                 ),
                 concatAll(),
                 toArray(),
