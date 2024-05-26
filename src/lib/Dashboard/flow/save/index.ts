@@ -53,6 +53,7 @@ export function useAutoSaveFlow(EditorRef: SS<DashboardEditor>, isAuthor: SS<boo
     changeIndicatorCtx.onChange$.pipe(
       filter(() => isAuthor.$),
       debounceTime(1500),
+      // TODO: Remove params override on widget delete
       exhaustMapWithTrailing(() => createSave$(EditorRef.$?.getState(), saveIndicatorCtx)),
     ),
   )

@@ -4,10 +4,13 @@ import {
   Observable,
   catchError,
   concat,
+  concatAll,
+  concatMap,
   delay,
   exhaustMap,
   filter,
   forkJoin,
+  from,
   map,
   mergeMap,
   of,
@@ -115,14 +118,14 @@ export function useDashboardDuplicateFlow(EditorRef: SS<DashboardEditor>) {
                 ),
               ),
             ),
-            map(() => substituted.getParameters()),
-
-            mergeMap((parameters) =>
-              concat(
-                ...parameters.map(({ key, overrides }) =>
+            mergeMap(() =>
+              from(substituted.getParameters()).pipe(
+                map(({ key, overrides }) =>
                   createAddGlobalParameterOverrides$(dashboardId, key, overrides),
                 ),
-              ).pipe(toArray()),
+                concatAll(),
+                toArray(),
+              ),
             ),
 
             map(() => ({ id: dashboardId, name })),
