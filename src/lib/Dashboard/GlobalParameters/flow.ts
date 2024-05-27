@@ -1,7 +1,19 @@
 import type { TUnwrappedChange, TUnwrappedChanges } from './utils'
 
 import { useObserveFnCall } from '$lib/ui/utils/state.svelte'
-import { concat, exhaustMap, filter, from, mergeMap, of, pipe, tap } from 'rxjs'
+import {
+  catchError,
+  concat,
+  concatAll,
+  exhaustMap,
+  filter,
+  from,
+  map,
+  mergeMap,
+  of,
+  pipe,
+  tap,
+} from 'rxjs'
 import {
   mutateAddDashboardGlobalParameter,
   mutateAddDashboardGlobalParameterOverride,
@@ -17,14 +29,15 @@ export const createAddGlobalParameterOverrides$ = (
 ) =>
   added.length
     ? from(added).pipe(
-        mergeMap(([dashboardQueryMappingId, queryParameterKey]) =>
+        map(([dashboardQueryMappingId, queryParameterKey]) =>
           mutateAddDashboardGlobalParameterOverride()({
             dashboardId,
             dashboardParameterKey,
             dashboardQueryMappingId,
             queryParameterKey,
-          }),
+          }).pipe(catchError(() => of(null))),
         ),
+        concatAll(),
       )
     : of(null)
 

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { showShareDialog } from 'san-webkit/lib/ui/Share/index.svelte'
+  import { getSEOLinkFromIdAndTitle } from 'san-webkit/lib/utils/url'
   import { showDashboardPublishedDialog$ } from '$lib/DashboardPublishedDialog/index.svelte'
   import Button from '$lib/ui/Button.svelte'
   import Popover from '$lib/ui/Popover'
@@ -15,6 +16,7 @@
     dashboard,
     author,
     isAuthor = false,
+    readonly = true,
     currentUser,
 
     onDuplicateClick,
@@ -24,6 +26,7 @@
     author: App.Author
     isAuthor: boolean
     currentUser: null | {}
+    readonly?: boolean
 
     onSaveClick?: () => void
     onDuplicateClick?: () => void
@@ -65,7 +68,16 @@
   }
 
   function onShareClick() {
-    showShareDialog({ entity: 'Dashboard', feature: 'dashboard', source: 'dashboard_head' })
+    showShareDialog({
+      entity: 'Dashboard',
+      feature: 'dashboard',
+      source: 'dashboard_head',
+      data: {
+        link:
+          window.location.origin +
+          `/dashboard/${getSEOLinkFromIdAndTitle(dashboardEditor.id!, dashboardEditor.name.$)}`,
+      },
+    })
   }
 </script>
 
@@ -83,17 +95,38 @@
   <div class="ml-auto mr-4 flex items-center">
     {#if isAuthor}
       {#if dashboard}
-        <Button variant="fill" onclick={onPublicityToggleClick} class={cn(isLoading && 'loading')}>
-          {isPublic.$ ? 'Unpublish' : 'Publish'}
-        </Button>
+        {@const seoLink = getSEOLinkFromIdAndTitle( dashboardEditor.id!, dashboardEditor.name.$)}
 
-        <Button
-          variant="border"
-          icon="plus"
-          iconSize="10"
-          class="ml-4 bg-athens fill-waterloo hover:text-green"
-          onclick={onAddGlobalParameterClick}>Global parameter</Button
-        >
+        {#if readonly}
+          <Button
+            variant="fill"
+            onclick={onPublicityToggleClick}
+            class={cn(isLoading && 'loading')}
+          >
+            {isPublic.$ ? 'Unpublish' : 'Publish'}
+          </Button>
+
+          <Button
+            variant="border"
+            icon="pencil"
+            iconSize="10"
+            class="ml-4 bg-athens fill-waterloo hover:text-green"
+            href="/dashboard/edit/{seoLink}"
+          >
+            Edit
+          </Button>
+        {:else}
+          <Button variant="fill" class={cn(isLoading && 'loading')} href="/dashboard/{seoLink}">
+            Preview
+          </Button>
+          <Button
+            variant="border"
+            icon="plus"
+            iconSize="10"
+            class="ml-4 bg-athens fill-waterloo hover:text-green"
+            onclick={onAddGlobalParameterClick}>Global parameter</Button
+          >
+        {/if}
       {/if}
     {:else}
       <Button variant="fill" onclick={onShareClick}>Share</Button>

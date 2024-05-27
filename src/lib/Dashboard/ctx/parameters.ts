@@ -8,16 +8,28 @@ export const useDashboardParametersCtx = createCtx(
     const parameters = ss(apiParameters ? parseParameters(apiParameters) : [])
 
     const globalParameterOverrides = ssd(() => {
+      const widgetParams = {} as Record<string, undefined | Record<string, undefined | string>>
+
+      const addWidgetParameter = (widgetId: string, widgetParameterKey: string, value: any) => {
+        let widget = widgetParams[widgetId]
+        if (!widget) widget = widgetParams[widgetId] = {}
+
+        widget[widgetParameterKey] = value
+
+        return createWidgetIdParameterKey(widgetId, widgetParameterKey)
+      }
+
       const map = new Map(
         parameters.$.flatMap((parameter) =>
           [...parameter.overrides.entries()].map(([widgetId, widgetParameterKey]) => [
-            createWidgetIdParameterKey(widgetId, widgetParameterKey),
+            addWidgetParameter(widgetId, widgetParameterKey, parameter.value),
             [parameter] as const, // NOTE: Wrapping it inside new array to invalidate reference in a key block
           ]),
         ),
       )
 
       return {
+        widgetParams,
         get(widgetId: string, parameterKey: string) {
           return map.get(createWidgetIdParameterKey(widgetId, parameterKey))
         },

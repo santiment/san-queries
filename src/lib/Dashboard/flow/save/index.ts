@@ -53,6 +53,7 @@ export function useAutoSaveFlow(EditorRef: SS<DashboardEditor>, isAuthor: SS<boo
     changeIndicatorCtx.onChange$.pipe(
       filter(() => isAuthor.$),
       debounceTime(1500),
+      // TODO: Remove params override on widget delete
       exhaustMapWithTrailing(() => createSave$(EditorRef.$?.getState(), saveIndicatorCtx)),
     ),
   )
@@ -99,6 +100,6 @@ export const useSaveEmptyFlowCtx = createCtx(
 )
 
 function changePage(apiDashboard: App.ApiDashboard) {
-  const href = '/dashboard/' + getSEOLinkFromIdAndTitle(apiDashboard.id, apiDashboard.name)
+  const href = '/dashboard/edit/' + getSEOLinkFromIdAndTitle(apiDashboard.id, apiDashboard.name)
   gotoDashboardPage(href, { apiDashboard })
 }
