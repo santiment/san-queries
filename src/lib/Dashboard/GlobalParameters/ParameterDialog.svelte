@@ -52,10 +52,14 @@
 
   function onApproveClick() {
     if (!dashboardEditor.id) return
-    if (dashboardEditor.readonly) return
     if (isLoading) return
 
     isLoading = true
+
+    if (readonly) {
+      onComplete()
+      return
+    }
 
     const applyChanges = isNew ? createGlobalParameter : updateGlobalParameter
 

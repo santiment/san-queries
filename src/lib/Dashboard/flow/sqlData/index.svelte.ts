@@ -163,15 +163,17 @@ export const useDahboardSqlDataCtx = createCtx(
       parameters: null | Record<string, any>
       isDefault: boolean
       onComplete?: () => void
+      readonly?: boolean
     }>(() =>
       pipe(
         groupBy(({ widgetId }) => widgetId),
         mergeMap((grouped) =>
           grouped.pipe(
-            switchMap(({ widgetId, sql, parameters, isDefault, onComplete }) =>
+            switchMap(({ widgetId, sql, parameters, isDefault, onComplete, readonly }) =>
               isDefault &&
               checkIsDefaultParamsChanged(widgetId, parameters) &&
-              dashboardEditor.isAuthor
+              dashboardEditor.isAuthor &&
+              !readonly
                 ? of(null).pipe(
                     tap(() =>
                       refreshDashboardQueryData({

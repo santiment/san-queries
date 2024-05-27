@@ -42,6 +42,7 @@
   const { changedParameters, queryParameterChanges } = useDataFlowSqlDataCtx(
     widget,
     ssd(() => flowNode),
+    readonly,
   )
 
   let dataState = $derived(dashboardData.get(widget.id))
@@ -86,7 +87,7 @@
   }
 
   function onQueryChangesClick() {
-    queryParameterChanges()
+    queryParameterChanges(readonly)
   }
 </script>
 

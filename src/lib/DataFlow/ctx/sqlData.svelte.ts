@@ -64,7 +64,7 @@ export const useDataFlowSqlDataCtx = createCtx(
       }, 50)
     }
 
-    const queryParameterChanges = () =>
+    const queryParameterChanges = (readonly = true) =>
       untrack(() => {
         // NOTE: Ensuring order of key-value pairs
         const newSqlParameters = Object.assign({}, defaultParameters.$, newParameters)
@@ -82,7 +82,8 @@ export const useDataFlowSqlDataCtx = createCtx(
           widgetId: widget.id,
           sql: widget.query.sqlQueryText,
           parameters: newSqlParameters,
-          isDefault: defaultHash === newHash,
+          isDefault: readonly ? false : defaultHash === newHash,
+          readonly,
           onComplete,
         })
 
