@@ -18,7 +18,7 @@ export function useDashboardDeleteFlow(apiDashboard: SS<undefined | App.ApiDashb
       exhaustMap((dashboard) =>
         mutateDeleteDashboard()(dashboard.id).pipe(
           tap(() => (apiDashboard.$ = undefined)),
-          tap(() => goto('/dashboard/new')),
+          tap(() => goto('/dashboard/edit/new')),
           tap(() =>
             notifications$.show({ type: 'info', title: 'Dashboard deleted', dismissAfter: 5000 }),
           ),

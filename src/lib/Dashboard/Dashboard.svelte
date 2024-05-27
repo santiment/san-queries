@@ -13,6 +13,7 @@
     isAuthor = false,
     currentUser,
     isLegacy = false,
+    readonly = true,
 
     onLayoutChange,
     onDuplicateClick,
@@ -22,6 +23,7 @@
     isAuthor?: boolean
     currentUser: any
     isLegacy?: boolean
+    readonly?: boolean
 
     onLayoutChange: () => void
   } & Pick<ComponentProps<Header>, 'onSaveClick' | 'onDuplicateClick' | 'onDeleteClick'> = $props()
@@ -29,8 +31,6 @@
   const { dashboardEditor } = useDashboardEditorCtx(dashboard, isAuthor)
   const dahboardSqlDataCtx = useDahboardSqlDataCtx(dashboard)
   const dataFlowCtx = useDataFlowCtx()
-
-  let readonly = $derived(!isAuthor)
 
   export function getState() {
     return untrack(() =>
@@ -44,6 +44,7 @@
     {dashboard}
     author={dashboard?.user || currentUser}
     {isAuthor}
+    {readonly}
     {currentUser}
     {onDuplicateClick}
     {onDeleteClick}
@@ -52,7 +53,7 @@
   <Title name={dashboardEditor.name.$} description={dashboardEditor.description.$} {readonly}
   ></Title>
 
-  <GlobalParameters {isAuthor}></GlobalParameters>
+  <GlobalParameters {isAuthor} {readonly}></GlobalParameters>
 
   {#if isLegacy}
     Legacy

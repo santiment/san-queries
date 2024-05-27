@@ -41,7 +41,7 @@
     bind:this={EditorRef.$}
     dashboard={apiDashboard.$}
     isAuthor={isAuthor.$}
-    readonly={true}
+    readonly={false}
     {currentUser}
     {onDuplicateClick}
     {onDeleteClick}

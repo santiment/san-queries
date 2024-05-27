@@ -100,6 +100,6 @@ export const useSaveEmptyFlowCtx = createCtx(
 )
 
 function changePage(apiDashboard: App.ApiDashboard) {
-  const href = '/dashboard/' + getSEOLinkFromIdAndTitle(apiDashboard.id, apiDashboard.name)
+  const href = '/dashboard/edit/' + getSEOLinkFromIdAndTitle(apiDashboard.id, apiDashboard.name)
   gotoDashboardPage(href, { apiDashboard })
 }
