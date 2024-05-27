@@ -1,5 +1,6 @@
 import type QueryEditorSvelte from '../QueryEditor.svelte'
 
+import { exhaustMapWithTrailing } from 'rxjs-exhaustmap-with-trailing'
 import { useSaveIndicatorCtx } from '$lib/SaveIndicator/index.svelte'
 import { catchError, debounceTime, delay, exhaustMap, filter, mergeMap, of, pipe, tap } from 'rxjs'
 import { useObserve, type SS } from 'svelte-runes'
@@ -71,7 +72,7 @@ export function useAutoSaveFlow(QueryEditorRef: SS<QueryEditorSvelte>, isAuthor:
     changeIndicatorCtx.onChange$.pipe(
       filter(() => isAuthor.$),
       debounceTime(1500),
-      exhaustMap(() => createSave$(QueryEditorRef.$?.getState(), saveIndicatorCtx)),
+      exhaustMapWithTrailing(() => createSave$(QueryEditorRef.$?.getState(), saveIndicatorCtx)),
     ),
   )
 }

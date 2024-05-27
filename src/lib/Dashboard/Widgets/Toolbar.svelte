@@ -58,7 +58,7 @@
   {#if SAN_TEAM.has(+($currentUser$?.id as number))}
     <div class="mx-3 h-10 border-l"></div>
 
-    <button class="btn" on:click={() => showDataFlowDialog()}>
+    <button class="btn" onclick={() => showDataFlowDialog()}>
       <Svg id="share-dots" w="16" />
       Data Flow
     </button>

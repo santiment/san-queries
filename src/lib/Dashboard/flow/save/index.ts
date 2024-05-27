@@ -11,6 +11,7 @@ import { createCtx } from '$lib/ctx'
 import { getPlaceholderName, replaceSeoLink } from '$lib/utils'
 import { gotoDashboardPage } from '$routes/(editor)/dashboard/[[slug]]/utils'
 import { useEditorSidebarCtx } from '$lib/EditorSidebar/ctx'
+import { exhaustMapWithTrailing } from 'rxjs-exhaustmap-with-trailing'
 
 const createSave$ = (
   dashboardEditor: undefined | App.DashboardEditor,
@@ -22,7 +23,7 @@ const createSave$ = (
     ),
     tap(() => saveIndicatorCtx.emit.saving()),
     mergeMap((dashboard) => mutateUpdateDashboard()(dashboard)),
-    tap((dashboard) => replaceSeoLink('/dashboard/', dashboard.id, dashboard.name)),
+    tap((dashboard) => replaceSeoLink('/dashboard/edit/', dashboard.id, dashboard.name)),
 
     delay(1500),
     tap(() => saveIndicatorCtx.emit.success()),
@@ -36,7 +37,7 @@ export function useSaveFlow(EditorRef: SS<DashboardEditor>, isAuthor: SS<boolean
   const saveDashboard = useObserveFnCall(() =>
     pipe(
       filter(() => isAuthor.$),
-      exhaustMap(() => createSave$(EditorRef.$?.getState(), saveIndicatorCtx)),
+      exhaustMapWithTrailing(() => createSave$(EditorRef.$?.getState(), saveIndicatorCtx)),
     ),
   )
 
@@ -52,7 +53,8 @@ export function useAutoSaveFlow(EditorRef: SS<DashboardEditor>, isAuthor: SS<boo
     changeIndicatorCtx.onChange$.pipe(
       filter(() => isAuthor.$),
       debounceTime(1500),
-      exhaustMap(() => createSave$(EditorRef.$?.getState(), saveIndicatorCtx)),
+      // TODO: Remove params override on widget delete
+      exhaustMapWithTrailing(() => createSave$(EditorRef.$?.getState(), saveIndicatorCtx)),
     ),
   )
 }
@@ -98,6 +100,6 @@ export const useSaveEmptyFlowCtx = createCtx(
 )
 
 function changePage(apiDashboard: App.ApiDashboard) {
-  const href = '/dashboard/' + getSEOLinkFromIdAndTitle(apiDashboard.id, apiDashboard.name)
+  const href = '/dashboard/edit/' + getSEOLinkFromIdAndTitle(apiDashboard.id, apiDashboard.name)
   gotoDashboardPage(href, { apiDashboard })
 }

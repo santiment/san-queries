@@ -85,7 +85,7 @@
       <div
         class="suggestion"
         class:active={suggestion === uppercaseColor}
-        on:click={() => onChange(suggestion)}
+        onclick={() => onChange(suggestion)}
         style="--color:{suggestion}"
       />
     {/each}

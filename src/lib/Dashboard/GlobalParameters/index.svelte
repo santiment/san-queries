@@ -4,7 +4,7 @@
   import { useDashboardEditorCtx } from '../ctx/index'
   import { showGlobalParameterDialog$ } from './ParameterDialog.svelte'
 
-  let { isAuthor = false }: { isAuthor?: boolean } = $props()
+  let { isAuthor = false, readonly = true }: { isAuthor?: boolean; readonly?: boolean } = $props()
 
   const showGlobalParameterDialog = showGlobalParameterDialog$()
   const { dashboardEditor } = useDashboardEditorCtx()
@@ -13,7 +13,7 @@
   function onLinkClick(parameter: (typeof dashboardEditor)['parameters']['$'][number]) {
     if (!dashboardEditor.id) return
 
-    showGlobalParameterDialog({ parameter, strict: true }).then((changed) => {
+    showGlobalParameterDialog({ parameter, readonly, strict: true }).then((changed) => {
       Object.assign(parameter, changed)
 
       dashboardEditor.parameters.$ = dashboardEditor.parameters.$
@@ -40,7 +40,7 @@
       {parameter}
       {isAuthor}
       onLinkClick={() => onLinkClick(parameter)}
-      onRemoveClick={() => onRemoveClick(parameter)}
+      onRemoveClick={readonly ? undefined : () => onRemoveClick(parameter)}
     ></Parameter>
   {/each}
 </section>

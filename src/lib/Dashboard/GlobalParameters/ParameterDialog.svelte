@@ -15,6 +15,7 @@
   import { useCreateGlobalParameterFlow, useUpdateGlobalParameterFlow } from './flow'
 
   let {
+    readonly = false,
     parameter: _parameter = {
       global: true,
       key: '',
@@ -25,6 +26,7 @@
     DialogCtx,
     ...rest
   }: {
+    readonly?: boolean
     parameter?: (typeof dashboardEditor)['parameters']['$'][number]
     DialogCtx: any
   } = $props()
@@ -50,10 +52,14 @@
 
   function onApproveClick() {
     if (!dashboardEditor.id) return
-    if (dashboardEditor.readonly) return
     if (isLoading) return
 
     isLoading = true
+
+    if (readonly) {
+      onComplete()
+      return
+    }
 
     const applyChanges = isNew ? createGlobalParameter : updateGlobalParameter
 
@@ -74,7 +80,7 @@
 
 <Dialog {...rest} {DialogCtx} title="{isNew ? 'Add' : 'Edit'} global parameter" class="w-[480px]">
   <Form bind:parameter {DialogCtx} {isLoading} {onApproveClick}>
-    {#if dashboardEditor.isAuthor && queries.length}
+    {#if dashboardEditor.isAuthor && queries.length && !readonly}
       <queries class="flex flex-col gap-4">
         <h3 class="text-base font-medium">
           Link local parameters from queries added to this dashboard

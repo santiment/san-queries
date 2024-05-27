@@ -1,13 +1,22 @@
 import { redirect } from '@sveltejs/kit'
 import { getIdFromSEOLink } from 'san-webkit/lib/utils/url'
 import { UniQuery } from '$lib/api/index'
-import { queryGetDashboard } from './api'
-import { gotoDashboardPage } from './utils'
+import { queryGetDashboard } from '../../[[slug]]/api'
+import { gotoDashboardPage } from '../../[[slug]]/utils'
 
 export const ssr = false
 
 export const load = async (event) => {
-  const { slug = '' } = event.params
+  const { session } = await event.parent()
+  const { currentUser } = session
+
+  if (!currentUser) {
+    throw redirect(302, '/dashboard/edit/new')
+  }
+
+  const { slug = 'new' } = event.params
+
+  if (slug === 'new') return
 
   const dashboardId = getIdFromSEOLink(slug)
 
@@ -22,6 +31,10 @@ export const load = async (event) => {
       : preloaded.apiDashboard
 
   if (!apiDashboard) {
+    throw redirect(302, '/dashboard/edit/new')
+  }
+
+  if (+apiDashboard.user.id !== +currentUser.id) {
     throw redirect(302, '/dashboard/edit/new')
   }
 

@@ -44,7 +44,7 @@
     /></svg
   >
 
-  <button class="close" on:click={() => closeDialog()}>
+  <button class="close" onclick={() => closeDialog()}>
     <Svg id="close" w="12" />
   </button>
 
@@ -52,12 +52,12 @@
   <p class="c-waterloo mrg-xl mrg--b">Now everyone can see it in “Explorer” page</p>
 
   <actions class="flex gap-4">
-    <button class="btn-1 btn--s" on:click={onCopy}>
+    <button class="btn-1 btn--s" onclick={onCopy}>
       <Svg id="link" w="16" />
       {copyLabel}
     </button>
 
-    <button class="btn-2 btn--s !h-8 !px-2" on:click={onShare}>
+    <button class="btn-2 btn--s !h-8 !px-2" onclick={onShare}>
       <Svg id="share-dots" w="14" h="16" />
       Share
     </button>
