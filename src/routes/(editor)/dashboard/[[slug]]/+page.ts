@@ -9,8 +9,6 @@ export const ssr = false
 export const load = async (event) => {
   const { slug = '' } = event.params
 
-  if (slug === '') return
-
   const dashboardId = getIdFromSEOLink(slug)
 
   if (Number.isInteger(dashboardId) === false) {

@@ -14,7 +14,9 @@ export const load = async (event) => {
     throw redirect(302, '/dashboard/edit/new')
   }
 
-  const { slug = '' } = event.params
+  const { slug = 'new' } = event.params
+
+  if (slug === 'new') return
 
   const dashboardId = getIdFromSEOLink(slug)
 

@@ -23,7 +23,7 @@ const createSave$ = (
     ),
     tap(() => saveIndicatorCtx.emit.saving()),
     mergeMap((dashboard) => mutateUpdateDashboard()(dashboard)),
-    tap((dashboard) => replaceSeoLink('/dashboard/', dashboard.id, dashboard.name)),
+    tap((dashboard) => replaceSeoLink('/dashboard/edit/', dashboard.id, dashboard.name)),
 
     delay(1500),
     tap(() => saveIndicatorCtx.emit.success()),
