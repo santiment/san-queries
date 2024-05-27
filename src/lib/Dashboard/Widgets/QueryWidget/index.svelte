@@ -26,10 +26,10 @@
   } = $props()
 
   const showLinkGlobalParameterDialog = showLinkGlobalParameterDialog$()
+  const { parameters: globalParameters, globalParameterOverrides } = useDashboardParametersCtx()
   const { dashboardData, refreshDashboardQueryData } = useDahboardSqlDataCtx()
   const { FlowNodeByWidgetId } = useDataFlowCtx()
   const { settings } = useQuerySettingsCtx(widget.query.settings)
-  const { parameters: globalParameters, globalParameterOverrides } = useDashboardParametersCtx()
   const { selections } = useSelectedRowsCtx()
 
   let parameters = $derived(parseQueryParameters(widget.query.sqlQueryParameters))
@@ -112,15 +112,8 @@
             global={!!global}
             parameter={global || parameter}
             onLinkClick={readonly ? undefined : () => onLinkClick(parameter, global)}
-          >
-            {#if changedParameters.has(parameter.key)}
-              <span
-                class="absolute right-[-5px] top-[-10px] rounded-sm bg-green-light-1 px-1 text-[10px] text-green"
-              >
-                Changed
-              </span>
-            {/if}
-          </Parameter>
+            changedValue={changedParameters.get(parameter.key)}
+          ></Parameter>
         {/key}
       {/each}
     </section>

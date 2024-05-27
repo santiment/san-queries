@@ -1,5 +1,5 @@
 import { createCtx } from '$lib/ctx'
-import type { SS } from 'svelte-runes'
+import { ssd, type SS } from 'svelte-runes'
 import type { QueryWidgetFlowNode } from '../nodes/QueryWidgetFlowNode'
 import { Map as Map$ } from 'svelte/reactivity'
 import { useDahboardSqlDataCtx } from '$lib/Dashboard/flow/sqlData/index.svelte'
@@ -19,8 +19,15 @@ export const useDataFlowSqlDataCtx = createCtx(
     const { queryRawSql } = useDahboardSqlDataCtx()
     const { globalParameterOverrides } = useDashboardParametersCtx()
 
-    let defaultParameters = null as null | Record<string, any>
-    let oldParameters = null as null | Record<string, any>
+    const defaultParameters = ssd(
+      () =>
+        Object.assign(
+          {},
+          widget.query.sqlQueryParameters,
+          globalParameterOverrides.$.widgetParams[widget.id],
+        ) || {},
+    )
+    let oldParameters = defaultParameters.$
     let newParameters = null as null | Record<string, any>
 
     const changedParameters = new Map$<string, any>()
@@ -30,16 +37,17 @@ export const useDataFlowSqlDataCtx = createCtx(
 
       untrack(() => {
         const subscriber = inputs$?.subscribe((editedParameters) => {
-          if (!oldParameters) {
-            defaultParameters = oldParameters = editedParameters
-            return
-          }
-
           for (const parameterKey in editedParameters) {
-            const newValue = editedParameters[parameterKey]
+            let newValue = editedParameters[parameterKey]
+            if (Array.isArray(newValue) && newValue.length === 0) {
+              newValue = defaultParameters.$[parameterKey]
+            }
+
             if (hashValue(newValue as any) === hashValue(oldParameters![parameterKey])) {
               changedParameters.delete(parameterKey)
-            } else changedParameters.set(parameterKey, newValue)
+            } else {
+              changedParameters.set(parameterKey, newValue)
+            }
           }
 
           newParameters = editedParameters
@@ -58,22 +66,17 @@ export const useDataFlowSqlDataCtx = createCtx(
 
     const queryParameterChanges = () =>
       untrack(() => {
-        const widgetParameters = widget.query.sqlQueryParameters
-
-        // NOTE: Should it be done for defaults during init?
-        const dashboardWidgetParameters = Object.keys(widgetParameters).reduce(
-          (acc, key) =>
-            Object.assign(acc, {
-              [key]:
-                globalParameterOverrides.$.get(widget.id, key)?.[0]?.value || widgetParameters[key],
-            }),
-          {},
-        )
-
         // NOTE: Ensuring order of key-value pairs
-        const newSqlParameters = Object.assign({}, dashboardWidgetParameters, newParameters)
+        const newSqlParameters = Object.assign({}, defaultParameters.$, newParameters)
+        // Normalizing
+        for (const [key, value] of Object.entries(newSqlParameters)) {
+          if (Array.isArray(value) && value.length === 0) {
+            newSqlParameters[key] = defaultParameters.$[key]
+          }
+        }
+
         const newHash = JSON.stringify(newSqlParameters)
-        const defaultHash = JSON.stringify(dashboardWidgetParameters)
+        const defaultHash = JSON.stringify(defaultParameters.$)
 
         queryRawSql({
           widgetId: widget.id,
@@ -84,7 +87,7 @@ export const useDataFlowSqlDataCtx = createCtx(
         })
 
         function onComplete() {
-          oldParameters = newParameters
+          oldParameters = newSqlParameters
           changedParameters.clear()
         }
       })

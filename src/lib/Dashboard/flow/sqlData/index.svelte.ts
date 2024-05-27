@@ -29,6 +29,7 @@ import { ss, useObserve } from 'svelte-runes'
 import { useDashboardEditorCtx } from '$lib/Dashboard/ctx'
 import { queryGetCachedQueryExecutions, queryRunRawSqlQuery } from '$lib/QueryEditor/api'
 import { compressData } from '$lib/utils/compress'
+import { useDashboardParametersCtx } from '$lib/Dashboard/ctx/parameters'
 
 const createSqlDataState = (
   initial: Partial<{ isLoading: boolean; default: null | App.SqlData }> = {},
@@ -42,6 +43,21 @@ export const useDahboardSqlDataCtx = createCtx(
   'useDahboardSqlDataCtx',
   (dashboard?: App.ApiDashboard) => {
     const { dashboardEditor } = useDashboardEditorCtx()
+    const { globalParameterOverrides } = useDashboardParametersCtx()
+
+    let widgetParameterDefaults = Object.assign({}, globalParameterOverrides.$.widgetParams)
+
+    function checkIsDefaultParamsChanged(widgetId: string, params: null | Record<string, any>) {
+      if (!params) return false
+
+      const defaultWidgetParams = widgetParameterDefaults[widgetId]
+
+      for (const key in defaultWidgetParams) {
+        if (defaultWidgetParams[key] !== params[key]) return true
+      }
+
+      return false
+    }
 
     const addedSubject = new Subject<{ widgetId: string; queryId: number }>()
     const deletedSubject = new Subject<string>()
@@ -101,39 +117,44 @@ export const useDahboardSqlDataCtx = createCtx(
       ),
     )
 
-    const refreshDashboardQueryData = useObserveFnCall<{ dashboardId: number; widgetId: string }>(
-      () =>
-        pipe(
-          groupBy(({ widgetId }) => widgetId),
-          mergeMap((grouped) =>
-            grouped.pipe(
-              exhaustMap(({ dashboardId, widgetId }) =>
-                of(null).pipe(
-                  tap(() => (dashboardData.get(widgetId)!.isLoading.$ = true)),
-                  mergeMap(() => queryRunDashboardSqlQuery()(dashboardId, widgetId)),
-                  tap((data) => {
-                    const state = dashboardData.get(widgetId)!
-                    state.defaultData.$ = data
-                    state.displayedData.$ = data
-                    state.isLoading.$ = false
+    const refreshDashboardQueryData = useObserveFnCall<{
+      dashboardId: number
+      widgetId: string
+      onComplete?: () => void
+    }>(() =>
+      pipe(
+        groupBy(({ widgetId }) => widgetId),
+        mergeMap((grouped) =>
+          grouped.pipe(
+            exhaustMap(({ dashboardId, widgetId, onComplete }) =>
+              of(null).pipe(
+                tap(() => (dashboardData.get(widgetId)!.isLoading.$ = true)),
+                mergeMap(() => queryRunDashboardSqlQuery()(dashboardId, widgetId)),
+                tap((data) => {
+                  const state = dashboardData.get(widgetId)!
+                  state.defaultData.$ = data
+                  state.displayedData.$ = data
+                  state.isLoading.$ = false
+                }),
+                mergeMap((data) => from(compressData(data))),
+                mergeMap((compressedData) =>
+                  mutateStoreDashboardQueryExecution()({
+                    compressedData,
+                    dashboardId,
+                    dashboardQueryMappingId: widgetId,
                   }),
-                  mergeMap((data) => from(compressData(data))),
-                  mergeMap((compressedData) =>
-                    mutateStoreDashboardQueryExecution()({
-                      compressedData,
-                      dashboardId,
-                      dashboardQueryMappingId: widgetId,
-                    }),
-                  ),
-                  catchError(() =>
-                    of(null).pipe(tap(() => (dashboardData.get(widgetId)!.isLoading.$ = false))),
-                  ),
-                  takeUntil(deletedSubject.pipe(filter((deletedId) => deletedId === widgetId))),
                 ),
+
+                tap(onComplete),
+                catchError(() =>
+                  of(null).pipe(tap(() => (dashboardData.get(widgetId)!.isLoading.$ = false))),
+                ),
+                takeUntil(deletedSubject.pipe(filter((deletedId) => deletedId === widgetId))),
               ),
             ),
           ),
         ),
+      ),
     )
 
     const queryRawSql = useObserveFnCall<{
@@ -148,25 +169,37 @@ export const useDahboardSqlDataCtx = createCtx(
         mergeMap((grouped) =>
           grouped.pipe(
             switchMap(({ widgetId, sql, parameters, isDefault, onComplete }) =>
-              of(null).pipe(
-                tap(() => (dashboardData.get(widgetId)!.isLoading.$ = true)),
-                mergeMap(() =>
-                  isDefault
-                    ? of(dashboardData.get(widgetId)!.defaultData.$).pipe(delay(500))
-                    : queryRunRawSqlQuery()({ sql, parameters }),
-                ),
-                tap((data) => {
-                  const state = dashboardData.get(widgetId)!
-                  state.displayedData.$ = data
-                  state.isLoading.$ = false
-                }),
-                tap(onComplete),
+              isDefault &&
+              checkIsDefaultParamsChanged(widgetId, parameters) &&
+              dashboardEditor.isAuthor
+                ? of(null).pipe(
+                    tap(() =>
+                      refreshDashboardQueryData({
+                        dashboardId: dashboardEditor.id!,
+                        widgetId,
+                        onComplete,
+                      }),
+                    ),
+                  )
+                : of(null).pipe(
+                    tap(() => (dashboardData.get(widgetId)!.isLoading.$ = true)),
+                    mergeMap(() =>
+                      isDefault
+                        ? of(dashboardData.get(widgetId)!.defaultData.$).pipe(delay(500))
+                        : queryRunRawSqlQuery()({ sql, parameters }),
+                    ),
+                    tap((data) => {
+                      const state = dashboardData.get(widgetId)!
+                      state.displayedData.$ = data
+                      state.isLoading.$ = false
+                    }),
+                    tap(onComplete),
 
-                catchError(() =>
-                  of(null).pipe(tap(() => (dashboardData.get(widgetId)!.isLoading.$ = false))),
-                ),
-                takeUntil(deletedSubject.pipe(filter((deletedId) => deletedId === widgetId))),
-              ),
+                    catchError(() =>
+                      of(null).pipe(tap(() => (dashboardData.get(widgetId)!.isLoading.$ = false))),
+                    ),
+                    takeUntil(deletedSubject.pipe(filter((deletedId) => deletedId === widgetId))),
+                  ),
             ),
           ),
         ),

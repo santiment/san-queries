@@ -8,6 +8,8 @@
     color,
 
     parameter,
+    changedValue,
+
     onEditClick,
     onLinkClick,
     onRemoveClick,
@@ -19,6 +21,8 @@
     color?: string
 
     parameter: { key: string; value: string | number; type?: any }
+    changedValue?: any
+
     onEditClick?: () => void
     onLinkClick?: () => void
     onRemoveClick?: () => void
@@ -26,7 +30,19 @@
     children?: Snippet
   } = $props()
 
-  let shortValue = $derived(parameter.value.toString())
+  let currentValue = $derived(changedValue || parameter.value)
+  $effect(() => {
+    console.log({ changedValue, v: parameter.value })
+  })
+  let shortValue = $derived(currentValue.toString())
+  let shortValues = $derived(
+    shortValue
+      .split(',')
+      .map((value: string) =>
+        value.length > 10 ? `${value.slice(0, 4)}...${value.slice(-3)}` : value,
+      )
+      .join(', '),
+  )
 </script>
 
 <section
@@ -46,7 +62,7 @@
   {parameter.key}
 
   <span class="ml-2 text-waterloo">
-    {shortValue.length > 10 ? `${shortValue.slice(0, 4)}...${shortValue.slice(-3)}` : shortValue}
+    {shortValues}
   </span>
 
   {#if onEditClick || onLinkClick || (isAuthor && onRemoveClick)}
@@ -63,6 +79,14 @@
 
   {#if isAuthor && onRemoveClick}
     <Button icon="close" iconSize="10" onclick={onRemoveClick}></Button>
+  {/if}
+
+  {#if changedValue}
+    <span
+      class="absolute right-[-5px] top-[-10px] rounded-sm bg-green-light-1 px-1 text-[10px] text-green"
+    >
+      Changed
+    </span>
   {/if}
 
   {#if children}
