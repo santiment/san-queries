@@ -25,6 +25,8 @@ export function getScales(metrics: string[], MinMax: any) {
   } as Record<string, any>
 
   metrics.forEach(({ key, color }, i) => {
+    if (!MinMax[key]) return
+
     const { min, max } = MinMax[key]
     const margin = (max - min) * 0.05
 

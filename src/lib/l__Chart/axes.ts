@@ -27,6 +27,8 @@ export const AXES_LAST_VALUE_PLUGIN = {
 
     chart.data.datasets.forEach(({ yAxisID, parsing, borderColor }: any) => {
       const key = parsing.yAxisKey
+      if (!MinMax[key]) return
+
       const { lastValue } = MinMax[key]
 
       const scale = chart.scales[yAxisID]
