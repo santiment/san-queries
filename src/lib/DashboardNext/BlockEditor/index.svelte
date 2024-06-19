@@ -8,6 +8,9 @@
   import Link from '@tiptap/extension-link'
   import BlockLayout, { Column, Columns } from 'tiptap-block-layout'
 
+  import TrailingNode from './extensions/TrailingNode'
+  import Placeholder from './extensions/Placeholder'
+  import SlashCommands from './extensions/SlashCommands'
   import BlockActions from './extensions/BlockActions/index.svelte'
   import BubbleMenu from './extensions/BubbleMenu/index.svelte'
 
@@ -44,6 +47,10 @@
         Columns,
         Column,
         BlockLayout.configure({ dropareaColor: 'var(--droparea-color)' }),
+
+        Placeholder,
+        TrailingNode,
+        SlashCommands,
       ],
     }}
   >
@@ -122,6 +129,36 @@
       &:hover {
         opacity: 1;
       }
+    }
+
+    .is-empty::before,
+    .is-empty::before,
+    .is-editor-empty:first-child::before {
+      content: attr(data-placeholder);
+      float: left;
+      color: var(--casper);
+      pointer-events: none;
+      height: 0;
+    }
+
+    .tiptap :not(.svelte-renderer *):not([data-type='column-resizer']),
+    .svelte-renderer {
+      position: relative;
+    }
+
+    :not(.dragging) .ProseMirror-selectednode::after {
+      display: block;
+      content: '';
+      position: absolute;
+      pointer-events: none;
+      inset: 0px;
+      background: rgba(35, 131, 226, 0.14);
+      z-index: 51;
+      border-radius: 4px;
+      opacity: 1;
+      transition-property: opacity;
+      transition-duration: 200ms;
+      transition-timing-function: ease;
     }
   }
 </style>
