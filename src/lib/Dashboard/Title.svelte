@@ -4,16 +4,11 @@
   import { useDashboardEditorCtx } from './ctx/index'
   import { useSaveEmptyFlowCtx } from './flow/save'
 
-  let {
-    readonly = false,
-  }: {
-    readonly?: boolean
-  } = $props()
-
   const changeIndicatorCtx = useChangeIndicatorCtx()
   const { saveEmptyDashboard } = useSaveEmptyFlowCtx()
   const { dashboardEditor } = useDashboardEditorCtx()
-  const { id, name, description } = dashboardEditor
+
+  const { id, name, description, readonly } = dashboardEditor
 
   function onTitleBlur(name: string) {
     if (id) {

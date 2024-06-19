@@ -7,16 +7,15 @@
   import User from '$lib/ui/User/index.svelte'
   import { cn } from '$lib/ui/utils'
   import { showGlobalParameterDialog$ } from './GlobalParameters/ParameterDialog.svelte'
-  import { useDashboardEditorCtx } from './ctx/index'
+
   import { useToggleDashboardPublicity } from './flow/publicity'
   import Comments from './Comments.svelte'
   import Vote from './Vote.svelte'
+  import { useDashboardEditorCtx } from '$lib/DashboardNext/ctx'
 
   let {
     dashboard,
     author,
-    isAuthor = false,
-    readonly = true,
     currentUser,
 
     onDuplicateClick,
@@ -24,9 +23,7 @@
   }: {
     dashboard?: Pick<App.ApiDashboard, 'commentsCount' | 'votes'>
     author: App.Author
-    isAuthor: boolean
     currentUser: null | {}
-    readonly?: boolean
 
     onSaveClick?: () => void
     onDuplicateClick?: () => void
@@ -37,7 +34,7 @@
   const showDashboardPublishedDialog = showDashboardPublishedDialog$()
   const { publishDashboard, unpublishDashboard } = useToggleDashboardPublicity()
   const { dashboardEditor } = useDashboardEditorCtx()
-  const { isPublic } = dashboardEditor
+  const { readonly, isAuthor, isPublic } = dashboardEditor
 
   let isLoading = $state(false)
 
