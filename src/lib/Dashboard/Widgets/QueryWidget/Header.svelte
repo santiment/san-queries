@@ -6,7 +6,7 @@
   import { useDashboardEditorCtx } from '$lib/Dashboard/ctx'
   import { useDataFlowSqlDataCtx } from '$lib/DataFlow/ctx/sqlData.svelte'
   import { showQueryWidgetFullscreenDialog$ } from './FullscreenDialog.svelte'
-  import AlertButton from './AlertButton.svelte'
+  // import AlertButton from './AlertButton.svelte'
 
   let {
     widget,
@@ -54,7 +54,7 @@
     <a href="/query/{getSEOLinkFromIdAndTitle(id, name)}">{name}</a>
   </h2>
 
-  <AlertButton {widget}></AlertButton>
+  <!-- <AlertButton {widget}></AlertButton> -->
 
   {#if changedParameters.size > 0}
     <Button

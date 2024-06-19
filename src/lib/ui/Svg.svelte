@@ -1,21 +1,8 @@
 <script lang="ts">
-  import { cn } from './utils'
+  import Svg from 'san-webkit-next/ui/core/Svg'
+  import type { ComponentProps } from 'svelte'
 
-  let {
-    id,
-    class: className,
-    w = 16,
-    h = w,
-    illus = false,
-  }: {
-    id: string
-    class?: string
-    w?: number | string
-    h?: number | string
-    illus?: boolean
-  } = $props()
+  let { ...props }: ComponentProps<Svg> = $props()
 </script>
 
-<svg style="width:{w}px;height:{h}px;min-width:{w}px" class={cn(className)}>
-  <use href="/webkit/sprites/{illus ? 'illus/' : ''}{id}.svg#0" />
-</svg>
+<Svg {...props}></Svg>
