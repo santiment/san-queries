@@ -37,11 +37,11 @@
   <NavHeader />
 </OnlyOnDevice>
 
-{#if BROWSER}
-  <Gdpr>
-    <slot />
-  </Gdpr>
+<Gdpr>
+  <slot />
+</Gdpr>
 
+{#if BROWSER}
   <Dialogs />
   <FeatureWalkthrough />
   <Notifications />

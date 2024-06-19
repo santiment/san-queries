@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { BROWSER } from 'esm-env'
+  import { generateHTML } from '@tiptap/html'
   import StarterKit from '@tiptap/starter-kit'
   import Editor from 'tiptap-svelte-adapter'
   import { Color } from '@tiptap/extension-color'
@@ -21,17 +23,10 @@
   export function getEditor() {
     return EditorRef?.getEditor()
   }
-</script>
 
-<div class="flex-1 column">
-  <Editor
-    bind:this={EditorRef}
-    options={{
-      editable: !readonly,
-
-      content,
-
-      extensions: [
+  function renderHtml() {
+    try {
+      const html = generateHTML(content, [
         StarterKit.configure({
           dropcursor: false,
           gapcursor: false,
@@ -47,19 +42,58 @@
         Columns,
         Column,
         BlockLayout.configure({ dropareaColor: 'var(--droparea-color)' }),
+      ])
 
-        Placeholder,
-        TrailingNode,
-        SlashCommands,
-      ],
-    }}
-  >
-    <BubbleMenu></BubbleMenu>
-    <BlockActions></BlockActions>
-  </Editor>
+      return html
+    } catch (e) {
+      return ''
+    }
+  }
+</script>
+
+<div class="flex-1 column">
+  {#if BROWSER}
+    <Editor
+      bind:this={EditorRef}
+      options={{
+        editable: !readonly,
+
+        content,
+
+        extensions: [
+          StarterKit.configure({
+            dropcursor: false,
+            gapcursor: false,
+          }),
+          Link.configure({ openOnClick: false }),
+          Underline,
+          TextStyle,
+          Color,
+          Highlight.configure({
+            multicolor: true,
+          }),
+
+          Columns,
+          Column,
+          BlockLayout.configure({ dropareaColor: 'var(--droparea-color)' }),
+
+          Placeholder,
+          TrailingNode,
+          SlashCommands,
+        ],
+      }}
+    >
+      {#if !readonly}
+        <BubbleMenu></BubbleMenu>
+        <BlockActions></BlockActions>
+      {/if}
+    </Editor>
+  {:else}
+    {@html renderHtml()}
+  {/if}
 </div>
 
-<style lang="postcss">
+<style>
   div :global {
     & > article {
       display: contents;

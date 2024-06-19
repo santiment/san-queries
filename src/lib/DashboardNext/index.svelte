@@ -38,5 +38,5 @@
 
   <Title></Title>
 
-  <BlockEditor {readonly}></BlockEditor>
+  <BlockEditor {readonly} content={dashboardEditor.__editorJson}></BlockEditor>
 </div>

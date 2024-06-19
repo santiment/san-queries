@@ -20,6 +20,21 @@ export const useDashboardEditorCtx = createCtx(
     // useDashboardWidgets({ queries })
     const { parameters } = useDashboardParametersCtx(apiDashboard?.parameters)
 
+    let __editorJson = apiDashboard?.settings?.__editorJson
+
+    if (!__editorJson) {
+      const textWidgets =
+        apiDashboard?.textWidgets.map(({ body }) => ({
+          type: 'paragraph',
+          content: body ? [{ type: 'text', text: body }] : [],
+        })) || []
+
+      __editorJson = {
+        type: 'doc',
+        content: [...textWidgets],
+      }
+    }
+
     return {
       dashboardEditor: {
         isAuthor,
@@ -33,7 +48,7 @@ export const useDashboardEditorCtx = createCtx(
 
         parameters,
 
-        __editorJson: apiDashboard?.settings?.__editorJson,
+        __editorJson,
       },
     }
   },
