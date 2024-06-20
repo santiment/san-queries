@@ -21,6 +21,7 @@ import {
   mutateDeleteDashboardGlobalParameterOverride,
   mutateUpdateDashboardGlobalParameter,
 } from './api'
+import { pipeGroupBy } from '$lib/utils'
 
 export const createAddGlobalParameterOverrides$ = (
   dashboardId: number,
@@ -113,11 +114,14 @@ export function useDeleteGlobalParameterFlow() {
     parameter: { key: string; value: number | string }
     onComplete?: () => void
   }>(() =>
-    exhaustMap(({ dashboard, parameter, onComplete }) =>
-      mutateDeleteDashboardGlobalParameter()({
-        dashboardId: dashboard.id,
-        key: parameter.key,
-      }).pipe(tap(onComplete)),
+    pipeGroupBy(
+      ({ parameter }) => parameter.key,
+      exhaustMap(({ dashboard, parameter, onComplete }) =>
+        mutateDeleteDashboardGlobalParameter()({
+          dashboardId: dashboard.id,
+          key: parameter.key,
+        }).pipe(tap(onComplete)),
+      ),
     ),
   )
 

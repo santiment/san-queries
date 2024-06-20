@@ -11,6 +11,7 @@ import {
   mutateUpdateDashboardTextWidget,
 } from './api'
 import { useDahboardSqlDataCtx } from '../sqlData/index.svelte'
+import { pipeGroupBy } from '$lib/utils'
 
 export function useAddQueryToDashboardFlow() {
   const changeIndicatorCtx = useChangeIndicatorCtx()
@@ -21,9 +22,11 @@ export function useAddQueryToDashboardFlow() {
   const addQueryToDashboard = useObserveFnCall<{
     dashboardId: number
     queryId: number
+    onComplete?: () => void
   }>(() =>
-    exhaustMap(({ dashboardId, queryId }) =>
+    exhaustMap(({ dashboardId, queryId, onComplete }) =>
       mutateCreateDashboardQuery()({ dashboardId: +dashboardId, queryId: +queryId }).pipe(
+        tap(onComplete),
         tap((apiQuery) => addItem(addWidget('QUERY', apiQuery))),
 
         tap((apiQuery) =>
@@ -41,23 +44,44 @@ export function useAddQueryToDashboardFlow() {
 }
 
 export function useDeleteDashboardQueryFlow() {
-  const changeIndicatorCtx = useChangeIndicatorCtx()
+  // const changeIndicatorCtx = useChangeIndicatorCtx()
   const dahboardSqlDataCtx = useDahboardSqlDataCtx()
-  const { removeWidget } = useDashboardWidgetsCtx()
-  const { removeItem } = useDashboardLayoutCtx()
+  // const { removeWidget } = useDashboardWidgetsCtx()
+  // const { removeItem } = useDashboardLayoutCtx()
 
   const deleteDashboardQuery = useObserveFnCall<{
     dashboardId: number
     widget: App.Dashboard.QueryWidget
   }>(() =>
-    exhaustMap(({ dashboardId, widget }) =>
-      mutateDeleteDashboardQuery()({ dashboardId, dashboardQueryMappingId: widget.id }).pipe(
-        tap(() => removeItem(removeWidget(widget))),
-        tap(() => dahboardSqlDataCtx.emit.queryDeleted(widget.id)),
-        tap(() => changeIndicatorCtx.emit.changed()),
+    pipeGroupBy(
+      ({ widget }) => widget.id,
+      exhaustMap(({ dashboardId, widget }) =>
+        mutateDeleteDashboardQuery()({ dashboardId, dashboardQueryMappingId: widget.id }).pipe(
+          tap(() => dahboardSqlDataCtx.emit.queryDeleted(widget.id)),
+        ),
       ),
     ),
   )
+
+  // const deleteDashboardQuery = useObserveFnCall<{
+  //   dashboardId: number
+  //   widget: App.Dashboard.QueryWidget
+  // }>(() =>
+  //   pipe(
+  //     groupBy(({ widget }) => widget.id),
+  //     mergeMap((grouped) =>
+  //       grouped.pipe(
+  //         exhaustMap(({ dashboardId, widget }) =>
+  //           mutateDeleteDashboardQuery()({ dashboardId, dashboardQueryMappingId: widget.id }).pipe(
+  //             // tap(() => removeItem(removeWidget(widget))),
+  //             tap(() => dahboardSqlDataCtx.emit.queryDeleted(widget.id)),
+  //             // tap(() => changeIndicatorCtx.emit.changed()),
+  //           ),
+  //         ),
+  //       ),
+  //     ),
+  //   ),
+  // )
 
   return { deleteDashboardQuery }
 }

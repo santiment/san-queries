@@ -4,6 +4,8 @@ import { createCtx } from '$lib/ctx'
 import { useDashboardParametersCtx } from '$lib/Dashboard/ctx/parameters'
 import { page as page$ } from '$app/stores'
 import { get } from 'svelte/store'
+import type { useDahboardSqlDataCtx } from '$lib/Dashboard/flow/sqlData/index.svelte'
+import type { Editor } from '@tiptap/core'
 
 export const useDashboardEditorCtx = createCtx(
   'useDashboardEditorCtx',
@@ -23,7 +25,7 @@ export const useDashboardEditorCtx = createCtx(
     useDashboardWidgets({ queries })
     const { parameters } = useDashboardParametersCtx(apiDashboard?.parameters)
 
-    let __editorJson = apiDashboard?.settings?.__editorJson
+    let __editorJson = apiDashboard?.settings?.__editorJson || ''
 
     if (!__editorJson) {
       const textWidgets =
@@ -64,6 +66,37 @@ export const useDashboardEditorCtx = createCtx(
     }
   },
 )
+
+export function unwrapState(
+  dashboardEditor: ReturnType<typeof useDashboardEditorCtx>['dashboardEditor'],
+  dashboardData?: ReturnType<typeof useDahboardSqlDataCtx>['dashboardData'],
+
+  blockEditor?: null | Editor,
+) {
+  const { id, name, description, isPublic, parameters, isLegacy } = dashboardEditor
+
+  console.log(blockEditor?.getJSON())
+
+  return {
+    id,
+    name: name.$,
+    description: description.$,
+    isPublic: isPublic.$,
+
+    parameters: parameters.$,
+
+    isLegacy,
+    settings: {
+      version: 2,
+
+      __editorJson: blockEditor?.getJSON(),
+    },
+
+    queriesData: Array.from(dashboardData?.values() || []).map((data) =>
+      Object.assign({}, data.defaultData.$),
+    ),
+  }
+}
 
 export type TEditorWidget<T = any> = {
   id: string

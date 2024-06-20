@@ -3,9 +3,16 @@
 
   import Title from '$lib/Dashboard/Title.svelte'
   import Header from '$lib/Dashboard/Header.svelte'
-  import { useDashboardEditorCtx, useServerDashboardCacheCtx } from './ctx'
+  import {
+    unwrapState,
+    useDashboardEditorCtx,
+    useDashboardWidgets,
+    useServerDashboardCacheCtx,
+  } from './ctx'
   import BlockEditor from './BlockEditor/index.svelte'
   import { useDahboardSqlDataCtx } from '$lib/Dashboard/flow/sqlData/index.svelte'
+  import { showAddQueryToDashboardDialog$ } from '$lib/AddQueryToDashboardDialog/index.svelte'
+  import { useCleanFlow } from './clean.svelte'
 
   let {
     dashboard,
@@ -25,9 +32,22 @@
     isLegacy?: boolean
   } & Pick<ComponentProps<Header>, 'onSaveClick' | 'onDuplicateClick' | 'onDeleteClick'> = $props()
 
+  let BlockEditorRef: BlockEditor
+
+  const showAddQueryToDashboardDialog = showAddQueryToDashboardDialog$()
+
   useServerDashboardCacheCtx()
   const { dashboardEditor } = useDashboardEditorCtx(dashboard, isAuthor, readonly)
   const dahboardSqlDataCtx = useDahboardSqlDataCtx(dashboard)
+  const { addQueryWidget } = useDashboardWidgets()
+
+  useCleanFlow(() => BlockEditorRef?.getEditor?.())
+
+  export function getState() {
+    return untrack(() =>
+      unwrapState(dashboardEditor, dahboardSqlDataCtx.dashboardData, BlockEditorRef?.getEditor()),
+    )
+  }
 </script>
 
 <div class="flex flex-1 flex-col gap-4 p-6 px-12 pb-20">
@@ -41,5 +61,14 @@
 
   <Title></Title>
 
-  <BlockEditor {readonly} content={dashboardEditor.__editorJson}></BlockEditor>
+  <BlockEditor
+    bind:this={BlockEditorRef}
+    {readonly}
+    content={dashboardEditor.__editorJson}
+    editorProps={{
+      addQueryWidget,
+      showAddQueryToDashboardDialog: (props) =>
+        showAddQueryToDashboardDialog({ ...props, dashboardId: dashboardEditor.id }),
+    }}
+  ></BlockEditor>
 </div>

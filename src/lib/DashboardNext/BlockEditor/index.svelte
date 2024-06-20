@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { JSONContent } from '@tiptap/core'
+  import type { EditorOptions, JSONContent } from '@tiptap/core'
 
   import { BROWSER } from 'esm-env'
   import Editor from 'tiptap-svelte-adapter'
@@ -13,7 +13,15 @@
   import { getExtensions } from './extensions'
   import SSR from './SSR.svelte'
 
-  let { readonly = true, content }: { readonly?: boolean; content: JSONContent } = $props()
+  let {
+    readonly = true,
+    content,
+    editorProps,
+  }: {
+    readonly?: boolean
+    content: JSONContent
+    editorProps?: EditorOptions['editorProps'] & Record<string, any>
+  } = $props()
 
   let EditorRef: Editor
 
@@ -30,6 +38,7 @@
         editable: !readonly,
 
         content,
+        editorProps,
 
         extensions: [...getExtensions(), Placeholder, TrailingNode, SlashCommands],
       }}

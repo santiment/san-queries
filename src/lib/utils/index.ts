@@ -1,5 +1,6 @@
 import { goto } from '$app/navigation'
 import { BROWSER } from 'esm-env'
+import { groupBy, mergeMap, pipe, type OperatorFunction } from 'rxjs'
 import { getDateFormats, getTimeFormats } from 'san-webkit/lib/utils/dates'
 import { getSEOLinkFromIdAndTitle } from 'san-webkit/lib/utils/url'
 
@@ -39,3 +40,9 @@ declare global {
 export function replaceSeoLink(path: string, id: number | string, name?: string) {
   window.history.replaceState(history.state, '', path + getSEOLinkFromIdAndTitle(id, name))
 }
+
+export const pipeGroupBy = <T>(groupFn: (data: T) => any, operator: OperatorFunction<T, any>) =>
+  pipe(
+    groupBy(groupFn),
+    mergeMap((grouped) => grouped.pipe(operator)),
+  )

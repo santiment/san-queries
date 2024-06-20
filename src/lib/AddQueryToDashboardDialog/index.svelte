@@ -1,21 +1,20 @@
 <script context="module" lang="ts">
-  import { dialogs } from 'san-webkit/lib/ui/Dialog'
   import Component from './index.svelte'
 
-  export const showAddQueryToDashboardDialog$ = () => dialogs.__WithCtx(Component)
+  export const showAddQueryToDashboardDialog$ = () => dialogs$.new(Component)
 </script>
 
 <script lang="ts">
   import { pipe, switchMap, tap } from 'rxjs'
-  import Dialog from 'san-webkit/lib/ui/Dialog'
   import { queryGetMostRecent, type TEntities } from '$routes/explorer/api'
   import { useObserveFnCall } from '$lib/ui/utils/state.svelte'
   import { useAddQueryToDashboardFlow } from '$lib/Dashboard/flow/widgets'
   import Svg from '$lib/ui/Svg.svelte'
   import { cn } from '$lib/ui/utils'
   import Queries from './Queries.svelte'
+  import Dialog, { dialogs$ } from 'san-webkit-next/ui/core/Dialog'
 
-  let { dashboardId, ...rest }: { dashboardId: number; DialogCtx: any } = $props()
+  let { dashboardId, onComplete, ...rest }: { dashboardId: number; DialogCtx: any } = $props()
 
   const TABS = [
     { title: 'My queries', icon: 'chart' },
@@ -30,7 +29,7 @@
   let filteredQueries = $state.frozen([] as TEntities)
 
   function onQueryAdd(item: any) {
-    addQueryToDashboard({ dashboardId, queryId: item.id, onComplete: console.log })
+    addQueryToDashboard({ dashboardId, queryId: item.id, onComplete })
   }
 
   function onTabSelect(item: TTab) {
@@ -53,17 +52,14 @@
   })
 </script>
 
-<Dialog
-  {...rest}
-  title="Add queries to this dashboard"
-  class="h-full !max-h-[560px] w-full !max-w-[960px]"
->
-  <div class="dialog-body">
+<Dialog class="h-full !max-h-[560px] w-full !max-w-[960px] column">
+  <h2 class="border-b px-5 py-3 text-base">Add queries to this dashboard</h2>
+  <div class="dialog-body overflow-auto column">
     <tabs class="mb-4 flex gap-4 border-b">
       {#each TABS as item (item.title)}
         <button
           class={cn(
-            'row items-center gap-2 border-b border-transparent pb-1.5',
+            'items-center gap-2 border-b border-transparent pb-1.5 row',
             tab === item && 'border-green fill-green text-green',
           )}
           onclick={() => onTabSelect(item)}
