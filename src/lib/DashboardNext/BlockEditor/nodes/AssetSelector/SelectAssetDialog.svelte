@@ -5,36 +5,35 @@
 </script>
 
 <script lang="ts">
+  import { ss } from 'svelte-runes'
+  import { untrack } from 'svelte'
   import Dialog, {
     dialogs$,
     type TDialogReject,
     type TDialogResolve,
-  } from '$lib/san-webkit-next/ui/core/Dialog'
+  } from 'san-webkit-next/ui/core/Dialog'
   import { queryAllProjects } from 'san-studio/lib/api/project'
-  import { ss } from 'svelte-runes'
-  import { untrack } from 'svelte'
-  import VirtualList from '$lib/san-webkit-next/ui/app/VirtualList'
-  import Svg from '$lib/ui/Svg.svelte'
-  import AssetLogo from '$lib/san-webkit-next/ui/app/AssetLogo'
+  import VirtualList from 'san-webkit-next/ui/app/VirtualList'
+  import AssetLogo from 'san-webkit-next/ui/app/AssetLogo'
+  import Svg from 'san-webkit-next/ui/core/Svg'
+  import type { TAsset } from './flow.svelte'
 
-  let { resolve, reject, Controller }: { resolve: TDialogResolve<boolean>; reject: TDialogReject } =
+  let { resolve, reject, Controller }: { resolve: TDialogResolve<TAsset>; reject: TDialogReject } =
     $props()
 
-  let assets = ss([])
+  let assets = ss<TAsset[]>([])
   let searchTerm = $state('')
 
   let filtered = $derived(assets.$.filter((item) => item.name.toLowerCase().includes(searchTerm)))
 
-  function onAssetClick(asset) {
+  function onAssetClick(asset: { slug: string; name: string; ticker: string }) {
     resolve(asset)
     Controller.close()
   }
 
   $effect(() =>
     untrack(() => {
-      queryAllProjects().then((data) => {
-        assets.$ = data
-      })
+      queryAllProjects().then((data) => (assets.$ = data))
     }),
   )
 </script>
@@ -50,10 +49,17 @@
       placeholder="Search for asset or address..."
     />
   </div>
-  <VirtualList class="min-h-[300px] flex-1 px-6" data={filtered} getKey={(item) => item.slug}>
+
+  <VirtualList
+    class="min-h-[300px] flex-1 px-6"
+    maxHeight={300}
+    itemHeight={48}
+    data={filtered}
+    getKey={(item) => item.slug}
+  >
     {#snippet children({ item })}
-      <div
-        class="flex cursor-pointer items-center gap-2 whitespace-nowrap rounded p-2 hover:bg-athens"
+      <button
+        class="flex w-full cursor-pointer items-center gap-2 whitespace-nowrap rounded p-2 hover:bg-athens"
         onclick={() => onAssetClick(item)}
       >
         <AssetLogo class="size-8" slug={item.slug}></AssetLogo>
@@ -61,7 +67,7 @@
           {item.name}
         </span>
         <span class="text-waterloo">({item.ticker})</span>
-      </div>
+      </button>
     {/snippet}
   </VirtualList>
 </Dialog>

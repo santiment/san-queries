@@ -5,33 +5,34 @@
 
   import { useDashboardEditorCtx } from '$lib/DashboardNext/ctx'
   import { useGlobalParametersCtx } from '$lib/Dashboard/ctx/parameters'
-  import { useAssetBySlug, useParameterInitFlow } from './flow.svelte'
+  import {
+    useAssetBySlug,
+    useLinkParametersFlow,
+    useParameterInitFlow,
+    useSelectAssetFlow,
+  } from './flow.svelte'
 
   let { view }: ViewProps = $props()
 
   const { dashboardEditor } = useDashboardEditorCtx()
-  const { globalParameters, globalParameterByKey } = useGlobalParametersCtx()
+  const { globalParameterByKey } = useGlobalParametersCtx()
   const { getAsset } = useAssetBySlug()
 
   let attrs = $derived(view.$.node.attrs)
   let parameter = $derived(globalParameterByKey.$.get(attrs['data-id']))
   let asset = $derived(getAsset(attrs['data-slug']))
 
-  $inspect(parameter, asset)
+  $inspect(parameter, attrs, globalParameterByKey.$)
 
   useParameterInitFlow(attrs)
-
-  function onAssetClick() {}
-
-  function onLinkParameterClick() {}
+  const { onAssetSelectorClick } = useSelectAssetFlow(view)
+  const { onLinkParameterClick } = useLinkParametersFlow()
 </script>
 
 <NodeViewWrapper class="ml-0.5 inline-flex center">
-  <!-- svelte-ignore a11y_click_events_have_key_events -->
-  <!-- svelte-ignore a11y_no_static_element_interactions -->
   <button
     class="flex cursor-pointer gap-1 rounded border px-1.5 center hover:border-green"
-    onclick={onAssetClick}
+    onclick={() => onAssetSelectorClick(parameter)}
   >
     <AssetLogo slug={asset.slug}></AssetLogo>
 
@@ -46,7 +47,7 @@
   {#if dashboardEditor.readonly === false}
     <button
       class="ml-2 cursor-pointer fill-waterloo hover:fill-green"
-      onclick={onLinkParameterClick}
+      onclick={() => onLinkParameterClick(parameter)}
     >
       <Svg id="cog" w="12"></Svg>
     </button>

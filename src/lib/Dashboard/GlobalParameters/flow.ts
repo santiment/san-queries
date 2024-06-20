@@ -86,7 +86,7 @@ export function useUpdateGlobalParameterFlow() {
     oldKey: string
     parameter: { key: string; value: number | string }
     overrides: TUnwrappedChanges
-    onComplete: () => void
+    onComplete?: () => void
   }>(() =>
     exhaustMap(({ dashboard, oldKey, parameter, overrides, onComplete }) =>
       concat(

@@ -1,21 +1,22 @@
 <script context="module" lang="ts">
-  import { dialogs } from 'san-webkit/lib/ui/Dialog'
   import Component from './LinkParameterDialog.svelte'
 
-  export const showLinkParameterDialog$ = () => dialogs.__WithCtx(Component)
+  export const showLinkParameterDialog$ = () => dialogs$.new(Component)
 </script>
 
 <script lang="ts">
-  import Dialog from 'san-webkit/lib/ui/Dialog'
   import GlobalQuery from '$lib/Dashboard/GlobalParameters/GlobalQuery.svelte'
-  import {
-    useCreateGlobalParameterFlow,
-    useUpdateGlobalParameterFlow,
-  } from '$lib/Dashboard/GlobalParameters/flow'
+  import { useUpdateGlobalParameterFlow } from '$lib/Dashboard/GlobalParameters/flow'
   import { OverridesDiff } from '$lib/Dashboard/GlobalParameters/utils'
-  import { useDashboardEditorCtx, useDashboardWidgets, type TEditorWidget } from '../../../ctx'
+
   import Button from '$lib/ui/Button.svelte'
   import { cn } from '$lib/ui/utils'
+  import Dialog, { dialogs$, type TDialogResolve } from 'san-webkit-next/ui/core/Dialog'
+  import {
+    useDashboardEditorCtx,
+    useDashboardWidgets,
+    type TEditorWidget,
+  } from '$lib/DashboardNext/ctx'
 
   let {
     readonly = false,
@@ -26,17 +27,17 @@
       type: 'Text',
       overrides: new Map(),
     },
-    DialogCtx,
-    ...rest
+    resolve,
+    Controller,
   }: {
     readonly?: boolean
     parameter?: (typeof dashboardEditor)['parameters']['$'][number]
-    DialogCtx: any
+    resolve: TDialogResolve<typeof parameter>
+    Controller: any
   } = $props()
 
   const { key } = _parameter
 
-  const { createGlobalParameter } = useCreateGlobalParameterFlow()
   const { updateGlobalParameter } = useUpdateGlobalParameterFlow()
   const { dashboardWidgets } = useDashboardWidgets()
   const { dashboardEditor } = useDashboardEditorCtx()
@@ -77,13 +78,13 @@
     })
 
     function onComplete() {
-      DialogCtx.resolve({ ...parameter, overrides: overridesDiff.value })
-      DialogCtx.close()
+      resolve({ ...parameter, overrides: overridesDiff.value })
+      Controller.close()
     }
   }
 </script>
 
-<Dialog {...rest} {DialogCtx} title="Link parameter" class="w-[480px]">
+<Dialog title="Link parameter" class="w-[480px]">
   <div class="scroll-auto p-4 py-3">
     {#if queryWidgets.length && !readonly}
       <queries class="flex flex-col gap-4">
@@ -99,7 +100,7 @@
       No queries with parameters found
     {/if}
 
-    <actions class="row mt-4 gap-4">
+    <actions class="mt-4 gap-4 row">
       <Button
         variant="fill"
         onclick={onApproveClick}
@@ -109,7 +110,7 @@
         {key ? 'Edit' : 'Add'}
       </Button>
 
-      <Button variant="border" onclick={DialogCtx.close}>Cancel</Button>
+      <Button variant="border" onclick={Controller.close}>Cancel</Button>
     </actions>
   </div>
 </Dialog>

@@ -25,11 +25,15 @@ export function useCleanFlow(getEditor: () => null | Editor) {
 
       const unusedWidgets = new Map(dashboardWidgets)
       const unusedGlobalParameters = new Map(globalParameterByKey.$)
-      const queryNodes = new Set<Node>()
 
       editor.state.doc.descendants((node) => {
         if (node.type.name === QueryBlock.name) {
-          queryNodes.add(node)
+          unusedWidgets.delete(node.attrs['data-id'])
+          return
+        }
+
+        if (node.type.spec.group?.includes('global-parameter')) {
+          unusedGlobalParameters.delete(node.attrs['data-id'])
           return
         }
 
@@ -37,13 +41,10 @@ export function useCleanFlow(getEditor: () => null | Editor) {
       })
       console.log(editor)
 
-      for (const node of queryNodes) {
-        unusedWidgets.delete(node.attrs['data-id'])
-      }
-
       unusedWidgets.forEach((widget) => {
         deleteDashboardQuery({ dashboardId: id, widget })
       })
+
       unusedGlobalParameters.forEach((parameter) => {
         deleteGlobalParameter({ dashboardId: id, parameter })
         removeGlobalParameter(parameter)
