@@ -104,9 +104,9 @@
   {@render children?.()}
 </sql-editor>
 
-<style lang="postcss">
-  sql-editor {
-    :global(.monaco-editor) {
+<style>
+  sql-editor :global {
+    .monaco-editor {
       border-radius: var(--border-radius, inherit);
       background: var(--white);
       --vscode-editor-background: transparent;
@@ -115,23 +115,23 @@
       --vscode-list-hoverBackground: var(--mystic);
     }
 
-    :global(.mtk1) {
+    .mtk1 {
       color: var(--black);
     }
 
-    :global(.line-numbers) {
+    .line-numbers {
       color: var(--waterloo);
     }
 
-    :global(.active-line-number) {
+    .active-line-number {
       color: var(--black) !important;
     }
-    :global(.cursors-layer .cursor) {
+    .cursors-layer .cursor {
       background-color: var(--black);
       border-color: var(--black);
     }
 
-    :global(.suggest-widget) {
+    .suggest-widget {
       border-radius: 4px;
       background: var(--white);
       --vscode-editorSuggestWidget-foreground: var(--black);

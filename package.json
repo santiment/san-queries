@@ -103,9 +103,13 @@
     "tiptap-svelte-adapter": "^0.0.2",
     "ua-parser-js": "^1.0.37",
     "uuid": "^9.0.1",
+    "zeed-dom": "^0.13.3",
     "zod": "^3.22.4"
   },
   "pnpm": {
+    "overrides": {
+      "zeed-dom": "^0.13.3"
+    },
     "patchedDependencies": {
       "@sveltejs/kit@2.5.17": "patches/@sveltejs__kit@2.5.10.patch"
     }

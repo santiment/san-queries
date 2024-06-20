@@ -1,14 +1,8 @@
 <script lang="ts">
+  import type { JSONContent } from '@tiptap/core'
+
   import { BROWSER } from 'esm-env'
-  import { generateHTML } from '@tiptap/html'
-  import StarterKit from '@tiptap/starter-kit'
   import Editor from 'tiptap-svelte-adapter'
-  import { Color } from '@tiptap/extension-color'
-  import Highlight from '@tiptap/extension-highlight'
-  import Underline from '@tiptap/extension-underline'
-  import TextStyle from '@tiptap/extension-text-style'
-  import Link from '@tiptap/extension-link'
-  import BlockLayout, { Column, Columns } from 'tiptap-block-layout'
 
   import TrailingNode from './extensions/TrailingNode'
   import Placeholder from './extensions/Placeholder'
@@ -16,38 +10,15 @@
   import BlockActions from './extensions/BlockActions/index.svelte'
   import BubbleMenu from './extensions/BubbleMenu/index.svelte'
 
-  let { readonly = true, content = '' } = $props()
+  import { getExtensions } from './extensions'
+  import SSR from './SSR.svelte'
+
+  let { readonly = true, content }: { readonly?: boolean; content: JSONContent } = $props()
 
   let EditorRef: Editor
 
   export function getEditor() {
     return EditorRef?.getEditor()
-  }
-
-  function renderHtml() {
-    try {
-      const html = generateHTML(content, [
-        StarterKit.configure({
-          dropcursor: false,
-          gapcursor: false,
-        }),
-        Link.configure({ openOnClick: false }),
-        Underline,
-        TextStyle,
-        Color,
-        Highlight.configure({
-          multicolor: true,
-        }),
-
-        Columns,
-        Column,
-        BlockLayout.configure({ dropareaColor: 'var(--droparea-color)' }),
-      ])
-
-      return html
-    } catch (e) {
-      return ''
-    }
   }
 </script>
 
@@ -60,27 +31,7 @@
 
         content,
 
-        extensions: [
-          StarterKit.configure({
-            dropcursor: false,
-            gapcursor: false,
-          }),
-          Link.configure({ openOnClick: false }),
-          Underline,
-          TextStyle,
-          Color,
-          Highlight.configure({
-            multicolor: true,
-          }),
-
-          Columns,
-          Column,
-          BlockLayout.configure({ dropareaColor: 'var(--droparea-color)' }),
-
-          Placeholder,
-          TrailingNode,
-          SlashCommands,
-        ],
+        extensions: [...getExtensions(), Placeholder, TrailingNode, SlashCommands],
       }}
     >
       {#if !readonly}
@@ -89,7 +40,7 @@
       {/if}
     </Editor>
   {:else}
-    {@html renderHtml()}
+    <SSR {content}></SSR>
   {/if}
 </div>
 

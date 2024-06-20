@@ -1,6 +1,7 @@
-import { useDashboardParametersCtx } from '$lib/Dashboard/ctx/parameters'
+import { ss, ssd } from 'svelte-runes'
+import { Map as Map$ } from 'svelte/reactivity'
 import { createCtx } from '$lib/ctx'
-import { ss } from 'svelte-runes'
+import { useDashboardParametersCtx } from '$lib/Dashboard/ctx/parameters'
 
 export const useDashboardEditorCtx = createCtx(
   'useDashboardEditorCtx',
@@ -17,7 +18,7 @@ export const useDashboardEditorCtx = createCtx(
 
     const isLegacy = Boolean(panels?.length && !(queries.length || textWidgets.length))
 
-    // useDashboardWidgets({ queries })
+    useDashboardWidgets({ queries })
     const { parameters } = useDashboardParametersCtx(apiDashboard?.parameters)
 
     let __editorJson = apiDashboard?.settings?.__editorJson
@@ -29,9 +30,17 @@ export const useDashboardEditorCtx = createCtx(
           content: body ? [{ type: 'text', text: body }] : [],
         })) || []
 
+      const queryWidgets =
+        apiDashboard?.queries.map((query) => ({
+          type: 'query-widget',
+          attrs: {
+            'data-id': query.dashboardQueryMappingId,
+          },
+        })) || []
+
       __editorJson = {
         type: 'doc',
-        content: [...textWidgets],
+        content: [...textWidgets, ...queryWidgets],
       }
     }
 
@@ -53,3 +62,50 @@ export const useDashboardEditorCtx = createCtx(
     }
   },
 )
+
+export type TEditorWidget<T = any> = {
+  id: string
+  type: 'query-widget' | 'asset-selector'
+  data: T
+  state: Map$<string, null | any>
+}
+
+export const useDashboardWidgets = createCtx(
+  'useDashboardWidgets',
+  (data?: { queries: App.ApiDashboard['queries'] }) => {
+    const { queries = [] } = data || {}
+
+    const queryWidgets = queries.map(
+      (query) =>
+        [
+          query.dashboardQueryMappingId,
+          {
+            id: query.dashboardQueryMappingId,
+            type: 'query-widget',
+            data: query,
+            state: new Map$(),
+          },
+        ] as const,
+    )
+
+    const dashboardWidgets = new Map$<string, null | TEditorWidget>(queryWidgets)
+
+    return {
+      dashboardWidgets,
+      addQueryWidget(query) {
+        dashboardWidgets.set(query.dashboardQueryMappingId, {
+          id: query.dashboardQueryMappingId,
+          type: 'query-widget',
+          data: query,
+          state: new Map$(),
+        })
+      },
+    }
+  },
+)
+
+export function useEditorWidget<T = null>(id: string) {
+  const { dashboardWidgets } = useDashboardWidgets()
+
+  return ssd(() => dashboardWidgets.get(id) as TEditorWidget<T>)
+}

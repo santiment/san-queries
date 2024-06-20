@@ -12,6 +12,7 @@
   import { useSelectedRowsCtx } from '$lib/Visualization/Table/Selectable/Cell.svelte'
   import { useDataFlowSqlDataCtx } from '$lib/DataFlow/ctx/sqlData.svelte'
   import Visualisation from './Visualisation.svelte'
+  import { useDashboardEditorCtx } from '$lib/DashboardNext/ctx'
 
   let {
     dashboardId,
@@ -28,41 +29,51 @@
   const showLinkGlobalParameterDialog = showLinkGlobalParameterDialog$()
   const { parameters: globalParameters, globalParameterOverrides } = useDashboardParametersCtx()
   const { dashboardData, refreshDashboardQueryData } = useDahboardSqlDataCtx()
-  const { FlowNodeByWidgetId } = useDataFlowCtx()
+  // const { FlowNodeByWidgetId } = useDataFlowCtx()
   const { settings } = useQuerySettingsCtx(widget.query.settings)
   const { selections } = useSelectedRowsCtx()
 
   let parameters = $derived(parseQueryParameters(widget.query.sqlQueryParameters))
 
   // TODO: Is there a way to guarantee that flowNode is available at all times? (before widget render?)
-  let flowNode = $derived(FlowNodeByWidgetId.get(widget.id))
+  // let flowNode = $derived(FlowNodeByWidgetId.get(widget.id))
   let flowState = $state.frozen({ isSelectable: true })
   let isSelectable = $derived(flowState.isSelectable)
+  const changedParameters = new Map()
+  const { dashboardEditor } = useDashboardEditorCtx()
 
-  const { changedParameters, queryParameterChanges } = useDataFlowSqlDataCtx(
-    widget,
-    ssd(() => flowNode),
-    readonly,
-  )
+  // const { changedParameters, queryParameterChanges } = useDataFlowSqlDataCtx(
+  //   widget,
+  //   ssd(() => flowNode),
+  //   readonly,
+  // )
+  let gParams = $derived(getChanges(dashboardEditor.parameters.$))
+  function getChanges(parameters: any[]) {
+    return parameters
+      .flatMap((parameter) =>
+        [...parameter.overrides].map((override) => ({ [override.toString()]: [parameter] })),
+      )
+      .reduce((acc, item) => Object.assign(acc, item), {})
+  }
 
   let dataState = $derived(dashboardData.get(widget.id))
   let sqlData = $derived(dataState?.displayedData.$)
   let isLoading = $derived(dataState?.isLoading.$ ?? false)
 
   $effect(() => {
-    flowNode?.setInputs(parameters)
+    // flowNode?.setInputs(parameters)
   })
   $effect(() => {
-    flowNode?.setOutputs(dataState?.defaultData.$)
+    // flowNode?.setOutputs(dataState?.defaultData.$)
   })
   $effect(() => {
-    flowNode?._state.next({ selections: [...selections] })
+    // flowNode?._state.next({ selections: [...selections] })
   })
   $effect(() => {
-    const subscriber = flowNode?.state$.subscribe((value) => {
-      flowState = value
-    })
-    return () => subscriber?.unsubscribe()
+    // const subscriber = flowNode?.state$.subscribe((value) => {
+    //   flowState = value
+    // })
+    // return () => subscriber?.unsubscribe()
   })
 
   function onLinkClick(parameter: (typeof parameters)[number], globalParameter: any) {
@@ -102,23 +113,26 @@
     {onQueryChangesClick}
   ></Header>
 
-  {#if parameters.length}
-    <section class="flex gap-2 px-3 pb-3">
-      {#each parameters as parameter (parameter.key)}
-        {@const globals = globalParameterOverrides.$.get(widget.id, parameter.key)}
-        {@const global = globals?.[0]}
+  {#key gParams}
+    {#if parameters.length}
+      <section class="flex gap-2 px-3 pb-3">
+        {#each parameters as parameter}
+          <!-- {@const globals = globalParameterOverrides.$.get(widget.id, parameter.key)} -->
+          {@const globals = gParams[widget.id + ',' + parameter.key]}
+          {@const global = globals?.[0]}
 
-        {#key globals}
-          <Parameter
-            global={!!global}
-            parameter={global || parameter}
-            onLinkClick={readonly ? undefined : () => onLinkClick(parameter, global)}
-            changedValue={changedParameters.get(parameter.key)}
-          ></Parameter>
-        {/key}
-      {/each}
-    </section>
-  {/if}
+          {#key globals}
+            <Parameter
+              global={!!global}
+              parameter={global || parameter}
+              onLinkClick={readonly ? undefined : () => onLinkClick(parameter, global)}
+              changedValue={changedParameters.get(parameter.key)}
+            ></Parameter>
+          {/key}
+        {/each}
+      </section>
+    {/if}
+  {/key}
 
   <hr class="border-t" />
 

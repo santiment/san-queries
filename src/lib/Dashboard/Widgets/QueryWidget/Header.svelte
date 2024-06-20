@@ -6,7 +6,6 @@
   import { useDashboardEditorCtx } from '$lib/Dashboard/ctx'
   import { useDataFlowSqlDataCtx } from '$lib/DataFlow/ctx/sqlData.svelte'
   import { showQueryWidgetFullscreenDialog$ } from './FullscreenDialog.svelte'
-  // import AlertButton from './AlertButton.svelte'
 
   let {
     widget,
@@ -30,10 +29,15 @@
 
   const { dashboardEditor } = useDashboardEditorCtx()
   const { deleteDashboardQuery } = useDeleteDashboardQueryFlow()
-  const { changedParameters, mountRefreshPrompt } = useDataFlowSqlDataCtx()
+  // const { changedParameters, mountRefreshPrompt } = useDataFlowSqlDataCtx()
+  const changedParameters = new Set()
+  const mountRefreshPrompt = () => {}
+
   const showQueryWidgetFullscreenDialog = showQueryWidgetFullscreenDialog$()
 
   function onDeleteClick() {
+    return
+
     const dashboardId = dashboardEditor.id
     if (!dashboardId) return
 
@@ -53,8 +57,6 @@
   <h2 class="single-line mr-auto min-w-0 text-base">
     <a href="/query/{getSEOLinkFromIdAndTitle(id, name)}">{name}</a>
   </h2>
-
-  <!-- <AlertButton {widget}></AlertButton> -->
 
   {#if changedParameters.size > 0}
     <Button

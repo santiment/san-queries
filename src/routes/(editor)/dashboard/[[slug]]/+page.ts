@@ -12,12 +12,16 @@ export const load = async (event) => {
 
   const dashboardId = getIdFromSEOLink(slug)
 
+  console.log({ dashboardId }, slug)
   if (Number.isInteger(dashboardId) === false) {
-    // throw redirect(302, '/dashboard/edit/new')
+    throw redirect(302, '/dashboard/edit/new')
   }
 
   // const preloaded = gotoDashboardPage.get()
-  const apiDashboard = await queryGetDashboard(UniQuery(event.fetch))(dashboardId).catch(() => null)
+  const apiDashboard = await queryGetDashboard(UniQuery(event.fetch))(dashboardId).catch((e) => {
+    console.error(e)
+    return null
+  })
 
   if (!apiDashboard) {
     // throw redirect(302, '/dashboard/edit/new')

@@ -1,7 +1,10 @@
 import { sveltekit } from '@sveltejs/kit/vite'
 import { defineConfig } from 'vitest/config'
 import { execSync } from 'node:child_process'
+import { createRequire } from 'module'
 import { WebkitSvg } from 'san-webkit-next/plugins/vite.js'
+
+globalThis.require = createRequire(import.meta.url)
 
 const mode = process.env.NODE_ENV
 const dev = mode !== 'production'

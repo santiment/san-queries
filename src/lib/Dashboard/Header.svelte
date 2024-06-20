@@ -79,7 +79,7 @@
 </script>
 
 <header class="flex items-center">
-  <User user={author} class="text-waterloo" />
+  <User user={author || {}} class="text-waterloo" />
 
   {#if dashboard}
     <div class="ml-3 flex h-[32px] gap-3 border-l fill-fiord pl-3 text-waterloo">

@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  zeed-dom: ^0.13.3
+
 patchedDependencies:
   '@sveltejs/kit@2.5.17':
     hash: xqxhfsw5snhskzkdgkgy4kgqxu
@@ -109,6 +112,9 @@ dependencies:
   uuid:
     specifier: ^9.0.1
     version: 9.0.1
+  zeed-dom:
+    specifier: ^0.13.3
+    version: 0.13.3
   zod:
     specifier: ^3.22.4
     version: 3.22.4
@@ -4561,7 +4567,7 @@ packages:
     dependencies:
       '@tiptap/core': 2.4.0(@tiptap/pm@2.4.0)
       '@tiptap/pm': 2.4.0
-      zeed-dom: 0.10.11
+      zeed-dom: 0.13.3
     dev: false
 
   /@tiptap/pm@2.4.0:
@@ -11646,11 +11652,12 @@ packages:
     engines: {node: '>=12.20'}
     dev: true
 
-  /zeed-dom@0.10.11:
-    resolution: {integrity: sha512-7ukbu6aQKx34OQ7PfUIxOuAhk2MvyZY/t4/IJsVzy76zuMzfhE74+Dbyp8SHiUJPTPkF0FflP1KVrGJ7gk9IHw==}
+  /zeed-dom@0.13.3:
+    resolution: {integrity: sha512-RO/Bevz/Q2xn4yKX2JBEry7LUoVGzO2nZmkLe7PM7G1clffjTcjszj6iJpir0QqjVC31I2P5U0MZCgpSfoE13Q==}
     engines: {node: '>=14.13.1'}
     dependencies:
       css-what: 6.1.0
+      entities: 4.5.0
     dev: false
 
   /zimmerframe@1.1.2:
