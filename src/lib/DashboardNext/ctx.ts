@@ -2,6 +2,8 @@ import { ss, ssd } from 'svelte-runes'
 import { Map as Map$ } from 'svelte/reactivity'
 import { createCtx } from '$lib/ctx'
 import { useDashboardParametersCtx } from '$lib/Dashboard/ctx/parameters'
+import { page as page$ } from '$app/stores'
+import { get } from 'svelte/store'
 
 export const useDashboardEditorCtx = createCtx(
   'useDashboardEditorCtx',
@@ -109,3 +111,15 @@ export function useEditorWidget<T = null>(id: string) {
 
   return ssd(() => dashboardWidgets.get(id) as TEditorWidget<T>)
 }
+
+export const useServerDashboardCacheCtx = createCtx('useServerDashboardCacheCtx', () => {
+  const state = new Map<string, undefined | { isLoading: false; default: App.SqlData }>()
+
+  const data = get(page$).data?.serverDashboardCache || []
+
+  for (const cache of data) {
+    state.set(cache.dashboardQueryMappingId, { isLoading: false, default: cache })
+  }
+
+  return state
+})

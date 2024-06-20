@@ -30,6 +30,7 @@ import { useDashboardEditorCtx } from '$lib/Dashboard/ctx'
 import { queryGetCachedQueryExecutions, queryRunRawSqlQuery } from '$lib/QueryEditor/api'
 import { compressData } from '$lib/utils/compress'
 import { useDashboardParametersCtx } from '$lib/Dashboard/ctx/parameters'
+import { useServerDashboardCacheCtx } from '$lib/DashboardNext/ctx'
 
 const createSqlDataState = (
   initial: Partial<{ isLoading: boolean; default: null | App.SqlData }> = {},
@@ -44,6 +45,7 @@ export const useDahboardSqlDataCtx = createCtx(
   (dashboard?: App.ApiDashboard) => {
     const { dashboardEditor } = useDashboardEditorCtx()
     const { globalParameterOverrides } = useDashboardParametersCtx()
+    const serverCache = useServerDashboardCacheCtx()
 
     let widgetParameterDefaults = Object.assign({}, globalParameterOverrides.$.widgetParams)
 
@@ -63,7 +65,10 @@ export const useDahboardSqlDataCtx = createCtx(
     const deletedSubject = new Subject<string>()
 
     const dashboardData = new Map(
-      dashboard?.queries.map((query) => [query.dashboardQueryMappingId, createSqlDataState()]),
+      dashboard?.queries.map((query) => [
+        query.dashboardQueryMappingId,
+        createSqlDataState(serverCache.get(query.dashboardQueryMappingId)),
+      ]),
     )
 
     useObserve(() => {

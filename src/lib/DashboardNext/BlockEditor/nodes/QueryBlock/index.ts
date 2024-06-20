@@ -7,8 +7,8 @@ declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     queryWidget: {
       /**
-       * Toggle a paragraph
-       * @example editor.commands.toggleParagraph()
+       * Add query block
+       * @example editor.commands.addQueryWidget("")
        */
       addQueryWidget: (dashboardQueryMappingId: string) => ReturnType
     }
@@ -47,7 +47,7 @@ export default Node.create({
     return [{ tag: 'div[data-type="query-widget"]' }]
   },
 
-  renderHTML({ HTMLAttributes, ...rest }) {
+  renderHTML({ HTMLAttributes }) {
     return renderNodeViewUniversalHTML(
       ['div', mergeAttributes(HTMLAttributes, { 'data-type': 'query-widget' })],
       this.options,

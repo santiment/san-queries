@@ -95,7 +95,7 @@
     "rxjs-exhaustmap-with-trailing": "^2.1.1",
     "san-studio": "github:santiment/san-studio#93d6d71",
     "san-webkit": "github:santiment/san-webkit#15afa8a",
-    "san-webkit-next": "github:santiment/san-webkit#lib-d416aad7-190624",
+    "san-webkit-next": "github:santiment/san-webkit#lib-c5ef163c-200624",
     "svelte-runes": "^0.0.3",
     "tailwind-merge": "^2.2.1",
     "tippy.js": "^6.3.7",
@@ -111,7 +111,7 @@
       "zeed-dom": "^0.13.3"
     },
     "patchedDependencies": {
-      "@sveltejs/kit@2.5.17": "patches/@sveltejs__kit@2.5.10.patch"
+      "@sveltejs/kit@2.5.17": "patches/@sveltejs__kit@2.5.17.patch"
     }
   }
 }

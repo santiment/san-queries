@@ -3,8 +3,9 @@
 
   import Title from '$lib/Dashboard/Title.svelte'
   import Header from '$lib/Dashboard/Header.svelte'
-  import { useDashboardEditorCtx } from './ctx'
+  import { useDashboardEditorCtx, useServerDashboardCacheCtx } from './ctx'
   import BlockEditor from './BlockEditor/index.svelte'
+  import { useDahboardSqlDataCtx } from '$lib/Dashboard/flow/sqlData/index.svelte'
 
   let {
     dashboard,
@@ -24,7 +25,9 @@
     isLegacy?: boolean
   } & Pick<ComponentProps<Header>, 'onSaveClick' | 'onDuplicateClick' | 'onDeleteClick'> = $props()
 
+  useServerDashboardCacheCtx()
   const { dashboardEditor } = useDashboardEditorCtx(dashboard, isAuthor, readonly)
+  const dahboardSqlDataCtx = useDahboardSqlDataCtx(dashboard)
 </script>
 
 <div class="flex flex-1 flex-col gap-4 p-6 px-12 pb-20">

@@ -10,47 +10,47 @@
 
 <style lang="postcss">
   :global {
-    :global(.cell-auto) {
+    .cell-auto {
       max-width: 0;
       width: 100%;
     }
 
-    :global(.cell-min) {
+    .cell-min {
       width: 1px;
     }
 
-    :global(.cell-sticky) {
+    .cell-sticky {
       position: sticky;
       left: 0;
     }
 
-    :global(.cell-visible) {
+    .cell-visible {
       overflow: visible !important;
     }
+  }
 
-    :global(table) {
-      :global(th),
-      :global(td) {
-        white-space: nowrap;
-      }
+  table :global {
+    th,
+    td {
+      white-space: nowrap;
+    }
 
-      :global(th) {
-        font-weight: 500;
-        padding: 5px 15px;
-        color: var(--casper);
-        background: var(--athens);
-        border-bottom: 1px solid var(--porcelain);
-      }
+    th {
+      font-weight: 500;
+      padding: 5px 15px;
+      color: var(--casper);
+      background: var(--athens);
+      border-bottom: 1px solid var(--porcelain);
+    }
 
-      :global(td) {
-        padding: 8px 15px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
+    td {
+      padding: 8px 15px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-      :global(tbody tr:hover td) {
-        background: var(--athens);
-      }
+    tbody tr:hover td {
+      background: var(--athens);
     }
   }
 </style>
