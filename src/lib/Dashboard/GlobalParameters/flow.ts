@@ -110,15 +110,15 @@ export function useUpdateGlobalParameterFlow() {
 
 export function useDeleteGlobalParameterFlow() {
   const deleteGlobalParameter = useObserveFnCall<{
-    dashboard: { id: number }
+    dashboardId: number
     parameter: { key: string; value: number | string }
     onComplete?: () => void
   }>(() =>
     pipeGroupBy(
       ({ parameter }) => parameter.key,
-      exhaustMap(({ dashboard, parameter, onComplete }) =>
+      exhaustMap(({ dashboardId, parameter, onComplete }) =>
         mutateDeleteDashboardGlobalParameter()({
-          dashboardId: dashboard.id,
+          dashboardId,
           key: parameter.key,
         }).pipe(tap(onComplete)),
       ),

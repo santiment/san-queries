@@ -83,7 +83,7 @@
       @apply text-base;
     }
 
-    p:not(.svelte-renderer *) {
+    [data-type='paragraph']:not(.svelte-renderer *) {
       @apply py-0.5 text-base;
     }
     a:not(.svelte-renderer *) {

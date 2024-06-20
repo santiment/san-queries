@@ -7,12 +7,16 @@ import StarterKit from '@tiptap/starter-kit'
 import BlockLayout, { Column, Columns } from 'tiptap-block-layout'
 
 import QueryBlock from '../nodes/QueryBlock'
+import AssetSelector from '../nodes/AssetSelector'
+import Paragraph from '../nodes/Paragraph'
 
 export const getExtensions = (CTX?: Map<string, any>) => [
   StarterKit.configure({
     dropcursor: false,
     gapcursor: false,
+    paragraph: false,
   }),
+  Paragraph,
   Link.configure({ openOnClick: false }),
   Underline,
   TextStyle,
@@ -26,4 +30,5 @@ export const getExtensions = (CTX?: Map<string, any>) => [
   BlockLayout.configure({ dropareaColor: 'var(--droparea-color)' }),
 
   QueryBlock.configure({ ctx: CTX }),
+  AssetSelector.configure({ ctx: CTX }),
 ]

@@ -1,7 +1,7 @@
 import { ss, ssd } from 'svelte-runes'
 import { Map as Map$ } from 'svelte/reactivity'
 import { createCtx } from '$lib/ctx'
-import { useDashboardParametersCtx } from '$lib/Dashboard/ctx/parameters'
+import { useDashboardParametersCtx, useGlobalParametersCtx } from '$lib/Dashboard/ctx/parameters'
 import { page as page$ } from '$app/stores'
 import { get } from 'svelte/store'
 import type { useDahboardSqlDataCtx } from '$lib/Dashboard/flow/sqlData/index.svelte'
@@ -24,6 +24,7 @@ export const useDashboardEditorCtx = createCtx(
 
     useDashboardWidgets({ queries })
     const { parameters } = useDashboardParametersCtx(apiDashboard?.parameters)
+    useGlobalParametersCtx()
 
     let __editorJson = apiDashboard?.settings?.__editorJson || ''
 

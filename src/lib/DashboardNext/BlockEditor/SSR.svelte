@@ -19,4 +19,8 @@
   }
 </script>
 
-{@html renderHtml()}
+<article>
+  <div class="tiptap">
+    {@html renderHtml()}
+  </div>
+</article>

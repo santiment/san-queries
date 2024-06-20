@@ -118,10 +118,10 @@
           </Button>
           <Button
             variant="border"
-            icon="plus"
+            icon="refresh"
             iconSize="10"
             class="ml-4 bg-athens fill-waterloo hover:text-green"
-            onclick={onAddGlobalParameterClick}>Global parameter</Button
+            onclick={() => alert('TODO')}>Update</Button
           >
         {/if}
       {/if}
