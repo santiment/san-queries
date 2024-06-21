@@ -42,7 +42,7 @@
   const { dashboardEditor } = useDashboardEditorCtx(dashboard, isAuthor, readonly)
   const dahboardSqlDataCtx = useDahboardSqlDataCtx(dashboard)
   const { addQueryWidget } = useDashboardWidgets()
-  const { changedParameters } = useDataRefreshPromptCtx()
+  const { changedParameters, queryParameterChanges } = useDataRefreshPromptCtx()
 
   useCleanFlow(() => BlockEditorRef?.getEditor?.())
 
@@ -60,6 +60,7 @@
     {currentUser}
     {onDuplicateClick}
     {onDeleteClick}
+    onUpdateClick={queryParameterChanges}
   ></Header>
 
   <Title></Title>
@@ -76,7 +77,7 @@
   ></BlockEditor>
 
   {#if changedParameters.$.size}
-    <Prompt icon="refresh" onClick={console.log}>
+    <Prompt icon="refresh" onClick={queryParameterChanges}>
       {readonly ? 'Refresh data' : 'Update default data'}
     </Prompt>
   {/if}

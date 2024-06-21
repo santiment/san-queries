@@ -4,7 +4,6 @@
   import { ss, ssd, useStore } from 'svelte-runes'
   import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
   import { GlobalShortcut$ } from 'san-webkit/lib/utils/events'
-  // import Dashboard from '$lib/Dashboard/Dashboard.svelte'
   import Dashboard from '$lib/DashboardNext/index.svelte'
   import SaveIndicator from '$lib/SaveIndicator'
   import { useSaveIndicatorCtx } from '$lib/SaveIndicator/index.svelte'
@@ -26,7 +25,7 @@
   let currentUser = $currentUser$
   let isAuthor = ssd(() => (apiDashboard.$ ? +apiDashboard.$.user.id === +currentUser?.id! : true))
 
-  // useAutoSaveFlow(EditorRef, isAuthor)
+  useAutoSaveFlow(EditorRef, isAuthor)
   // const { saveEmptyDashboard } = useSaveEmptyFlowCtx(apiDashboard)
   const { saveDashboard } = useSaveFlow(EditorRef, isAuthor)
   const { onDuplicateClick } = useDashboardDuplicateFlow(EditorRef)
@@ -48,19 +47,3 @@
     {onDeleteClick}
   ></Dashboard>
 {/key}
-
-<!-- 
-{#key apiDashboard.$?.id}
-  <Dashboard
-    bind:this={EditorRef.$}
-    dashboard={apiDashboard.$}
-    isAuthor={isAuthor.$}
-    readonly={false}
-    {currentUser}
-    {onDuplicateClick}
-    {onDeleteClick}
-    onLayoutChange={() => changeIndicatorCtx.emit.changed()}
-  ></Dashboard>
-{/key}
-
- -->

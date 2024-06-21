@@ -11,6 +11,7 @@
     useParameterInitFlow,
     useSelectAssetFlow,
   } from './flow.svelte'
+  import { untrack } from 'svelte'
 
   let { view }: ViewProps = $props()
 
@@ -27,6 +28,17 @@
   useParameterInitFlow(attrs)
   const { onAssetSelectorClick } = useSelectAssetFlow(view)
   const { onLinkParameterClick } = useLinkParametersFlow()
+
+  $effect(() => {
+    const slug = attrs['data-slug']
+
+    if (!parameter || parameter.value === slug) return
+
+    untrack(() => {
+      parameter.value = slug
+      dashboardEditor.parameters.$ = dashboardEditor.parameters.$
+    })
+  })
 </script>
 
 <NodeViewWrapper class="ml-0.5 inline-flex center">

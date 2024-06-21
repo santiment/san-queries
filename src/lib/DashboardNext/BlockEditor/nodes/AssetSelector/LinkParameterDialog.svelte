@@ -11,7 +11,11 @@
 
   import Button from '$lib/ui/Button.svelte'
   import { cn } from '$lib/ui/utils'
-  import Dialog, { dialogs$, type TDialogResolve } from 'san-webkit-next/ui/core/Dialog'
+  import Dialog, {
+    dialogs$,
+    type TDialogProps,
+    type TDialogResolve,
+  } from 'san-webkit-next/ui/core/Dialog'
   import {
     useDashboardEditorCtx,
     useDashboardWidgets,
@@ -27,14 +31,11 @@
       type: 'Text',
       overrides: new Map(),
     },
-    resolve,
     Controller,
   }: {
     readonly?: boolean
     parameter?: (typeof dashboardEditor)['parameters']['$'][number]
-    resolve: TDialogResolve<typeof parameter>
-    Controller: any
-  } = $props()
+  } & TDialogProps<(typeof dashboardEditor)['parameters']['$'][number]> = $props()
 
   const { key } = _parameter
 
@@ -78,7 +79,7 @@
     })
 
     function onComplete() {
-      resolve({ ...parameter, overrides: overridesDiff.value })
+      Controller.resolve({ ...parameter, overrides: overridesDiff.value })
       Controller.close()
     }
   }

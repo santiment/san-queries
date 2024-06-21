@@ -11,6 +11,7 @@
     dialogs$,
     type TDialogReject,
     type TDialogResolve,
+    type TDialogProps,
   } from 'san-webkit-next/ui/core/Dialog'
   import { queryAllProjects } from 'san-studio/lib/api/project'
   import VirtualList from 'san-webkit-next/ui/app/VirtualList'
@@ -18,8 +19,7 @@
   import Svg from 'san-webkit-next/ui/core/Svg'
   import type { TAsset } from './flow.svelte'
 
-  let { resolve, reject, Controller }: { resolve: TDialogResolve<TAsset>; reject: TDialogReject } =
-    $props()
+  let { Controller }: TDialogProps<TAsset> = $props()
 
   let assets = ss<TAsset[]>([])
   let searchTerm = $state('')
@@ -27,7 +27,7 @@
   let filtered = $derived(assets.$.filter((item) => item.name.toLowerCase().includes(searchTerm)))
 
   function onAssetClick(asset: { slug: string; name: string; ticker: string }) {
-    resolve(asset)
+    Controller.resolve(asset)
     Controller.close()
   }
 

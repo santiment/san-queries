@@ -176,7 +176,7 @@ export const useDahboardSqlDataCtx = createCtx(
           grouped.pipe(
             switchMap(({ widgetId, sql, parameters, isDefault, onComplete, readonly }) =>
               isDefault &&
-              checkIsDefaultParamsChanged(widgetId, parameters) &&
+              // checkIsDefaultParamsChanged(widgetId, parameters) &&
               dashboardEditor.isAuthor &&
               !readonly
                 ? of(null).pipe(

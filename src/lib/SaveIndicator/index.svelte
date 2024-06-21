@@ -40,8 +40,8 @@
   import { Subject, concat, delay, merge, of, share, startWith, switchMap } from 'rxjs'
   import { useObservable } from 'svelte-runes'
   import { fade, scale, fly } from 'svelte/transition'
-  import Svg from '$lib/ui/Svg.svelte'
-  import { cn } from '$lib/ui/utils'
+  import Svg from 'san-webkit-next/ui/core/Svg'
+  import { cn } from 'san-webkit-next/ui/utils'
 
   const { state$ } = useSaveIndicatorCtx()
 

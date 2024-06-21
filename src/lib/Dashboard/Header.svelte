@@ -20,6 +20,7 @@
 
     onDuplicateClick,
     onDeleteClick,
+    onUpdateClick,
   }: {
     dashboard?: Pick<App.ApiDashboard, 'commentsCount' | 'votes'>
     author: App.Author
@@ -28,6 +29,7 @@
     onSaveClick?: () => void
     onDuplicateClick?: () => void
     onDeleteClick?: () => void
+    onUpdateClick?: () => void
   } = $props()
 
   const showGlobalParameterDialog = showGlobalParameterDialog$()
@@ -92,7 +94,7 @@
   <div class="ml-auto mr-4 flex items-center">
     {#if isAuthor}
       {#if dashboard}
-        {@const seoLink = getSEOLinkFromIdAndTitle( dashboardEditor.id!, dashboardEditor.name.$)}
+        {@const seoLink = getSEOLinkFromIdAndTitle(dashboardEditor.id!, dashboardEditor.name.$)}
 
         {#if readonly}
           <Button
@@ -121,7 +123,7 @@
             icon="refresh"
             iconSize="10"
             class="ml-4 bg-athens fill-waterloo hover:text-green"
-            onclick={() => alert('TODO')}>Update</Button
+            onclick={onUpdateClick}>Update</Button
           >
         {/if}
       {/if}
