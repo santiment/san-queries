@@ -1,7 +1,6 @@
 <script lang="ts">
   import { NodeViewWrapper, type ViewProps } from 'tiptap-svelte-adapter'
   import QueryWidget from '$lib/Dashboard/Widgets/QueryWidget/index.svelte'
-  // import { useDashboardEditorCtx, useEditorWidget } from '../../../ctx'
   // import Resizer from '../../../Resizer.svelte'
   import { useDahboardSqlDataCtx } from '$lib/Dashboard/flow/sqlData/index.svelte'
   import { useDashboardEditorCtx, useEditorWidget } from '$lib/DashboardNext/ctx'
@@ -24,12 +23,12 @@
   }
 
   $effect(() => {
-    const _widget = widgetRef.$
-    if (!_widget) return
+    const widget = widgetRef.$
+    if (!widget) return
     if (!dataState) return
 
-    _widget.state.set('outputs', getOutputs(dataState.defaultData.$))
-    _widget.state.set('sqlData', dataState.displayedData.$)
+    widget.state.set('outputs', getOutputs(dataState.defaultData.$))
+    widget.state.set('sqlData', dataState.displayedData.$)
   })
 </script>
 

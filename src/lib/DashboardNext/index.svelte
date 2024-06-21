@@ -13,6 +13,8 @@
   import { useDahboardSqlDataCtx } from '$lib/Dashboard/flow/sqlData/index.svelte'
   import { showAddQueryToDashboardDialog$ } from '$lib/AddQueryToDashboardDialog/index.svelte'
   import { useCleanFlow } from './clean.svelte'
+  import { useDataRefreshPromptCtx } from './state.svelte'
+  import Prompt from './Prompt.svelte'
 
   let {
     dashboard,
@@ -40,6 +42,7 @@
   const { dashboardEditor } = useDashboardEditorCtx(dashboard, isAuthor, readonly)
   const dahboardSqlDataCtx = useDahboardSqlDataCtx(dashboard)
   const { addQueryWidget } = useDashboardWidgets()
+  const { changedParameters } = useDataRefreshPromptCtx()
 
   useCleanFlow(() => BlockEditorRef?.getEditor?.())
 
@@ -71,4 +74,10 @@
         showAddQueryToDashboardDialog({ ...props, dashboardId: dashboardEditor.id }),
     }}
   ></BlockEditor>
+
+  {#if changedParameters.$.size}
+    <Prompt icon="refresh" onClick={console.log}>
+      {readonly ? 'Refresh data' : 'Update default data'}
+    </Prompt>
+  {/if}
 </div>

@@ -1,18 +1,12 @@
 <script lang="ts">
-  import { ssd, useObservable } from 'svelte-runes'
   import Parameter from '$lib/ui/Parameter'
-  import Chart from '$lib/Visualization/Chart'
-  import Table from '$lib/Visualization/Table'
   import { parseQueryParameters, useQuerySettingsCtx } from '$lib/QueryEditor/ctx'
   import { useDahboardSqlDataCtx } from '$lib/Dashboard/flow/sqlData/index.svelte'
-  import { useDashboardParametersCtx } from '$lib/Dashboard/ctx/parameters'
+  import { useDashboardParametersCtx, useGlobalParametersCtx } from '$lib/Dashboard/ctx/parameters'
   import Header from './Header.svelte'
-  import { showLinkGlobalParameterDialog$ } from './LinkGlobalParameterDialog.svelte'
-  import { useDataFlowCtx } from '$lib/DataFlow/ctx'
-  import { useSelectedRowsCtx } from '$lib/Visualization/Table/Selectable/Cell.svelte'
-  import { useDataFlowSqlDataCtx } from '$lib/DataFlow/ctx/sqlData.svelte'
   import Visualisation from './Visualisation.svelte'
   import { useDashboardEditorCtx } from '$lib/DashboardNext/ctx'
+  import { useDataRefreshPromptCtx } from '$lib/DashboardNext/state.svelte'
 
   let {
     dashboardId,
@@ -26,72 +20,17 @@
     currentUser?: any
   } = $props()
 
-  const showLinkGlobalParameterDialog = showLinkGlobalParameterDialog$()
-  const { parameters: globalParameters, globalParameterOverrides } = useDashboardParametersCtx()
   const { dashboardData, refreshDashboardQueryData } = useDahboardSqlDataCtx()
-  // const { FlowNodeByWidgetId } = useDataFlowCtx()
   const { settings } = useQuerySettingsCtx(widget.query.settings)
-  const { selections } = useSelectedRowsCtx()
-
   let parameters = $derived(parseQueryParameters(widget.query.sqlQueryParameters))
 
-  // TODO: Is there a way to guarantee that flowNode is available at all times? (before widget render?)
-  // let flowNode = $derived(FlowNodeByWidgetId.get(widget.id))
-  let flowState = $state.frozen({ isSelectable: true })
-  let isSelectable = $derived(flowState.isSelectable)
-  const changedParameters = new Map()
   const { dashboardEditor } = useDashboardEditorCtx()
-
-  // const { changedParameters, queryParameterChanges } = useDataFlowSqlDataCtx(
-  //   widget,
-  //   ssd(() => flowNode),
-  //   readonly,
-  // )
-  let gParams = $derived(getChanges(dashboardEditor.parameters.$))
-  function getChanges(parameters: any[]) {
-    return parameters
-      .flatMap((parameter) =>
-        [...parameter.overrides].map((override) => ({ [override.toString()]: [parameter] })),
-      )
-      .reduce((acc, item) => Object.assign(acc, item), {})
-  }
+  const { globalParameterByOverrides } = useGlobalParametersCtx()
+  const { changedParameters } = useDataRefreshPromptCtx()
 
   let dataState = $derived(dashboardData.get(widget.id))
   let sqlData = $derived(dataState?.displayedData.$)
   let isLoading = $derived(dataState?.isLoading.$ ?? false)
-
-  $effect(() => {
-    // flowNode?.setInputs(parameters)
-  })
-  $effect(() => {
-    // flowNode?.setOutputs(dataState?.defaultData.$)
-  })
-  $effect(() => {
-    // flowNode?._state.next({ selections: [...selections] })
-  })
-  $effect(() => {
-    // const subscriber = flowNode?.state$.subscribe((value) => {
-    //   flowState = value
-    // })
-    // return () => subscriber?.unsubscribe()
-  })
-
-  function onLinkClick(parameter: (typeof parameters)[number], globalParameter: any) {
-    const queryWidgetId = widget.id
-    if (!queryWidgetId) return
-
-    showLinkGlobalParameterDialog({
-      queryWidgetId,
-      parameter,
-      globalParameter,
-      strict: true,
-    }).then((newGlobalParameter) => {
-      globalParameter?.overrides.delete(queryWidgetId)
-      newGlobalParameter?.overrides.set(queryWidgetId, parameter.key)
-
-      globalParameters.$ = globalParameters.$
-    })
-  }
 
   function onRefreshClick() {
     refreshDashboardQueryData({ dashboardId, widgetId: widget.id })
@@ -113,22 +52,19 @@
     {onQueryChangesClick}
   ></Header>
 
-  {#key gParams}
+  {#key globalParameterByOverrides.$}
     {#if parameters.length}
       <section class="flex gap-2 px-3 pb-3">
         {#each parameters as parameter}
-          <!-- {@const globals = globalParameterOverrides.$.get(widget.id, parameter.key)} -->
-          {@const globals = gParams[widget.id + ',' + parameter.key]}
-          {@const global = globals?.[0]}
+          {@const key = widget.id + ',' + parameter.key}
+          {@const global = globalParameterByOverrides.$.get(key)}
 
-          {#key globals}
-            <Parameter
-              global={!!global}
-              parameter={global || parameter}
-              onLinkClick={readonly ? undefined : () => onLinkClick(parameter, global)}
-              changedValue={changedParameters.get(parameter.key)}
-            ></Parameter>
-          {/key}
+          <Parameter
+            global={!!global}
+            {parameter}
+            value={global?.value}
+            changed={changedParameters.$.has(key)}
+          ></Parameter>
         {/each}
       </section>
     {/if}
@@ -149,7 +85,7 @@
 
     {#if sqlData}
       {#key sqlData}
-        <Visualisation {widget} {sqlData} {isSelectable}></Visualisation>
+        <Visualisation {widget} {sqlData}></Visualisation>
       {/key}
     {:else if !isLoading}
       <div class="rounded bg-athens px-5 py-3 text-center">
