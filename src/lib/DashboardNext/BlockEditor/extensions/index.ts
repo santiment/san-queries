@@ -9,6 +9,7 @@ import BlockLayout, { Column, Columns } from 'tiptap-block-layout'
 import QueryBlock from '../nodes/QueryBlock'
 import AssetSelector from '../nodes/AssetSelector'
 import Paragraph from '../nodes/Paragraph'
+import HiddenBlock from '../nodes/HiddenBlock'
 
 export const getExtensions = (CTX?: Map<string, any>) => [
   StarterKit.configure({
@@ -29,6 +30,7 @@ export const getExtensions = (CTX?: Map<string, any>) => [
   Column,
   BlockLayout.configure({ dropareaColor: 'var(--droparea-color)' }),
 
+  HiddenBlock,
   QueryBlock.configure({ ctx: CTX }),
   AssetSelector.configure({ ctx: CTX }),
 ]

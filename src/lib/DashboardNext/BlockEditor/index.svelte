@@ -42,7 +42,9 @@
         content,
         editorProps,
 
-        extensions: [...getExtensions(), Placeholder, TrailingNode, SlashCommands],
+        extensions: getExtensions().concat(
+          readonly ? [] : [Placeholder, TrailingNode, SlashCommands],
+        ),
 
         onUpdate,
       }}
@@ -87,7 +89,7 @@
       @apply text-base;
     }
 
-    [data-type='paragraph']:not(.svelte-renderer *) {
+    [data-type='paragraph'] {
       @apply py-0.5 text-base;
     }
     a:not(.svelte-renderer *) {
@@ -139,6 +141,7 @@
       height: 0;
     }
 
+    .tiptap [data-type='paragraph'],
     .tiptap :not(.svelte-renderer *):not([data-type='column-resizer']),
     .svelte-renderer {
       position: relative;

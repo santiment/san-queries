@@ -17,8 +17,9 @@ export function useCleanFlow(getEditor: () => null | Editor) {
 
   $effect(() =>
     untrack(() => {
-      const { id, isAuthor } = dashboardEditor
+      const { id, isAuthor, readonly } = dashboardEditor
       if (!id || !isAuthor) return
+      if (readonly) return
 
       const editor = getEditor()
       if (!editor) return

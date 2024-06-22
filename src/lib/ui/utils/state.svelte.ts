@@ -1,5 +1,5 @@
 import { untrack } from 'svelte'
-import { Subject, share, type Observable, type UnaryFunction } from 'rxjs'
+import { Subject, Subscription, share, type Observable, type UnaryFunction } from 'rxjs'
 
 export function useOnClient(fn: () => void) {
   $effect(() => untrack(fn))
@@ -9,10 +9,12 @@ export function useObserveFnCall<Data = undefined>(
   fn: <T>() => UnaryFunction<T extends Observable<unknown> ? any : Observable<Data>, any>,
 ) {
   const subject = new Subject<Data>()
+  let subscriber: Subscription
 
   $effect(() =>
     untrack(() => {
-      const subscriber = subject.pipe(fn(), share()).subscribe()
+      const subscriber = ensureSubscription()
+
       return () => {
         subscriber.unsubscribe()
         subject.complete()
@@ -20,7 +22,16 @@ export function useObserveFnCall<Data = undefined>(
     }),
   )
 
+  function ensureSubscription() {
+    if (subscriber) return subscriber
+
+    return (subscriber = subject.pipe(fn(), share()).subscribe())
+  }
+
   type Result = Data extends undefined ? () => void : (data: Data) => void
 
-  return ((data) => subject.next(data)) as Result
+  return ((data) => {
+    ensureSubscription()
+    subject.next(data)
+  }) as Result
 }

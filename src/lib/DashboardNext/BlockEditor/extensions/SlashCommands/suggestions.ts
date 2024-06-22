@@ -57,4 +57,11 @@ export const COMMANDS = [
       editor.chain().focus().deleteRange(range).addAssetSelectorWidget().run()
     },
   },
+
+  {
+    title: 'Hidden block',
+    command: ({ editor, range }) => {
+      editor.chain().focus().deleteRange(range).addHiddenBlock().run()
+    },
+  },
 ] as { title: string; command: (args: { editor: Editor; range: Range }) => void }[]
