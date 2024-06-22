@@ -32,7 +32,7 @@ export default Node.create({
           let id = ''
           return chain()
             .focus()
-            .insertContent({ type: 'asset-selector', attrs: { 'data-id': id, 'data-slug': slug } })
+            .insertContent({ type: 'asset-selector', attrs: { 'data-id': id, 'data-value': slug } })
             .run()
         },
     }
@@ -41,7 +41,7 @@ export default Node.create({
   addAttributes() {
     return {
       'data-id': { default: '' },
-      'data-slug': { default: 'bitcoin' },
+      'data-value': { default: 'bitcoin' },
       style: { default: '' },
       class: { default: 'inline-flex align-middle' },
     }

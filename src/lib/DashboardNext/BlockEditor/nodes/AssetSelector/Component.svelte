@@ -4,47 +4,44 @@
   import Svg from 'san-webkit-next/ui/core/Svg'
 
   import { useDashboardEditorCtx } from '$lib/DashboardNext/ctx'
-  import { useGlobalParametersCtx } from '$lib/Dashboard/ctx/parameters'
-  import {
-    useAssetBySlug,
-    useLinkParametersFlow,
-    useParameterInitFlow,
-    useSelectAssetFlow,
-  } from './flow.svelte'
-  import { untrack } from 'svelte'
+  import { showSelectAssetDialog$ } from './SelectAssetDialog.svelte'
+  import { showLinkParameterDialog$ } from './LinkParameterDialog.svelte'
+  import { useAssetBySlug } from './assets.svelte'
+  import { useParametersWidgetFlow } from '../parameters.svelte'
 
   let { view }: ViewProps = $props()
 
   const { dashboardEditor } = useDashboardEditorCtx()
-  const { globalParameterByKey } = useGlobalParametersCtx()
   const { getAsset } = useAssetBySlug()
 
-  let attrs = $derived(view.$.node.attrs)
-  let parameter = $derived(globalParameterByKey.$.get(attrs['data-id']))
-  let asset = $derived(getAsset(attrs['data-slug']))
+  const state = useParametersWidgetFlow(view, { keyPrefix: 'Asset', defaultValue: 'bitcoin' })
+  const asset = $derived(getAsset(state.$))
 
-  $inspect(parameter, attrs, globalParameterByKey.$)
+  const showLinkParameterDialog = showLinkParameterDialog$()
+  const showSelectAssetDialog = showSelectAssetDialog$()
 
-  useParameterInitFlow(attrs)
-  const { onAssetSelectorClick } = useSelectAssetFlow(view)
-  const { onLinkParameterClick } = useLinkParametersFlow()
+  function onAssetSelectorClick() {
+    showSelectAssetDialog().then((asset) => {
+      state.update(asset.slug)
+    })
+  }
 
-  $effect(() => {
-    const slug = attrs['data-slug']
+  function onLinkParameterClick() {
+    const parameter = state.parameter
+    if (!parameter) return
 
-    if (!parameter || parameter.value === slug) return
+    showLinkParameterDialog({ parameter }).then((changed) => {
+      Object.assign(parameter, changed)
 
-    untrack(() => {
-      parameter.value = slug
       dashboardEditor.parameters.$ = dashboardEditor.parameters.$
     })
-  })
+  }
 </script>
 
 <NodeViewWrapper class="ml-0.5 inline-flex center">
   <button
     class="flex cursor-pointer gap-1 rounded border px-1.5 center hover:border-green"
-    onclick={() => onAssetSelectorClick(parameter)}
+    onclick={onAssetSelectorClick}
   >
     <AssetLogo slug={asset.slug}></AssetLogo>
 
@@ -59,7 +56,7 @@
   {#if dashboardEditor.readonly === false}
     <button
       class="ml-2 cursor-pointer fill-waterloo hover:fill-green"
-      onclick={() => onLinkParameterClick(parameter)}
+      onclick={onLinkParameterClick}
     >
       <Svg id="cog" w="12"></Svg>
     </button>

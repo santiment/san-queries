@@ -17,7 +17,7 @@
   import VirtualList from 'san-webkit-next/ui/app/VirtualList'
   import AssetLogo from 'san-webkit-next/ui/app/AssetLogo'
   import Svg from 'san-webkit-next/ui/core/Svg'
-  import type { TAsset } from './flow.svelte'
+  import type { TAsset } from './assets.svelte'
 
   let { Controller }: TDialogProps<TAsset> = $props()
 

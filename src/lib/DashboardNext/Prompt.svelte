@@ -11,14 +11,14 @@
   function onclick(e: Event) {
     const node = (e.currentTarget as HTMLElement).parentElement!
     node.setAttribute('style', '--tw-scale-x:0;--tw-scale-y:0')
-    onClick()
+    setTimeout(onClick, 150)
   }
 </script>
 
 <div
   transition:fly={{ duration: 300, y: 60 }}
   class={cn(
-    'fixed bottom-[24px] left-1/2 z-20 flex -translate-x-1/2 overflow-hidden rounded-3xl transition-transform center active:scale-105',
+    'fixed bottom-[24px] left-1/2 z-20 flex -translate-x-1/2 overflow-hidden rounded-3xl transition-transform center',
   )}
 >
   <button

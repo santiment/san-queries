@@ -13,7 +13,7 @@
   import { useDahboardSqlDataCtx } from '$lib/Dashboard/flow/sqlData/index.svelte'
   import { showAddQueryToDashboardDialog$ } from '$lib/AddQueryToDashboardDialog/index.svelte'
   import { useCleanFlow } from './clean.svelte'
-  import { useDataRefreshPromptCtx } from './state.svelte'
+  import { useDataRefreshPromptCtx, usePersistentSessionFlow } from './state.svelte'
   import Prompt from './Prompt.svelte'
 
   let {
@@ -43,8 +43,13 @@
   const dahboardSqlDataCtx = useDahboardSqlDataCtx(dashboard)
   const { addQueryWidget } = useDashboardWidgets()
   const { changedParameters, queryParameterChanges } = useDataRefreshPromptCtx()
+  const { saveLocalSession, applySavedSession } = usePersistentSessionFlow(getEditor)
 
-  useCleanFlow(() => BlockEditorRef?.getEditor?.())
+  useCleanFlow(getEditor)
+
+  function getEditor() {
+    return BlockEditorRef?.getEditor?.()
+  }
 
   export function getState() {
     return untrack(() =>
@@ -68,6 +73,7 @@
   <BlockEditor
     bind:this={BlockEditorRef}
     {readonly}
+    onUpdate={saveLocalSession}
     content={dashboardEditor.__editorJson}
     editorProps={{
       addQueryWidget,
@@ -76,7 +82,9 @@
     }}
   ></BlockEditor>
 
-  {#if changedParameters.$.size}
+  {#if applySavedSession.$}
+    <Prompt icon="logout" onClick={applySavedSession.$}>Restore last session</Prompt>
+  {:else if changedParameters.$.size}
     <Prompt icon="refresh" onClick={queryParameterChanges}>
       {readonly ? 'Refresh data' : 'Update default data'}
     </Prompt>

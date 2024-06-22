@@ -17,10 +17,12 @@
     readonly = true,
     content,
     editorProps,
+    onUpdate,
   }: {
     readonly?: boolean
     content: JSONContent
     editorProps?: EditorOptions['editorProps'] & Record<string, any>
+    onUpdate?: EditorOptions['onUpdate']
   } = $props()
 
   let EditorRef: Editor
@@ -41,6 +43,8 @@
         editorProps,
 
         extensions: [...getExtensions(), Placeholder, TrailingNode, SlashCommands],
+
+        onUpdate,
       }}
     >
       {#if !readonly}

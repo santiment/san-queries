@@ -92,8 +92,8 @@ dependencies:
     specifier: github:santiment/san-webkit#15afa8a
     version: github.com/santiment/san-webkit/15afa8a(@types/gtag.js@0.0.4)(@types/medium-editor@5.0.8)(@types/stripe-v3@3.1.33)(ethers@5.7.2)(marked@6.0.0)(medium-editor@5.23.3)(node-fetch@2.7.0)(react-dom@18.3.1)(react@18.3.1)(svelte@5.0.0-next.162)(turndown@7.2.0)
   san-webkit-next:
-    specifier: github:santiment/san-webkit#lib-c5ef163c-200624
-    version: github.com/santiment/san-webkit/0f6de0b896f19a1499a11271072b6808d9edd77f(graphql@16.8.2)(react-dom@18.3.1)(react@18.3.1)(rxjs@7.8.1)(svelte@5.0.0-next.162)(tailwindcss@3.4.1)
+    specifier: github:santiment/san-webkit#lib-95dec7ff-210624
+    version: github.com/santiment/san-webkit/f3874964e7c4ef725650ba9c1a729964590156b8(graphql@16.8.2)(react-dom@18.3.1)(react@18.3.1)(rxjs@7.8.1)(svelte@5.0.0-next.162)(tailwindcss@3.4.1)
   svelte-runes:
     specifier: ^0.0.3
     version: 0.0.3(svelte@5.0.0-next.162)
@@ -11695,36 +11695,6 @@ packages:
       svelte: 5.0.0-next.162
     dev: false
 
-  github.com/santiment/san-webkit/0f6de0b896f19a1499a11271072b6808d9edd77f(graphql@16.8.2)(react-dom@18.3.1)(react@18.3.1)(rxjs@7.8.1)(svelte@5.0.0-next.162)(tailwindcss@3.4.1):
-    resolution: {tarball: https://codeload.github.com/santiment/san-webkit/tar.gz/0f6de0b896f19a1499a11271072b6808d9edd77f}
-    id: github.com/santiment/san-webkit/0f6de0b896f19a1499a11271072b6808d9edd77f
-    name: san-webkit-next
-    version: 0.0.1
-    hasBin: true
-    peerDependencies:
-      graphql: ^16.8.2
-      rxjs: ^7.8.1
-      svelte: ^5.0.0-next.1
-    dependencies:
-      '@internationalized/date': 3.5.4
-      bits-ui: 0.21.10(svelte@5.0.0-next.162)
-      esm-env: 1.0.0
-      fast-glob: 3.3.2
-      graphql: 16.8.2
-      rxjs: 7.8.1
-      svelte: 5.0.0-next.162
-      svelte-runes: 0.0.3(svelte@5.0.0-next.162)
-      tailwind-variants: 0.2.1(tailwindcss@3.4.1)
-      virtua: 0.31.0(react-dom@18.3.1)(react@18.3.1)(svelte@5.0.0-next.162)
-      zod: 3.23.8
-    transitivePeerDependencies:
-      - react
-      - react-dom
-      - solid-js
-      - tailwindcss
-      - vue
-    dev: false
-
   github.com/santiment/san-webkit/15afa8a(@types/gtag.js@0.0.4)(@types/medium-editor@5.0.8)(@types/stripe-v3@3.1.33)(ethers@5.7.2)(marked@6.0.0)(medium-editor@5.23.3)(node-fetch@2.7.0)(react-dom@18.3.1)(react@18.3.1)(svelte@5.0.0-next.162)(turndown@7.2.0):
     resolution: {tarball: https://codeload.github.com/santiment/san-webkit/tar.gz/15afa8a}
     id: github.com/santiment/san-webkit/15afa8a
@@ -11759,4 +11729,34 @@ packages:
       react-dom: 18.3.1(react@18.3.1)
       svelte: 5.0.0-next.162
       turndown: 7.2.0
+    dev: false
+
+  github.com/santiment/san-webkit/f3874964e7c4ef725650ba9c1a729964590156b8(graphql@16.8.2)(react-dom@18.3.1)(react@18.3.1)(rxjs@7.8.1)(svelte@5.0.0-next.162)(tailwindcss@3.4.1):
+    resolution: {tarball: https://codeload.github.com/santiment/san-webkit/tar.gz/f3874964e7c4ef725650ba9c1a729964590156b8}
+    id: github.com/santiment/san-webkit/f3874964e7c4ef725650ba9c1a729964590156b8
+    name: san-webkit-next
+    version: 0.0.1
+    hasBin: true
+    peerDependencies:
+      graphql: ^16.8.2
+      rxjs: ^7.8.1
+      svelte: ^5.0.0-next.1
+    dependencies:
+      '@internationalized/date': 3.5.4
+      bits-ui: 0.21.10(svelte@5.0.0-next.162)
+      esm-env: 1.0.0
+      fast-glob: 3.3.2
+      graphql: 16.8.2
+      rxjs: 7.8.1
+      svelte: 5.0.0-next.162
+      svelte-runes: 0.0.3(svelte@5.0.0-next.162)
+      tailwind-variants: 0.2.1(tailwindcss@3.4.1)
+      virtua: 0.31.0(react-dom@18.3.1)(react@18.3.1)(svelte@5.0.0-next.162)
+      zod: 3.23.8
+    transitivePeerDependencies:
+      - react
+      - react-dom
+      - solid-js
+      - tailwindcss
+      - vue
     dev: false
