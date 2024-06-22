@@ -26,9 +26,9 @@ export const useDashboardEditorCtx = createCtx(
     const { parameters } = useDashboardParametersCtx(apiDashboard?.parameters)
     useGlobalParametersCtx()
 
-    let __editorJson = apiDashboard?.settings?.__editorJson || ''
+    let document = apiDashboard?.settings?.__editorJson || ''
 
-    if (!__editorJson) {
+    if (!document) {
       const textWidgets =
         apiDashboard?.textWidgets.map(({ body }) => ({
           type: 'paragraph',
@@ -43,10 +43,14 @@ export const useDashboardEditorCtx = createCtx(
           },
         })) || []
 
-      __editorJson = {
+      document = {
         type: 'doc',
         content: [...textWidgets, ...queryWidgets],
       }
+    }
+
+    if (document.content.length === 0) {
+      document.content.push({ type: 'paragraph' })
     }
 
     return {
@@ -62,7 +66,7 @@ export const useDashboardEditorCtx = createCtx(
 
         parameters,
 
-        __editorJson,
+        __editorJson: document,
       },
     }
   },
