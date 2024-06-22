@@ -10,6 +10,7 @@ import QueryBlock from '../nodes/QueryBlock'
 import AssetSelector from '../nodes/AssetSelector'
 import Paragraph from '../nodes/Paragraph'
 import HiddenBlock from '../nodes/HiddenBlock'
+import QueryTextColumnBlock from '../nodes/QueryTextColumnBlock'
 
 export const getExtensions = (CTX?: Map<string, any>) => [
   StarterKit.configure({
@@ -33,4 +34,5 @@ export const getExtensions = (CTX?: Map<string, any>) => [
   HiddenBlock,
   QueryBlock.configure({ ctx: CTX }),
   AssetSelector.configure({ ctx: CTX }),
+  QueryTextColumnBlock.configure({ ctx: CTX }),
 ]

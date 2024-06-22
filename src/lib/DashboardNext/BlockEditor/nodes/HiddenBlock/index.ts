@@ -50,6 +50,10 @@ export default Node.create({
   },
 
   addNodeView() {
+    return SvelteNodeViewRenderer(Component)
+    // NOTE: Hidden block should still be rendered to trigger component hooks
+
+    /*
     if (this.editor.isEditable) return SvelteNodeViewRenderer(Component)
 
     // NOTE: Rendering nothing when document is in readonly(view) mode
@@ -61,5 +65,6 @@ export default Node.create({
 
       return { dom }
     }
+      */
   },
 })

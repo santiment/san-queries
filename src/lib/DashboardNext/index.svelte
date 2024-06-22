@@ -41,7 +41,7 @@
   useServerDashboardCacheCtx()
   const { dashboardEditor } = useDashboardEditorCtx(dashboard, isAuthor, readonly)
   const dahboardSqlDataCtx = useDahboardSqlDataCtx(dashboard)
-  const { addQueryWidget } = useDashboardWidgets()
+  const { addQueryWidget } = useDashboardWidgets(dashboard, dahboardSqlDataCtx.dashboardData)
   const { changedParameters, queryParameterChanges } = useDataRefreshPromptCtx()
   const { saveLocalSession, applySavedSession } = usePersistentSessionFlow(getEditor)
 

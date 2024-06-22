@@ -32,7 +32,7 @@
   }
 </script>
 
-<div class="flex-1 column">
+<div class="flex-1 column" class:readonly>
   {#if BROWSER}
     <Editor
       bind:this={EditorRef}
@@ -89,8 +89,9 @@
       @apply text-base;
     }
 
+    [data-type='query-text-column'],
     [data-type='paragraph'] {
-      @apply py-0.5 text-base;
+      @apply min-h-7 py-0.5 text-base;
     }
     a:not(.svelte-renderer *) {
       @apply text-green;
@@ -160,6 +161,12 @@
       transition-property: opacity;
       transition-duration: 200ms;
       transition-timing-function: ease;
+    }
+  }
+
+  .readonly :global {
+    [data-type='hidden-block'] {
+      display: none;
     }
   }
 </style>

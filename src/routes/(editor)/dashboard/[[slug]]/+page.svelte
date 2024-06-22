@@ -41,16 +41,3 @@
     {onDeleteClick}
   ></Dashboard>
 {/key}
-
-<!-- {#key apiDashboard.$?.id}
-  <Dashboard
-    bind:this={EditorRef.$}
-    dashboard={apiDashboard.$}
-    isAuthor={isAuthor.$}
-    readonly={true}
-    {currentUser}
-    {onDuplicateClick}
-    {onDeleteClick}
-    onLayoutChange={() => changeIndicatorCtx.emit.changed()}
-  ></Dashboard>
-{/key} -->

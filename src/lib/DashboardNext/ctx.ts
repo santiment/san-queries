@@ -4,8 +4,9 @@ import { createCtx } from '$lib/ctx'
 import { useDashboardParametersCtx, useGlobalParametersCtx } from '$lib/Dashboard/ctx/parameters'
 import { page as page$ } from '$app/stores'
 import { get } from 'svelte/store'
-import type { useDahboardSqlDataCtx } from '$lib/Dashboard/flow/sqlData/index.svelte'
+import { useDahboardSqlDataCtx } from '$lib/Dashboard/flow/sqlData/index.svelte'
 import type { Editor } from '@tiptap/core'
+import { createQueryWidget } from './BlockEditor/nodes/QueryBlock/state'
 
 export const useDashboardEditorCtx = createCtx(
   'useDashboardEditorCtx',
@@ -22,7 +23,6 @@ export const useDashboardEditorCtx = createCtx(
 
     const isLegacy = Boolean(panels?.length && !(queries.length || textWidgets.length))
 
-    useDashboardWidgets({ queries })
     const { parameters } = useDashboardParametersCtx(apiDashboard?.parameters)
     useGlobalParametersCtx()
 
@@ -53,6 +53,7 @@ export const useDashboardEditorCtx = createCtx(
       document.content.push({ type: 'paragraph' })
     }
 
+    console.log(document)
     return {
       dashboardEditor: {
         isAuthor,
@@ -112,33 +113,23 @@ export type TEditorWidget<T = any> = {
 
 export const useDashboardWidgets = createCtx(
   'useDashboardWidgets',
-  (data?: { queries: App.ApiDashboard['queries'] }) => {
+  (
+    data?: { queries: App.ApiDashboard['queries'] },
+    dashboardData?: ReturnType<typeof useDahboardSqlDataCtx>['dashboardData'],
+  ) => {
     const { queries = [] } = data || {}
+    console.log(dashboardData)
 
     const queryWidgets = queries.map(
-      (query) =>
-        [
-          query.dashboardQueryMappingId,
-          {
-            id: query.dashboardQueryMappingId,
-            type: 'query-widget',
-            data: query,
-            state: new Map$(),
-          },
-        ] as const,
+      (query) => [query.dashboardQueryMappingId, createQueryWidget(query, dashboardData)] as const,
     )
 
     const dashboardWidgets = new Map$<string, null | TEditorWidget>(queryWidgets)
 
     return {
       dashboardWidgets,
-      addQueryWidget(query) {
-        dashboardWidgets.set(query.dashboardQueryMappingId, {
-          id: query.dashboardQueryMappingId,
-          type: 'query-widget',
-          data: query,
-          state: new Map$(),
-        })
+      addQueryWidget(query: App.ApiDashboard['queries'][number]) {
+        dashboardWidgets.set(query.dashboardQueryMappingId, createQueryWidget(query, dashboardData))
       },
     }
   },

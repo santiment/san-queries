@@ -64,4 +64,11 @@ export const COMMANDS = [
       editor.chain().focus().deleteRange(range).addHiddenBlock().run()
     },
   },
+
+  {
+    title: "Text data of query's column",
+    command: ({ editor, range }) => {
+      editor.chain().focus().deleteRange(range).addQueryTextColumn('', '').run()
+    },
+  },
 ] as { title: string; command: (args: { editor: Editor; range: Range }) => void }[]
