@@ -1,9 +1,9 @@
 <script lang="ts">
   import { NodeViewWrapper, type ViewProps } from 'tiptap-svelte-adapter'
   import QueryWidget from '$lib/Dashboard/Widgets/QueryWidget/index.svelte'
-  // import Resizer from '../../../Resizer.svelte'
   import { useDahboardSqlDataCtx } from '$lib/Dashboard/flow/sqlData/index.svelte'
   import { useDashboardEditorCtx, useEditorWidget } from '$lib/DashboardNext/ctx'
+  import Resizer from '../../Resizer.svelte'
 
   let { view }: ViewProps = $props()
 
@@ -32,7 +32,10 @@
   })
 </script>
 
-<NodeViewWrapper class="my-2 min-h-[208px] column" style={view.$.node.attrs.style}>
+<NodeViewWrapper
+  class="relative my-2 max-h-[1000px] min-h-[208px] column"
+  style={view.$.node.attrs.style}
+>
   {#if widgetRef.$}
     <QueryWidget
       dashboardId={dashboardEditor.id}
@@ -46,7 +49,7 @@
     />
 
     {#if dashboardEditor.readonly === false}
-      <!-- <Resizer onEnd={onResizeEnd}></Resizer> -->
+      <Resizer onEnd={onResizeEnd}></Resizer>
     {/if}
   {:else}
     Unknown query widget
