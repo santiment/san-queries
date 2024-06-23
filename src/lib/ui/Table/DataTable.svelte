@@ -7,6 +7,7 @@
   import Pagination, { useTablePagination } from './Pagination'
   import { useTableFilter } from './Filter/state.svelte'
   import { cn } from '../utils'
+  import type { Snippet } from 'svelte'
 
   let {
     class: className,
@@ -15,15 +16,21 @@
     onSortClick: _onSortClick,
     sorted: sortedDefaults,
     sortController,
+    pagination = true,
+
+    children,
     ...props
   }: {
     class?: string
     data: T[]
     columns: Column[]
+    pagination?: boolean
 
     sortController?: TSortController
     sorted?: Partial<{ column: Column; dir: 'asc' | 'desc' }>
     onSortClick?: (column: Column, dir: 'asc' | 'desc') => void
+
+    children?: Snippet
   } = $props()
 
   let {
@@ -35,14 +42,14 @@
   let { rows, page, pageSize } = useTablePagination(filteredRows)
 </script>
 
-<paged-table class={cn('block flex-1 overflow-auto')}>
+<paged-table class={cn('block flex-1 overflow-auto', className)}>
   <Table {...props}>
     <thead class="sticky top-0 z-[2]">
       <Row>
         {#each columns as column (column.key)}
           {@const { title, Header } = column}
           {#if Header}
-            <svelte:component this={Header} />
+            <svelte:component this={Header} {column} />
           {:else}
             <HCell {column} {sorted} onSortClick={column.sortAccessor && onSortClick}>
               {title}
@@ -68,7 +75,11 @@
         </Row>
       {/each}
     </tbody>
+
+    {@render children?.()}
   </Table>
 </paged-table>
 
-<Pagination totalItems={filteredRows.$.length} {page} {pageSize}></Pagination>
+{#if pagination}
+  <Pagination totalItems={filteredRows.$.length} {page} {pageSize}></Pagination>
+{/if}

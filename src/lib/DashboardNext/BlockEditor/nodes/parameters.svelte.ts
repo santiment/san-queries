@@ -12,7 +12,11 @@ const getRandomKey = () => Math.floor(Math.random() * 0xffffffff).toString()
 
 export function useParametersWidgetFlow<GValue>(
   view: ViewProps['view'],
-  { keyPrefix, defaultValue }: { keyPrefix: string; defaultValue: GValue },
+  {
+    keyPrefix,
+    defaultValue,
+    type = 'string',
+  }: { keyPrefix: string; defaultValue: GValue; type?: 'string' | 'stringList' },
 ) {
   const { dashboardEditor } = useDashboardEditorCtx()
   const { createGlobalParameter } = useCreateGlobalParameterFlow()
@@ -33,7 +37,7 @@ export function useParametersWidgetFlow<GValue>(
     const key: string = attrs['data-id']
     const parameter = (key && globalParameterByKey.$.get(key)) || createParameter()
 
-    return [parameter, parameter.value] as const
+    return [parameter, parameter.value as GValue] as const
   }
 
   function createParameter() {
@@ -53,6 +57,7 @@ export function useParametersWidgetFlow<GValue>(
       createGlobalParameter({
         dashboard: dashboardEditor as { id: number },
         parameter,
+        type,
         overrides: { added: [], deleted: [] },
         onComplete() {
           globalParameters.$.push(parameter)
@@ -65,8 +70,8 @@ export function useParametersWidgetFlow<GValue>(
   }
 
   function update(value: GValue, shouldStoreUndoRedo = true) {
-    parameter.value = value
-    if (shouldStoreUndoRedo) view.$.updateAttributes({ 'data-value': value })
+    parameter.value = value || defaultValue
+    if (shouldStoreUndoRedo) view.$.updateAttributes({ 'data-value': value || defaultValue })
     globalParameters.$ = globalParameters.$
 
     if (dashboardEditor.readonly === false) {
@@ -74,9 +79,12 @@ export function useParametersWidgetFlow<GValue>(
         dashboard: dashboardEditor as { id: number },
         oldKey: parameter.key,
         parameter,
+        type,
         overrides: { added: [], deleted: [] },
       })
     }
+
+    view.$.editor.commands.focus(undefined, { scrollIntoView: false })
   }
 
   return {

@@ -1,7 +1,11 @@
 import { Fetcher } from '$lib/api'
 
 export const mutateAddDashboardGlobalParameter = Fetcher(
-  (variables: { dashboardId: number; key: string; value: { string: number | string } }) => ({
+  (variables: {
+    dashboardId: number
+    key: string
+    value: { string: number | string } | { stringList: (number | string)[] }
+  }) => ({
     schema: `mutation addDashboardGlobalParameter($dashboardId: Int!, $key: String!, $value: DashboardGlobalParameterValue!) {
       data: addDashboardGlobalParameter(dashboardId:$dashboardId, key:$key, value:$value) {
         id

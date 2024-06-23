@@ -14,8 +14,9 @@ import AssetSelector from '../nodes/AssetSelector'
 import Paragraph from '../nodes/Paragraph'
 import HiddenBlock from '../nodes/HiddenBlock'
 import QueryTextColumnBlock from '../nodes/QueryTextColumnBlock'
+import ControlledListBlock from '../nodes/ControlledListBlock'
 
-export const getExtensions = (CTX?: Map<string, any>) => [
+export const getExtensions = (ctx?: Map<string, any>) => [
   StarterKit.configure({
     dropcursor: false,
     gapcursor: false,
@@ -42,7 +43,8 @@ export const getExtensions = (CTX?: Map<string, any>) => [
   BlockLayout.configure({ dropareaColor: 'var(--droparea-color)' }),
 
   HiddenBlock,
-  QueryBlock.configure({ ctx: CTX }),
-  AssetSelector.configure({ ctx: CTX }),
-  QueryTextColumnBlock.configure({ ctx: CTX }),
+  QueryBlock.configure({ ctx }),
+  AssetSelector.configure({ ctx }),
+  QueryTextColumnBlock.configure({ ctx }),
+  ControlledListBlock.configure({ ctx }),
 ]

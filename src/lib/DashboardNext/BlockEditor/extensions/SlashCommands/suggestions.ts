@@ -34,7 +34,7 @@ export const COMMANDS = [
   },
 
   {
-    title: 'Query Widget',
+    title: 'Query widget',
     command: ({ editor, range }) => {
       editor.options.editorProps.showAddQueryToDashboardDialog({
         onComplete(widget) {
@@ -69,6 +69,13 @@ export const COMMANDS = [
     title: "Text data of query's column",
     command: ({ editor, range }) => {
       editor.chain().focus().deleteRange(range).addQueryTextColumn('', '').run()
+    },
+  },
+
+  {
+    title: 'Controlled list widget',
+    command: ({ editor, range }) => {
+      editor.chain().focus().deleteRange(range).addControlledListWidget().run()
     },
   },
 ] as { title: string; command: (args: { editor: Editor; range: Range }) => void }[]

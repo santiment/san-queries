@@ -31,8 +31,10 @@
       type: 'Text',
       overrides: new Map(),
     },
+    type = 'string',
     Controller,
   }: {
+    type?: 'string' | 'stringList'
     readonly?: boolean
     parameter?: (typeof dashboardEditor)['parameters']['$'][number]
   } & TDialogProps<(typeof dashboardEditor)['parameters']['$'][number]> = $props()
@@ -76,6 +78,7 @@
       parameter,
       overrides: overridesDiff.unwrap(),
       onComplete,
+      type,
     })
 
     function onComplete() {
