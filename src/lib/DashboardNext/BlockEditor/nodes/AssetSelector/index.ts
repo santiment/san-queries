@@ -22,7 +22,7 @@ export default Node.create({
 
   inline: true,
   selectable: false,
-  draggable: true,
+  // draggable: false,
 
   addCommands() {
     return {

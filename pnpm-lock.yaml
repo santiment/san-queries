@@ -116,8 +116,8 @@ dependencies:
     specifier: ^6.3.7
     version: 6.3.7
   tiptap-block-layout:
-    specifier: ^0.0.4
-    version: 0.0.4(@tiptap/core@2.4.0)(@tiptap/pm@2.4.0)(prosemirror-state@1.4.3)
+    specifier: ^0.0.5
+    version: 0.0.5(@tiptap/core@2.4.0)(@tiptap/pm@2.4.0)(prosemirror-state@1.4.3)
   tiptap-svelte-adapter:
     specifier: ^0.0.3
     version: 0.0.3(@tiptap/core@2.4.0)(@tiptap/extension-bubble-menu@2.4.0)(@tiptap/pm@2.4.0)(svelte@5.0.0-next.164)
@@ -10901,8 +10901,8 @@ packages:
       '@popperjs/core': 2.11.8
     dev: false
 
-  /tiptap-block-layout@0.0.4(@tiptap/core@2.4.0)(@tiptap/pm@2.4.0)(prosemirror-state@1.4.3):
-    resolution: {integrity: sha512-m7gsvXMwgGbUkyfyZN5haHPfABU1GsifNBB7F2tvFnAtdW5zPKpRTfMaD022ILic8hQAOXX915HAOsTjUjadww==}
+  /tiptap-block-layout@0.0.5(@tiptap/core@2.4.0)(@tiptap/pm@2.4.0)(prosemirror-state@1.4.3):
+    resolution: {integrity: sha512-OV0VdKrBr5RdzhmgbvIESehEtHtXlfgNWOP0xc58UGNbcL/7NPmvzUnnc7YGJYfjsYbR1jqqHF3NqTgjHlNPwg==}
     peerDependencies:
       '@tiptap/core': ^2.4.0
       '@tiptap/pm': ^2.4.0

@@ -104,7 +104,7 @@
     "svelte-runes": "^0.0.3",
     "tailwind-merge": "^2.2.1",
     "tippy.js": "^6.3.7",
-    "tiptap-block-layout": "^0.0.4",
+    "tiptap-block-layout": "^0.0.5",
     "tiptap-svelte-adapter": "^0.0.3",
     "ua-parser-js": "^1.0.37",
     "uuid": "^9.0.1",
