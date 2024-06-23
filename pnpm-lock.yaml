@@ -25,15 +25,27 @@ dependencies:
   '@tiptap/extension-bubble-menu':
     specifier: ^2.4.0
     version: 2.4.0(@tiptap/core@2.4.0)(@tiptap/pm@2.4.0)
+  '@tiptap/extension-bullet-list':
+    specifier: ^2.4.0
+    version: 2.4.0(@tiptap/core@2.4.0)
   '@tiptap/extension-color':
     specifier: ^2.4.0
     version: 2.4.0(@tiptap/core@2.4.0)(@tiptap/extension-text-style@2.4.0)
+  '@tiptap/extension-heading':
+    specifier: ^2.4.0
+    version: 2.4.0(@tiptap/core@2.4.0)
   '@tiptap/extension-highlight':
     specifier: ^2.4.0
     version: 2.4.0(@tiptap/core@2.4.0)
   '@tiptap/extension-link':
     specifier: ^2.4.0
     version: 2.4.0(@tiptap/core@2.4.0)(@tiptap/pm@2.4.0)
+  '@tiptap/extension-list-item':
+    specifier: ^2.4.0
+    version: 2.4.0(@tiptap/core@2.4.0)
+  '@tiptap/extension-ordered-list':
+    specifier: ^2.4.0
+    version: 2.4.0(@tiptap/core@2.4.0)
   '@tiptap/extension-paragraph':
     specifier: ^2.4.0
     version: 2.4.0(@tiptap/core@2.4.0)

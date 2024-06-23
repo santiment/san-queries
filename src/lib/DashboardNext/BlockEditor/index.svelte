@@ -73,19 +73,19 @@
       @apply -mx-12 -mt-4 flex flex-1 flex-col p-6 px-12 pb-20 outline-none;
     }
 
-    h1:not(.svelte-renderer *) {
+    h1.data-heading {
       @apply text-2xl;
     }
 
-    h2:not(.svelte-renderer *) {
+    h2.data-heading {
       @apply text-xl;
     }
 
-    h3:not(.svelte-renderer *) {
+    h3.data-heading {
       @apply text-lg;
     }
 
-    h4:not(.svelte-renderer *) {
+    h4.data-heading {
       @apply text-base;
     }
 
@@ -93,8 +93,21 @@
     [data-type='paragraph'] {
       @apply min-h-7 py-0.5 text-base;
     }
-    a:not(.svelte-renderer *) {
+    a.data-link {
       @apply text-green;
+    }
+
+    .data-list {
+      margin: 0;
+      padding: 0;
+      padding-left: 24px;
+    }
+
+    ul.data-list > li {
+      list-style: disc;
+    }
+    ol.data-list li {
+      list-style: decimal;
     }
 
     [data-type='columns'] {
@@ -142,10 +155,14 @@
       height: 0;
     }
 
-    .tiptap [data-type='paragraph'],
-    .tiptap :not(.svelte-renderer *):not([data-type='column-resizer']),
-    .svelte-renderer {
-      position: relative;
+    .tiptap {
+      .data-heading,
+      .data-link,
+      [data-type='paragraph'],
+      :not(.svelte-renderer *):not([data-type='column-resizer']),
+      .svelte-renderer {
+        position: relative;
+      }
     }
 
     :not(.dragging) .ProseMirror-selectednode::after {

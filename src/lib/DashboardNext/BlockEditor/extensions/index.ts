@@ -1,6 +1,9 @@
 import Color from '@tiptap/extension-color'
 import Highlight from '@tiptap/extension-highlight'
 import Link from '@tiptap/extension-link'
+import { Heading } from '@tiptap/extension-heading'
+import { OrderedList } from '@tiptap/extension-ordered-list'
+import { BulletList } from '@tiptap/extension-bullet-list'
 import TextStyle from '@tiptap/extension-text-style'
 import Underline from '@tiptap/extension-underline'
 import StarterKit from '@tiptap/starter-kit'
@@ -17,9 +20,16 @@ export const getExtensions = (CTX?: Map<string, any>) => [
     dropcursor: false,
     gapcursor: false,
     paragraph: false,
+    heading: false,
+    orderedList: false,
+    bulletList: false,
   }),
   Paragraph,
-  Link.configure({ openOnClick: false }),
+  Heading.configure({ HTMLAttributes: { class: 'data-heading' } }),
+  Link.configure({ openOnClick: false, HTMLAttributes: { class: 'data-link' } }),
+  OrderedList.configure({ HTMLAttributes: { class: 'data-list' } }),
+  BulletList.configure({ HTMLAttributes: { class: 'data-list' } }),
+
   Underline,
   TextStyle,
   Color,
