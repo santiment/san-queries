@@ -7,6 +7,7 @@
     unwrapState,
     useDashboardEditorCtx,
     useDashboardWidgets,
+    useQueryColumnActionsCtx,
     useServerDashboardCacheCtx,
   } from './ctx'
   import BlockEditor from './BlockEditor/index.svelte'
@@ -44,6 +45,7 @@
   const { addQueryWidget } = useDashboardWidgets(dashboard, dahboardSqlDataCtx.dashboardData)
   const { changedParameters, queryParameterChanges } = useDataRefreshPromptCtx()
   const { saveLocalSession, applySavedSession } = usePersistentSessionFlow(getEditor)
+  useQueryColumnActionsCtx()
 
   useCleanFlow(getEditor)
 

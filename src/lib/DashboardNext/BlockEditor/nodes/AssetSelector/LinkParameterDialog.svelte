@@ -21,6 +21,7 @@
     useDashboardWidgets,
     type TEditorWidget,
   } from '$lib/DashboardNext/ctx'
+  import type { Snippet } from 'svelte'
 
   let {
     readonly = false,
@@ -33,7 +34,9 @@
     },
     type = 'string',
     Controller,
+    children,
   }: {
+    children?: Snippet
     type?: 'string' | 'stringList'
     readonly?: boolean
     parameter?: (typeof dashboardEditor)['parameters']['$'][number]
@@ -90,6 +93,8 @@
 
 <Dialog title="Link parameter" class="w-[480px]">
   <div class="scroll-auto p-4 py-3">
+    {@render children?.()}
+
     {#if queryWidgets.length && !readonly}
       <queries class="flex flex-col gap-4">
         <h3 class="text-base font-medium">

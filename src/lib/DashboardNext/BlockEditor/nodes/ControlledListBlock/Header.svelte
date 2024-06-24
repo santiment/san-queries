@@ -11,9 +11,5 @@
 <HCell {column} class="flex justify-between gap-2">
   Selected items
 
-  <Button
-    class="size-auto text-red hover:text-red-hover"
-    explanation="Delete active"
-    onclick={resetList}>Reset</Button
-  >
+  <Button class="size-auto text-red hover:text-red-hover" onclick={resetList}>Reset</Button>
 </HCell>

@@ -18,3 +18,9 @@
     onclick={() => deleteItem(row)}
   ></Button>
 </div>
+
+<style>
+  div {
+    --expl-right: -4px;
+  }
+</style>

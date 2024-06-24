@@ -34,6 +34,6 @@ export const COLUMNS = [
     valueKey: '0',
     Header,
     Cell,
-    className: 'group',
+    className: 'group cell-visible',
   },
 ]

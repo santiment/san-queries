@@ -152,3 +152,18 @@ export const useServerDashboardCacheCtx = createCtx('useServerDashboardCacheCtx'
 
   return state
 })
+
+export const useQueryColumnActionsCtx = createCtx('useQueryColumnActionsCtx', () => {
+  type TAction = { label: string; onclick: (value: any) => void }
+  const queryColumnAction = new Map$<string, TAction>()
+
+  function addColumnAction(queryId: string, columnIndex: number, action: TAction) {
+    queryColumnAction.set(queryId + columnIndex, action)
+  }
+
+  function removeColumnAction(queryId: string, columnIndex: number) {
+    queryColumnAction.delete(queryId + columnIndex)
+  }
+
+  return { queryColumnAction, addColumnAction, removeColumnAction }
+})

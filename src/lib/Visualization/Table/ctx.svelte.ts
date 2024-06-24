@@ -3,9 +3,15 @@ import type { ComponentType } from 'svelte'
 import { createCtx } from '$lib/ctx'
 import { FormatType, Formatter } from '../format'
 
-export function getTableColumns(sqlData: App.SqlData, ColumnSettings: Record<string, any>) {
+export function getTableColumns(
+  sqlData: App.SqlData,
+  ColumnSettings: Record<string, any>,
+  queryColumnAction?: Map<string, any>,
+) {
   return sqlData.columns.map((key, i) => {
     const settings = ColumnSettings[key] || {}
+    // TODO: pass queryColumnAction for specific query id
+    const action = queryColumnAction?.get(sqlData.dashboardQueryMappingId + i)
 
     const type = sqlData.columnTypes[i]
 
@@ -52,16 +58,22 @@ export function getTableColumns(sqlData: App.SqlData, ColumnSettings: Record<str
       Cell,
       className,
       format: (value: any) => (formatter ? formatter(value) : value),
+      action,
     }
   })
 }
 
 export const useTableColumnsCtx = createCtx(
   'useTableColumnsCtx',
-  (sqlData: App.SqlData, settings: SS<Record<string, any>>) => {
+  (
+    sqlData: App.SqlData,
+    settings: SS<Record<string, any>>,
+    queryColumnAction?: Map<string, any>,
+  ) => {
     // const dataColumns = $derived(getTableColumns(sqlData, settings.$))
     // $effect(() => console.log(dataColumns))
-    const dataColumns = ssd(() => getTableColumns(sqlData, settings.$))
+    const dataColumns = ssd(() => getTableColumns(sqlData, settings.$, queryColumnAction))
+    $inspect(dataColumns.$)
 
     return {
       dataColumns,

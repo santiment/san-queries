@@ -40,6 +40,8 @@ export default Node.create({
     return {
       'data-id': { default: '' },
       'data-value': { default: [] },
+      'data-link-query': { default: '' },
+      'data-link-column': { default: '' },
       style: { default: '' },
     }
   },

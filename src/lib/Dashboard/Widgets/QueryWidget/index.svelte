@@ -5,7 +5,7 @@
   import { useDashboardParametersCtx, useGlobalParametersCtx } from '$lib/Dashboard/ctx/parameters'
   import Header from './Header.svelte'
   import Visualisation from './Visualisation.svelte'
-  import { useDashboardEditorCtx } from '$lib/DashboardNext/ctx'
+  import { useDashboardEditorCtx, useQueryColumnActionsCtx } from '$lib/DashboardNext/ctx'
   import { useDataRefreshPromptCtx } from '$lib/DashboardNext/state.svelte'
 
   let {
@@ -27,6 +27,8 @@
   const { dashboardEditor } = useDashboardEditorCtx()
   const { globalParameterByOverrides } = useGlobalParametersCtx()
   const { changedParameters } = useDataRefreshPromptCtx()
+
+  const { queryColumnAction } = useQueryColumnActionsCtx()
 
   let dataState = $derived(dashboardData.get(widget.id))
   let sqlData = $derived(dataState?.displayedData.$)
@@ -85,7 +87,7 @@
 
     {#if sqlData}
       {#key sqlData}
-        <Visualisation {widget} {sqlData}></Visualisation>
+        <Visualisation {widget} {sqlData} {queryColumnAction}></Visualisation>
       {/key}
     {:else if !isLoading}
       <div class="rounded bg-athens px-5 py-3 text-center">

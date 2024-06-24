@@ -8,7 +8,13 @@
     sqlData,
     widget,
     isSelectable = false,
-  }: { widget: App.Dashboard.QueryWidget; sqlData: App.SqlData; isSelectable?: boolean } = $props()
+    queryColumnAction,
+  }: {
+    widget: App.Dashboard.QueryWidget
+    sqlData: App.SqlData
+    isSelectable?: boolean
+    queryColumnAction?: Map<string, any>
+  } = $props()
 
   const { settings } = useQuerySettingsCtx(widget.query.settings)
 
@@ -19,5 +25,5 @@
 {#if queryVisualisation === 'Chart'}
   <Chart {sqlData} settings={columnSettings}></Chart>
 {:else}
-  <Table {sqlData} settings={columnSettings} {isSelectable}></Table>
+  <Table {sqlData} settings={columnSettings} {queryColumnAction} {isSelectable}></Table>
 {/if}
