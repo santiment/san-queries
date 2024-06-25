@@ -151,7 +151,9 @@ export function usePersistentSessionFlow(getEditor: () => Editor | null) {
         parameters.$ = parameters.$
         applySavedSession.$ = null
 
-        queryParameterChanges()
+        setTimeout(() => {
+          queryParameterChanges()
+        }, 600)
       }
     }),
   )

@@ -26,7 +26,7 @@
   let isAuthor = ssd(() => (apiDashboard.$ ? +apiDashboard.$.user.id === +currentUser?.id! : true))
 
   useAutoSaveFlow(EditorRef, isAuthor)
-  // const { saveEmptyDashboard } = useSaveEmptyFlowCtx(apiDashboard)
+  const { saveEmptyDashboard } = useSaveEmptyFlowCtx(apiDashboard)
   const { saveDashboard } = useSaveFlow(EditorRef, isAuthor)
   const { onDuplicateClick } = useDashboardDuplicateFlow(EditorRef)
   const { onDeleteClick } = useDashboardDeleteFlow(apiDashboard)

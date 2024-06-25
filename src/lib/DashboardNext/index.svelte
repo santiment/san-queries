@@ -16,6 +16,7 @@
   import { useCleanFlow } from './clean.svelte'
   import { useDataRefreshPromptCtx, usePersistentSessionFlow } from './state.svelte'
   import Prompt from './Prompt.svelte'
+  import { useChangeIndicatorCtx } from '$lib/ChangeIndicator'
 
   let {
     dashboard,
@@ -49,6 +50,8 @@
 
   useCleanFlow(getEditor)
 
+  const changeIndicatorCtx = useChangeIndicatorCtx()
+
   function getEditor() {
     return BlockEditorRef?.getEditor?.()
   }
@@ -58,6 +61,21 @@
       unwrapState(dashboardEditor, dahboardSqlDataCtx.dashboardData, BlockEditorRef?.getEditor()),
     )
   }
+
+  let saveTimeout: any
+
+  function onUpdate() {
+    if (dashboardEditor.readonly) {
+      saveLocalSession()
+    } else {
+      window.clearTimeout(saveTimeout)
+      saveTimeout = setTimeout(() => {
+        changeIndicatorCtx.emit.changed()
+      }, 2200)
+    }
+  }
+
+  $effect(() => () => window.clearTimeout(saveTimeout))
 </script>
 
 <div class="flex flex-1 flex-col gap-4 p-6 px-12 pb-20">
@@ -75,7 +93,7 @@
   <BlockEditor
     bind:this={BlockEditorRef}
     {readonly}
-    onUpdate={saveLocalSession}
+    {onUpdate}
     content={dashboardEditor.__editorJson}
     editorProps={{
       addQueryWidget,
