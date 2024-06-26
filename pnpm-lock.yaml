@@ -11,6 +11,9 @@ patchedDependencies:
   '@sveltejs/kit@2.5.17':
     hash: cr7llaytx5jqkek3hwx5ukumry
     path: patches/@sveltejs__kit@2.5.17.patch
+  san-webkit@0.0.1:
+    hash: sbifrofulxn6pfdnfgffvc6pra
+    path: patches/san-webkit@0.0.1.patch
 
 dependencies:
   '@popsql/monaco-sql-languages':
@@ -102,7 +105,7 @@ dependencies:
     version: github.com/santiment/san-studio/93d6d71(@santiment-network/chart@0.10.19)(air-datepicker@3.5.3)(canvas@2.11.2)(mathjs@9.5.2)(san-webkit@0.0.1)(svelte@5.0.0-next.166)
   san-webkit:
     specifier: github:santiment/san-webkit#15afa8a
-    version: github.com/santiment/san-webkit/15afa8a(@types/gtag.js@0.0.4)(@types/medium-editor@5.0.8)(@types/stripe-v3@3.1.33)(ethers@5.7.2)(marked@6.0.0)(medium-editor@5.23.3)(node-fetch@2.7.0)(react-dom@18.3.1)(react@18.3.1)(svelte@5.0.0-next.166)(turndown@7.2.0)
+    version: github.com/santiment/san-webkit/15afa8a(patch_hash=sbifrofulxn6pfdnfgffvc6pra)(@types/gtag.js@0.0.4)(@types/medium-editor@5.0.8)(@types/stripe-v3@3.1.33)(ethers@5.7.2)(marked@6.0.0)(medium-editor@5.23.3)(node-fetch@2.7.0)(react-dom@18.3.1)(react@18.3.1)(svelte@5.0.0-next.166)(turndown@7.2.0)
   san-webkit-next:
     specifier: github:santiment/san-webkit#lib-385ad266-260624
     version: github.com/santiment/san-webkit/eb38b0b49888d66fa438d8b8ca344673925b8c1b(graphql@16.9.0)(react-dom@18.3.1)(react@18.3.1)(rxjs@7.8.1)(svelte@5.0.0-next.166)(tailwindcss@3.4.1)
@@ -11701,11 +11704,11 @@ packages:
       air-datepicker: 3.5.3
       canvas: 2.11.2
       mathjs: 9.5.2
-      san-webkit: github.com/santiment/san-webkit/15afa8a(@types/gtag.js@0.0.4)(@types/medium-editor@5.0.8)(@types/stripe-v3@3.1.33)(ethers@5.7.2)(marked@6.0.0)(medium-editor@5.23.3)(node-fetch@2.7.0)(react-dom@18.3.1)(react@18.3.1)(svelte@5.0.0-next.166)(turndown@7.2.0)
+      san-webkit: github.com/santiment/san-webkit/15afa8a(patch_hash=sbifrofulxn6pfdnfgffvc6pra)(@types/gtag.js@0.0.4)(@types/medium-editor@5.0.8)(@types/stripe-v3@3.1.33)(ethers@5.7.2)(marked@6.0.0)(medium-editor@5.23.3)(node-fetch@2.7.0)(react-dom@18.3.1)(react@18.3.1)(svelte@5.0.0-next.166)(turndown@7.2.0)
       svelte: 5.0.0-next.166
     dev: false
 
-  github.com/santiment/san-webkit/15afa8a(@types/gtag.js@0.0.4)(@types/medium-editor@5.0.8)(@types/stripe-v3@3.1.33)(ethers@5.7.2)(marked@6.0.0)(medium-editor@5.23.3)(node-fetch@2.7.0)(react-dom@18.3.1)(react@18.3.1)(svelte@5.0.0-next.166)(turndown@7.2.0):
+  github.com/santiment/san-webkit/15afa8a(patch_hash=sbifrofulxn6pfdnfgffvc6pra)(@types/gtag.js@0.0.4)(@types/medium-editor@5.0.8)(@types/stripe-v3@3.1.33)(ethers@5.7.2)(marked@6.0.0)(medium-editor@5.23.3)(node-fetch@2.7.0)(react-dom@18.3.1)(react@18.3.1)(svelte@5.0.0-next.166)(turndown@7.2.0):
     resolution: {tarball: https://codeload.github.com/santiment/san-webkit/tar.gz/15afa8a}
     id: github.com/santiment/san-webkit/15afa8a
     name: san-webkit
@@ -11740,6 +11743,7 @@ packages:
       svelte: 5.0.0-next.166
       turndown: 7.2.0
     dev: false
+    patched: true
 
   github.com/santiment/san-webkit/eb38b0b49888d66fa438d8b8ca344673925b8c1b(graphql@16.9.0)(react-dom@18.3.1)(react@18.3.1)(rxjs@7.8.1)(svelte@5.0.0-next.166)(tailwindcss@3.4.1):
     resolution: {tarball: https://codeload.github.com/santiment/san-webkit/tar.gz/eb38b0b49888d66fa438d8b8ca344673925b8c1b}

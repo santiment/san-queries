@@ -116,7 +116,8 @@
       "zeed-dom": "^0.13.3"
     },
     "patchedDependencies": {
-      "@sveltejs/kit@2.5.17": "patches/@sveltejs__kit@2.5.17.patch"
+      "@sveltejs/kit@2.5.17": "patches/@sveltejs__kit@2.5.17.patch",
+      "san-webkit@0.0.1": "patches/san-webkit@0.0.1.patch"
     }
   }
 }

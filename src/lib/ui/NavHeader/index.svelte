@@ -29,7 +29,7 @@
 
 <header class="border-b bg-white px-6 py-4">
   <nav class="flex gap-2 fill-green text-waterloo">
-    <Product title="Queries" class="mr-4 text-base font-medium"></Product>
+    <Product title="Queries" class="mr-4 items-center gap-2 text-base font-medium"></Product>
 
     <Products
       active="sanbase"
@@ -89,3 +89,96 @@
     />
   </nav>
 </header>
+
+<style>
+  header :global {
+    .btn-ghost {
+      @apply rounded-md px-1.5 py-2 text-black hover:bg-athens hover:text-green;
+    }
+
+    .tooltip {
+      @apply bg-white;
+    }
+
+    .toggle {
+      fill: var(--fill);
+    }
+
+    .box {
+      @apply z-[100] bg-white;
+      --accent: var(--green);
+    }
+
+    .c-black {
+      @apply text-black;
+    }
+
+    .btn-1 {
+      background: var(--bg, var(--green));
+      color: var(--color, var(--white));
+      fill: var(--fill, var(--color));
+      border-radius: 6px;
+      padding: var(--v-padding, 6px) var(--h-padding, 12px);
+    }
+
+    .btn--orange {
+      --bg: var(--orange);
+      --accent: var(--orange);
+      --border: var(--orange);
+      --accent-hover: var(--orange-hover);
+      --border-hover: var(--orange-hover);
+    }
+
+    .pro.btn-1 {
+      @apply px-3 py-1.5;
+    }
+
+    .mrg-m.mrg--l {
+      @apply ml-3;
+    }
+
+    .mrg-s.mrg--r {
+      @apply mr-2;
+    }
+
+    .mrg-m.mrg--t {
+      @apply mt-3;
+    }
+    .mrg-s.mrg--t {
+      @apply mt-2;
+    }
+
+    .caption {
+      @apply text-xs;
+    }
+
+    .body-3 {
+      @apply text-sm;
+    }
+
+    .hv-center {
+      @apply center;
+    }
+    .v-center {
+      @apply items-center;
+    }
+
+    .justify {
+      @apply justify-between;
+    }
+
+    .logout {
+      @apply fill-waterloo hover:fill-red-hover hover:text-red-hover;
+      justify-content: initial;
+    }
+
+    .btn {
+      fill: var(--fill);
+      background: var(--bg);
+    }
+
+    .img.row {
+      @apply bg-athens fill-waterloo;
+    }
+  }
+</style>

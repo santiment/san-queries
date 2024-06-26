@@ -1,0 +1,17 @@
+diff --git a/.gitignore b/.gitignore
+deleted file mode 100644
+index 52e13c4988dbd2d4e7482c42d141f2a041f38c84..0000000000000000000000000000000000000000
+diff --git a/lib/ui/Svg/index.svelte b/lib/ui/Svg/index.svelte
+index 2352c0d1e5f820ddcc260e0efd68992eaafae289..55603f3725af6894d7f351aed3b8a374b5bbeffb 100644
+--- a/lib/ui/Svg/index.svelte
++++ b/lib/ui/Svg/index.svelte
+@@ -10,5 +10,5 @@ $: style = w && `width:${w}px;height:${height}px;min-width:${w}px`;
+ 
+ <!-- svelte-ignore a11y-click-events-have-key-events -->
+ <svg on:click {style} class={className}
+-  ><use href="{process.env.MEDIA_PATH}/sprites/{illus ? 'illus/' : ''}{id}.svg#0" /></svg
++  ><use href="{process.env.MEDIA_PATH}/sprites/{illus ? 'illus/' : 'icons/'}{id}.svg#0" /></svg
+ >
+diff --git a/pnpm-lock.yaml b/pnpm-lock.yaml
+deleted file mode 100644
+index e6423542d02a6ac854be13aa0bbcc07da8c36448..0000000000000000000000000000000000000000
