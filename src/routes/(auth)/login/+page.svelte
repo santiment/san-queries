@@ -9,3 +9,13 @@
 </script>
 
 <LoginPrompt title="Welcome back" {onMetamaskClick} from={successRedirect} />
+
+<style>
+  :global {
+    auth-page {
+      .border {
+        @apply bg-white;
+      }
+    }
+  }
+</style>

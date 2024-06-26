@@ -4,7 +4,7 @@
   import { ss, ssd, useStore } from 'svelte-runes'
   import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
   import { GlobalShortcut$ } from 'san-webkit/lib/utils/events'
-  import Dashboard from '$lib/Dashboard/Dashboard.svelte'
+  import Dashboard from '$lib/DashboardNext/index.svelte'
   import SaveIndicator from '$lib/SaveIndicator'
   import { useSaveIndicatorCtx } from '$lib/SaveIndicator/index.svelte'
   import { useChangeIndicatorCtx } from '$lib/ChangeIndicator'
@@ -40,11 +40,10 @@
   <Dashboard
     bind:this={EditorRef.$}
     dashboard={apiDashboard.$}
-    isAuthor={isAuthor.$}
+    isAuthor={true}
     readonly={false}
     {currentUser}
     {onDuplicateClick}
     {onDeleteClick}
-    onLayoutChange={() => changeIndicatorCtx.emit.changed()}
   ></Dashboard>
 {/key}

@@ -1,9 +1,12 @@
 <script lang="ts">
   import type { LayoutData } from './$types'
 
-  import '../app.css'
+  // import '../app.css'
+  import './app.css'
+  import 'san-webkit-next/app.css'
 
   import { BROWSER } from 'esm-env'
+  import { BootFlag } from 'san-webkit-next/utils'
   import { Customer$$ } from 'san-webkit/lib/stores/customer'
   import { CurrentUser$$ } from 'san-webkit/lib/stores/user'
   import { Device$$ } from 'san-webkit/lib/stores/responsive'
@@ -17,13 +20,18 @@
   import Gdpr from '$lib/Gdpr.svelte'
   import Tracking from './Tracking.svelte'
 
-  export let data: LayoutData
+  // export let data: LayoutData
+  let { data } = $props()
 
   newAppTooltipsCtx()
   CurrentUser$$(data.session.currentUser)
   Customer$$(data.session.customer)
   UI$$()
   const { device$ } = Device$$(data.session.device)
+
+  $effect(() => {
+    BootFlag.set()
+  })
 </script>
 
 <svelte:head>
@@ -36,11 +44,11 @@
   <NavHeader />
 </OnlyOnDevice>
 
-{#if BROWSER}
-  <Gdpr>
-    <slot />
-  </Gdpr>
+<Gdpr>
+  <slot />
+</Gdpr>
 
+{#if BROWSER}
   <Dialogs />
   <FeatureWalkthrough />
   <Notifications />
@@ -54,17 +62,13 @@
     --accent-hover: var(--green-hover);
   }
 
-  :global(html) {
-    scroll-behavior: smooth;
-  }
+  :global {
+    html {
+      scroll-behavior: smooth;
+    }
 
-  :global(body) {
-    @apply flex min-h-[100vh] flex-col;
+    body {
+      @apply flex min-h-[100vh] flex-col;
+    }
   }
-
-  /*
-   @include dac(tablet, phone, phone-xs) {
-     padding-bottom: 83px;
-   }
-   */
 </style>

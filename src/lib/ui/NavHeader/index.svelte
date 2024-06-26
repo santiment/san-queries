@@ -29,7 +29,7 @@
 
 <header class="border-b bg-white px-6 py-4">
   <nav class="flex gap-2 fill-green text-waterloo">
-    <Product title="Queries" class="mr-4 text-base font-medium"></Product>
+    <Product title="Queries" class="mr-4 items-center gap-2 text-base font-medium"></Product>
 
     <Products
       active="sanbase"
@@ -89,3 +89,40 @@
     />
   </nav>
 </header>
+
+<style>
+  header :global {
+    .btn-ghost {
+      @apply rounded-md px-1.5 py-2 text-black hover:bg-athens hover:text-green;
+    }
+
+    .tooltip {
+      @apply bg-white;
+    }
+
+    .toggle {
+      fill: var(--fill);
+    }
+
+    .btn--orange {
+      --bg: var(--orange);
+      --accent: var(--orange);
+      --border: var(--orange);
+      --accent-hover: var(--orange-hover);
+      --border-hover: var(--orange-hover);
+    }
+
+    .pro.btn-1 {
+      @apply px-3 py-1.5;
+    }
+
+    .logout {
+      @apply fill-waterloo hover:fill-red-hover hover:text-red-hover;
+      justify-content: initial;
+    }
+
+    .img.row {
+      @apply bg-athens fill-waterloo;
+    }
+  }
+</style>

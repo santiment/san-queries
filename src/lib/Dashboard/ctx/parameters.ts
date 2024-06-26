@@ -1,4 +1,4 @@
-import { Map } from 'svelte/reactivity'
+import { Map as Map$ } from 'svelte/reactivity'
 import { ss, ssd } from 'svelte-runes'
 import { createCtx } from '$lib/ctx'
 
@@ -19,7 +19,7 @@ export const useDashboardParametersCtx = createCtx(
         return createWidgetIdParameterKey(widgetId, widgetParameterKey)
       }
 
-      const map = new Map(
+      const map = new Map$(
         parameters.$.flatMap((parameter) =>
           [...parameter.overrides.entries()].map(([widgetId, widgetParameterKey]) => [
             addWidgetParameter(widgetId, widgetParameterKey, parameter.value),
@@ -50,7 +50,7 @@ function parseParameters(apiParameters: App.ApiDashboard['parameters']) {
       type: 'Text',
       global: true,
 
-      overrides: new Map(
+      overrides: new Map$(
         overrides.map(({ dashboard_query_mapping_id, parameter }) => [
           dashboard_query_mapping_id,
           parameter,
@@ -64,3 +64,27 @@ export const SEPARATOR = '__swpk__'
 export function createWidgetIdParameterKey(queryWidgetId: string, parameterKey: string) {
   return `${queryWidgetId}${SEPARATOR}${parameterKey}`
 }
+
+export const useGlobalParametersCtx = createCtx('useGlobalParametersCtx', () => {
+  const { parameters } = useDashboardParametersCtx()
+
+  const globalParameterByKey = ssd(() => new Map(parameters.$.map((param) => [param.key, param])))
+
+  const globalParameterByOverrides = ssd(
+    () =>
+      new Map(
+        parameters.$.flatMap((parameter) =>
+          [...parameter.overrides].map((override) => [override.toString(), parameter]),
+        ),
+      ),
+  )
+
+  return {
+    globalParameters: parameters,
+    globalParameterByKey,
+    globalParameterByOverrides,
+    removeGlobalParameter(parameter: (typeof parameters)['$'][number]) {
+      parameters.$ = parameters.$.filter((item) => item !== parameter)
+    },
+  }
+})

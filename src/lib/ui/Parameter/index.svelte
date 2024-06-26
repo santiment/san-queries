@@ -8,7 +8,8 @@
     color,
 
     parameter,
-    changedValue,
+    changed,
+    value,
 
     onEditClick,
     onLinkClick,
@@ -21,7 +22,8 @@
     color?: string
 
     parameter: { key: string; value: string | number; type?: any }
-    changedValue?: any
+    changed?: boolean
+    value?: any
 
     onEditClick?: () => void
     onLinkClick?: () => void
@@ -30,10 +32,7 @@
     children?: Snippet
   } = $props()
 
-  let currentValue = $derived(changedValue || parameter.value)
-  $effect(() => {
-    console.log({ changedValue, v: parameter.value })
-  })
+  let currentValue = $derived(value || parameter.value)
   let shortValue = $derived(currentValue.toString())
   let shortValues = $derived(
     shortValue
@@ -81,7 +80,7 @@
     <Button icon="close" iconSize="10" onclick={onRemoveClick}></Button>
   {/if}
 
-  {#if changedValue}
+  {#if changed}
     <span
       class="absolute right-[-5px] top-[-10px] rounded-sm bg-green-light-1 px-1 text-[10px] text-green"
     >

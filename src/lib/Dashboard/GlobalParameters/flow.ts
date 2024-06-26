@@ -21,6 +21,7 @@ import {
   mutateDeleteDashboardGlobalParameterOverride,
   mutateUpdateDashboardGlobalParameter,
 } from './api'
+import { pipeGroupBy } from '$lib/utils'
 
 export const createAddGlobalParameterOverrides$ = (
   dashboardId: number,
@@ -62,13 +63,14 @@ export function useCreateGlobalParameterFlow() {
     parameter: { key: string; value: number | string }
     overrides: TUnwrappedChanges
     onComplete: () => void
+    type?: 'string' | 'stringList'
   }>(() =>
-    exhaustMap(({ dashboard, parameter, overrides, onComplete }) =>
+    exhaustMap(({ dashboard, parameter, overrides, onComplete, type = 'string' }) =>
       concat(
         mutateAddDashboardGlobalParameter()({
           dashboardId: dashboard.id,
           key: parameter.key,
-          value: { string: parameter.value },
+          value: { [type]: parameter.value },
         }),
         createAddGlobalParameterOverrides$(dashboard.id, parameter.key, overrides.added),
         of(null).pipe(tap(onComplete)),
@@ -85,15 +87,16 @@ export function useUpdateGlobalParameterFlow() {
     oldKey: string
     parameter: { key: string; value: number | string }
     overrides: TUnwrappedChanges
-    onComplete: () => void
+    onComplete?: () => void
+    type?: 'string' | 'stringList'
   }>(() =>
-    exhaustMap(({ dashboard, oldKey, parameter, overrides, onComplete }) =>
+    exhaustMap(({ dashboard, oldKey, parameter, overrides, onComplete, type = 'string' }) =>
       concat(
         mutateUpdateDashboardGlobalParameter()({
           dashboardId: dashboard.id,
           key: oldKey,
           newKey: parameter.key,
-          newValue: { string: parameter.value },
+          newValue: { [type]: parameter.value },
         }),
 
         createDeleteGlobalParameterOverrides$(dashboard.id, parameter.key, overrides.deleted),
@@ -109,15 +112,18 @@ export function useUpdateGlobalParameterFlow() {
 
 export function useDeleteGlobalParameterFlow() {
   const deleteGlobalParameter = useObserveFnCall<{
-    dashboard: { id: number }
+    dashboardId: number
     parameter: { key: string; value: number | string }
     onComplete?: () => void
   }>(() =>
-    exhaustMap(({ dashboard, parameter, onComplete }) =>
-      mutateDeleteDashboardGlobalParameter()({
-        dashboardId: dashboard.id,
-        key: parameter.key,
-      }).pipe(tap(onComplete)),
+    pipeGroupBy(
+      ({ parameter }) => parameter.key,
+      exhaustMap(({ dashboardId, parameter, onComplete }) =>
+        mutateDeleteDashboardGlobalParameter()({
+          dashboardId,
+          key: parameter.key,
+        }).pipe(tap(onComplete)),
+      ),
     ),
   )
 

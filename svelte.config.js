@@ -1,7 +1,7 @@
 import { preprocessMeltUI, sequence } from '@melt-ui/pp'
 import adapter from '@sveltejs/adapter-node'
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
-import { componentStyleSelector } from 'san-webkit/svelte.config.js'
+import { componentStyleSelector } from 'san-webkit-next/svelte.config.js'
 
 /** @type {import('@sveltejs/kit').Config}*/
 const config = {

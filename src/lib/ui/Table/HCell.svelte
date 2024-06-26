@@ -11,7 +11,9 @@
     children,
     sorted,
     onSortClick,
+    class: className,
   }: {
+    className?: string
     column: Column
     sorted: TSortController
     children: Snippet
@@ -27,7 +29,7 @@
 >
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <span
-    class={cn(onSortClick && 'cursor-pointer select-none')}
+    class={cn(onSortClick && 'cursor-pointer select-none', className)}
     onclick={onSortClick && (() => onSortClick?.(column))}
   >
     {@render children()}

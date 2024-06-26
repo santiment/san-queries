@@ -28,12 +28,12 @@
 <Button icon="comment" class="gap-1.5" onclick={() => (isOpened = true)}>{count}</Button>
 
 {#if isOpened}
-  <comments class="column" in:start out:end>
+  <comments class="items-end column" in:start out:end>
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <!-- svelte-ignore a11y-no-static-element-interactions -->
     <clickaway onclick={() => (isOpened = false)} />
 
-    <main class="column mrg-a mrg--l">
+    <main class="mrg-a mrg--l column">
       <Comments
         type={CommentsType.Dashboard}
         {commentsFor}

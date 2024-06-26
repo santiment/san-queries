@@ -1,0 +1,82 @@
+.caption {
+  @apply text-xs;
+}
+
+.body-2 {
+  @apply text-base;
+}
+
+.body-3 {
+  @apply text-sm;
+}
+
+.hv-center {
+  @apply center;
+}
+
+.h-center {
+  @apply justify-center;
+}
+.v-center {
+  @apply items-center;
+}
+
+.justify {
+  @apply justify-between;
+}
+
+.mrg-m.mrg--l {
+  @apply ml-3;
+}
+
+.mrg-s.mrg--r {
+  @apply mr-2;
+}
+
+.mrg-m.mrg--t {
+  @apply mt-3;
+}
+.mrg-s.mrg--t {
+  @apply mt-2;
+}
+
+.btn {
+  fill: var(--fill);
+  background: var(--bg);
+}
+.btn-1 {
+  background: var(--bg, var(--green));
+  color: var(--color, var(--white));
+  fill: var(--fill, var(--color));
+  border-radius: 6px;
+  padding: var(--v-padding, 6px) var(--h-padding, 12px);
+}
+
+.box {
+  @apply z-[100] bg-white;
+  --accent: var(--green);
+}
+
+.c-black {
+  @apply text-black;
+}
+
+.link-pointer {
+  @apply text-green hover:text-green-hover;
+}
+
+.btn-2 {
+  @apply rounded border;
+}
+
+.mrg-l.mrg--b {
+  @apply mb-4;
+}
+
+.mrg-s.mrg--b {
+  @apply mb-2;
+}
+
+gdpr .border {
+  @apply bg-white;
+}

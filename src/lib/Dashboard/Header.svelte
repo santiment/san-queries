@@ -7,37 +7,36 @@
   import User from '$lib/ui/User/index.svelte'
   import { cn } from '$lib/ui/utils'
   import { showGlobalParameterDialog$ } from './GlobalParameters/ParameterDialog.svelte'
-  import { useDashboardEditorCtx } from './ctx/index'
+
   import { useToggleDashboardPublicity } from './flow/publicity'
   import Comments from './Comments.svelte'
   import Vote from './Vote.svelte'
+  import { useDashboardEditorCtx } from '$lib/DashboardNext/ctx'
 
   let {
     dashboard,
     author,
-    isAuthor = false,
-    readonly = true,
     currentUser,
 
     onDuplicateClick,
     onDeleteClick,
+    onUpdateClick,
   }: {
     dashboard?: Pick<App.ApiDashboard, 'commentsCount' | 'votes'>
     author: App.Author
-    isAuthor: boolean
     currentUser: null | {}
-    readonly?: boolean
 
     onSaveClick?: () => void
     onDuplicateClick?: () => void
     onDeleteClick?: () => void
+    onUpdateClick?: () => void
   } = $props()
 
   const showGlobalParameterDialog = showGlobalParameterDialog$()
   const showDashboardPublishedDialog = showDashboardPublishedDialog$()
   const { publishDashboard, unpublishDashboard } = useToggleDashboardPublicity()
   const { dashboardEditor } = useDashboardEditorCtx()
-  const { isPublic } = dashboardEditor
+  const { readonly, isAuthor, isPublic } = dashboardEditor
 
   let isLoading = $state(false)
 
@@ -82,7 +81,7 @@
 </script>
 
 <header class="flex items-center">
-  <User user={author} class="text-waterloo" />
+  <User user={author || {}} class="text-waterloo" />
 
   {#if dashboard}
     <div class="ml-3 flex h-[32px] gap-3 border-l fill-fiord pl-3 text-waterloo">
@@ -95,7 +94,7 @@
   <div class="ml-auto mr-4 flex items-center">
     {#if isAuthor}
       {#if dashboard}
-        {@const seoLink = getSEOLinkFromIdAndTitle( dashboardEditor.id!, dashboardEditor.name.$)}
+        {@const seoLink = getSEOLinkFromIdAndTitle(dashboardEditor.id!, dashboardEditor.name.$)}
 
         {#if readonly}
           <Button
@@ -121,10 +120,10 @@
           </Button>
           <Button
             variant="border"
-            icon="plus"
+            icon="refresh"
             iconSize="10"
             class="ml-4 bg-athens fill-waterloo hover:text-green"
-            onclick={onAddGlobalParameterClick}>Global parameter</Button
+            onclick={onUpdateClick}>Update</Button
           >
         {/if}
       {/if}

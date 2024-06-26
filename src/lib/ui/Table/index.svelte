@@ -9,31 +9,33 @@
 </table>
 
 <style lang="postcss">
-  :global(.cell-auto) {
-    max-width: 0;
-    width: 100%;
+  :global {
+    .cell-auto {
+      max-width: 0;
+      width: 100%;
+    }
+
+    .cell-min {
+      width: 1px;
+    }
+
+    .cell-sticky {
+      position: sticky;
+      left: 0;
+    }
+
+    .cell-visible {
+      overflow: visible !important;
+    }
   }
 
-  :global(.cell-min) {
-    width: 1px;
-  }
-
-  :global(.cell-sticky) {
-    position: sticky;
-    left: 0;
-  }
-
-  :global(.cell-visible) {
-    overflow: visible !important;
-  }
-
-  :global(table) {
-    :global(th),
-    :global(td) {
+  table :global {
+    th,
+    td {
       white-space: nowrap;
     }
 
-    :global(th) {
+    th {
       font-weight: 500;
       padding: 5px 15px;
       color: var(--casper);
@@ -41,13 +43,13 @@
       border-bottom: 1px solid var(--porcelain);
     }
 
-    :global(td) {
+    td {
       padding: 8px 15px;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    :global(tbody tr:hover td) {
+    tbody tr:hover td {
       background: var(--athens);
     }
   }
