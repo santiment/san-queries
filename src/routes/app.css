@@ -76,3 +76,7 @@
 .mrg-s.mrg--b {
   @apply mb-2;
 }
+
+gdpr .border {
+  @apply bg-white;
+}
