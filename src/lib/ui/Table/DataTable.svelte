@@ -85,7 +85,7 @@
             {@const { valueKey, Cell: Component, className } = column}
             <Cell class={className}>
               {#if column.action}
-                <div class="group flex">
+                <div class="group flex items-center">
                   <Button
                     icon="plus-circle"
                     iconSize="12"

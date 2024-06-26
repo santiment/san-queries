@@ -2,6 +2,10 @@
   @apply text-xs;
 }
 
+.body-2 {
+  @apply text-base;
+}
+
 .body-3 {
   @apply text-sm;
 }
@@ -55,4 +59,20 @@
 
 .c-black {
   @apply text-black;
+}
+
+.link-pointer {
+  @apply text-green hover:text-green-hover;
+}
+
+.btn-2 {
+  @apply rounded border;
+}
+
+.mrg-l.mrg--b {
+  @apply mb-4;
+}
+
+.mrg-s.mrg--b {
+  @apply mb-2;
 }
