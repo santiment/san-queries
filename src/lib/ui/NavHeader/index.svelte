@@ -104,23 +104,6 @@
       fill: var(--fill);
     }
 
-    .box {
-      @apply z-[100] bg-white;
-      --accent: var(--green);
-    }
-
-    .c-black {
-      @apply text-black;
-    }
-
-    .btn-1 {
-      background: var(--bg, var(--green));
-      color: var(--color, var(--white));
-      fill: var(--fill, var(--color));
-      border-radius: 6px;
-      padding: var(--v-padding, 6px) var(--h-padding, 12px);
-    }
-
     .btn--orange {
       --bg: var(--orange);
       --accent: var(--orange);
@@ -133,48 +116,9 @@
       @apply px-3 py-1.5;
     }
 
-    .mrg-m.mrg--l {
-      @apply ml-3;
-    }
-
-    .mrg-s.mrg--r {
-      @apply mr-2;
-    }
-
-    .mrg-m.mrg--t {
-      @apply mt-3;
-    }
-    .mrg-s.mrg--t {
-      @apply mt-2;
-    }
-
-    .caption {
-      @apply text-xs;
-    }
-
-    .body-3 {
-      @apply text-sm;
-    }
-
-    .hv-center {
-      @apply center;
-    }
-    .v-center {
-      @apply items-center;
-    }
-
-    .justify {
-      @apply justify-between;
-    }
-
     .logout {
       @apply fill-waterloo hover:fill-red-hover hover:text-red-hover;
       justify-content: initial;
-    }
-
-    .btn {
-      fill: var(--fill);
-      background: var(--bg);
     }
 
     .img.row {

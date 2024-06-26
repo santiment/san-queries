@@ -2,6 +2,7 @@
   import type { LayoutData } from './$types'
 
   // import '../app.css'
+  import './app.css'
   import 'san-webkit-next/app.css'
 
   import { BROWSER } from 'esm-env'
