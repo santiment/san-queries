@@ -26,9 +26,10 @@ export const useDashboardEditorCtx = createCtx(
     const { parameters } = useDashboardParametersCtx(apiDashboard?.parameters)
     useGlobalParametersCtx()
 
-    let document = apiDashboard?.settings?.__editorJson || ''
+    let documentContent =
+      apiDashboard?.settings?.documentContent || apiDashboard?.settings?.__editorJson
 
-    if (!document) {
+    if (!documentContent) {
       const textWidgets =
         apiDashboard?.textWidgets.map(({ body }) => ({
           type: 'paragraph',
@@ -43,17 +44,16 @@ export const useDashboardEditorCtx = createCtx(
           },
         })) || []
 
-      document = {
+      documentContent = {
         type: 'doc',
         content: [...textWidgets, ...queryWidgets],
       }
     }
 
-    if (document.content.length === 0) {
-      document.content.push({ type: 'paragraph' })
+    if (documentContent.content.length === 0) {
+      documentContent.content.push({ type: 'paragraph' })
     }
 
-    console.log(document)
     return {
       dashboardEditor: {
         isAuthor,
@@ -67,7 +67,7 @@ export const useDashboardEditorCtx = createCtx(
 
         parameters,
 
-        __editorJson: document,
+        documentContent,
       },
     }
   },
@@ -95,7 +95,7 @@ export function unwrapState(
     settings: {
       version: 2,
 
-      __editorJson: blockEditor?.getJSON(),
+      documentContent: blockEditor?.getJSON(),
     },
 
     queriesData: Array.from(dashboardData?.values() || []).map((data) =>

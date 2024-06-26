@@ -33,7 +33,13 @@
   }
 </script>
 
-<time-since class="expl-tooltip" aria-label={formatDate(value)}>{getTimeSince(value)} </time-since>
+{#if value && value.startsWith('1970') === false}
+  <time-since class="expl-tooltip" aria-label={formatDate(value)}
+    >{getTimeSince(value)}
+  </time-since>
+{:else}
+  -
+{/if}
 
 <style>
   time-since {

@@ -113,6 +113,8 @@
     [data-type='columns'] {
       gap: 16px;
       display: flex;
+
+      @apply max-[1000px]:block;
     }
 
     [data-type='column'] {
@@ -125,6 +127,8 @@
       &:last-child > [data-type='column-resizer'] {
         display: none;
       }
+
+      @apply max-[1000px]:mb-2;
     }
 
     [data-type='column-resizer'] {

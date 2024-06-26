@@ -69,11 +69,11 @@
 
 <h2 class="mb-4 font-medium">My Workspace</h2>
 
-{#each filteredTree as item, i (item)}
+{#each filteredTree as item}
   {@const { type } = item}
   {#if type === 'folder'}
     <Folder title={item.name} folder={item}>
-      {#each item.children as child, i (child)}
+      {#each item.children as child, i}
         <Item
           idx={i}
           item={child}

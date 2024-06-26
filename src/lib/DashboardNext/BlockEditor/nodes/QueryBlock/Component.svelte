@@ -46,6 +46,7 @@
         title: widgetRef.$.data.name,
         query: widgetRef.$.data,
       }}
+      onDeleteClick={() => view.$.deleteNode()}
     />
 
     {#if dashboardEditor.readonly === false}

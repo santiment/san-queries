@@ -13,11 +13,13 @@
     readonly = true,
     currentUser,
     widget,
+    onDeleteClick,
   }: {
     dashboardId: number
     readonly?: boolean
     widget: App.Dashboard.QueryWidget
     currentUser?: any
+    onDeleteClick?: () => void
   } = $props()
 
   const { dashboardData, refreshDashboardQueryData } = useDahboardSqlDataCtx()
@@ -52,6 +54,7 @@
     {readonly}
     {onRefreshClick}
     {onQueryChangesClick}
+    {onDeleteClick}
   ></Header>
 
   {#key globalParameterByOverrides.$}

@@ -7,4 +7,8 @@
   export let value: number | string
 </script>
 
-<Change class={cn(className, 'text-[var(--color)]')} change={formatPercentChange(+value * 100)} />
+{#if value === null}
+  -
+{:else}
+  <Change class={cn(className, 'text-[var(--color)]')} change={formatPercentChange(+value * 100)} />
+{/if}

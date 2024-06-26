@@ -16,6 +16,7 @@
     onRefreshClick,
     onQueryChangesClick,
     sqlData,
+    onDeleteClick,
   }: {
     widget: App.Dashboard.QueryWidget
     id: number | string
@@ -25,6 +26,7 @@
     readonly?: boolean
     onRefreshClick: () => void
     onQueryChangesClick: () => void
+    onDeleteClick: () => void
   } = $props()
 
   const { dashboardEditor } = useDashboardEditorCtx()
@@ -34,15 +36,6 @@
   const mountRefreshPrompt = () => {}
 
   const showQueryWidgetFullscreenDialog = showQueryWidgetFullscreenDialog$()
-
-  function onDeleteClick() {
-    return
-
-    const dashboardId = dashboardEditor.id
-    if (!dashboardId) return
-
-    deleteDashboardQuery({ dashboardId, widget })
-  }
 
   function onFullscreenClick() {
     showQueryWidgetFullscreenDialog({ widget, sqlData })

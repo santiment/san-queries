@@ -94,7 +94,7 @@
     bind:this={BlockEditorRef}
     {readonly}
     {onUpdate}
-    content={dashboardEditor.__editorJson}
+    content={dashboardEditor.documentContent}
     editorProps={{
       addQueryWidget,
       showAddQueryToDashboardDialog: (props) =>
