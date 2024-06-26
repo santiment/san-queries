@@ -40,7 +40,6 @@ export function useCleanFlow(getEditor: () => null | Editor) {
 
         return true
       })
-      console.log(editor)
 
       unusedWidgets.forEach((widget) => {
         deleteDashboardQuery({ dashboardId: id, widget })

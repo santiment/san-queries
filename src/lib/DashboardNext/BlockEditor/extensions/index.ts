@@ -15,6 +15,7 @@ import Paragraph from '../nodes/Paragraph'
 import HiddenBlock from '../nodes/HiddenBlock'
 import QueryTextColumnBlock from '../nodes/QueryTextColumnBlock'
 import ControlledListBlock from '../nodes/ControlledListBlock'
+import TextInputField from '../nodes/TextInputField'
 
 export const getExtensions = (ctx?: Map<string, any>) => [
   StarterKit.configure({
@@ -47,4 +48,5 @@ export const getExtensions = (ctx?: Map<string, any>) => [
   AssetSelector.configure({ ctx }),
   QueryTextColumnBlock.configure({ ctx }),
   ControlledListBlock.configure({ ctx }),
+  TextInputField.configure({ ctx }),
 ]

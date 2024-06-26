@@ -145,6 +145,10 @@
       }
     }
 
+    [data-node-view-wrapper] > * {
+      max-width: 100%;
+    }
+
     .is-empty::before,
     .is-empty::before,
     .is-editor-empty:first-child::before {

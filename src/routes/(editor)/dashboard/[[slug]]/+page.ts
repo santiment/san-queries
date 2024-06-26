@@ -6,7 +6,7 @@ import { queryGetCachedDashboardQueriesExecutions } from '$lib/Dashboard/flow/sq
 import { queryGetDashboard } from './api'
 import { gotoDashboardPage } from './utils'
 
-// export const ssr = false
+export const ssr = false
 
 async function queryServerDashboardCache(
   executor: ReturnType<typeof UniQuery>,
