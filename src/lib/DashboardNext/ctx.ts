@@ -7,6 +7,7 @@ import { get } from 'svelte/store'
 import { useDahboardSqlDataCtx } from '$lib/Dashboard/flow/sqlData/index.svelte'
 import type { Editor } from '@tiptap/core'
 import { createQueryWidget } from './BlockEditor/nodes/QueryBlock/state'
+import { untrack } from 'svelte'
 
 export const useDashboardEditorCtx = createCtx(
   'useDashboardEditorCtx',
@@ -155,14 +156,33 @@ export const useServerDashboardCacheCtx = createCtx('useServerDashboardCacheCtx'
 
 export const useQueryColumnActionsCtx = createCtx('useQueryColumnActionsCtx', () => {
   type TAction = { label: string; onclick: (value: any) => void }
-  const queryColumnAction = new Map$<string, TAction>()
+
+  const queryColumnAction = ss(new Map<string, undefined | Map<string, TAction>>())
 
   function addColumnAction(queryId: string, columnIndex: number, action: TAction) {
-    queryColumnAction.set(queryId + columnIndex, action)
+    untrack(() => {
+      if (!queryId) return
+
+      const queries = queryColumnAction.$
+      const columns = queries.get(queryId) || new Map()
+
+      columns.set(columnIndex.toString(), action)
+      queries.set(queryId, new Map(columns))
+
+      queryColumnAction.$ = queries
+    })
   }
 
   function removeColumnAction(queryId: string, columnIndex: number) {
-    queryColumnAction.delete(queryId + columnIndex)
+    untrack(() => {
+      const columns = queryColumnAction.$.get(queryId)
+      if (!columns) return
+
+      columns.delete(columnIndex.toString())
+      queryColumnAction.$.set(queryId, new Map(columns))
+
+      queryColumnAction.$ = queryColumnAction.$
+    })
   }
 
   return { queryColumnAction, addColumnAction, removeColumnAction }

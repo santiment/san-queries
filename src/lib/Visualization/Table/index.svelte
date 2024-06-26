@@ -14,17 +14,17 @@
     settings,
     isSelectable = false,
     class: className,
-    queryColumnAction,
+    columnActions,
     ...rest
   }: {
     class?: string
     sqlData: App.SqlData
     settings: SS<Record<string, any>>
     isSelectable?: boolean
-    queryColumnAction?: Map<string, any>
+    columnActions?: Map<string, any>
   } & Super = $props()
 
-  const { dataColumns } = useTableColumnsCtx(sqlData, settings, queryColumnAction)
+  const { dataColumns } = useTableColumnsCtx(sqlData, settings, columnActions)
   const data = $derived(sqlData.rows)
 
   const columns = $derived(

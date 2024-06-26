@@ -15,7 +15,7 @@
   <img src={hillsSvg} alt="Hills" class="absolute bottom-0 right-0" />
 </section>
 
-<main class="mx-auto mt-8 max-w-[1027px] pb-8">
+<main class="mx-auto mt-8 w-full max-w-[1027px] pb-8">
   <!-- 
   <Button variant="border" icon="arrow-down" iconOnRight iconSize="8" class="ml-auto">
     Show all

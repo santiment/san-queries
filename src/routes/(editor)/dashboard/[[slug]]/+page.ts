@@ -16,7 +16,7 @@ async function queryServerDashboardCache(
     return null
   }
 
-  return await queryGetCachedDashboardQueriesExecutions(executor)(dashboardId)
+  return await queryGetCachedDashboardQueriesExecutions(executor)(dashboardId).catch(() => null)
 }
 
 export const load = async (event) => {
@@ -24,7 +24,6 @@ export const load = async (event) => {
 
   const dashboardId = getIdFromSEOLink(slug)
 
-  console.log({ dashboardId }, slug)
   if (Number.isInteger(dashboardId) === false) {
     throw redirect(302, '/dashboard/edit/new')
   }
@@ -42,7 +41,7 @@ export const load = async (event) => {
   ])
 
   if (!apiDashboard) {
-    // throw redirect(302, '/dashboard/edit/new')
+    throw redirect(302, '/dashboard/edit/new')
   }
 
   return {

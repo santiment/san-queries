@@ -35,6 +35,7 @@
   let dataState = $derived(dashboardData.get(widget.id))
   let sqlData = $derived(dataState?.displayedData.$)
   let isLoading = $derived(dataState?.isLoading.$ ?? false)
+  let columnActions = $derived(queryColumnAction.$.get(widget.id))
 
   function onRefreshClick() {
     refreshDashboardQueryData({ dashboardId, widgetId: widget.id })
@@ -90,7 +91,9 @@
 
     {#if sqlData}
       {#key sqlData}
-        <Visualisation {widget} {sqlData} {queryColumnAction}></Visualisation>
+        {#key columnActions}
+          <Visualisation {widget} {sqlData} {columnActions}></Visualisation>
+        {/key}
       {/key}
     {:else if !isLoading}
       <div class="rounded bg-athens px-5 py-3 text-center">

@@ -6,12 +6,12 @@ import { FormatType, Formatter } from '../format'
 export function getTableColumns(
   sqlData: App.SqlData,
   ColumnSettings: Record<string, any>,
-  queryColumnAction?: Map<string, any>,
+  columnActions?: Map<string, any>,
 ) {
   return sqlData.columns.map((key, i) => {
     const settings = ColumnSettings[key] || {}
     // TODO: pass queryColumnAction for specific query id
-    const action = queryColumnAction?.get(sqlData.dashboardQueryMappingId + i)
+    const action = columnActions?.get(i.toString())
 
     const type = sqlData.columnTypes[i]
 
@@ -65,15 +65,10 @@ export function getTableColumns(
 
 export const useTableColumnsCtx = createCtx(
   'useTableColumnsCtx',
-  (
-    sqlData: App.SqlData,
-    settings: SS<Record<string, any>>,
-    queryColumnAction?: Map<string, any>,
-  ) => {
+  (sqlData: App.SqlData, settings: SS<Record<string, any>>, columnAction?: Map<string, any>) => {
     // const dataColumns = $derived(getTableColumns(sqlData, settings.$))
-    // $effect(() => console.log(dataColumns))
-    const dataColumns = ssd(() => getTableColumns(sqlData, settings.$, queryColumnAction))
-    $inspect(dataColumns.$)
+
+    const dataColumns = ssd(() => getTableColumns(sqlData, settings.$, columnAction))
 
     return {
       dataColumns,
