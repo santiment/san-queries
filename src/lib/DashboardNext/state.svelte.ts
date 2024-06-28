@@ -24,7 +24,10 @@ export const useDataRefreshPromptCtx = createCtx('useDataRefreshPromptCtx', () =
     const parameters = globalParameterByOverrides.$
 
     if (!currentValues) {
-      currentValues = unwrapParameters(parameters)
+      // TODO: Related to HACK for duplication of UI. Probably should be deleted after update to stable v5
+      setTimeout(() => {
+        currentValues = unwrapParameters(parameters)
+      }, 20)
       return
     }
 

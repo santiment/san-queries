@@ -80,11 +80,11 @@
   }
 </script>
 
-<header class="flex items-center">
+<header class="flex items-center overflow-auto">
   <User user={author || {}} class="text-waterloo" />
 
   {#if dashboard}
-    <div class="ml-3 flex h-[32px] gap-3 border-l fill-fiord pl-3 text-waterloo">
+    <div class="ml-3 mr-4 flex h-[32px] gap-3 border-l fill-fiord pl-3 text-waterloo">
       <Vote votes={dashboard.votes} votesFor={dashboard}></Vote>
 
       <Comments count={dashboard.commentsCount} commentsFor={dashboard}></Comments>

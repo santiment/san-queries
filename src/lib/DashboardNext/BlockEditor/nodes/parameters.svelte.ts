@@ -29,7 +29,10 @@ export function useParametersWidgetFlow<GValue>(
   $effect(() => {
     const data = attrs['data-value']
     untrack(() => {
-      if (data !== value) update(data, false)
+      // TODO: Related to HACK for duplication of UI. Probably should be deleted after update to stable v5
+      setTimeout(() => {
+        if (data !== value) update(data, false)
+      })
     })
   })
 

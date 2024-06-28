@@ -40,12 +40,12 @@
 
 <NodeViewWrapper class="ml-0.5 inline-flex center">
   <button
-    class="flex cursor-pointer gap-1 rounded border px-1.5 center hover:border-green"
+    class="flex cursor-pointer gap-1 whitespace-nowrap rounded border px-1.5 center hover:border-green"
     onclick={onAssetSelectorClick}
   >
     <AssetLogo slug={asset.slug}></AssetLogo>
 
-    <span class="capitalize">{asset.name || asset.slug}</span>
+    <span class="overflow-hidden text-ellipsis capitalize">{asset.name || asset.slug}</span>
     {#if asset.ticker}
       <span class="uppercase text-waterloo">({asset.ticker})</span>
     {/if}

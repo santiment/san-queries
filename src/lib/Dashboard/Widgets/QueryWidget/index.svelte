@@ -60,7 +60,7 @@
 
   {#key globalParameterByOverrides.$}
     {#if parameters.length}
-      <section class="flex gap-2 px-3 pb-3">
+      <section class="flex gap-2 overflow-auto px-3 pb-3">
         {#each parameters as parameter}
           {@const key = widget.id + ',' + parameter.key}
           {@const global = globalParameterByOverrides.$.get(key)}
