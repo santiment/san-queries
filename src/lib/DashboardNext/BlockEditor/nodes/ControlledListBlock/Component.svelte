@@ -40,17 +40,21 @@
   $effect(() => {
     const query = selectedQuery
     const column = selectedColumn
-    console.log({ selectedQuery, selectedColumn })
-    addColumnAction(query, column, {
-      label: 'Add to a list',
-      onclick: (value: string) => {
-        addInputValue(value)
-      },
-    })
+
+    // HACK: I don't know why, but immediate state change results in duplicating some UI on query widgets, but having timeout fixes it. Probable some RC bug
+    setTimeout(() => {
+      addColumnAction(query, column, {
+        label: 'Add to a list',
+        onclick: (value: string) => {
+          addInputValue(value)
+        },
+      })
+    }, 20)
 
     return () => {
-      console.log({ query, column })
-      removeColumnAction(query, column)
+      setTimeout(() => {
+        removeColumnAction(query, column)
+      }, 20)
     }
   })
 </script>
