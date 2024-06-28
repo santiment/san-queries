@@ -78,7 +78,7 @@
   $effect(() => () => window.clearTimeout(saveTimeout))
 </script>
 
-<div class="flex flex-1 flex-col gap-4 p-6 px-12 pb-20">
+<div class="flex flex-1 flex-col gap-4 p-6 px-12 pb-20 max-[1000px]:px-4">
   <Header
     {dashboard}
     author={dashboard?.user || currentUser}

@@ -71,6 +71,7 @@
 
     .tiptap {
       @apply -mx-12 -mt-4 flex flex-1 flex-col p-6 px-12 pb-20 outline-none;
+      @apply max-[1000px]:mx-0 max-[1000px]:px-0;
     }
 
     h1.data-heading {
@@ -147,6 +148,10 @@
       &:hover {
         opacity: 1;
       }
+    }
+
+    [data-node-view-wrapper] {
+      max-width: calc(100vw - 32px);
     }
 
     [data-node-view-wrapper] > * {
