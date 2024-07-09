@@ -15,7 +15,7 @@
   },
   "scripts": {
     "dev": "vite dev",
-    "build": "npm run get-schema && vite build",
+    "build": "npm run webkit && npm run get-schema && vite build",
     "get-schema": "node scripts/schema.js --run",
     "preview": "vite preview",
     "test": "npm run test:integration && npm run test:unit",
@@ -26,7 +26,8 @@
     "test:integration": "playwright test",
     "test:unit": "vitest",
     "storybook": "npm run webkit && storybook dev -p 4000 --ci --disable-telemetry",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "webkit": "node scripts/webkit"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1.2.18",
