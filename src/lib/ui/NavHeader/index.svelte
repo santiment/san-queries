@@ -34,7 +34,7 @@
     <Products
       active="sanbase"
       class="!mr-5 flex items-center"
-      dropdownClassName="shadow"
+      dropdownClassName="shadow gap-6"
       isColumn
       isCompact
     />
