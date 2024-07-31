@@ -6,7 +6,7 @@
 </script>
 
 <script lang="ts">
-  import { Map } from 'svelte/reactivity'
+  import { SvelteMap as Map } from 'svelte/reactivity'
   import Dialog from 'san-webkit/lib/ui/Dialog'
   import Form from '$lib/ParameterDialog/Form.svelte'
   import { useDashboardEditorCtx } from '../ctx/index'

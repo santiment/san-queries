@@ -1,5 +1,5 @@
 import { untrack } from 'svelte'
-import { Map as Map$ } from 'svelte/reactivity'
+import { SvelteMap as Map$ } from 'svelte/reactivity'
 import { SEPARATOR, createWidgetIdParameterKey } from '../ctx/parameters'
 
 export type TUnwrappedChanges = ReturnType<OverridesDiff['unwrap']>

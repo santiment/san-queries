@@ -1,7 +1,7 @@
 import { createCtx } from '$lib/ctx'
 import { ssd, type SS } from 'svelte-runes'
 import type { QueryWidgetFlowNode } from '../nodes/QueryWidgetFlowNode'
-import { Map as Map$ } from 'svelte/reactivity'
+import { SvelteMap as Map$ } from 'svelte/reactivity'
 import { useDahboardSqlDataCtx } from '$lib/Dashboard/flow/sqlData/index.svelte'
 import { useDashboardParametersCtx } from '$lib/Dashboard/ctx/parameters'
 import { untrack } from 'svelte'

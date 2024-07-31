@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-  import { Set } from 'svelte/reactivity'
+  import { SvelteSet as Set } from 'svelte/reactivity'
   import { createCtx } from '$lib/ctx'
 
   export const useSelectedRowsCtx = createCtx('useSelectedRowsCtx', () => {
