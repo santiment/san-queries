@@ -1,5 +1,5 @@
 import { ss, ssd } from 'svelte-runes'
-import { Map as Map$ } from 'svelte/reactivity'
+import { SvelteMap as Map$ } from 'svelte/reactivity'
 import { createCtx } from '$lib/ctx'
 import { useDashboardParametersCtx, useGlobalParametersCtx } from '$lib/Dashboard/ctx/parameters'
 import { page as page$ } from '$app/stores'

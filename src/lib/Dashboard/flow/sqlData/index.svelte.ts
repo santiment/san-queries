@@ -1,4 +1,4 @@
-import { Map } from 'svelte/reactivity'
+import { SvelteMap as Map } from 'svelte/reactivity'
 import {
   Subject,
   catchError,

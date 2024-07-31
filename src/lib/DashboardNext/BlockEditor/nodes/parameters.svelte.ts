@@ -1,6 +1,6 @@
 import type { ViewProps } from 'tiptap-svelte-adapter'
 import { untrack } from 'svelte'
-import { Map as Map$ } from 'svelte/reactivity'
+import { SvelteMap as Map$ } from 'svelte/reactivity'
 import {
   useCreateGlobalParameterFlow,
   useUpdateGlobalParameterFlow,

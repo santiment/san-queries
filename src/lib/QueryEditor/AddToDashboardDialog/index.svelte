@@ -6,7 +6,7 @@
 </script>
 
 <script lang="ts">
-  import { Set } from 'svelte/reactivity'
+  import { SvelteSet as Set } from 'svelte/reactivity'
   import { delay, filter, mergeMap, of, switchMap, tap } from 'rxjs'
   import Dialog from 'san-webkit/lib/ui/Dialog'
   import { queryGetMostRecent, type TEntity } from '$routes/explorer/api'

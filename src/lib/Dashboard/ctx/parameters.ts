@@ -1,4 +1,4 @@
-import { Map as Map$ } from 'svelte/reactivity'
+import { SvelteMap as Map$ } from 'svelte/reactivity'
 import { ss, ssd } from 'svelte-runes'
 import { createCtx } from '$lib/ctx'
 

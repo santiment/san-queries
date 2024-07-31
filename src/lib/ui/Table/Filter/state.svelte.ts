@@ -1,6 +1,6 @@
 import { ss, type SS } from 'svelte-runes'
 
-import { Map } from 'svelte/reactivity'
+import { SvelteMap as Map } from 'svelte/reactivity'
 import { z } from 'zod'
 import { FilterScheme, checkIsEmptyFilter, type FilterSchemeType } from '$lib/ui/Table/Filter/types'
 import { getContext, setContext } from 'svelte'

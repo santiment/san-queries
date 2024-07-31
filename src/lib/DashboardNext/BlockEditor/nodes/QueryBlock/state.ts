@@ -1,5 +1,5 @@
 import type { useDahboardSqlDataCtx } from '$lib/Dashboard/flow/sqlData/index.svelte'
-import { Map as Map$ } from 'svelte/reactivity'
+import { SvelteMap as Map$ } from 'svelte/reactivity'
 
 function getOutputs(sqlData?: null | App.SqlData) {
   return sqlData?.columns

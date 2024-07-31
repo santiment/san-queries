@@ -1,6 +1,6 @@
 <script lang="ts">
   import { delay, filter, pipe, tap } from 'rxjs'
-  import { Set } from 'svelte/reactivity'
+  import { SvelteSet as Set } from 'svelte/reactivity'
   import Button from '$lib/ui/Button.svelte'
   import Svg from '$lib/ui/Svg.svelte'
   import User from '$lib/ui/User/index.svelte'
