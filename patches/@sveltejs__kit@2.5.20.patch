@@ -1,5 +1,5 @@
 diff --git a/src/runtime/server/fetch.js b/src/runtime/server/fetch.js
-index ff4a1fa527e2203883d6001a6992eab76203be68..9bba4fb64401f14b267ea598ecda13b4b4f07af8 100644
+index ff4a1fa527e2203883d6001a6992eab76203be68..56328081fc40a862618860a03b4c2d01cae0bdbe 100644
 --- a/src/runtime/server/fetch.js
 +++ b/src/runtime/server/fetch.js
 @@ -64,7 +64,7 @@ export function create_fetch({ event, options, manifest, state, get_cookie_heade
@@ -7,7 +7,7 @@ index ff4a1fa527e2203883d6001a6992eab76203be68..9bba4fb64401f14b267ea598ecda13b4
  					// Do not forward other cookies for "credentials: include" because we don't know
  					// which cookie belongs to which domain (browser does not pass this info)
 -					if (`.${url.hostname}`.endsWith(`.${event.url.hostname}`) && credentials !== 'omit') {
-+					if ((event.url.hostname.includes('santiment.net') || (event.url.hostname.includes('santiment.net') || `.${url.hostname}`.endsWith(`.${event.url.hostname}`))) && credentials !== 'omit') {
++					if ((event.url.hostname.includes('santiment.net') || `.${url.hostname}`.endsWith(`.${event.url.hostname}`)) && credentials !== 'omit') {
  						const cookie = get_cookie_header(url, request.headers.get('cookie'));
  						if (cookie) request.headers.set('cookie', cookie);
  					}
