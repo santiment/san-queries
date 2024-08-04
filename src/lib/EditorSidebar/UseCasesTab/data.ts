@@ -1,3 +1,25 @@
+export const DASHBOARDS = [
+  {
+    id: 842,
+    name: 'How to get started 1: Santiment Queries Data Exploration',
+  },
+  {
+    id: 843,
+    name: 'How to get started 2: Useful Tables to explore',
+  },
+  {
+    id: 845,
+    name: 'How to get started 3: Useful Functionalities: Parameters',
+  },
+  {
+    id: 958,
+    name: 'Simple Query examples',
+  },
+].map((v: any) => {
+  v.type = 'dashboard'
+  return v
+})
+
 export const NFTS = [
   {
     id: 517,
