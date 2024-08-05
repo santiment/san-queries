@@ -121,7 +121,7 @@ export function useDashboardDuplicateFlow(EditorRef: SS<DashboardEditor>) {
                   mutateAddDashboardGlobalParameter()({
                     dashboardId,
                     key,
-                    value: { string: value },
+                    value: { [Array.isArray(value) ? 'stringList' : 'string']: value },
                   }),
                 ),
               ),

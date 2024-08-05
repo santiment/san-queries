@@ -47,6 +47,7 @@
   const { changedParameters, queryParameterChanges } = useDataRefreshPromptCtx()
   const { saveLocalSession, applySavedSession } = usePersistentSessionFlow(getEditor)
   useQueryColumnActionsCtx()
+  const { dashboardWidgets } = useDashboardWidgets.get()
 
   useCleanFlow(getEditor)
 
@@ -58,7 +59,12 @@
 
   export function getState() {
     return untrack(() =>
-      unwrapState(dashboardEditor, dahboardSqlDataCtx.dashboardData, BlockEditorRef?.getEditor()),
+      unwrapState(
+        dashboardEditor,
+        dashboardWidgets,
+        dahboardSqlDataCtx.dashboardData,
+        BlockEditorRef?.getEditor(),
+      ),
     )
   }
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { DEX_TABLES, NFTS } from './data'
+  import { DASHBOARDS, DEX_TABLES, NFTS } from './data'
   import Folder from '../Folder.svelte'
   import Item from '../WorkTab/Item.svelte'
   import { applySearch } from '../WorkTab/search'
@@ -8,6 +8,7 @@
 
   let tree = {
     children: [
+      { type: 'folder', name: 'Dashboards', children: DASHBOARDS },
       { type: 'folder', name: 'NFT Tables', children: NFTS },
       { type: 'folder', name: 'DEX Trades Tables', children: DEX_TABLES },
     ],

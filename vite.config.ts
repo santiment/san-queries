@@ -1,5 +1,6 @@
 import { sveltekit } from '@sveltejs/kit/vite'
 import { defineConfig } from 'vitest/config'
+import mkcert from 'vite-plugin-mkcert'
 import { execSync } from 'node:child_process'
 import { createRequire } from 'module'
 import { WebkitSvg } from 'san-webkit-next/plugins/vite.js'
@@ -19,7 +20,11 @@ const GIT_HEAD =
   process.env.GIT_HEAD || execSync('git rev-parse HEAD').toString().trim().slice(0, 7)
 
 export default defineConfig({
-  plugins: [sveltekit(), WebkitSvg()],
+  plugins: [
+    process.argv.includes('--https') && mkcert({ savePath: './mkcert' }),
+    sveltekit(),
+    WebkitSvg(),
+  ],
   test: {
     include: ['src/**/*.{test,spec}.{js,ts}'],
   },
