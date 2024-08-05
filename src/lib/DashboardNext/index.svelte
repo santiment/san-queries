@@ -82,6 +82,12 @@
   }
 
   $effect(() => () => window.clearTimeout(saveTimeout))
+
+  function onEmptyEditorClick(e: MouseEvent) {
+    e.preventDefault()
+    e.stopImmediatePropagation()
+    document.querySelector('h1')?.focus()
+  }
 </script>
 
 <div class="flex flex-1 flex-col gap-4 p-6 px-12 pb-20 max-[1000px]:px-4">
@@ -106,6 +112,7 @@
       showAddQueryToDashboardDialog: (props) =>
         showAddQueryToDashboardDialog({ ...props, dashboardId: dashboardEditor.id }),
     }}
+    onclickcapture={dashboardEditor.id ? undefined : onEmptyEditorClick}
   ></BlockEditor>
 
   {#if applySavedSession.$}

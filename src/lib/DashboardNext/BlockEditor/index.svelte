@@ -18,11 +18,14 @@
     content,
     editorProps,
     onUpdate,
+    ...rest
   }: {
     readonly?: boolean
     content: JSONContent
     editorProps?: EditorOptions['editorProps'] & Record<string, any>
     onUpdate?: EditorOptions['onUpdate']
+
+    onclickcapture?: (e: MouseEvent) => void
   } = $props()
 
   let EditorRef: Editor
@@ -32,7 +35,7 @@
   }
 </script>
 
-<div class="flex-1 column" class:readonly>
+<div {...rest} class="flex-1 column" class:readonly>
   {#if BROWSER}
     <Editor
       bind:this={EditorRef}
