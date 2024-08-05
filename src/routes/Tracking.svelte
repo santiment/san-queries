@@ -8,7 +8,7 @@
   import { trackPageView } from 'san-webkit/lib/analytics/events/general'
   import { parseAuthSearchParams } from 'san-webkit/lib/utils/auth'
   import { page } from '$app/stores'
-  import { trackSignupLogin } from '$lib/utils/analytics'
+  import { getPageType, trackSignupLogin } from '$lib/utils/analytics'
 
   const { currentUser$ } = getCurrentUser$Ctx()
 
@@ -41,9 +41,11 @@
     if (source !== path) {
       trackPageView({
         url: path,
+        type: getPageType(path),
         searchParams,
 
         sourceUrl: source,
+        sourceType: getPageType(source),
         sourceSearchParams,
       } as any)
     }
