@@ -8,7 +8,7 @@
 
   let tree = {
     children: [
-      { type: 'folder', name: 'Dashboards', children: DASHBOARDS },
+      { type: 'folder', name: 'How to get started', children: DASHBOARDS },
       { type: 'folder', name: 'NFT Tables', children: NFTS },
       { type: 'folder', name: 'DEX Trades Tables', children: DEX_TABLES },
     ],
