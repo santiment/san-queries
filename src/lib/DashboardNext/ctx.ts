@@ -1,6 +1,6 @@
 import { ss, ssd } from 'svelte-runes'
 import { SvelteMap as Map$ } from 'svelte/reactivity'
-import { createCtx } from '$lib/ctx'
+import { createCtx } from 'san-webkit-next/utils'
 import { useDashboardParametersCtx, useGlobalParametersCtx } from '$lib/Dashboard/ctx/parameters'
 import { page as page$ } from '$app/stores'
 import { get } from 'svelte/store'
@@ -76,6 +76,7 @@ export const useDashboardEditorCtx = createCtx(
 
 export function unwrapState(
   dashboardEditor: ReturnType<typeof useDashboardEditorCtx>['dashboardEditor'],
+  dashboardWidgets: ReturnType<typeof useDashboardWidgets>['dashboardWidgets'],
   dashboardData?: ReturnType<typeof useDahboardSqlDataCtx>['dashboardData'],
 
   blockEditor?: null | Editor,
@@ -98,6 +99,18 @@ export function unwrapState(
 
       documentContent: blockEditor?.getJSON(),
     },
+
+    widgets: Array.from(dashboardWidgets.values())
+      .map(
+        (widget) =>
+          widget?.type === 'query-widget' && {
+            type: 'QUERY',
+            id: widget.id,
+            title: widget.data.name,
+            query: widget.data,
+          },
+      )
+      .filter(Boolean),
 
     queriesData: Array.from(dashboardData?.values() || []).map((data) =>
       Object.assign({}, data.defaultData.$),
