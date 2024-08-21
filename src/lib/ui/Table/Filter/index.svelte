@@ -34,7 +34,8 @@
   {#snippet tooltip()}
     {#if filter}
       {@const { type, value } = filter}
-      {@const   onChange = ((value: FilterSchemeType['value']) => applyFilter(column.title, value))}
+      {@const onChange = (newValue: FilterSchemeType['value']) =>
+        applyFilter(column.title, newValue)}
 
       {#if type === 'number'}
         <NumberFilter {value} {onChange}></NumberFilter>
