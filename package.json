@@ -108,7 +108,7 @@
     "tailwind-merge": "^2.2.1",
     "tippy.js": "^6.3.7",
     "tiptap-block-layout": "^0.0.6",
-    "tiptap-svelte-adapter": "^0.0.3",
+    "tiptap-svelte-adapter": "^0.0.4",
     "ua-parser-js": "^1.0.37",
     "uuid": "^9.0.1",
     "zeed-dom": "^0.13.3",

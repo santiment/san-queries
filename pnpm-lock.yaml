@@ -122,8 +122,8 @@ dependencies:
     specifier: ^0.0.6
     version: 0.0.6(@tiptap/core@2.4.0)(@tiptap/pm@2.4.0)(prosemirror-state@1.4.3)
   tiptap-svelte-adapter:
-    specifier: ^0.0.3
-    version: 0.0.3(@tiptap/core@2.4.0)(@tiptap/extension-bubble-menu@2.4.0)(@tiptap/pm@2.4.0)(svelte@5.0.0-next.260)
+    specifier: ^0.0.4
+    version: 0.0.4(@tiptap/core@2.4.0)(@tiptap/extension-bubble-menu@2.4.0)(@tiptap/pm@2.4.0)(svelte-runes@0.0.4)(svelte@5.0.0-next.260)
   ua-parser-js:
     specifier: ^1.0.37
     version: 1.0.37
@@ -14878,15 +14878,6 @@ packages:
       svelte: 5.0.0-next.260
       typescript: 5.5.4
 
-  /svelte-runes@0.0.3(svelte@5.0.0-next.260):
-    resolution: {integrity: sha512-ZwVGKetzzjHrN66ZnnBdRuMEN0a9cxVz3bdGFnTdO2nCiUwpQmK7ZJlzAcEb0v+g8kgy5TgQ7wia98bQNlXS6w==}
-    peerDependencies:
-      svelte: 5.0.0-next.95
-    dependencies:
-      esm-env: 1.0.0
-      svelte: 5.0.0-next.260
-    dev: false
-
   /svelte-runes@0.0.4(svelte@5.0.0-next.260):
     resolution: {integrity: sha512-rcFKpWJTmUBctdUUIUaHNVcCACRbEZYEGj7czeYQJbHf5LooA3FdYle/jB06TBVsBZXmSKt3w2NO5DZi2gz00A==}
     peerDependencies:
@@ -15114,19 +15105,20 @@ packages:
       prosemirror-state: 1.4.3
     dev: false
 
-  /tiptap-svelte-adapter@0.0.3(@tiptap/core@2.4.0)(@tiptap/extension-bubble-menu@2.4.0)(@tiptap/pm@2.4.0)(svelte@5.0.0-next.260):
-    resolution: {integrity: sha512-dRKHPIqxSD0d9eMOhG+/LQp3TFLkKpCGzBLuxEu/JQRxrWgZAHLHXVzu7hKd85/UoQhZUr+u5TKJx6o0L/GVNg==}
+  /tiptap-svelte-adapter@0.0.4(@tiptap/core@2.4.0)(@tiptap/extension-bubble-menu@2.4.0)(@tiptap/pm@2.4.0)(svelte-runes@0.0.4)(svelte@5.0.0-next.260):
+    resolution: {integrity: sha512-f8YiGQrXubVMvUrT/EQPcZSxXAxDNPTufD4YYEXMLI6F3UoF72chG4weiH3/OIWcCzi0cFo7lL6swk8ZXcmnAA==}
     peerDependencies:
       '@tiptap/core': ^2.4.0
       '@tiptap/extension-bubble-menu': ^2.4.0
       '@tiptap/pm': ^2.4.0
       svelte: ^5.0.0-next.1
+      svelte-runes: ^0.0.4
     dependencies:
       '@tiptap/core': 2.4.0(@tiptap/pm@2.4.0)
       '@tiptap/extension-bubble-menu': 2.4.0(@tiptap/core@2.4.0)(@tiptap/pm@2.4.0)
       '@tiptap/pm': 2.4.0
       svelte: 5.0.0-next.260
-      svelte-runes: 0.0.3(svelte@5.0.0-next.260)
+      svelte-runes: 0.0.4(svelte@5.0.0-next.260)
     dev: false
 
   /tmp@0.0.33:
