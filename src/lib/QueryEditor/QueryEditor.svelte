@@ -62,8 +62,8 @@
   useGetSqlDataCache(query?.id, setSqlData)
 
   let readonly = $derived(!isAuthor)
-  let selectedTab = $state.frozen(tab)
-  let errors = $state.frozen([] as { date: string; details: string }[])
+  let selectedTab = $state.raw(tab)
+  let errors = $state.raw([] as { date: string; details: string }[])
   let stats = $derived(executionStats.$)
 
   function setSqlData(data?: App.SqlData) {

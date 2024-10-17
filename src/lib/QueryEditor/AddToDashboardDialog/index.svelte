@@ -20,7 +20,7 @@
 
   type TDashboards = (TEntity & { type: 'dashboard' })[]
 
-  let dashboards = $state.frozen([] as TDashboards)
+  let dashboards = $state.raw([] as TDashboards)
   let addedSet = new Set<TDashboards[number]>()
 
   const onAddClick = useObserveFnCall<TDashboards[number]>(() =>

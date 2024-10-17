@@ -1,13 +1,6 @@
 <script context="module" lang="ts">
   import { Emitter, createCtx } from '$lib/ctx'
 
-  export enum EventType {
-    Hidden = 'Hidden',
-    Saving = 'Saving',
-    Success = 'Success',
-    Error = 'Error',
-  }
-
   export const useSaveIndicatorCtx = createCtx('useSaveIndicatorCtx', () => {
     const subject = new Subject<EventType>()
     const emit = (event: Exclude<EventType, EventType.Hidden>) => subject.next(event)
@@ -42,6 +35,7 @@
   import { fade, scale, fly } from 'svelte/transition'
   import Svg from 'san-webkit-next/ui/core/Svg'
   import { cn } from 'san-webkit-next/ui/utils'
+  import { EventType } from './types'
 
   const { state$ } = useSaveIndicatorCtx()
 

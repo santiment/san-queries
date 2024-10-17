@@ -26,9 +26,9 @@
 
   const { addQueryToDashboard } = useAddQueryToDashboardFlow()
 
-  let tab = $state.frozen(TABS[0] as TTab)
+  let tab = $state.raw(TABS[0] as TTab)
 
-  let filteredQueries = $state.frozen([] as TEntities)
+  let filteredQueries = $state.raw([] as TEntities)
   let searchedQueries = ssd(() => filteredQueries)
 
   function onQueryAdd(item: any) {

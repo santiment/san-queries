@@ -1,8 +1,8 @@
 import { DASHBOARD_FRAGMENT } from '$lib/Dashboard/flow/save/api'
-import { Fetcher } from 'san-webkit-next/api'
+import { ApiQuery } from 'san-webkit-next/api'
 // import { Fetcher } from '$lib/api'
 
-export const queryGetDashboard = Fetcher(
+export const queryGetDashboard = ApiQuery(
   (id: number | string) => `{
   data:getDashboard(id:${id}) {
     ${DASHBOARD_FRAGMENT}

@@ -12,7 +12,7 @@
   const { selections } = useSelectedRowsCtx()
 
   let flowNode = $derived(FlowNodeByWidgetId.get(widget.id))
-  let alertInstance = $state.frozen(null)
+  let alertInstance = $state.raw(null)
 
   $effect(() => {
     const subscriber = flowNode?.state$.subscribe((value) => {

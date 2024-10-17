@@ -4,6 +4,7 @@ import PercentChange from './PercentChange.svelte'
 import Labels from './Labels/index.svelte'
 import Address from './Address.svelte'
 import TimeSince from './TimeSince.svelte'
+import Asset from './Asset'
 import { keyify } from '$lib/utils/object'
 
 export const FormatType = {
@@ -16,6 +17,7 @@ export const FormatType = {
   TIME_SINCE: 5,
   ADDRESS: 6,
   LABELS: 7,
+  ASSET: 8,
 } as const
 
 const Format = <K extends string, F, C>(title: K, fn: F, Component?: C) =>
@@ -35,6 +37,7 @@ export const Formatter = keyify({
 
   [FormatType.ADDRESS]: Format('Address', undefined, Address),
   [FormatType.LABELS]: Format('Labels', undefined, Labels),
+  [FormatType.ASSET]: Format('Asset', undefined, Asset),
 })
 
 export function dateFormatter(timestamp: string | number) {
