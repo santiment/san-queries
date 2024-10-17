@@ -32,8 +32,8 @@ export class QueryWidgetFlowNode extends GenericFlowNode<any, any> {
     ),
     shareReplay(1),
   )
-  inputs = $state.frozen({})
-  outputs = $state.frozen({})
+  inputs = $state.raw({})
+  outputs = $state.raw({})
 
   Component = () => import('./index.svelte')
 

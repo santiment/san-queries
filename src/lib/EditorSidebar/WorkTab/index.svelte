@@ -15,8 +15,8 @@
 
   type TDashboards = (TEntity & { type: 'dashboard' })[]
   type TQueries = (TEntity & { type: 'query' })[]
-  let dashboards = $state.frozen([] as TDashboards)
-  let queries = $state.frozen([] as TQueries)
+  let dashboards = $state.raw([] as TDashboards)
+  let queries = $state.raw([] as TQueries)
 
   let tree = $derived({
     children: [

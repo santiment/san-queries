@@ -17,7 +17,7 @@
   const { FlowNodeByWidgetId, removeFlowNode } = useDataFlowCtx()
 
   let flowNode = $derived(FlowNodeByWidgetId.get(widget.id))
-  let project = $state.frozen(widget.data || {})
+  let project = $state.raw(widget.data || {})
 
   useObserve(() =>
     queryProjectBySlug()(project.slug).pipe(tap((data) => flowNode?._state.next(data))),

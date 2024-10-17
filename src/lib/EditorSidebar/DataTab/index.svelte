@@ -8,7 +8,7 @@
 
   let { search = '' } = $props()
 
-  let tables = $state.frozen([] as { n: string }[])
+  let tables = $state.raw([] as { n: string }[])
   let tree = $derived({
     children: [{ type: 'folder', name: 'Tables', children: tables }],
   })
@@ -53,7 +53,7 @@
           onclick={() => onItemClick(child)}
         >
           <Svg id="table" w="12"></Svg>
-          <span class="single-line flex-1">
+          <span class="flex-1 single-line">
             {child.n}
           </span>
         </button>

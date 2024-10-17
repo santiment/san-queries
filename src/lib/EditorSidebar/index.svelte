@@ -30,7 +30,7 @@
     },
   ] as const
 
-  let tab = $state.frozen(TABS[1])
+  let tab = $state.raw(TABS[1])
 
   let scrollNode = $state<HTMLElement>()
 
@@ -60,7 +60,7 @@
       } = item}
       <button
         class={cn(
-          'row items-center gap-2 border-b border-transparent px-2 py-1.5',
+          'items-center gap-2 border-b border-transparent px-2 py-1.5 row',
           tab === item && 'border-green fill-green text-green',
         )}
         onclick={() => onTabSelect(item)}
