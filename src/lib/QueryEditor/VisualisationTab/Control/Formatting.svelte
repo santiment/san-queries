@@ -20,7 +20,11 @@
       ]
     }
 
-    return [Formatter[FormatType.LABELS], Formatter[FormatType.ADDRESS]]
+    return [
+      Formatter[FormatType.LABELS],
+      Formatter[FormatType.ASSET],
+      Formatter[FormatType.ADDRESS],
+    ]
   }
 </script>
 

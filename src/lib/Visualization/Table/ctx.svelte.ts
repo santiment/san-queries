@@ -35,6 +35,7 @@ export function getTableColumns(
     if (
       format === FormatType.PERCENT_CHANGE ||
       format === FormatType.LABELS ||
+      format === FormatType.ASSET ||
       format === FormatType.TIME_SINCE ||
       format === FormatType.ADDRESS
     ) {
