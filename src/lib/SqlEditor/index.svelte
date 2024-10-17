@@ -26,8 +26,8 @@
     children?: Snippet
   } = $props()
 
-  let ctx = $state.frozen<Awaited<ReturnType<typeof createEditor>>>()
-  let sqlEditorNode = $state.frozen<HTMLElement>()
+  let ctx = $state.raw<Awaited<ReturnType<typeof createEditor>>>()
+  let sqlEditorNode = $state.raw<HTMLElement>()
   let width = $state<number>(0)
   let height = $state<number>(0)
   let isFocused = $state(false)

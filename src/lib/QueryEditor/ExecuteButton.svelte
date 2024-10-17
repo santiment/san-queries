@@ -3,11 +3,6 @@
 
   import { createCtx, Emitter } from '$lib/ctx'
 
-  export enum EventType {
-    Default = 'Default',
-    Loading = 'Loading',
-  }
-
   export const useExecuteButtonCtx = createCtx('useExecuteButtonCtx ', () => {
     const subjet = new Subject<EventType>()
     const emit = (event: EventType) => subjet.next(event)
@@ -27,6 +22,7 @@
   import { Subject, startWith } from 'rxjs'
   import { useObservable } from 'svelte-runes'
   import Button from '$lib/ui/Button.svelte'
+  import { EventType } from './types'
 
   let { ...props }: ComponentProps<Button> = $props()
 
