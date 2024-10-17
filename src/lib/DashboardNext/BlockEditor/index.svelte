@@ -74,7 +74,7 @@
 
     .tiptap {
       @apply -mx-12 -mt-4 flex flex-1 flex-col p-6 px-12 pb-20 outline-none;
-      @apply max-[1000px]:mx-0 max-[1000px]:px-0;
+      @apply md:mx-0 md:px-0;
     }
 
     h1.data-heading {
@@ -118,7 +118,7 @@
       gap: 16px;
       display: flex;
 
-      @apply max-[1000px]:block;
+      @apply md:block;
     }
 
     [data-type='column'] {
@@ -132,7 +132,7 @@
         display: none;
       }
 
-      @apply max-[1000px]:mb-2;
+      @apply md:mb-2;
     }
 
     [data-type='column-resizer'] {
