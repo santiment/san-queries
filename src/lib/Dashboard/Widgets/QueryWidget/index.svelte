@@ -58,23 +58,25 @@
     {onDeleteClick}
   ></Header>
 
-  {#key globalParameterByOverrides.$}
-    {#if parameters.length}
-      <section class="flex gap-2 overflow-auto px-3 pb-3">
-        {#each parameters as parameter}
-          {@const key = widget.id + ',' + parameter.key}
-          {@const global = globalParameterByOverrides.$.get(key)}
+  {#if !readonly}
+    {#key globalParameterByOverrides.$}
+      {#if parameters.length}
+        <section class="flex gap-2 overflow-auto px-3 pb-3">
+          {#each parameters as parameter}
+            {@const key = widget.id + ',' + parameter.key}
+            {@const global = globalParameterByOverrides.$.get(key)}
 
-          <Parameter
-            global={!!global}
-            {parameter}
-            value={global?.value}
-            changed={changedParameters.$.has(key)}
-          ></Parameter>
-        {/each}
-      </section>
-    {/if}
-  {/key}
+            <Parameter
+              global={!!global}
+              {parameter}
+              value={global?.value}
+              changed={changedParameters.$.has(key)}
+            ></Parameter>
+          {/each}
+        </section>
+      {/if}
+    {/key}
+  {/if}
 
   <hr class="border-t" />
 
