@@ -47,8 +47,8 @@
 
   <div class="h-8 border-l"></div>
 
-  <h2 class="single-line mr-auto min-w-0 text-base">
-    <a href="/query/{getSEOLinkFromIdAndTitle(id, name)}">{name}</a>
+  <h2 class="mr-auto min-w-0 text-base single-line">
+    <a href="/query/{getSEOLinkFromIdAndTitle(id, name)}" class="hover:text-green">{name}</a>
   </h2>
 
   {#if changedParameters.size > 0}
