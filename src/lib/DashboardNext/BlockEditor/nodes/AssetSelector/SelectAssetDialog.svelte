@@ -57,7 +57,7 @@
     data={filtered}
     getKey={(item) => item.slug}
   >
-    {#snippet children({ item })}
+    {#snippet children(item)}
       <button
         class="flex w-full cursor-pointer items-center gap-2 whitespace-nowrap rounded p-2 hover:bg-athens"
         onclick={() => onAssetClick(item)}

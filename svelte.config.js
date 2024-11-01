@@ -18,8 +18,5 @@ const config = {
       '$static/*': './static/*',
     },
   },
-  compilerOptions: {
-    hmr: false,
-  },
 }
 export default config

@@ -1,56 +1,66 @@
-import { sveltekit } from '@sveltejs/kit/vite'
-import { defineConfig } from 'vitest/config'
-import mkcert from 'vite-plugin-mkcert'
-import { execSync } from 'node:child_process'
-import { createRequire } from 'module'
-import { WebkitSvg } from 'san-webkit-next/plugins/vite.js'
+import { createRequire } from 'node:module'
+import { mergeConfig } from 'vite'
+import {
+  createConfig,
+  IS_DEV_MODE,
+  BACKEND_URL,
+  GQL_SERVER_URL,
+  IS_PROD_BACKEND,
+} from 'san-webkit-next/vite.config.js'
+import { VERSION } from './version.js'
 
-globalThis.require = createRequire(import.meta.url)
+global.require = createRequire(import.meta.url)
 
-const mode = process.env.NODE_ENV
-const dev = mode !== 'production'
+process.env.MEDIA_PATH = '/webkit'
+process.env.ICONS_PATH = process.env.MEDIA_PATH + '/icons'
 
-const BACKEND_URL = process.env.BACKEND_URL || 'https://api-stage.santiment.net'
-const GQL_SERVER_FALLBACK = BACKEND_URL + '/graphql'
+console.log('VERSION -> ', JSON.stringify(VERSION))
+console.log('BACKEND_URL -> ', JSON.stringify(BACKEND_URL))
+console.log('GQL_SERVER_URL -> ', JSON.stringify(GQL_SERVER_URL))
+console.log('IS_PROD_MODE -> ', !IS_DEV_MODE)
+console.log('IS_PROD_BACKEND -> ', IS_PROD_BACKEND)
 
-const IS_STAGE_BACKEND = BACKEND_URL.includes('-stage')
-const IS_PROD_BACKEND = !IS_STAGE_BACKEND
+const config = mergeConfig(
+  createConfig({
+    corsOrigin: process.env.NODE_GQL_SERVER_URL,
+  }),
+  {
+    clientDefines: {
+      'process.browser': true,
+    },
 
-const GIT_HEAD =
-  process.env.GIT_HEAD || execSync('git rev-parse HEAD').toString().trim().slice(0, 7)
+    serverDefines: {
+      'process.env.GQL_SERVER_URL': JSON.stringify(
+        process.env.NODE_GQL_SERVER_URL || GQL_SERVER_URL,
+      ),
+    },
 
-export default defineConfig({
-  plugins: [
-    process.argv.includes('--https') && mkcert({ savePath: './mkcert' }),
-    sveltekit(),
-    WebkitSvg(),
-  ],
-  test: {
-    include: ['src/**/*.{test,spec}.{js,ts}'],
+    optimizeDeps: {
+      exclude: ['canvas'],
+    },
+
+    ssr: {
+      noExternal: [
+        '@santiment-network/chart',
+        'chart.js',
+        'Sanbase',
+        'san-queries',
+        // 'san-studio'
+      ],
+    },
+
+    define: {
+      'process.browser': false,
+
+      'process.env.MEDIA_PATH': JSON.stringify(process.env.MEDIA_PATH),
+      'process.env.ICONS_PATH': JSON.stringify(process.env.ICONS_PATH),
+
+      'process.env.API_FETCH_ORIGIN': JSON.stringify('https://app.santiment.net'),
+      'process.env.SANBASE_ORIGIN': JSON.stringify(''),
+
+      'process.env.VERSION': JSON.stringify(VERSION),
+    },
   },
+)
 
-  server: {
-    port: 3000,
-  },
-
-  define: {
-    'process.env.NODE_ENV': mode === 'production' ? '"production"' : '"development"',
-    'process.env.IS_DEV_MODE': dev,
-    'process.env.IS_PROD_MODE': !dev,
-
-    'process.env.MEDIA_PATH': JSON.stringify('/webkit'),
-    'process.env.ICONS_PATH': JSON.stringify('/webkit/icons'),
-
-    'process.env.BACKEND_URL': JSON.stringify(BACKEND_URL),
-    'process.env.GQL_SERVER_URL': JSON.stringify(GQL_SERVER_FALLBACK),
-    'process.env.NODE_GQL_SERVER_URL': JSON.stringify(process.env.NODE_GQL_SERVER_URL),
-
-    'process.env.IS_STAGE_BACKEND': IS_STAGE_BACKEND,
-    'process.env.IS_PROD_BACKEND': IS_PROD_BACKEND,
-
-    'process.env.API_FETCH_ORIGIN': JSON.stringify('https://app.santiment.net'),
-
-    'process.env.GIT_HEAD': JSON.stringify(GIT_HEAD),
-    'process.env.VERSION': JSON.stringify('2.5-' + GIT_HEAD),
-  },
-})
+export default config
