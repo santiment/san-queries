@@ -15,8 +15,8 @@
   },
   "scripts": {
     "dev": "vite dev",
-    "dev:https": "vite dev -- --https",
-    "build": "npm run webkit && npm run get-schema && vite build",
+    "dev:https": "vite dev --host -- --https",
+    "build": "NODE_ENV=production npm run check && npm run webkit && npm run get-schema && vite build",
     "get-schema": "node scripts/schema.js --run",
     "preview": "vite preview",
     "test": "npm run test:integration && npm run test:unit",
@@ -122,7 +122,9 @@
       "zeed-dom": "^0.13.3"
     },
     "patchedDependencies": {
-      "san-webkit@0.0.1": "patches/san-webkit@0.0.1.patch"
+      "san-webkit@0.0.1": "patches/san-webkit@0.0.1.patch",
+      "@sveltejs/kit@2.7.3": "patches/@sveltejs__kit@2.5.28.patch",
+      "@sveltejs/adapter-node@5.2.9": "patches/@sveltejs__adapter-node@5.2.3.patch"
     }
   }
 }

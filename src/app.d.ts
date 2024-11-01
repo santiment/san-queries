@@ -1,18 +1,16 @@
 /// <reference types="san-webkit" />
 
-import type { DeviceInfoType } from 'san-webkit/lib/stores/responsive'
-
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 declare global {
   namespace App {
     // interface Error {}
     interface Locals {
-      currentUser: App.CurrentUser | null
-      device: DeviceInfoType
       theme: 'night-mode' | ''
       isCookiesVisible: boolean
-      customer: SAN.Customer
+
+      customer: import('san-webkit-next/ctx/customer/api').TCustomer
+      device: import('san-webkit-next/ctx/device').DeviceType
     }
     // interface PageData {}
     // interface Platform {}

@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
   import { CommentsType } from 'san-webkit/lib/api/comments'
   import Comments from 'san-webkit/lib/ui/Comments/svelte'
   import Button from '$lib/ui/Button.svelte'
+  import { useCustomerCtx } from 'san-webkit-next/ctx/customer'
 
   let { count, commentsFor }: { count: number; commentsFor: any } = $props()
 
-  const { currentUser$ } = getCurrentUser$Ctx()
+  const { currentUser } = useCustomerCtx()
 
   let isOpened = $state(false)
 
@@ -37,7 +37,7 @@
       <Comments
         type={CommentsType.Dashboard}
         {commentsFor}
-        currentUser={$currentUser$}
+        currentUser={currentUser.$$}
         {onNewComment}
       />
     </main>

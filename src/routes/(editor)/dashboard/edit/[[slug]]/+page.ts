@@ -8,9 +8,9 @@ export const ssr = false
 
 export const load = async (event) => {
   const { session } = await event.parent()
-  const { currentUser } = session
+  const { customer } = session
 
-  if (!currentUser) {
+  if (!customer.currentUser) {
     throw redirect(302, '/dashboard/edit/new')
   }
 
@@ -34,7 +34,7 @@ export const load = async (event) => {
     throw redirect(302, '/dashboard/edit/new')
   }
 
-  if (+apiDashboard.user.id !== +currentUser.id) {
+  if (+apiDashboard.user.id !== +customer.currentUser.id) {
     throw redirect(302, '/dashboard/edit/new')
   }
 
