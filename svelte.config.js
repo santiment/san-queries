@@ -16,6 +16,7 @@ const config = {
     alias: {
       '$routes/*': './src/routes/*',
       '$static/*': './static/*',
+      '$lib-next/*': './src/lib-next/*',
     },
   },
 }
