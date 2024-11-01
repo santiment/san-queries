@@ -2,25 +2,26 @@
   import type { PageData } from './$types'
 
   import { BROWSER } from 'esm-env'
-  import { ss, ssd, useStore } from 'svelte-runes'
-  import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
-  import { GlobalShortcut$ } from 'san-webkit/lib/utils/events'
+  import { ss, ssd } from 'svelte-runes'
   // import Dashboard from '$lib/Dashboard/Dashboard.svelte'
   import Dashboard from '$lib/DashboardNext/index.svelte'
   import SaveIndicator from '$lib/SaveIndicator'
   import { useSaveIndicatorCtx } from '$lib/SaveIndicator/index.svelte'
   import { useDashboardDuplicateFlow } from '$lib/Dashboard/flow/duplicate'
   import { useDashboardDeleteFlow } from '$lib/Dashboard/flow/delete'
+  import { useCustomerCtx } from 'san-webkit-next/ctx/customer'
 
   let { data }: { data: PageData } = $props()
 
   const apiDashboard = ssd(() => data.apiDashboard)
-  const { currentUser$ } = getCurrentUser$Ctx()
+  const { currentUser } = useCustomerCtx()
+
   const _saveIndicatorCtx = useSaveIndicatorCtx()
   const EditorRef = ss<Dashboard>()
 
-  let currentUser = $currentUser$
-  let isAuthor = ssd(() => (apiDashboard.$ ? +apiDashboard.$.user.id === +currentUser?.id! : true))
+  let isAuthor = ssd(() =>
+    apiDashboard.$ ? +apiDashboard.$.user.id === +currentUser.$$?.id! : true,
+  )
 
   const { onDuplicateClick } = useDashboardDuplicateFlow(EditorRef)
   const { onDeleteClick } = useDashboardDeleteFlow(apiDashboard)
@@ -36,7 +37,7 @@
     dashboard={apiDashboard.$}
     isAuthor={isAuthor.$}
     readonly={true}
-    {currentUser}
+    currentUser={currentUser.$$}
     {onDuplicateClick}
     {onDeleteClick}
   ></Dashboard>

@@ -11,19 +11,21 @@
   import { useDashboardDuplicateFlow } from '$lib/Dashboard/flow/duplicate'
   import { useAutoSaveFlow, useSaveEmptyFlowCtx, useSaveFlow } from '$lib/Dashboard/flow/save'
   import { useDashboardDeleteFlow } from '$lib/Dashboard/flow/delete'
+  import { useCustomerCtx } from 'san-webkit-next/ctx/customer'
 
   let { data }: { data: PageData } = $props()
 
   const apiDashboard = ssd(() => data.apiDashboard)
-  const { currentUser$ } = getCurrentUser$Ctx()
+  const { currentUser } = useCustomerCtx()
   const changeIndicatorCtx = useChangeIndicatorCtx()
   const _saveIndicatorCtx = useSaveIndicatorCtx()
   const EditorRef = ss<Dashboard>()
 
   $inspect(data)
 
-  let currentUser = $currentUser$
-  let isAuthor = ssd(() => (apiDashboard.$ ? +apiDashboard.$.user.id === +currentUser?.id! : true))
+  let isAuthor = ssd(() =>
+    apiDashboard.$ ? +apiDashboard.$.user.id === +currentUser.$$?.id! : true,
+  )
 
   useAutoSaveFlow(EditorRef, isAuthor)
   const { saveEmptyDashboard } = useSaveEmptyFlowCtx(apiDashboard)
@@ -42,7 +44,7 @@
     dashboard={apiDashboard.$}
     isAuthor={true}
     readonly={false}
-    {currentUser}
+    currentUser={currentUser.$$}
     {onDuplicateClick}
     {onDeleteClick}
   ></Dashboard>

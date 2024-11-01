@@ -1,13 +1,13 @@
 <script lang="ts">
   import { showAddQueryToDashboardDialog$ } from '$lib/AddQueryToDashboardDialog/index.svelte'
   import Svg from '$lib/ui/Svg.svelte'
-  import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
   import { useDashboardEditorCtx } from '../ctx'
   import { useSaveEmptyFlowCtx } from '../flow/save'
   import { useAddTextWidgetToDashboardFlow } from '../flow/widgets'
   import { showDataFlowDialog$ } from '$lib/DataFlow/Dialog/index.svelte'
+  import { useCustomerCtx } from 'san-webkit-next/ctx/customer'
 
-  const { currentUser$ } = getCurrentUser$Ctx()
+  const { currentUser } = useCustomerCtx()
   const { dashboardEditor } = useDashboardEditorCtx()
   const showAddQueryToDashboardDialog = showAddQueryToDashboardDialog$()
   const { addTextWidgetToDashboard } = useAddTextWidgetToDashboardFlow()
@@ -44,7 +44,7 @@
 </script>
 
 <toolbar
-  class="row z-100 fixed bottom-4 left-1/2 -translate-x-1/2 items-center gap-3 self-center rounded-md bg-rhino-day fill-white-day px-6 py-2 text-xs text-white-day shadow"
+  class="z-100 fixed bottom-4 left-1/2 -translate-x-1/2 items-center gap-3 self-center rounded-md bg-rhino-day fill-white-day px-6 py-2 text-xs text-white-day shadow row"
 >
   <button class="btn" onclick={onQueryClick}>
     <Svg id="query" w="16" />
@@ -55,7 +55,7 @@
     Text
   </button>
 
-  {#if SAN_TEAM.has(+($currentUser$?.id as number))}
+  {#if SAN_TEAM.has(+(currentUser.$$?.id as number))}
     <div class="mx-3 h-10 border-l"></div>
 
     <button class="btn" onclick={() => showDataFlowDialog()}>

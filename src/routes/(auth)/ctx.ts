@@ -14,12 +14,10 @@ export type ICurrentUserCtx = ReturnType<typeof setAuthCtx>
 
 export const getAuthCtx = () => getContext(CTX) as ICurrentUserCtx
 
-export function startEthLoginFlow(currentUser$: SAN.CurrentUserStore) {
+export function startEthLoginFlow() {
   return ethLoginMutation(CURRENT_USER_FRAGMENT)
     .then(({ ethLogin }: any) => {
       const { user } = ethLogin
-
-      currentUser$.set(user)
 
       notifications$.show({
         type: 'success',
