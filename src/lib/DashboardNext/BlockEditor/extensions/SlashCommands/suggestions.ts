@@ -85,4 +85,11 @@ export const COMMANDS = [
       editor.chain().focus().deleteRange(range).addControlledListWidget().run()
     },
   },
+
+  {
+    title: 'Sanbase Chart',
+    command: ({ editor, range }) => {
+      editor.chain().focus().deleteRange(range).addSanbaseChartWidget().run()
+    },
+  },
 ] as { title: string; command: (args: { editor: Editor; range: Range }) => void }[]

@@ -1,0 +1,133 @@
+<script lang="ts">
+  import { BROWSER } from 'esm-env'
+  import Button from 'san-webkit-next/ui/core/Button'
+  import Chart, { Tooltip, ApiMetricSeries } from 'san-webkit-next/ui/app/Chart'
+  import {
+    useColorGenerator,
+    useGlobalParametersCtx,
+    useMetricSeriesCtx,
+  } from 'san-webkit-next/ui/app/Chart/ctx'
+  import { showMetricsDialogDialog$ } from './__MetricsDialog/MetricsDialog.svelte'
+  import { useGlobalParametersCtx as useDashboardGlobalParametersCtx } from '$lib/Dashboard/ctx/parameters'
+
+  type TProps = {
+    readonly: boolean
+    assetParameterId?: string
+    fromParameterId?: string
+    toParameterId?: string
+    setMetricsWidgetState: (metrics: string[]) => void
+  }
+  let {
+    readonly = true,
+    assetParameterId,
+    fromParameterId,
+    toParameterId,
+    setMetricsWidgetState,
+  }: TProps = $props()
+
+  const { globalParameterByKey } = useDashboardGlobalParametersCtx()
+  let assetParameter = $derived(
+    globalParameterByKey.$.get(assetParameterId!)?.value as undefined | string,
+  )
+  let fromParameter = $derived(
+    globalParameterByKey.$.get(fromParameterId!)?.value as undefined | string,
+  )
+  let toParameter = $derived(
+    globalParameterByKey.$.get(toParameterId!)?.value as undefined | string,
+  )
+
+  const { colorGenerator } = useColorGenerator()
+  const { globalParameters: chartGlobalParameters } = useGlobalParametersCtx.set({
+    selector: { slug: assetParameter || 'bitcoin' },
+    from: fromParameter || 'utc_now-60d',
+    to: toParameter || 'utc_now',
+  })
+  const { metricSeries } = useMetricSeriesCtx([])
+
+  const showMetricsDialogDialog = showMetricsDialogDialog$()
+
+  $effect(() => {
+    console.log({ assetParameter })
+    if (assetParameter) {
+      chartGlobalParameters.$$.selector.slug = assetParameter
+    }
+  })
+
+  $effect(() => {
+    if (fromParameter) {
+      chartGlobalParameters.$$.from = fromParameter
+    }
+  })
+
+  $effect(() => {
+    if (toParameter) {
+      chartGlobalParameters.$$.to = toParameter
+    }
+  })
+
+  function onAddMetricClick() {
+    showMetricsDialogDialog({
+      slug: assetParameter || 'bitcoin',
+      metrics: [],
+      onApply(metrics) {
+        const selected = new Set(metricSeries.$.map((metric) => metric.apiMetricName))
+
+        for (const metric of metrics) {
+          if (selected.has(metric.key)) continue
+
+          metricSeries.add({
+            name: metric.key,
+            label: metric.label,
+            style: 'line',
+            color: colorGenerator.new(),
+            scaleId: 'right-' + metric.key,
+          })
+        }
+
+        setMetricsWidgetState(metricSeries.$.map((v) => v.apiMetricName))
+      },
+    })
+  }
+
+  function onMetricDeleteClick(series: TSeries) {
+    metricSeries.delete(series)
+
+    setMetricsWidgetState(metricSeries.$.map((v) => v.apiMetricName))
+  }
+</script>
+
+<div class="flex flex-wrap items-center gap-2 p-2">
+  {#each metricSeries.$ as item (item.id)}
+    <div class="relative flex min-h-8 rounded-r border px-2 center" style:--color={item.color.$}>
+      <span class="color absolute"></span>
+      {item.label}
+
+      {#if readonly === false}
+        <Button icon="close" iconSize={8} onclick={() => onMetricDeleteClick(item)}></Button>
+      {/if}
+    </div>
+  {/each}
+
+  {#if readonly === false}
+    <Button variant="border" onclick={onAddMetricClick}>Add metric</Button>
+  {/if}
+</div>
+
+<Chart class="flex-1">
+  {#each metricSeries.$ as item (item.id)}
+    {console.log(item)}
+    <ApiMetricSeries series={item}></ApiMetricSeries>
+  {/each}
+
+  <Tooltip></Tooltip>
+</Chart>
+
+<style>
+  .color {
+    top: -1px;
+    bottom: -1px;
+    left: -1px;
+    width: 2px;
+    background: var(--color);
+  }
+</style>
