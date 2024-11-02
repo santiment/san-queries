@@ -34,7 +34,7 @@ export const handleError: HandleServerError = ({ error }: any) => {
   console.error(error)
 
   if ((message || '').startsWith('Not found:')) {
-    throw redirect(302, '/query/new')
+    // throw redirect(302, '/query/new')
   }
 
   return error

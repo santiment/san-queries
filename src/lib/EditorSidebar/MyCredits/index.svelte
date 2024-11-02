@@ -25,7 +25,7 @@
       switchMap(() =>
         queryUserCredits()().pipe(
           filter((data) => !!data),
-          tap((data) => (currentUser.$$ = Object.assign(currentUser.$$, data))),
+          tap((data) => Object.assign(currentUser.$$, data)),
         ),
       ),
     ),

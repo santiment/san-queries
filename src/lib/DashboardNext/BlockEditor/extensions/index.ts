@@ -6,7 +6,7 @@ import { OrderedList } from '@tiptap/extension-ordered-list'
 import { BulletList } from '@tiptap/extension-bullet-list'
 import TextStyle from '@tiptap/extension-text-style'
 import Underline from '@tiptap/extension-underline'
-import StarterKit from '@tiptap/starter-kit'
+// import StarterKit from '@tiptap/starter-kit'
 import BlockLayout, { Column, Columns } from 'tiptap-block-layout'
 
 import QueryBlock from '../nodes/QueryBlock'
@@ -19,14 +19,14 @@ import SanbaseChartBlock from '../nodes/SanbaseChartBlock'
 import TextInputField from '../nodes/TextInputField'
 
 export const getExtensions = (ctx?: Map<string, any>) => [
-  StarterKit.configure({
-    dropcursor: false,
-    gapcursor: false,
-    paragraph: false,
-    heading: false,
-    orderedList: false,
-    bulletList: false,
-  }),
+  // StarterKit.configure({
+  //   dropcursor: false,
+  //   gapcursor: false,
+  //   paragraph: false,
+  //   heading: false,
+  //   orderedList: false,
+  //   bulletList: false,
+  // }),
   Paragraph,
   Heading.configure({ HTMLAttributes: { class: 'data-heading' } }),
   Link.configure({ openOnClick: false, HTMLAttributes: { class: 'data-link' } }),
