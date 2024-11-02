@@ -1,0 +1,9 @@
+<script lang="ts">
+  import Dashboard from '$lib-next/features/Dashboard'
+
+  let { data } = $props()
+</script>
+
+{#key data.apiDashboard?.id}
+  <Dashboard readonly={false} apiDashboard={data.apiDashboard}></Dashboard>
+{/key}
