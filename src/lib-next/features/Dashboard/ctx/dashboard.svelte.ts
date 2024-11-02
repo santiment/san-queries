@@ -18,6 +18,7 @@ export const useDashboardCtx = createCtx(
     const isCurrentUserAuthor = author?.id === currentUser.$$?.id
 
     const state = $state({
+      id: _apiDashboard.id,
       name: _apiDashboard.name || '',
       description: _apiDashboard.description || '',
       isPublic: _apiDashboard.isPublic ?? false,
@@ -27,8 +28,6 @@ export const useDashboardCtx = createCtx(
 
     return {
       dashboard: {
-        id: _apiDashboard.id,
-
         state: {
           get $$() {
             return state
