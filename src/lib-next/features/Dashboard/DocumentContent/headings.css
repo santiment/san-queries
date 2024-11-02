@@ -1,0 +1,15 @@
+h1.data-heading {
+  @apply text-2xl;
+}
+
+h2.data-heading {
+  @apply text-xl;
+}
+
+h3.data-heading {
+  @apply text-lg;
+}
+
+h4.data-heading {
+  @apply text-base;
+}

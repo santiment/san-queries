@@ -1,0 +1,13 @@
+.data-list {
+  margin: 0;
+  padding: 0;
+  padding-left: 24px;
+}
+
+ul.data-list > li {
+  list-style: disc;
+}
+
+ol.data-list li {
+  list-style: decimal;
+}

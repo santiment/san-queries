@@ -2,6 +2,7 @@
   import { useDashboardCtx } from './ctx'
   import Header from './Header/Header.svelte'
   import DocumentHeading from './DocumentHeading.svelte'
+  import DocumentContent from './DocumentContent/DocumentContent.svelte'
 
   type TProps = { apiDashboard: undefined | null | App.ApiDashboard; readonly?: boolean }
   let { apiDashboard, readonly = true }: TProps = $props()
@@ -14,4 +15,6 @@
   <Header></Header>
 
   <DocumentHeading></DocumentHeading>
+
+  <DocumentContent></DocumentContent>
 </article>

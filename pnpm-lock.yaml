@@ -100,6 +100,9 @@ dependencies:
   monaco-editor:
     specifier: ^0.47.0
     version: 0.47.0
+  postcss-nested-import:
+    specifier: ^1.3.0
+    version: 1.3.0(postcss@8.4.35)
   prettier-plugin-tailwindcss:
     specifier: ^0.6.8
     version: 0.6.8(prettier-plugin-svelte@3.2.7)(prettier@3.3.3)
@@ -120,7 +123,7 @@ dependencies:
     version: github.com/santiment/san-webkit/2b179d6a(patch_hash=sbifrofulxn6pfdnfgffvc6pra)(@types/gtag.js@0.0.4)(@types/medium-editor@5.0.8)(@types/stripe-v3@3.1.33)(ethers@5.7.2)(marked@6.0.0)(medium-editor@5.23.3)(node-fetch@2.7.0)(react-dom@18.3.1)(react@18.3.1)(svelte@5.1.9)(turndown@7.2.0)
   san-webkit-next:
     specifier: github:santiment/san-webkit#lib-efc54f30-011124
-    version: github.com/santiment/san-webkit/7cfc5141f7548aa19a67f333c89aa2263389cd5d(@coinbase/wallet-sdk@4.0.3)(@melt-ui/svelte@0.85.0)(@santiment-network/chart@1.0.0)(@sveltejs/adapter-auto@3.3.1)(@sveltejs/adapter-node@5.2.9)(@sveltejs/kit@2.7.3)(@sveltejs/vite-plugin-svelte@4.0.0)(@types/react@18.3.3)(@wagmi/connectors@5.3.3)(@wagmi/core@2.14.1)(bits-ui@0.21.16)(estree-walker@3.0.3)(graphql@16.9.0)(react-dom@18.3.1)(react@18.3.1)(rxjs@7.8.1)(svelte@5.1.9)(tailwind-merge@2.2.1)(tailwindcss@3.4.1)(typescript@5.6.3)(viem@2.21.38)(vite@5.4.10)(wagmi@2.12.25)
+    version: github.com/santiment/san-webkit/7cfc5141f7548aa19a67f333c89aa2263389cd5d(@coinbase/wallet-sdk@4.0.3)(@melt-ui/svelte@0.85.0)(@santiment-network/chart@1.0.0)(@sveltejs/adapter-auto@3.3.1)(@sveltejs/adapter-node@5.2.9)(@sveltejs/kit@2.7.3)(@sveltejs/vite-plugin-svelte@4.0.0)(@types/react@18.3.3)(@wagmi/connectors@5.3.3)(@wagmi/core@2.14.1)(bits-ui@0.21.16)(estree-walker@3.0.3)(graphql@16.9.0)(react-dom@18.3.1)(react@18.3.1)(rxjs@7.8.1)(svelte@5.1.9)(tailwind-merge@2.2.1)(tailwindcss@3.4.1)(typescript@5.6.3)(viem@2.21.39)(vite@5.4.10)(wagmi@2.12.25)
   svelte-runes:
     specifier: ^0.0.4
     version: 0.0.4(svelte@5.1.9)
@@ -143,8 +146,8 @@ dependencies:
     specifier: ^11.0.2
     version: 11.0.2
   zeed-dom:
-    specifier: ^0.15.1
-    version: 0.15.1
+    specifier: ^0.13.3
+    version: 0.13.3
   zod:
     specifier: ^3.23.8
     version: 3.23.8
@@ -5335,7 +5338,7 @@ packages:
     resolution: {integrity: sha512-42aWfPrimMfDKDi4YegyS7x+/0tlzaqwPQCULLanv3DMIlu96KTJR0fM5isWX2UViOqlGnX6YFgqWepcX+XMNg==}
     dev: false
 
-  /@reown/appkit-adapter-wagmi@1.2.0(@coinbase/wallet-sdk@4.0.3)(@types/react@18.3.3)(@wagmi/connectors@5.3.3)(@wagmi/core@2.14.1)(react@18.3.1)(typescript@5.6.3)(viem@2.21.38)(wagmi@2.12.25)(zod@3.23.8):
+  /@reown/appkit-adapter-wagmi@1.2.0(@coinbase/wallet-sdk@4.0.3)(@types/react@18.3.3)(@wagmi/connectors@5.3.3)(@wagmi/core@2.14.1)(react@18.3.1)(typescript@5.6.3)(viem@2.21.39)(wagmi@2.12.25)(zod@3.23.8):
     resolution: {integrity: sha512-NozYLFgALElwIzSH/rbvUJxcvWSUcu+J/rIFOlfv5xatqMIpl3DqKU1PmpdBa/EBB7MoNOj/BD0aJjETZQGknQ==}
     peerDependencies:
       '@coinbase/wallet-sdk': 4.0.3
@@ -5354,13 +5357,13 @@ packages:
       '@reown/appkit-ui': 1.2.0
       '@reown/appkit-utils': 1.2.0(@types/react@18.3.3)(react@18.3.1)(typescript@5.6.3)(valtio@1.11.2)(zod@3.23.8)
       '@reown/appkit-wallet': 1.2.0(typescript@5.6.3)
-      '@wagmi/connectors': 5.3.3(@types/react@18.3.3)(@wagmi/core@2.14.1)(react-dom@18.3.1)(react-native@0.76.1)(react@18.3.1)(typescript@5.6.3)(viem@2.21.38)(zod@3.23.8)
-      '@wagmi/core': 2.14.1(@types/react@18.3.3)(react@18.3.1)(typescript@5.6.3)(use-sync-external-store@1.2.0)(viem@2.21.38)
+      '@wagmi/connectors': 5.3.3(@types/react@18.3.3)(@wagmi/core@2.14.1)(react-dom@18.3.1)(react-native@0.76.1)(react@18.3.1)(typescript@5.6.3)(viem@2.21.39)(zod@3.23.8)
+      '@wagmi/core': 2.14.1(@types/react@18.3.3)(react@18.3.1)(typescript@5.6.3)(use-sync-external-store@1.2.0)(viem@2.21.39)
       '@walletconnect/universal-provider': 2.17.0
       '@walletconnect/utils': 2.17.0
       valtio: 1.11.2(@types/react@18.3.3)(react@18.3.1)
-      viem: 2.21.38(typescript@5.6.3)(zod@3.23.8)
-      wagmi: 2.12.25(@tanstack/react-query@5.59.16)(@types/react@18.3.3)(react-dom@18.3.1)(react-native@0.76.1)(react@18.3.1)(typescript@5.6.3)(viem@2.21.38)(zod@3.23.8)
+      viem: 2.21.39(typescript@5.6.3)(zod@3.23.8)
+      wagmi: 2.12.25(@tanstack/react-query@5.59.16)(@types/react@18.3.3)(react-dom@18.3.1)(react-native@0.76.1)(react@18.3.1)(typescript@5.6.3)(viem@2.21.39)(zod@3.23.8)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -5822,7 +5825,7 @@ packages:
     resolution: {integrity: sha512-N5p/ulfnnA2Pi2M3YeWjULeWbjo7ei22JwU/IXnhoHzKq3pYCN6ynL9mJBOlvDVv892EgLPCWCOwQk/uBT2v0Q==}
     dependencies:
       '@safe-global/safe-gateway-typescript-sdk': 3.22.2
-      viem: 2.21.38(typescript@5.6.3)(zod@3.23.8)
+      viem: 2.21.39(typescript@5.6.3)(zod@3.23.8)
     transitivePeerDependencies:
       - bufferutil
       - typescript
@@ -8174,7 +8177,7 @@ packages:
       pretty-format: 29.7.0
     dev: true
 
-  /@wagmi/connectors@5.3.3(@types/react@18.3.3)(@wagmi/core@2.14.1)(react-dom@18.3.1)(react-native@0.76.1)(react@18.3.1)(typescript@5.6.3)(viem@2.21.38)(zod@3.23.8):
+  /@wagmi/connectors@5.3.3(@types/react@18.3.3)(@wagmi/core@2.14.1)(react-dom@18.3.1)(react-native@0.76.1)(react@18.3.1)(typescript@5.6.3)(viem@2.21.39)(zod@3.23.8):
     resolution: {integrity: sha512-RUgwgqX7H+qg1lXBhLqcG0D5xb8USlAv4MVai4r5YpRw6lxpDvELFXxHN4ldZuUARKhH7Q3ZpfvdWyEXY+wn9w==}
     peerDependencies:
       '@wagmi/core': 2.14.1
@@ -8188,11 +8191,11 @@ packages:
       '@metamask/sdk': 0.30.1(react-dom@18.3.1)(react-native@0.76.1)(react@18.3.1)
       '@safe-global/safe-apps-provider': 0.18.3(typescript@5.6.3)(zod@3.23.8)
       '@safe-global/safe-apps-sdk': 9.1.0(typescript@5.6.3)(zod@3.23.8)
-      '@wagmi/core': 2.14.1(@types/react@18.3.3)(react@18.3.1)(typescript@5.6.3)(use-sync-external-store@1.2.0)(viem@2.21.38)
+      '@wagmi/core': 2.14.1(@types/react@18.3.3)(react@18.3.1)(typescript@5.6.3)(use-sync-external-store@1.2.0)(viem@2.21.39)
       '@walletconnect/ethereum-provider': 2.17.0(@types/react@18.3.3)(react@18.3.1)
       cbw-sdk: /@coinbase/wallet-sdk@3.9.3
       typescript: 5.6.3
-      viem: 2.21.38(typescript@5.6.3)(zod@3.23.8)
+      viem: 2.21.39(typescript@5.6.3)(zod@3.23.8)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -8218,7 +8221,7 @@ packages:
       - zod
     dev: false
 
-  /@wagmi/core@2.14.1(@types/react@18.3.3)(react@18.3.1)(typescript@5.6.3)(use-sync-external-store@1.2.0)(viem@2.21.38):
+  /@wagmi/core@2.14.1(@types/react@18.3.3)(react@18.3.1)(typescript@5.6.3)(use-sync-external-store@1.2.0)(viem@2.21.39):
     resolution: {integrity: sha512-Vl7VK5XdKxPfnYlp3E7U7AJSweBdfh+cd953hgAU2H+uNrekS9Nmt89l1b6WkwkYyqvccRDjsCtlcKRwvPtNAQ==}
     peerDependencies:
       '@tanstack/query-core': '>=5.0.0'
@@ -8233,7 +8236,7 @@ packages:
       eventemitter3: 5.0.1
       mipd: 0.0.7(typescript@5.6.3)
       typescript: 5.6.3
-      viem: 2.21.38(typescript@5.6.3)(zod@3.23.8)
+      viem: 2.21.39(typescript@5.6.3)(zod@3.23.8)
       zustand: 5.0.0(@types/react@18.3.3)(react@18.3.1)(use-sync-external-store@1.2.0)
     transitivePeerDependencies:
       - '@types/react'
@@ -10295,11 +10298,6 @@ packages:
 
   /entities@4.5.0:
     resolution: {integrity: sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==}
-    engines: {node: '>=0.12'}
-    dev: false
-
-  /entities@5.0.0:
-    resolution: {integrity: sha512-BeJFvFRJddxobhvEdm5GqHzRV/X+ACeuw0/BuuxsCh1EUZcAIz8+kYmBp/LrQuloy6K1f3a0M7+IhmZ7QnkISA==}
     engines: {node: '>=0.12'}
     dev: false
 
@@ -13840,6 +13838,16 @@ packages:
       postcss: 8.4.35
       yaml: 2.4.0
 
+  /postcss-nested-import@1.3.0(postcss@8.4.35):
+    resolution: {integrity: sha512-n0uARfX3SRntgA1A+fD1n+JvquCbbD43P5EOrRqbuVgzl2xVXA1J90gdmeZ57Xg7/GYs/j9GRKxQD9dzeBP7AA==}
+    engines: {node: '>=12.0'}
+    peerDependencies:
+      postcss: ^8.3.0
+    dependencies:
+      postcss: 8.4.35
+      resolve: 1.22.8
+    dev: false
+
   /postcss-nested@6.0.1(postcss@8.4.35):
     resolution: {integrity: sha512-mEp4xPMi5bSWiMbsgoPfcP74lsWLHkQbZc3sY+jWYd65CUwXrUaTp0fmNpa01ZcETKlIgUdFN/MpS2xZtqL9dQ==}
     engines: {node: '>=12.0'}
@@ -16282,8 +16290,8 @@ packages:
       - zod
     dev: false
 
-  /viem@2.21.38(typescript@5.6.3)(zod@3.23.8):
-    resolution: {integrity: sha512-MxhURy+F3eRtxkOoj7YdJTStJxqnWcP0MQZycVsxsVB4eZLKZPZfh7AgpfPjWHmPHmeVZcOqaGzFTmuPpqp06w==}
+  /viem@2.21.39(typescript@5.6.3)(zod@3.23.8):
+    resolution: {integrity: sha512-8zPdwVE66BBqnu7JgYWFLzt1mrHS48+GHug2sGqDtdALZ7/LDht/WuUodVT5xOouyLsxsOKJBnqgErtUVes6ZA==}
     peerDependencies:
       typescript: '>=5.0.4'
     peerDependenciesMeta:
@@ -16480,7 +16488,7 @@ packages:
     resolution: {integrity: sha512-dpojBhNsCNN7T82Tm7k26A6G9ML3NkhDsnw9n/eoxSRlVBB4CEtIQ/KTCLI2Fwf3ataSXRhYFkQi3SlnFwPvPQ==}
     dev: false
 
-  /wagmi@2.12.25(@tanstack/react-query@5.59.16)(@types/react@18.3.3)(react-dom@18.3.1)(react-native@0.76.1)(react@18.3.1)(typescript@5.6.3)(viem@2.21.38)(zod@3.23.8):
+  /wagmi@2.12.25(@tanstack/react-query@5.59.16)(@types/react@18.3.3)(react-dom@18.3.1)(react-native@0.76.1)(react@18.3.1)(typescript@5.6.3)(viem@2.21.39)(zod@3.23.8):
     resolution: {integrity: sha512-RdQCDbTv1+b7fWCAoLEYX0loymqLnhmNrMZq1gfPEs6cOhEHYOQeZtJWnyaXOD5+3xIFw+xoA0xDNvAHVbtbKw==}
     peerDependencies:
       '@tanstack/react-query': '>=5.0.0'
@@ -16492,12 +16500,12 @@ packages:
         optional: true
     dependencies:
       '@tanstack/react-query': 5.59.16(react@18.3.1)
-      '@wagmi/connectors': 5.3.3(@types/react@18.3.3)(@wagmi/core@2.14.1)(react-dom@18.3.1)(react-native@0.76.1)(react@18.3.1)(typescript@5.6.3)(viem@2.21.38)(zod@3.23.8)
-      '@wagmi/core': 2.14.1(@types/react@18.3.3)(react@18.3.1)(typescript@5.6.3)(use-sync-external-store@1.2.0)(viem@2.21.38)
+      '@wagmi/connectors': 5.3.3(@types/react@18.3.3)(@wagmi/core@2.14.1)(react-dom@18.3.1)(react-native@0.76.1)(react@18.3.1)(typescript@5.6.3)(viem@2.21.39)(zod@3.23.8)
+      '@wagmi/core': 2.14.1(@types/react@18.3.3)(react@18.3.1)(typescript@5.6.3)(use-sync-external-store@1.2.0)(viem@2.21.39)
       react: 18.3.1
       typescript: 5.6.3
       use-sync-external-store: 1.2.0(react@18.3.1)
-      viem: 2.21.38(typescript@5.6.3)(zod@3.23.8)
+      viem: 2.21.39(typescript@5.6.3)(zod@3.23.8)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -16843,14 +16851,6 @@ packages:
       entities: 4.5.0
     dev: false
 
-  /zeed-dom@0.15.1:
-    resolution: {integrity: sha512-dtZ0aQSFyZmoJS0m06/xBN1SazUBPL5HpzlAcs/KcRW0rzadYw12deQBjeMhGKMMeGEp7bA9vmikMLaO4exBcg==}
-    engines: {node: '>=14.13.1'}
-    dependencies:
-      css-what: 6.1.0
-      entities: 5.0.0
-    dev: false
-
   /zimmerframe@1.1.2:
     resolution: {integrity: sha512-rAbqEGa8ovJy4pyBxZM70hg4pE6gDgaQ0Sl9M3enG3I0d6H4XSAM3GeNGLKnsBpuijUow064sf7ww1nutC5/3w==}
 
@@ -16957,7 +16957,7 @@ packages:
     dev: false
     patched: true
 
-  github.com/santiment/san-webkit/7cfc5141f7548aa19a67f333c89aa2263389cd5d(@coinbase/wallet-sdk@4.0.3)(@melt-ui/svelte@0.85.0)(@santiment-network/chart@1.0.0)(@sveltejs/adapter-auto@3.3.1)(@sveltejs/adapter-node@5.2.9)(@sveltejs/kit@2.7.3)(@sveltejs/vite-plugin-svelte@4.0.0)(@types/react@18.3.3)(@wagmi/connectors@5.3.3)(@wagmi/core@2.14.1)(bits-ui@0.21.16)(estree-walker@3.0.3)(graphql@16.9.0)(react-dom@18.3.1)(react@18.3.1)(rxjs@7.8.1)(svelte@5.1.9)(tailwind-merge@2.2.1)(tailwindcss@3.4.1)(typescript@5.6.3)(viem@2.21.38)(vite@5.4.10)(wagmi@2.12.25):
+  github.com/santiment/san-webkit/7cfc5141f7548aa19a67f333c89aa2263389cd5d(@coinbase/wallet-sdk@4.0.3)(@melt-ui/svelte@0.85.0)(@santiment-network/chart@1.0.0)(@sveltejs/adapter-auto@3.3.1)(@sveltejs/adapter-node@5.2.9)(@sveltejs/kit@2.7.3)(@sveltejs/vite-plugin-svelte@4.0.0)(@types/react@18.3.3)(@wagmi/connectors@5.3.3)(@wagmi/core@2.14.1)(bits-ui@0.21.16)(estree-walker@3.0.3)(graphql@16.9.0)(react-dom@18.3.1)(react@18.3.1)(rxjs@7.8.1)(svelte@5.1.9)(tailwind-merge@2.2.1)(tailwindcss@3.4.1)(typescript@5.6.3)(viem@2.21.39)(vite@5.4.10)(wagmi@2.12.25):
     resolution: {tarball: https://codeload.github.com/santiment/san-webkit/tar.gz/7cfc5141f7548aa19a67f333c89aa2263389cd5d}
     id: github.com/santiment/san-webkit/7cfc5141f7548aa19a67f333c89aa2263389cd5d
     name: san-webkit-next
@@ -16988,15 +16988,15 @@ packages:
       '@internationalized/date': 3.5.5
       '@melt-ui/svelte': 0.85.0(svelte@5.1.9)
       '@reown/appkit': 1.2.0(@types/react@18.3.3)(react@18.3.1)(typescript@5.6.3)(zod@3.23.8)
-      '@reown/appkit-adapter-wagmi': 1.2.0(@coinbase/wallet-sdk@4.0.3)(@types/react@18.3.3)(@wagmi/connectors@5.3.3)(@wagmi/core@2.14.1)(react@18.3.1)(typescript@5.6.3)(viem@2.21.38)(wagmi@2.12.25)(zod@3.23.8)
+      '@reown/appkit-adapter-wagmi': 1.2.0(@coinbase/wallet-sdk@4.0.3)(@types/react@18.3.3)(@wagmi/connectors@5.3.3)(@wagmi/core@2.14.1)(react@18.3.1)(typescript@5.6.3)(viem@2.21.39)(wagmi@2.12.25)(zod@3.23.8)
       '@santiment-network/chart': 1.0.0
       '@stripe/stripe-js': 4.1.0
       '@sveltejs/adapter-auto': 3.3.1(@sveltejs/kit@2.7.3)
       '@sveltejs/adapter-node': 5.2.9(patch_hash=7o55xblaxahmxofaybsh3g5ljq)(@sveltejs/kit@2.7.3)
       '@sveltejs/kit': 2.7.3(patch_hash=pm4osf2nk4mleaxkih763vferi)(@sveltejs/vite-plugin-svelte@4.0.0)(svelte@5.1.9)(vite@5.4.10)
       '@sveltejs/vite-plugin-svelte': 4.0.0(svelte@5.1.9)(vite@5.4.10)
-      '@wagmi/connectors': 5.3.3(@types/react@18.3.3)(@wagmi/core@2.14.1)(react-dom@18.3.1)(react-native@0.76.1)(react@18.3.1)(typescript@5.6.3)(viem@2.21.38)(zod@3.23.8)
-      '@wagmi/core': 2.14.1(@types/react@18.3.3)(react@18.3.1)(typescript@5.6.3)(use-sync-external-store@1.2.0)(viem@2.21.38)
+      '@wagmi/connectors': 5.3.3(@types/react@18.3.3)(@wagmi/core@2.14.1)(react-dom@18.3.1)(react-native@0.76.1)(react@18.3.1)(typescript@5.6.3)(viem@2.21.39)(zod@3.23.8)
+      '@wagmi/core': 2.14.1(@types/react@18.3.3)(react@18.3.1)(typescript@5.6.3)(use-sync-external-store@1.2.0)(viem@2.21.39)
       bits-ui: 0.21.16(svelte@5.1.9)
       drawer-svelte: 0.1.3(@melt-ui/svelte@0.85.0)(esm-env@1.0.0)(svelte-runes@0.0.4)(svelte@5.1.9)
       esm-env: 1.0.0
@@ -17011,10 +17011,10 @@ packages:
       tailwind-variants: 0.2.1(tailwindcss@3.4.1)
       tailwindcss: 3.4.1
       ua-parser-js: 1.0.39
-      viem: 2.21.38(typescript@5.6.3)(zod@3.23.8)
+      viem: 2.21.39(typescript@5.6.3)(zod@3.23.8)
       virtua: 0.36.1(react-dom@18.3.1)(react@18.3.1)(svelte@5.1.9)
       vite: 5.4.10(sass@1.72.0)
-      wagmi: 2.12.25(@tanstack/react-query@5.59.16)(@types/react@18.3.3)(react-dom@18.3.1)(react-native@0.76.1)(react@18.3.1)(typescript@5.6.3)(viem@2.21.38)(zod@3.23.8)
+      wagmi: 2.12.25(@tanstack/react-query@5.59.16)(@types/react@18.3.3)(react-dom@18.3.1)(react-native@0.76.1)(react@18.3.1)(typescript@5.6.3)(viem@2.21.39)(zod@3.23.8)
       zod: 3.23.8
     transitivePeerDependencies:
       - '@azure/app-configuration'
