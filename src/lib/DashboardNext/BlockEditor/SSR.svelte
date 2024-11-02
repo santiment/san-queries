@@ -3,7 +3,7 @@
 
   import { getAllContexts } from 'svelte'
   import { generateHTML } from '@tiptap/html'
-  import { getExtensions } from './extensions'
+  import { getBaseExtensions } from '$lib-next/features/Dashboard/DocumentContent/extensions'
 
   let { content }: { content: JSONContent } = $props()
 
@@ -11,7 +11,7 @@
 
   function renderHtml() {
     try {
-      return generateHTML(content, getExtensions(CTX))
+      return generateHTML(content, getBaseExtensions(CTX))
     } catch (e) {
       console.error(e)
       return ''

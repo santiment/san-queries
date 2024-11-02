@@ -7,6 +7,7 @@
 
   import { getBaseExtensions } from './extensions'
   import { useDashboardCtx } from '../ctx'
+  import SSR from '$lib/DashboardNext/BlockEditor/SSR.svelte'
 
   const { dashboard } = useDashboardCtx.get()
 
@@ -41,6 +42,7 @@
       {/if}
     </Editor>
   {:else}
+    <SSR {content}></SSR>
     <!-- SSR Content -->
   {/if}
 </section>
