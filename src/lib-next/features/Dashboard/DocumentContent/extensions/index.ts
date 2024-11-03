@@ -20,6 +20,7 @@ import Paragraph from './paragraph-block-node'
 import AssetSelectorNode from './asset-selector-node'
 import QueryWidgetBlockNode from './query-widget-block-node'
 import ControlledListBlockNode from './controlled-list-block-node'
+import sanbaseChartBlockNode from './sanbase-chart-block-node'
 // import HiddenBlock from '../nodes/HiddenBlock'
 // import QueryTextColumnBlock from '../nodes/QueryTextColumnBlock'
 // import ControlledListBlock from '../nodes/ControlledListBlock'
@@ -63,6 +64,6 @@ export const getBaseExtensions = (ctx?: Map<string, any>) => [
   // AssetSelector.configure({ ctx }),
   // QueryTextColumnBlock.configure({ ctx }),
   // ControlledListBlock.configure({ ctx }),
-  // SanbaseChartBlock.configure({ ctx }),
+  sanbaseChartBlockNode.configure({ ctx }),
   // TextInputField.configure({ ctx }),
 ]

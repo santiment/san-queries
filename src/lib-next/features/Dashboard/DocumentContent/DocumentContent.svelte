@@ -2,16 +2,20 @@
   import { BROWSER } from 'esm-env'
 
   import Editor from 'tiptap-svelte-adapter'
-  import BlockActions from '$lib/Dashboardnext/BlockEditor/extensions/BlockActions/index.svelte'
-  import BubbleMenu from '$lib/Dashboardnext/BlockEditor/extensions/BubbleMenu/index.svelte'
+  import BlockActions from '$lib/DashboardNext/BlockEditor/extensions/BlockActions/index.svelte'
+  import BubbleMenu from '$lib/DashboardNext/BlockEditor/extensions/BubbleMenu/index.svelte'
 
   import { getBaseExtensions } from './extensions'
+
   import { useDashboardCtx } from '../ctx'
   import SSR from '$lib/DashboardNext/BlockEditor/SSR.svelte'
+  import Placeholder from '$lib/DashboardNext/BlockEditor/extensions/Placeholder'
+  import TrailingNode from '$lib/DashboardNext/BlockEditor/extensions/TrailingNode'
+  import SlashCommands from '$lib/DashboardNext/BlockEditor/extensions/SlashCommands'
 
   const { dashboard, dashboardDocument } = useDashboardCtx.get()
 
-  const { isEditable, apiDashboard } = dashboard
+  const { isEditable } = dashboard
 
   // @ts-ignore
   let content = dashboardDocument.documentContent
@@ -29,8 +33,7 @@
         // editorProps,
 
         extensions: getBaseExtensions().concat(
-          [],
-          // isEditable ? [] : [Placeholder, TrailingNode, SlashCommands],
+          isEditable ? [Placeholder, TrailingNode, SlashCommands] : [],
         ),
 
         // onUpdate,
@@ -43,7 +46,6 @@
     </Editor>
   {:else}
     <SSR {content}></SSR>
-    <!-- SSR Content -->
   {/if}
 </section>
 
