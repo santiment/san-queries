@@ -3,11 +3,14 @@
   import Header from './Header/Header.svelte'
   import DocumentHeading from './DocumentHeading.svelte'
   import DocumentContent from './DocumentContent/DocumentContent.svelte'
+  import { useDashboardGlobalParametersCtx } from './ctx/global-parameters.svelte'
 
   type TProps = { apiDashboard: undefined | null | App.ApiDashboard; readonly?: boolean }
   let { apiDashboard, readonly = true }: TProps = $props()
 
   const ctx = useDashboardCtx(apiDashboard, readonly)
+  useDashboardGlobalParametersCtx.set()
+
   console.log(ctx)
 </script>
 

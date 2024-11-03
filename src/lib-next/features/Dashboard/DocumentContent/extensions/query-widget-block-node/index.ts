@@ -28,7 +28,7 @@ export default Node.create({
     return {
       addQueryWidget:
         (id: string) =>
-        ({ editor, commands, dispatch, chain }) => {
+        ({ chain }) => {
           return chain()
             .focus()
             .insertContent({ type: this.name, attrs: { 'data-id': id } })

@@ -1,6 +1,7 @@
 import { BROWSER } from 'esm-env'
 import { validateDashboardDocument } from '../validate'
-import { parseDashboardJSON_v2, type TApiDashboard, type TDashboardSettings_v2 } from './version-2'
+import { parseDashboardJSON_v2, type TDashboardSettings_v2 } from './version-2'
+import type { TApiDashboard } from '../types'
 
 export type TParsedDashboard = ReturnType<typeof parseDashboardJSON_v2> & {
   version: 3

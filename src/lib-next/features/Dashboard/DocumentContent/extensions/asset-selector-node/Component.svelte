@@ -4,20 +4,23 @@
   import { NodeViewWrapper, type ViewProps } from 'tiptap-svelte-adapter'
   import { showSelectAssetDialog$ } from './SelectAssetDialog.svelte'
   import { useAssetFlow } from './asset.svelte'
+  import { useGlobalParameterWidgetFlow } from '$lib-next/features/Dashboard/ctx/global-parameters.svelte'
 
   let { view }: ViewProps = $props()
 
   const { getAssetBySlug } = useAssetFlow()
 
+  const { state } = useGlobalParameterWidgetFlow(view)
+
   const showSelectAssetDialog = showSelectAssetDialog$()
 
-  console.log(view)
-  let asset = $derived(getAssetBySlug('bitcoin'))
+  let asset = $derived(getAssetBySlug(state.$))
 
   function onAssetSelectorClick() {
     showSelectAssetDialog().then((asset) => {
-      console.log(asset)
-      // state.update(asset.slug)
+      // console.log(asset)
+
+      state.$ = asset.slug
     })
   }
 </script>

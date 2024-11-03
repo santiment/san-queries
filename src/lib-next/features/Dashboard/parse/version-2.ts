@@ -1,5 +1,14 @@
-import type { TNominal } from 'san-webkit-next/utils'
 import { z } from 'zod'
+import type {
+  TApiDashboard,
+  TDashboardDocument,
+  TDashboardGlobalParameter,
+  TDashboardGlobalParameterKey,
+  TDataWidget,
+  TDataWidgetKey,
+  TDataWidgetLocalParameterKey,
+  TDocumentNode,
+} from '../types'
 
 export const DashboardSettingsSchema_v2 = z.object({
   version: z.literal(2),
@@ -7,43 +16,6 @@ export const DashboardSettingsSchema_v2 = z.object({
 })
 
 // type TDashboardSettingsSchema_v2 = z.infer<typeof DashboardSettingsSchema_v2>
-
-export type TDocumentNode<GType extends string = string> = {
-  type: GType
-  content?: TDocumentNode[]
-  attrs?: Record<string, undefined | string>
-  [x: string]: any
-}
-
-export type TDashboardDocument = TDocumentNode<'doc'> & { content: TDocumentNode[] }
-
-export type TApiDashboard<GSettings> = {
-  id: TNominal<string, 'TApiDashboardId'>
-
-  parameters: Record<
-    string,
-    | undefined
-    | {
-        overrides: { dashboard_query_mapping_id: string; parameter: string }[]
-        value: string | string[]
-      }
-  >
-
-  settings: GSettings
-}
-
-type TDataWidgetKey = TNominal<string, 'TDataWidgetKey'>
-type TDataWidget = { type: string; id: TDataWidgetKey; data: any }
-
-type TDataWidgetLocalParameterKey = TNominal<string, 'TDataWidgetLocalParameterKey'>
-
-type TDashboardGlobalParameterKey = TNominal<string, 'TDashboardGlobalParameterKey'>
-type TDashboardGlobalParameter = {
-  id: TDashboardGlobalParameterKey
-  type: string
-  value: any
-  overrides: [TDataWidgetKey, TDataWidgetLocalParameterKey[]][]
-}
 
 export type TDashboardSettings_v2 = {
   version: 2
@@ -75,19 +47,11 @@ export function parseDashboardJSON_v2(apiDashboard: TApiDashboard<TDashboardSett
         id: parameterId as TDashboardGlobalParameterKey,
         type: 'text-input-field',
         value: parameter.value,
-        overrides: Array.from(
-          parameter.overrides.reduce((acc, value) => {
-            const dataWidgetKey = value.dashboard_query_mapping_id as TDataWidgetKey
-            const localParameterKey = value.parameter as TDataWidgetLocalParameterKey
 
-            const overrides = acc.get(dataWidgetKey)
-
-            if (overrides) overrides.push(localParameterKey)
-            else acc.set(dataWidgetKey, [localParameterKey])
-
-            return acc
-          }, new Map<TDataWidgetKey, TDataWidgetLocalParameterKey[]>()),
-        ),
+        overrides: parameter.overrides.map((item) => [
+          item.dashboard_query_mapping_id as TDataWidgetKey,
+          item.parameter as TDataWidgetLocalParameterKey,
+        ]),
       })
     }
 
