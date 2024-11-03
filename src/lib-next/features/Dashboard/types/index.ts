@@ -25,14 +25,14 @@ export type TApiDashboard<GSettings> = {
 }
 
 export type TDataWidgetKey = TNominal<string, 'TDataWidgetKey'>
-export type TDataWidget = { type: string; id: TDataWidgetKey; data: any }
+export type TApiDataWidget = { type: string; id: TDataWidgetKey; data: any }
 
 export type TDataWidgetLocalParameterKey = TNominal<string, 'TDataWidgetLocalParameterKey'>
 
 export type TDashboardGlobalParameterKey = TNominal<string, 'TDashboardGlobalParameterKey'>
-export type TDashboardGlobalParameter = {
+export type TApiDashboardGlobalParameter<GType extends string = string, GValue = unknown> = {
   id: TDashboardGlobalParameterKey
-  type: string
-  value: any
+  type: GType
+  value: GValue
   overrides: [TDataWidgetKey, TDataWidgetLocalParameterKey][]
 }

@@ -5,12 +5,13 @@
   import { showSelectAssetDialog$ } from './SelectAssetDialog.svelte'
   import { useAssetFlow } from './asset.svelte'
   import { useGlobalParameterWidgetFlow } from '$lib-next/features/Dashboard/ctx/global-parameters.svelte'
+  import { ASSET_SELECTOR_NODE } from './schema'
 
   let { view }: ViewProps = $props()
 
   const { getAssetBySlug } = useAssetFlow()
 
-  const { state } = useGlobalParameterWidgetFlow(view)
+  const { state } = useGlobalParameterWidgetFlow(view, ASSET_SELECTOR_NODE)
 
   const showSelectAssetDialog = showSelectAssetDialog$()
 
@@ -18,8 +19,6 @@
 
   function onAssetSelectorClick() {
     showSelectAssetDialog().then((asset) => {
-      // console.log(asset)
-
       state.$ = asset.slug
     })
   }

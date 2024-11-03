@@ -2,6 +2,7 @@ import { renderNodeViewUniversalHTML } from '$lib/DashboardNext/BlockEditor/node
 import { mergeAttributes, Node } from '@tiptap/core'
 import { SvelteNodeViewRenderer } from 'tiptap-svelte-adapter'
 import Component from './Component.svelte'
+import { ASSET_SELECTOR_NODE } from './schema'
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
@@ -16,8 +17,7 @@ declare module '@tiptap/core' {
 }
 
 export default Node.create({
-  name: 'asset-selector',
-  isGlobalParameter: true,
+  ...ASSET_SELECTOR_NODE,
 
   priority: 101,
 
@@ -46,7 +46,7 @@ export default Node.create({
   addAttributes() {
     return {
       'data-id': { default: '' },
-      'data-value': { default: 'bitcoin' },
+      'data-value': { default: ASSET_SELECTOR_NODE.defaultValue },
       style: { default: '' },
       class: { default: 'inline-flex align-middle' },
     }

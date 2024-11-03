@@ -2,9 +2,9 @@ import { z } from 'zod'
 import type {
   TApiDashboard,
   TDashboardDocument,
-  TDashboardGlobalParameter,
+  TApiDashboardGlobalParameter,
   TDashboardGlobalParameterKey,
-  TDataWidget,
+  TApiDataWidget,
   TDataWidgetKey,
   TDataWidgetLocalParameterKey,
   TDocumentNode,
@@ -23,9 +23,9 @@ export type TDashboardSettings_v2 = {
   __editorJson?: TDashboardDocument
   documentContent?: TDashboardDocument
 
-  dataWidgets?: TDataWidget[]
+  dataWidgets?: TApiDataWidget[]
 
-  globalParameters?: TDashboardGlobalParameter[]
+  globalParameters?: TApiDashboardGlobalParameter[]
 }
 
 export function parseDashboardJSON_v2(apiDashboard: TApiDashboard<TDashboardSettings_v2>) {
