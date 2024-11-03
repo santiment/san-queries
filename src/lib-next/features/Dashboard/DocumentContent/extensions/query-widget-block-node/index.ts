@@ -17,6 +17,7 @@ declare module '@tiptap/core' {
 
 export default Node.create({
   name: 'query-widget',
+  isDataWidget: true,
 
   group: 'block',
 

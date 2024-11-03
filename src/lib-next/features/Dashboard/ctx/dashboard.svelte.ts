@@ -1,5 +1,6 @@
 import { createCtx } from 'san-webkit-next/utils'
 import { useCustomerCtx } from 'san-webkit-next/ctx/customer'
+import { parseDashboardDocument } from '../parse'
 
 type TAuthor = null | {
   id: string | number
@@ -10,7 +11,9 @@ type TAuthor = null | {
 export const useDashboardCtx = createCtx(
   'queries_useDashboardCtx',
   (apiDashboard: undefined | null | App.ApiDashboard, isReadonly = true) => {
-    const _apiDashboard: Partial<NonNullable<typeof apiDashboard>> = apiDashboard || {}
+    const _apiDashboard: Partial<NonNullable<typeof apiDashboard>> = apiDashboard || {
+      settings: {},
+    }
 
     const { currentUser } = useCustomerCtx.get()
 
@@ -42,6 +45,8 @@ export const useDashboardCtx = createCtx(
 
         apiDashboard,
       },
+
+      dashboardDocument: parseDashboardDocument(_apiDashboard),
     }
   },
 )

@@ -17,6 +17,7 @@ declare module '@tiptap/core' {
 
 export default Node.create({
   name: 'asset-selector',
+  isGlobalParameter: true,
 
   priority: 101,
 

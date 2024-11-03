@@ -9,12 +9,12 @@
   import { useDashboardCtx } from '../ctx'
   import SSR from '$lib/DashboardNext/BlockEditor/SSR.svelte'
 
-  const { dashboard } = useDashboardCtx.get()
+  const { dashboard, dashboardDocument } = useDashboardCtx.get()
 
   const { isEditable, apiDashboard } = dashboard
 
   // @ts-ignore
-  let content = apiDashboard?.settings.__editorJson || []
+  let content = dashboardDocument.documentContent
 
   console.log({ content })
 </script>
