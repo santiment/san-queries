@@ -20,8 +20,8 @@ export function useDataWidgetParameterOverrides<
           ] as const,
       )
       .reduce(
-        (acc, [localParameterKey, globalParameter]) => {
-          return Object.assign(acc, { [localParameterKey]: globalParameter?.state.$$.value })
+        (acc, [localParameterKey, getValue]) => {
+          return Object.assign(acc, { [localParameterKey]: getValue?.() })
         },
         Object.assign({}, localParameters),
       ),

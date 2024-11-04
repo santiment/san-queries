@@ -16,11 +16,11 @@
 
   const showSelectAssetDialog = showSelectAssetDialog$()
 
-  let asset = $derived(getAssetBySlug(state.$$.value))
+  let asset = $derived(getAssetBySlug(state.$$.slug))
 
   function onAssetSelectorClick() {
     showSelectAssetDialog().then((asset) => {
-      update('value', asset.slug)
+      update('slug', asset.slug)
     })
   }
 </script>

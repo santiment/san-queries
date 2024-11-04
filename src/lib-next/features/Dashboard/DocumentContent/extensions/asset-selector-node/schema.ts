@@ -5,7 +5,7 @@ export const ASSET_SELECTOR_NODE = createGlobalParameterSchema({
   keyPrefix: 'Asset',
 
   initState(defaultState: Partial<{ slug: string }> = {}) {
-    return { value: defaultState.slug || 'bitcoin' }
+    return { slug: defaultState.slug || 'bitcoin' }
   },
 
   initSettings(defaultSettings: Partial<{ test: number }> = {}) {

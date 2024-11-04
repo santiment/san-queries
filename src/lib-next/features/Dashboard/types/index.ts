@@ -34,5 +34,5 @@ export type TApiDashboardGlobalParameter<GType extends string = string, GValue =
   id: TDashboardGlobalParameterKey
   type: GType
   value: GValue
-  overrides: [TDataWidgetKey, TDataWidgetLocalParameterKey][]
+  overrides: Record<string, undefined | [TDataWidgetKey, TDataWidgetLocalParameterKey][]>
 }

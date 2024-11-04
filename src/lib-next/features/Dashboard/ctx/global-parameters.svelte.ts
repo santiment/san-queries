@@ -24,13 +24,21 @@ export type TDashboardGlobalParameter<GSchema extends TGlobalParameterNode> = {
     get $$(): ReturnType<NonNullable<GSchema['initSettings']>>
   }
 
-  overrides: SS<Map<TDataWidgetKey, TDataWidgetLocalParameterKey>>
+  overrides: SS<
+    Record<
+      keyof ReturnType<GSchema['initState']>,
+      Map<TDataWidgetKey, TDataWidgetLocalParameterKey>
+    >
+  >
 }
 function createDashboardGlobalParameter<GSchema extends TGlobalParameterNode>(
   { id, type, value, overrides }: TApiDashboardGlobalParameter,
   schema: GSchema,
-) {
-  const state = $state<{ [key: string]: unknown }>(schema.initState(value!) || value)
+): TDashboardGlobalParameter<GSchema> {
+  const defaultState = schema.initState(value!) || value
+  const stateKeys = Object.keys(defaultState) as (keyof ReturnType<GSchema['initState']>)[]
+
+  const state = $state<{ [key: string]: unknown }>(defaultState)
   const settings = $state<undefined | { [key: string]: unknown }>(schema.initSettings?.({}))
 
   return {
@@ -47,7 +55,20 @@ function createDashboardGlobalParameter<GSchema extends TGlobalParameterNode>(
       },
     },
 
-    overrides: ss(new Map(overrides)),
+    overrides: ss(
+      stateKeys.reduce(
+        (acc, stateKey) => {
+          const override = overrides[stateKey as string]
+
+          if (override) {
+            acc[stateKey] = new Map(override)
+          }
+
+          return acc
+        },
+        {} as Record<(typeof stateKeys)[number], Map<TDataWidgetKey, TDataWidgetLocalParameterKey>>,
+      ),
+    ),
   }
 }
 
@@ -60,19 +81,24 @@ export const useDashboardGlobalParametersCtx = createCtx(
       dashboardDocument.globalParameters
         .map((apiParameter) => {
           const schema = GlobalParameterNodes[apiParameter.type]
-          console.log(apiParameter)
           return schema && createDashboardGlobalParameter(apiParameter, schema)
         })
-        .filter(Boolean),
+        .filter(Boolean) as TDashboardGlobalParameter<any>[],
     )
 
     const globalParameterMap = $derived(new Map(globalParameters.map((item) => [item.id, item])))
 
     const globalParameterByOverrideMap = $derived(
-      new Map(
-        globalParameters.flatMap((item) =>
-          Array.from(item.overrides.$).map((keys) => [keys.join('') as string, item]),
-        ),
+      new Map<string, () => unknown>(
+        globalParameters.flatMap((globalParameter) => {
+          const overrides = globalParameter.overrides.$
+          return Object.entries(overrides).flatMap(([stateKey, overrides]) => {
+            return Array.from(overrides).map((keys) => [
+              keys.join('') as string,
+              () => globalParameter.state.$$[stateKey],
+            ])
+          })
+        }),
       ),
     )
 
@@ -95,7 +121,7 @@ export const useDashboardGlobalParametersCtx = createCtx(
             id: `${schema.keyPrefix}-${getRandomKey()}` as TDashboardGlobalParameterKey,
             type: schema.name,
             value: {},
-            overrides: [],
+            overrides: { value: [] },
           },
           schema,
         )
@@ -115,6 +141,14 @@ export const useDashboardGlobalParametersCtx = createCtx(
   },
 )
 
+/**
+ *
+ * Hook used to setup custom document node's state
+ *
+ * @param view - Document's (tiptap) node view
+ * @param schema - Global parameter schema
+ * @returns
+ */
 export function useGlobalParameterWidgetFlow<GSchema extends TGlobalParameterNode>(
   view: ViewProps['view'],
   schema: GSchema,

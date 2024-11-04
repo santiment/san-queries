@@ -48,10 +48,12 @@ export function parseDashboardJSON_v2(apiDashboard: TApiDashboard<TDashboardSett
         type: 'text-input-field',
         value: parameter.value,
 
-        overrides: parameter.overrides.map((item) => [
-          item.dashboard_query_mapping_id as TDataWidgetKey,
-          item.parameter as TDataWidgetLocalParameterKey,
-        ]),
+        overrides: {
+          value: parameter.overrides.map((item) => [
+            item.dashboard_query_mapping_id as TDataWidgetKey,
+            item.parameter as TDataWidgetLocalParameterKey,
+          ]),
+        },
       })
     }
 
@@ -70,7 +72,11 @@ export function parseDashboardJSON_v2(apiDashboard: TApiDashboard<TDashboardSett
     for (const globalParameter of globalParameters) {
       const corrections = parameterNodeCorrections.get(globalParameter.id)
       if (corrections?.type) globalParameter.type = corrections.type
-      if (corrections?.value) globalParameter.value = corrections.value
+      if (corrections?.value) {
+        globalParameter.value = corrections.value
+
+        globalParameter.overrides = { slug: globalParameter.overrides.value }
+      }
     }
   }
 
