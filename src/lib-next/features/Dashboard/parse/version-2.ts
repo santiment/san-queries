@@ -55,10 +55,11 @@ export function parseDashboardJSON_v2(apiDashboard: TApiDashboard<TDashboardSett
       })
     }
 
-    const parameterNodeType = new Map<string, string>()
+    const parameterNodeCorrections = new Map<string, { type?: string; value?: any }>()
     function correntGlobalParameterType(node: TDocumentNode) {
       if (node.type === 'asset-selector') {
-        parameterNodeType.set(node.attrs!['data-id']!, node.type)
+        const corrections = { type: node.type, value: { slug: node.attrs!['data-value'] } }
+        parameterNodeCorrections.set(node.attrs!['data-id']!, corrections)
         return
       }
 
@@ -67,8 +68,9 @@ export function parseDashboardJSON_v2(apiDashboard: TApiDashboard<TDashboardSett
     documentContent.content.forEach(correntGlobalParameterType)
 
     for (const globalParameter of globalParameters) {
-      const correctedType = parameterNodeType.get(globalParameter.id)
-      if (correctedType) globalParameter.type = correctedType
+      const corrections = parameterNodeCorrections.get(globalParameter.id)
+      if (corrections?.type) globalParameter.type = corrections.type
+      if (corrections?.value) globalParameter.value = corrections.value
     }
   }
 

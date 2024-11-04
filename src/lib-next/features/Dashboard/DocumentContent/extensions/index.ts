@@ -21,6 +21,8 @@ import AssetSelectorNode from './asset-selector-node'
 import QueryWidgetBlockNode from './query-widget-block-node'
 import ControlledListBlockNode from './controlled-list-block-node'
 import sanbaseChartBlockNode from './sanbase-chart-block-node'
+import type { TGlobalParameterNode } from './schema'
+
 // import HiddenBlock from '../nodes/HiddenBlock'
 // import QueryTextColumnBlock from '../nodes/QueryTextColumnBlock'
 // import ControlledListBlock from '../nodes/ControlledListBlock'
@@ -67,3 +69,14 @@ export const getBaseExtensions = (ctx?: Map<string, any>) => [
   sanbaseChartBlockNode.configure({ ctx }),
   // TextInputField.configure({ ctx }),
 ]
+
+export const GlobalParameterNodes = getBaseExtensions().reduce(
+  (acc, item) => {
+    if (item.config.isGlobalParameter) {
+      acc[item.config.name] = item.config as TGlobalParameterNode
+    }
+
+    return acc
+  },
+  {} as Record<string, undefined | TGlobalParameterNode>,
+)

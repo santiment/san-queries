@@ -1,6 +1,6 @@
 import { getBaseExtensions } from '../DocumentContent/extensions'
 import type { TParsedDashboard } from '../parse'
-import type { TDocumentNode } from '../parse/version-2'
+import type { TDocumentNode } from '../types'
 
 export function validateDashboardDocument(data: TParsedDashboard) {
   const extensions = getBaseExtensions()

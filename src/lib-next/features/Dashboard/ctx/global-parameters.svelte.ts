@@ -9,23 +9,44 @@ import type {
   TDataWidgetKey,
   TDataWidgetLocalParameterKey,
 } from '../types'
+import { GlobalParameterNodes } from '../DocumentContent/extensions'
+import type { TGlobalParameterNode } from '../DocumentContent/extensions/schema'
 
-export type TDashboardGlobalParameter<GType extends string = string, GValue = unknown> = {
+export type TDashboardGlobalParameter<GSchema extends TGlobalParameterNode> = {
   id: TDashboardGlobalParameterKey
-  type: GType
-  value: SS<GValue>
+  type: GSchema['name']
+
+  state: {
+    get $$(): ReturnType<NonNullable<GSchema['initState']>>
+  }
+
+  settings?: {
+    get $$(): ReturnType<NonNullable<GSchema['initSettings']>>
+  }
+
   overrides: SS<Map<TDataWidgetKey, TDataWidgetLocalParameterKey>>
 }
-function createDashboardGlobalParameter<GType extends string, GValue>({
-  id,
-  type,
-  value,
-  overrides,
-}: TApiDashboardGlobalParameter<GType, GValue>): TDashboardGlobalParameter<GType, GValue> {
+function createDashboardGlobalParameter<GSchema extends TGlobalParameterNode>(
+  { id, type, value, overrides }: TApiDashboardGlobalParameter,
+  schema: GSchema,
+) {
+  const state = $state<{ [key: string]: unknown }>(schema.initState(value!) || value)
+  const settings = $state<undefined | { [key: string]: unknown }>(schema.initSettings?.({}))
+
   return {
     id,
-    type,
-    value: ss(value),
+    type: type as GSchema['name'],
+    state: {
+      get $$() {
+        return state as ReturnType<GSchema['initState']>
+      },
+    },
+    settings: schema.initSettings && {
+      get $$() {
+        return settings as ReturnType<NonNullable<GSchema['initSettings']>>
+      },
+    },
+
     overrides: ss(new Map(overrides)),
   }
 }
@@ -36,7 +57,13 @@ export const useDashboardGlobalParametersCtx = createCtx(
     const { dashboardDocument } = useDashboardCtx.get()
 
     let globalParameters = $state.raw(
-      dashboardDocument.globalParameters.map(createDashboardGlobalParameter),
+      dashboardDocument.globalParameters
+        .map((apiParameter) => {
+          const schema = GlobalParameterNodes[apiParameter.type]
+          console.log(apiParameter)
+          return schema && createDashboardGlobalParameter(apiParameter, schema)
+        })
+        .filter(Boolean),
     )
 
     const globalParameterMap = $derived(new Map(globalParameters.map((item) => [item.id, item])))
@@ -54,21 +81,24 @@ export const useDashboardGlobalParametersCtx = createCtx(
         return globalParameterMap.get(globalParameterKey)
       },
 
-      registerGlobalParameter<GType extends string, GValue>(
+      registerGlobalParameter<GSchema extends TGlobalParameterNode>(
         globalParameterKey: undefined | TDashboardGlobalParameterKey,
-        schema: { keyPrefix: string; name: GType; defaultValue: GValue },
-      ): TDashboardGlobalParameter<GType, GValue> {
+        schema: GSchema,
+      ) {
         const existing = globalParameterKey && globalParameterMap.get(globalParameterKey)
         if (existing) {
-          return existing as TDashboardGlobalParameter<GType, GValue>
+          return existing as TDashboardGlobalParameter<GSchema>
         }
 
-        const globalParameter = createDashboardGlobalParameter({
-          id: `${schema.keyPrefix}-${getRandomKey()}` as TDashboardGlobalParameterKey,
-          type: schema.name,
-          value: schema.defaultValue,
-          overrides: [],
-        })
+        const globalParameter = createDashboardGlobalParameter(
+          {
+            id: `${schema.keyPrefix}-${getRandomKey()}` as TDashboardGlobalParameterKey,
+            type: schema.name,
+            value: {},
+            overrides: [],
+          },
+          schema,
+        )
 
         globalParameters = globalParameters.concat(globalParameter)
 
@@ -85,43 +115,48 @@ export const useDashboardGlobalParametersCtx = createCtx(
   },
 )
 
-export function useGlobalParameterWidgetFlow<
-  GSchema extends { name: string; keyPrefix: string; defaultValue: any },
->(view: ViewProps['view'], schema: GSchema) {
-  type TValue = GSchema['defaultValue']
+export function useGlobalParameterWidgetFlow<GSchema extends TGlobalParameterNode>(
+  view: ViewProps['view'],
+  schema: GSchema,
+) {
   const { registerGlobalParameter } = useDashboardGlobalParametersCtx.get()
 
   const viewAttrs = view.$.node.attrs
   const viewDataId = viewAttrs['data-id'] as undefined | TDashboardGlobalParameterKey
-  const globalParameter = registerGlobalParameter<GSchema['name'], TValue>(viewDataId, schema)
+  const globalParameter = registerGlobalParameter(viewDataId, schema)
 
-  Object.assign(viewAttrs, { 'data-value': globalParameter.value.$, 'data-id': globalParameter.id })
+  Object.assign(viewAttrs, {
+    ...globalParameter.state.$$,
+    'data-id': globalParameter.id,
+  })
 
-  const viewDataValue = $derived(view.$.node.attrs['data-value'] as TValue)
+  const stateKeys = Object.keys(globalParameter.state.$$)
+  const viewStateAttrs = $derived(view.$.node.attrs)
 
   $effect(() => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    viewDataValue
+    viewStateAttrs
 
     untrack(() => {
-      if (viewDataValue === globalParameter.value.$) return
+      for (const stateKey of stateKeys) {
+        const attrValue = viewStateAttrs[stateKey]
+        if (attrValue === globalParameter.state.$$[stateKey]) continue
 
-      globalParameter.value.$ = viewDataValue
+        globalParameter.state.$$[stateKey as TStateKeys] = attrValue
+      }
     })
   })
 
+  type TState = ReturnType<GSchema['initState']>
+  type TStateKeys = keyof TState
   return {
     globalParameter,
-    state: {
-      get $() {
-        return viewDataValue
-      },
+    update<GStateKey extends TStateKeys>(stateKey: GStateKey, value: TState[GStateKey]) {
+      if (value === globalParameter.state.$$[stateKey]) {
+        return
+      }
 
-      set $(value: TValue) {
-        if (value === globalParameter.value.$) return
-
-        view.$.updateAttributes({ 'data-value': value })
-      },
+      view.$.updateAttributes({ [stateKey]: value })
     },
   }
 }

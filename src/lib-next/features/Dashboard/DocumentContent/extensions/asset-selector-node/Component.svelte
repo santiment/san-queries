@@ -11,15 +11,16 @@
 
   const { getAssetBySlug } = useAssetFlow()
 
-  const { state } = useGlobalParameterWidgetFlow(view, ASSET_SELECTOR_NODE)
+  const { globalParameter, update } = useGlobalParameterWidgetFlow(view, ASSET_SELECTOR_NODE)
+  const { state } = globalParameter
 
   const showSelectAssetDialog = showSelectAssetDialog$()
 
-  let asset = $derived(getAssetBySlug(state.$))
+  let asset = $derived(getAssetBySlug(state.$$.value))
 
   function onAssetSelectorClick() {
     showSelectAssetDialog().then((asset) => {
-      state.$ = asset.slug
+      update('value', asset.slug)
     })
   }
 </script>
@@ -29,7 +30,7 @@
     class="flex cursor-pointer gap-1 whitespace-nowrap rounded border px-1.5 center hover:border-green"
     onclick={onAssetSelectorClick}
   >
-    <AssetLogo slug={asset.slug}></AssetLogo>
+    <AssetLogo slug={asset.slug || ''}></AssetLogo>
     <span class="overflow-hidden text-ellipsis capitalize">{asset.name || asset.slug}</span>
     {#if asset.ticker}
       <span class="uppercase text-waterloo">({asset.ticker})</span>

@@ -1,5 +1,7 @@
+import { createCtx } from 'san-webkit-next/utils'
 import type { TDataWidgetKey, TDataWidgetLocalParameterKey } from '../types'
 import { useDashboardGlobalParametersCtx } from './global-parameters.svelte'
+import { useDashboardCtx } from './dashboard.svelte'
 
 export function useDataWidgetParameterOverrides<
   GParams extends {
@@ -19,7 +21,7 @@ export function useDataWidgetParameterOverrides<
       )
       .reduce(
         (acc, [localParameterKey, globalParameter]) => {
-          return Object.assign(acc, { [localParameterKey]: globalParameter?.value.$ })
+          return Object.assign(acc, { [localParameterKey]: globalParameter?.state.$$.value })
         },
         Object.assign({}, localParameters),
       ),
@@ -29,6 +31,38 @@ export function useDataWidgetParameterOverrides<
     parameterOverrides: {
       get $() {
         return globalParameterOverrides
+      },
+    },
+  }
+}
+
+export const useDashboardDataWidgetsFlow = createCtx(
+  'dashboards_useDashboardDataWidgetsFlow',
+  () => {
+    const { dashboardDocument } = useDashboardCtx.get()
+
+    let dataWidgets = $state.raw(dashboardDocument.dataWidgets.map(createDashboardDataWidget))
+  },
+)
+
+export type TDashboardDataWidget<
+  GType extends string = string,
+  GState = { [key: string]: unknown },
+> = {
+  id: TDataWidgetKey
+  type: GType
+  state: {
+    get $$(): GState
+  }
+}
+function createDashboardDataWidget({ id, type, state }: TDashboardDataWidget) {
+  const _state = $state(Object.assign({}, state))
+  return {
+    id,
+    type,
+    state: {
+      get $$() {
+        return _state
       },
     },
   }

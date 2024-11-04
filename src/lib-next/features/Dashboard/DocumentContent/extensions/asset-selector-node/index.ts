@@ -46,7 +46,9 @@ export default Node.create({
   addAttributes() {
     return {
       'data-id': { default: '' },
-      'data-value': { default: ASSET_SELECTOR_NODE.defaultValue },
+      value: { default: '' },
+      slug: { default: '' },
+
       style: { default: '' },
       class: { default: 'inline-flex align-middle' },
     }
