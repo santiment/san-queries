@@ -80,6 +80,18 @@ export function parseDashboardJSON_v2(apiDashboard: TApiDashboard<TDashboardSett
     }
   }
 
+  if (dataWidgets.length === 0) {
+    console.log(apiDashboard.queries)
+    for (const query of apiDashboard.queries) {
+      dataWidgets.push({
+        id: query.dashboardQueryMappingId,
+        type: 'query-widget',
+        data: query,
+        settings: {},
+      })
+    }
+  }
+
   if (isEmptyDocument) {
     documentContent.content.push({ type: 'paragraph' })
   }

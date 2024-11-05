@@ -4,7 +4,7 @@
   import { NodeViewWrapper, type ViewProps } from 'tiptap-svelte-adapter'
   import Button from 'san-webkit-next/ui/core/Button'
   import Chart from './Chart.svelte'
-  import { useDataWidgetParameterOverrides } from '$lib-next/features/Dashboard/ctx/data-widget.svelte'
+  import { useDataWidgetParameterOverrides } from '$lib-next/features/Dashboard/ctx/data-widgets.svelte'
   import { SANBASE_CHART_BLOCK_NODE } from './schema'
   import type { TDataWidgetKey } from '$lib-next/features/Dashboard/types'
   import { useDashboardCtx } from '$lib-next/features/Dashboard/ctx'

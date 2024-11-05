@@ -40,7 +40,7 @@ export default Node.create({
   addAttributes() {
     return {
       'data-id': { default: '' },
-      'data-metrics': { default: [] },
+      metrics: { default: [] },
       style: { default: '' },
     }
   },

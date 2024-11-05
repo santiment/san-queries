@@ -2,6 +2,7 @@ import { createCtx } from 'san-webkit-next/utils'
 import type { TDataWidgetKey, TDataWidgetLocalParameterKey } from '../types'
 import { useDashboardGlobalParametersCtx } from './global-parameters.svelte'
 import { useDashboardCtx } from './dashboard.svelte'
+import { GlobalParameterNodes } from '../DocumentContent/extensions'
 
 export function useDataWidgetParameterOverrides<
   GParams extends {
@@ -41,7 +42,14 @@ export const useDashboardDataWidgetsFlow = createCtx(
   () => {
     const { dashboardDocument } = useDashboardCtx.get()
 
-    let dataWidgets = $state.raw(dashboardDocument.dataWidgets.map(createDashboardDataWidget))
+    let dataWidgets = $state.raw(
+      dashboardDocument.dataWidgets
+        .map((dataWidget) => {
+          const schema = GlobalParameterNodes[dataWidget.type]
+          return schema && createDashboardDataWidget(dataWidget, schema)
+        })
+        .filter(Boolean),
+    )
   },
 )
 

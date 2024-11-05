@@ -1,7 +1,7 @@
-import { mergeAttributes, Node } from '@tiptap/core'
-import { SvelteNodeViewRenderer } from 'tiptap-svelte-adapter'
+import { Node } from '@tiptap/core'
 import Component from './Component.svelte'
 import { renderNodeViewUniversalHTML } from '$lib/DashboardNext/BlockEditor/nodes/ssr'
+import { QUERY_WIDGET_BLOCK_NODE } from './schema'
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
@@ -16,8 +16,7 @@ declare module '@tiptap/core' {
 }
 
 export default Node.create({
-  name: 'query-widget',
-  isDataWidget: true,
+  ...QUERY_WIDGET_BLOCK_NODE,
 
   group: 'block',
 
@@ -40,6 +39,7 @@ export default Node.create({
   addAttributes() {
     return {
       'data-id': { default: '' },
+      queryId: { default: '' },
       style: { default: '' },
     }
   },
@@ -50,13 +50,13 @@ export default Node.create({
 
   renderHTML({ HTMLAttributes }) {
     return renderNodeViewUniversalHTML(
-      ['div', mergeAttributes(HTMLAttributes, { 'data-type': this.name })],
+      ['div', { 'data-type': this.name, 'data-id': HTMLAttributes['data-id'] }],
       this.options,
       Component,
     )
   },
 
-  addNodeView() {
-    return SvelteNodeViewRenderer(Component)
-  },
+  // addNodeView() {
+  //   return SvelteNodeViewRenderer(Component)
+  // },
 })

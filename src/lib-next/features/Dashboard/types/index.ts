@@ -21,11 +21,35 @@ export type TApiDashboard<GSettings> = {
       }
   >
 
+  queries: {
+    dashboardQueryMappingId: TDataWidgetKey
+    description: null | string
+    id: number
+    isPublic: boolean
+    name: string
+    settings: {
+      columns: Record<string, any>
+      visualisation: 'Table'
+    }
+    sqlQueryParameters: Record<string, string | string[]>
+    sqlQueryText: string
+    user: { avatarUrl: null; id: '144899'; username: 'team' }
+  }[]
+
   settings: GSettings
 }
 
 export type TDataWidgetKey = TNominal<string, 'TDataWidgetKey'>
-export type TApiDataWidget = { type: string; id: TDataWidgetKey; data: any }
+export type TApiDataWidget = {
+  type: string
+  id: TDataWidgetKey
+
+  /** Non-reactive (static) data */
+  data: any
+
+  /** Will be converted to the deeply shared signal */
+  settings: any
+}
 
 export type TDataWidgetLocalParameterKey = TNominal<string, 'TDataWidgetLocalParameterKey'>
 
@@ -33,6 +57,8 @@ export type TDashboardGlobalParameterKey = TNominal<string, 'TDashboardGlobalPar
 export type TApiDashboardGlobalParameter<GType extends string = string, GValue = unknown> = {
   id: TDashboardGlobalParameterKey
   type: GType
+
+  // TODO: rename to state before moving to V3
   value: GValue
   overrides: Record<string, undefined | [TDataWidgetKey, TDataWidgetLocalParameterKey][]>
 }
