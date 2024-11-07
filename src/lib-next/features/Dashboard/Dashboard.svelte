@@ -4,12 +4,17 @@
   import DocumentHeading from './DocumentHeading.svelte'
   import DocumentContent from './DocumentContent/DocumentContent.svelte'
   import { useDashboardGlobalParametersCtx } from './ctx/global-parameters.svelte'
+  import { useDashboardSqlQueriesCtx } from './DocumentContent/extensions/query-widget-block-node/ctx/dashboard-queries.svelte'
+  import { useDashboardDataWidgetsFlow } from './ctx/data-widgets.svelte'
 
   type TProps = { apiDashboard: undefined | null | App.ApiDashboard; readonly?: boolean }
   let { apiDashboard, readonly = true }: TProps = $props()
 
   const ctx = useDashboardCtx(apiDashboard, readonly)
+  useDashboardSqlQueriesCtx(apiDashboard)
+
   useDashboardGlobalParametersCtx.set()
+  useDashboardDataWidgetsFlow.set()
 
   console.log(ctx)
 </script>

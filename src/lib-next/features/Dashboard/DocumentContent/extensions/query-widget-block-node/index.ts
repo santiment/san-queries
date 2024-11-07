@@ -1,6 +1,4 @@
 import { Node } from '@tiptap/core'
-import Component from './Component.svelte'
-import { renderNodeViewUniversalHTML } from '$lib/DashboardNext/BlockEditor/nodes/ssr'
 import { QUERY_WIDGET_BLOCK_NODE } from './schema'
 
 declare module '@tiptap/core' {
@@ -47,16 +45,4 @@ export default Node.create({
   parseHTML() {
     return [{ tag: `div[data-type="${this.name}"]` }]
   },
-
-  renderHTML({ HTMLAttributes }) {
-    return renderNodeViewUniversalHTML(
-      ['div', { 'data-type': this.name, 'data-id': HTMLAttributes['data-id'] }],
-      this.options,
-      Component,
-    )
-  },
-
-  // addNodeView() {
-  //   return SvelteNodeViewRenderer(Component)
-  // },
 })

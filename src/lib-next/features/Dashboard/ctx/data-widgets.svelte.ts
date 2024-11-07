@@ -1,8 +1,9 @@
 import { createCtx } from 'san-webkit-next/utils'
-import type { TDataWidgetKey, TDataWidgetLocalParameterKey } from '../types'
+import type { TApiDataWidget, TDataWidgetKey, TDataWidgetLocalParameterKey } from '../types'
 import { useDashboardGlobalParametersCtx } from './global-parameters.svelte'
 import { useDashboardCtx } from './dashboard.svelte'
-import { GlobalParameterNodes } from '../DocumentContent/extensions'
+import { DataWidgetNodes, GlobalParameterNodes } from '../DocumentContent/extensions'
+import type { TDataWidgetNode } from '../DocumentContent/extensions/schema'
 
 export function useDataWidgetParameterOverrides<
   GParams extends {
@@ -45,32 +46,54 @@ export const useDashboardDataWidgetsFlow = createCtx(
     let dataWidgets = $state.raw(
       dashboardDocument.dataWidgets
         .map((dataWidget) => {
-          const schema = GlobalParameterNodes[dataWidget.type]
+          const schema = DataWidgetNodes[dataWidget.type]
           return schema && createDashboardDataWidget(dataWidget, schema)
         })
-        .filter(Boolean),
+        .filter(Boolean) as TDashboardDataWidget<any>[],
     )
+
+    const dataWidgetMap = $derived(new Map(dataWidgets.map((item) => [item.id, item])))
+
+    return {
+      dataWidgets,
+      getDataWidget(dataWidgetKey: TDataWidgetKey) {
+        return dataWidgetMap.get(dataWidgetKey)
+      },
+
+      createDashboardDataWidget<GSchema extends TDataWidgetNode>(
+        apiDataWidget: TApiDataWidget,
+        schema: GSchema,
+      ) {
+        const dataWidget = createDashboardDataWidget(apiDataWidget, schema)
+
+        dataWidgets = dataWidgets.concat(dataWidget)
+
+        return dataWidgets
+      },
+    }
   },
 )
 
-export type TDashboardDataWidget<
-  GType extends string = string,
-  GState = { [key: string]: unknown },
-> = {
+export type TDashboardDataWidget<GSchema extends TDataWidgetNode> = {
   id: TDataWidgetKey
-  type: GType
+  type: GSchema['name']
   state: {
-    get $$(): GState
+    get $$(): ReturnType<NonNullable<GSchema['initState']>>
   }
 }
-function createDashboardDataWidget({ id, type, state }: TDashboardDataWidget) {
-  const _state = $state(Object.assign({}, state))
+function createDashboardDataWidget<GSchema extends TDataWidgetNode>(
+  { id, type }: TApiDataWidget,
+  schema: GSchema,
+) {
+  const defaultState = schema.initState()
+  const state = $state<{ [key: string]: unknown }>(defaultState)
+
   return {
     id,
-    type,
+    type: type as GSchema['name'],
     state: {
       get $$() {
-        return _state
+        return state
       },
     },
   }

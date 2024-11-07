@@ -11,15 +11,11 @@ const render = (BROWSER ? () => ({}) : (await import('svelte/server')).render) a
 class SSRNode extends VNode {
   body = ''
 
-  constructor(
-    Component: Component,
-    context: Map<string, any>,
-    HTMLAttributes: Record<string, any>,
-  ) {
+  constructor(Component: Component, context: Map<string, any>, props: Record<string, any>) {
     super()
 
     const { body } = render(Component, {
-      props: { view: { $: { node: { attrs: HTMLAttributes } } } },
+      props,
       context,
     })
 
@@ -43,6 +39,7 @@ export function renderNodeViewUniversalHTML(
   options: { ctx: Map<string, any> },
   // props: { node: Node; HTMLAttributes: Record<string, any> },
   Component: Component,
+  node?: any,
 ): DOMOutputSpec {
   if (BROWSER) return domSchema
 
@@ -55,5 +52,10 @@ export function renderNodeViewUniversalHTML(
 
   attrs.class += 'svelte-renderer'
 
-  return [...domSchema, new SSRNode(Component, context, attrs)]
+  return [
+    ...domSchema,
+    new SSRNode(Component, context, {
+      view: { $: { node: { attrs }, extension: { config: node } } },
+    }),
+  ]
 }
