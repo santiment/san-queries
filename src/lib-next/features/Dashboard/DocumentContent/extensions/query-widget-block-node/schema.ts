@@ -1,12 +1,24 @@
 import type { TDataWidgetKey } from '$lib-next/features/Dashboard/types'
 
-import { createDataWidgetSchema, type AsyncDataWidgetComponent } from '../schema'
 import { useDashboardDataWidgetsFlow } from '$lib-next/features/Dashboard/ctx/data-widgets.svelte'
+import Component from './Component.svelte'
+import { createDataWidgetSchema, type TDataWidgetComponent, type TDataWidgetNode } from '../schema'
 
-export const QUERY_WIDGET_BLOCK_NODE = createDataWidgetSchema({
+type T_QUERY_WIDGET_BLOCK_NODE = TDataWidgetNode<{
+  name: 'query-widget'
+
+  Component: TDataWidgetComponent
+
+  initState(defaultState?: Record<string, any>): {
+    isLoading: boolean
+    sqlData: any
+  }
+}>
+
+export const QUERY_WIDGET_BLOCK_NODE: T_QUERY_WIDGET_BLOCK_NODE = createDataWidgetSchema({
   name: 'query-widget',
 
-  importComponent: () => import('./Component.svelte') as AsyncDataWidgetComponent,
+  Component,
 
   initState(defaultState = {}) {
     return {

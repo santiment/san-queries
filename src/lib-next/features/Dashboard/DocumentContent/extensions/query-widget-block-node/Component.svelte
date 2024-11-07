@@ -7,8 +7,8 @@
 
   import { type ViewProps } from 'tiptap-svelte-adapter'
   import { useDashboardSqlQueriesCtx } from './ctx/dashboard-queries.svelte'
-  import type { TDataWidgetProps } from '../schema'
   import type { QUERY_WIDGET_BLOCK_NODE } from './schema'
+  import type { TDataWidgetProps } from '../schema'
 
   let { view, data }: TDataWidgetProps<typeof QUERY_WIDGET_BLOCK_NODE> = $props()
   // data.dataWidget.

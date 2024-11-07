@@ -44,16 +44,14 @@ export type TDataWidgetProps<GDataWidget extends TDataWidgetNode = TDataWidgetNo
   }
 }
 
-export type AsyncDataWidgetComponent = Promise<{
-  default: Component<TDataWidgetProps>
-}>
+export type TDataWidgetComponent = Component<TDataWidgetProps>
 
-type TDataWidgetNodeViewInitResult = Partial<TDataWidgetProps['data']>
+export type TDataWidgetNodeViewInitResult = Partial<TDataWidgetProps['data']>
 
 export type TDataWidgetSchema = {
   name: string
 
-  importComponent: () => AsyncDataWidgetComponent
+  Component: TDataWidgetComponent
 
   /** Will be uploaded to API */
   data?: unknown
@@ -83,7 +81,7 @@ export type TDataWidgetNode<GSchema extends TDataWidgetSchema = any> = {
   isDataWidget: true
   name: GSchema['name']
 
-  asyncCompnent: Promise<Component<TDataWidgetProps>>
+  Component: TDataWidgetComponent
 
   addNodeView: () => ReturnType<typeof SvelteNodeViewRenderer>
   renderHTML(this: any, props: { HTMLAttributes: any }): any
@@ -103,7 +101,7 @@ export function createDataWidgetSchema<GSchema extends TDataWidgetSchema>(
 
     name: schema.name as GSchema['name'],
 
-    asyncCompnent: schema.importComponent().then((mod) => mod.default),
+    Component: schema.Component,
 
     addNodeView() {
       return SvelteNodeViewRenderer(GenericNodeView)
@@ -120,7 +118,9 @@ export function createDataWidgetSchema<GSchema extends TDataWidgetSchema>(
 
     initState: schema.initState as GSchema['initState'],
 
-    async initNodeView(view: ViewProps['view']): Promise<TDataWidgetNodeViewInitResult> {
+    initNodeView(
+      view: ViewProps['view'],
+    ): TDataWidgetNodeViewInitResult | Promise<TDataWidgetNodeViewInitResult> {
       const { attrs } = view.$.node
       const { 'data-id': id } = attrs
 
