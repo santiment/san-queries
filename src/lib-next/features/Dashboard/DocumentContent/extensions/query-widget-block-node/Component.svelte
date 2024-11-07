@@ -23,15 +23,27 @@
   const { parameterOverrides } = useDataWidgetParameterOverrides(id, localParameters)
   const sqlData = $derived(state.$$.sqlData || sqlQueryCachedData.get(id))
 
-  let lastQueryValues = Object.assign({}, localParameters, parameterOverrides.$)
+  Object.assign(state.$$.lastFetchedParameterValues, localParameters, parameterOverrides.$)
+
+  function onSqlUpdate(sqlData: null | App.SqlData) {
+    console.log('updated')
+    state.$$.sqlData = sqlData
+    state.$$.lastFetchedParameterValues = Object.assign({}, localParameters, parameterOverrides.$)
+    state.$$.isLoading = false
+  }
 </script>
 
 <section class="flex min-h-0 flex-1 flex-col rounded border bg-white">
-  <Header id={sqlQuery.id} name={sqlQuery.name} author={sqlQuery.user}></Header>
+  <Header id={sqlQuery.id} name={sqlQuery.name} author={sqlQuery.user} {widget} {onSqlUpdate}
+  ></Header>
 
   {#if dashboard.isEditable}
     {#key localParameters}
-      <Parameters {localParameters} {parameterOverrides} {lastQueryValues}></Parameters>
+      <Parameters
+        {localParameters}
+        {parameterOverrides}
+        lastFetchedParameterValues={state.$$.lastFetchedParameterValues}
+      ></Parameters>
     {/key}
   {/if}
 

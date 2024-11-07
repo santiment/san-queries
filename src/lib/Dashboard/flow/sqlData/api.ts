@@ -47,9 +47,13 @@ export const mutateStoreDashboardQueryExecution = ApiQuery(
 )
 
 export const queryRunDashboardSqlQuery = ApiQuery(
-  (dashboardId: number, dashboardQueryMappingId: string) =>
-    `{
-    data:runDashboardSqlQuery(dashboardId:${dashboardId}, dashboardQueryMappingId:"${dashboardQueryMappingId}") {
+  (
+    dashboardId: number,
+    dashboardQueryMappingId: string,
+    parameterOverrides?: Record<string, any>,
+  ) => ({
+    schema: `query($parameterOverrides:json){
+    data:runDashboardSqlQuery(dashboardId:${dashboardId}, dashboardQueryMappingId:"${dashboardQueryMappingId}", parametersOverride:$parameterOverrides) {
         rows
         columns
         columnTypes
@@ -63,5 +67,7 @@ export const queryRunDashboardSqlQuery = ApiQuery(
         dashboardQueryMappingId
     }
   }`,
+    variables: { parameterOverrides },
+  }),
   (gql: { data: TDashboardSqlData }) => gql.data,
 )

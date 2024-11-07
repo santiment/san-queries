@@ -5,9 +5,9 @@
   type TProps = {
     localParameters: Record<string, any>
     parameterOverrides: SS<Record<string, undefined | any>>
-    lastQueryValues: Record<string, any>
+    lastFetchedParameterValues: Record<string, any>
   }
-  let { localParameters, parameterOverrides, lastQueryValues }: TProps = $props()
+  let { localParameters, parameterOverrides, lastFetchedParameterValues }: TProps = $props()
 
   const parameters = Object.keys(localParameters).map((key) => ({
     key,
@@ -24,7 +24,7 @@
       global={globalValue}
       {parameter}
       value={globalValue}
-      changed={(globalValue || value) !== lastQueryValues[key]}
+      changed={(globalValue || value) !== lastFetchedParameterValues[key]}
     ></Parameter>
   {/each}
 </section>
