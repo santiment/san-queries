@@ -1,12 +1,8 @@
 <script lang="ts">
-  import type { TDataWidgetKey } from '$lib-next/features/Dashboard/types'
-  import { exhaustMap, tap } from 'rxjs'
-  import { useObserveFnCall } from 'san-webkit-next/utils'
   import Button from 'san-webkit-next/ui/core/Button'
   import { getSEOLinkFromIdAndTitle } from 'san-webkit-next/utils/url'
   import { useDashboardCtx } from '$lib-next/features/Dashboard/ctx'
   import User from '$lib/ui/User/index.svelte'
-  import { queryRunDashboardSqlQuery } from '$lib/Dashboard/flow/sqlData/api'
   import type { TDataWidgetProps } from '../schema/data-widget'
   import type { QUERY_WIDGET_BLOCK_NODE } from './schema'
 
@@ -15,22 +11,11 @@
     name: string
     author: App.Author
     widget: TDataWidgetProps<typeof QUERY_WIDGET_BLOCK_NODE>['data']['widget']
-    onSqlUpdate: (sqlData: null | App.SqlData) => void
+    onRefreshClick: () => void
   }
-  let { id, name, author, widget, onSqlUpdate }: TProps = $props()
+  let { id, name, author, widget, onRefreshClick }: TProps = $props()
 
   const { dashboard } = useDashboardCtx.get()
-
-  const loadSqlData = useObserveFnCall(() =>
-    exhaustMap(() =>
-      queryRunDashboardSqlQuery()(dashboard.apiDashboard!.id, widget.id).pipe(tap(onSqlUpdate)),
-    ),
-  )
-
-  function onRefreshClick() {
-    widget.state.$$.isLoading = true
-    loadSqlData()
-  }
 
   function onFullscreenClick() {}
 

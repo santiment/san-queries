@@ -47,11 +47,7 @@ export const mutateStoreDashboardQueryExecution = ApiQuery(
 )
 
 export const queryRunDashboardSqlQuery = ApiQuery(
-  (
-    dashboardId: number,
-    dashboardQueryMappingId: string,
-    parameterOverrides?: Record<string, any>,
-  ) => ({
+  (dashboardId: number, dashboardQueryMappingId: string, parameterOverrides?: string) => ({
     schema: `query($parameterOverrides:json){
     data:runDashboardSqlQuery(dashboardId:${dashboardId}, dashboardQueryMappingId:"${dashboardQueryMappingId}", parametersOverride:$parameterOverrides) {
         rows

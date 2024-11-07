@@ -17,6 +17,7 @@ type T_QUERY_WIDGET_BLOCK_NODE = TDataWidgetNode<{
     isLoading: boolean
     sqlData: null | App.SqlData
     lastFetchedParameterValues: Record<string, any>
+    loadSqlData: (isForced: boolean) => void
   }
 }>
 
@@ -32,6 +33,7 @@ export const QUERY_WIDGET_BLOCK_NODE: T_QUERY_WIDGET_BLOCK_NODE = createDataWidg
       isLoading: false,
       sqlData: null,
       lastFetchedParameterValues: {},
+      loadSqlData: () => {},
     }
   },
 
