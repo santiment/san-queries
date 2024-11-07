@@ -2,7 +2,11 @@ import type { TDataWidgetKey } from '$lib-next/features/Dashboard/types'
 
 import { useDashboardDataWidgetsFlow } from '$lib-next/features/Dashboard/ctx/data-widgets.svelte'
 import Component from './Component.svelte'
-import { createDataWidgetSchema, type TDataWidgetComponent, type TDataWidgetNode } from '../schema'
+import {
+  createDataWidgetSchema,
+  type TDataWidgetComponent,
+  type TDataWidgetNode,
+} from '../schema/data-widget'
 
 type T_QUERY_WIDGET_BLOCK_NODE = TDataWidgetNode<{
   name: 'query-widget'

@@ -1,7 +1,4 @@
-import { renderNodeViewUniversalHTML } from '$lib/DashboardNext/BlockEditor/nodes/ssr'
-import { mergeAttributes, Node } from '@tiptap/core'
-import { SvelteNodeViewRenderer } from 'tiptap-svelte-adapter'
-import Component from './Component.svelte'
+import { Node } from '@tiptap/core'
 import { ASSET_SELECTOR_NODE } from './schema'
 
 declare module '@tiptap/core' {
@@ -56,17 +53,5 @@ export default Node.create({
 
   parseHTML() {
     return [{ tag: `span[data-type="${this.name}"]` }]
-  },
-
-  renderHTML({ node, HTMLAttributes }) {
-    return renderNodeViewUniversalHTML(
-      ['span', mergeAttributes(HTMLAttributes, { 'data-type': this.name })],
-      this.options,
-      Component,
-    )
-  },
-
-  addNodeView() {
-    return SvelteNodeViewRenderer(Component)
   },
 })

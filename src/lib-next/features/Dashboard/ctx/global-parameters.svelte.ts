@@ -10,7 +10,7 @@ import type {
   TDataWidgetLocalParameterKey,
 } from '../types'
 import { GlobalParameterNodes } from '../DocumentContent/extensions'
-import type { TGlobalParameterNode } from '../DocumentContent/extensions/schema'
+import type { TGlobalParameterNode } from '../DocumentContent/extensions/schema/global-parameter'
 
 export type TDashboardGlobalParameter<GSchema extends TGlobalParameterNode> = {
   id: TDashboardGlobalParameterKey
@@ -151,13 +151,11 @@ export const useDashboardGlobalParametersCtx = createCtx(
  */
 export function useGlobalParameterWidgetFlow<GSchema extends TGlobalParameterNode>(
   view: ViewProps['view'],
-  schema: GSchema,
+  globalParameter: TDashboardGlobalParameter<GSchema>,
 ) {
   const { registerGlobalParameter } = useDashboardGlobalParametersCtx.get()
 
   const viewAttrs = view.$.node.attrs
-  const viewDataId = viewAttrs['data-id'] as undefined | TDashboardGlobalParameterKey
-  const globalParameter = registerGlobalParameter(viewDataId, schema)
 
   Object.assign(viewAttrs, {
     ...globalParameter.state.$$,

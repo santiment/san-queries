@@ -1,46 +1,20 @@
 import type { Component } from 'svelte'
-import { SvelteNodeViewRenderer, type ViewProps } from 'tiptap-svelte-adapter'
-import GenericNodeView from './GenericNodeView.svelte'
-import { useDashboardDataWidgetsFlow } from '../../ctx/data-widgets.svelte'
-import type { TDataWidgetKey } from '../../types'
+import type { TDataWidgetKey } from '../../../types'
+
 import { BROWSER } from 'esm-env'
+import { SvelteNodeViewRenderer, type ViewProps } from 'tiptap-svelte-adapter'
 import { renderNodeViewUniversalHTML } from '$lib/DashboardNext/BlockEditor/nodes/ssr'
-
-type TGlobalParameterSchema = {
-  name: string
-  keyPrefix: string
-
-  /** Will be uploaded to API */
-  initState(defaultState?: Partial<{ [key: string]: unknown }>): { [key: string]: unknown }
-
-  /** Will be uploaded to API */
-  initSettings?: (defaultSettings?: Partial<{ [key: string]: unknown }>) => {
-    [key: string]: unknown
-  }
-}
-
-export function createGlobalParameterSchema<GSchema extends TGlobalParameterSchema>(
-  schema: GSchema,
-) {
-  return {
-    isGlobalParameter: true,
-
-    name: schema.name as GSchema['name'],
-    keyPrefix: schema.keyPrefix as GSchema['keyPrefix'],
-
-    initState: schema.initState as GSchema['initState'],
-    initSettings: schema.initSettings as GSchema['initSettings'],
-  } as const
-}
-export type TGlobalParameterNode = ReturnType<typeof createGlobalParameterSchema>
-
-//
+import GenericNodeView from '../GenericNodeView.svelte'
+import {
+  useDashboardDataWidgetsFlow,
+  type TDashboardDataWidget,
+} from '../../../ctx/data-widgets.svelte'
 
 export type TDataWidgetProps<GDataWidget extends TDataWidgetNode = TDataWidgetNode> = {
   view: ViewProps['view']
   data: {
     id: TDataWidgetKey
-    dataWidget: GDataWidget
+    widget: TDashboardDataWidget<GDataWidget>
   }
 }
 
@@ -103,19 +77,6 @@ export function createDataWidgetSchema<GSchema extends TDataWidgetSchema>(
 
     Component: schema.Component,
 
-    addNodeView() {
-      return SvelteNodeViewRenderer(GenericNodeView)
-    },
-
-    renderHTML(this: any, { HTMLAttributes }: any) {
-      return renderNodeViewUniversalHTML(
-        ['div', { 'data-type': this.name, 'data-id': HTMLAttributes['data-id'] }],
-        this.options,
-        GenericNodeView as any,
-        node,
-      )
-    },
-
     initState: schema.initState as GSchema['initState'],
 
     initNodeView(
@@ -126,13 +87,34 @@ export function createDataWidgetSchema<GSchema extends TDataWidgetSchema>(
 
       const { getDataWidget } = useDashboardDataWidgetsFlow.get()
 
-      const data = { id, dataWidget: getDataWidget(id) } as TDataWidgetNodeViewInitResult
+      const data: TDataWidgetNodeViewInitResult = { id, widget: getDataWidget(id) }
 
       if (!BROWSER) {
         return data
       }
 
       return schema.initNodeView?.(data, this, view) || data
+    },
+
+    addNodeView() {
+      return SvelteNodeViewRenderer(GenericNodeView)
+    },
+
+    renderHTML(this: any, { HTMLAttributes }: any) {
+      return renderNodeViewUniversalHTML(
+        [
+          'div',
+          {
+            'data-type': this.name,
+            'data-id': HTMLAttributes['data-id'],
+            class: HTMLAttributes['class'],
+            style: HTMLAttributes['style'],
+          },
+        ],
+        this.options,
+        GenericNodeView as any,
+        node,
+      )
     },
   } as const
 

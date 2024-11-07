@@ -1,9 +1,9 @@
-import { createCtx } from 'san-webkit-next/utils'
 import type { TApiDataWidget, TDataWidgetKey, TDataWidgetLocalParameterKey } from '../types'
+import type { TDataWidgetNode } from '../DocumentContent/extensions/schema/data-widget'
+import { createCtx } from 'san-webkit-next/utils'
 import { useDashboardGlobalParametersCtx } from './global-parameters.svelte'
 import { useDashboardCtx } from './dashboard.svelte'
-import { DataWidgetNodes, GlobalParameterNodes } from '../DocumentContent/extensions'
-import type { TDataWidgetNode } from '../DocumentContent/extensions/schema'
+import { DataWidgetNodes } from '../DocumentContent/extensions'
 
 export function useDataWidgetParameterOverrides<
   GParams extends {
