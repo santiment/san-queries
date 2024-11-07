@@ -23,9 +23,10 @@ export function useDataWidgetParameterOverrides<
       )
       .reduce(
         (acc, [localParameterKey, getValue]) => {
-          return Object.assign(acc, { [localParameterKey]: getValue?.() })
+          if (getValue) acc[localParameterKey] = getValue()
+          return acc
         },
-        Object.assign({}, localParameters),
+        {} as Record<string, any>,
       ),
   )
 

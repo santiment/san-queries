@@ -3,27 +3,37 @@
   import type { TDataWidgetProps } from '../schema/data-widget'
 
   import { useDataWidgetParameterOverrides } from '$lib-next/features/Dashboard/ctx/data-widgets.svelte.js'
+  import { useDashboardCtx } from '$lib-next/features/Dashboard/ctx'
   import { useDashboardSqlQueriesCtx } from './ctx/dashboard-queries.svelte'
   import Visualisation from './Visualisation.svelte'
   import Header from './Header.svelte'
+  import Parameters from './Parameters.svelte'
 
   let { data }: TDataWidgetProps<typeof QUERY_WIDGET_BLOCK_NODE> = $props()
 
   const { id, widget } = data
   const state = widget.state
 
+  const { dashboard } = useDashboardCtx.get()
   const { getDashboardSqlQueryById, sqlQueryCachedData } = useDashboardSqlQueriesCtx()
-  const sqlQuery = getDashboardSqlQueryById(id)!
-  const { parameterOverrides } = useDataWidgetParameterOverrides(id, sqlQuery.sqlQueryParameters)
 
+  const sqlQuery = getDashboardSqlQueryById(id)!
+  const localParameters = sqlQuery.sqlQueryParameters
+
+  const { parameterOverrides } = useDataWidgetParameterOverrides(id, localParameters)
   const sqlData = $derived(state.$$.sqlData || sqlQueryCachedData.get(id))
 
-  $inspect(sqlData, id)
-  // $inspect(parameterOverrides.$, id)
+  let lastQueryValues = Object.assign({}, localParameters, parameterOverrides.$)
 </script>
 
 <section class="flex min-h-0 flex-1 flex-col rounded border bg-white">
-  <Header id={sqlQuery.id} name={sqlQuery.name}></Header>
+  <Header id={sqlQuery.id} name={sqlQuery.name} author={sqlQuery.user}></Header>
+
+  {#if dashboard.isEditable}
+    {#key localParameters}
+      <Parameters {localParameters} {parameterOverrides} {lastQueryValues}></Parameters>
+    {/key}
+  {/if}
 
   <div class="relative flex min-h-0 flex-1 flex-col items-center justify-center border-t">
     {#if state.$$.isLoading}
