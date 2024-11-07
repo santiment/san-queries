@@ -6,6 +6,7 @@
   } from './schema/global-parameter'
   import { NodeViewWrapper, type ViewProps } from 'tiptap-svelte-adapter'
   import SpinLoader from 'san-webkit/lib/ui/SpinLoader.svelte'
+  import { cn } from 'san-webkit-next/ui/utils'
 
   let { view }: ViewProps = $props()
 
@@ -14,7 +15,7 @@
   const nodeViewData = nodeConfig.initNodeView(view)
 </script>
 
-<NodeViewWrapper class="relative">
+<NodeViewWrapper class={cn('relative', nodeConfig.class)} style={view.$.node.attrs.style}>
   {#if nodeViewData instanceof Promise}
     {#await nodeViewData}
       <div class="min-h-20 rounded border">

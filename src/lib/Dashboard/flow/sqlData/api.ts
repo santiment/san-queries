@@ -1,11 +1,11 @@
-import { Fetcher } from '$lib/api'
+import { ApiQuery } from 'san-webkit-next/api'
 
 export type TDashboardSqlData = App.SqlData & {
   clickhouseQueryId: string
   dashboardQueryMappingId: string
 }
 
-export const queryGetCachedDashboardQueriesExecutions = Fetcher(
+export const queryGetCachedDashboardQueriesExecutions = ApiQuery(
   (dashboardId: number) =>
     `{
     data:getCachedDashboardQueriesExecutions(dashboardId:${dashboardId}) {
@@ -31,7 +31,7 @@ export const queryGetCachedDashboardQueriesExecutions = Fetcher(
   }) => gql.data.queries,
 )
 
-export const mutateStoreDashboardQueryExecution = Fetcher(
+export const mutateStoreDashboardQueryExecution = ApiQuery(
   (variables: {
     compressedData: string
     dashboardId: number
@@ -46,7 +46,7 @@ export const mutateStoreDashboardQueryExecution = Fetcher(
   }),
 )
 
-export const queryRunDashboardSqlQuery = Fetcher(
+export const queryRunDashboardSqlQuery = ApiQuery(
   (dashboardId: number, dashboardQueryMappingId: string) =>
     `{
     data:runDashboardSqlQuery(dashboardId:${dashboardId}, dashboardQueryMappingId:"${dashboardQueryMappingId}") {

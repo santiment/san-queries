@@ -6,12 +6,17 @@
   import { useDashboardGlobalParametersCtx } from './ctx/global-parameters.svelte'
   import { useDashboardSqlQueriesCtx } from './DocumentContent/extensions/query-widget-block-node/ctx/dashboard-queries.svelte'
   import { useDashboardDataWidgetsFlow } from './ctx/data-widgets.svelte'
+  import type { TDashboardSqlData } from '$lib/Dashboard/flow/sqlData/api'
 
-  type TProps = { apiDashboard: undefined | null | App.ApiDashboard; readonly?: boolean }
-  let { apiDashboard, readonly = true }: TProps = $props()
+  type TProps = {
+    apiDashboard: undefined | null | App.ApiDashboard
+    cache?: null | TDashboardSqlData[]
+    readonly?: boolean
+  }
+  let { apiDashboard, cache, readonly = true }: TProps = $props()
 
   const ctx = useDashboardCtx(apiDashboard, readonly)
-  useDashboardSqlQueriesCtx(apiDashboard)
+  useDashboardSqlQueriesCtx(apiDashboard, cache)
 
   useDashboardGlobalParametersCtx.set()
   useDashboardDataWidgetsFlow.set()

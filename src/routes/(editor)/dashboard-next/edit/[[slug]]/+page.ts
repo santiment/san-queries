@@ -15,7 +15,7 @@ export async function load(event) {
     return {}
   }
 
-  const apiDashboard = await loadPageDashboard(event)
+  const [apiDashboard, dashboardDataCache] = await loadPageDashboard(event)
 
   if (!apiDashboard) {
     throw redirect(302, '/dashboard/edit/new')
@@ -27,5 +27,6 @@ export async function load(event) {
 
   return {
     apiDashboard,
+    dashboardDataCache,
   }
 }

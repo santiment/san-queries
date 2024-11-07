@@ -25,6 +25,8 @@ export type TDataWidgetNodeViewInitResult = Partial<TDataWidgetProps['data']>
 export type TDataWidgetSchema = {
   name: string
 
+  class?: string
+
   Component: TDataWidgetComponent
 
   /** Will be uploaded to API */
@@ -74,6 +76,7 @@ export function createDataWidgetSchema<GSchema extends TDataWidgetSchema>(
     isDataWidget: true,
 
     name: schema.name as GSchema['name'],
+    class: schema.class as GSchema['class'],
 
     Component: schema.Component,
 

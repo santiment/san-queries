@@ -15,19 +15,21 @@ type T_QUERY_WIDGET_BLOCK_NODE = TDataWidgetNode<{
 
   initState(defaultState?: Record<string, any>): {
     isLoading: boolean
-    sqlData: any
+    sqlData: null | App.SqlData
   }
 }>
 
 export const QUERY_WIDGET_BLOCK_NODE: T_QUERY_WIDGET_BLOCK_NODE = createDataWidgetSchema({
   name: 'query-widget',
 
+  class: 'my-2 max-h-[1000px] min-h-[208px] column',
+
   Component,
 
   initState(defaultState = {}) {
     return {
       isLoading: false,
-      sqlData: defaultState?.sqlData || [],
+      sqlData: null,
     }
   },
 

@@ -5,5 +5,6 @@
 </script>
 
 {#key data.apiDashboard?.id}
-  <Dashboard readonly={false} apiDashboard={data.apiDashboard}></Dashboard>
+  <Dashboard readonly={false} apiDashboard={data.apiDashboard} cache={data.dashboardDataCache}
+  ></Dashboard>
 {/key}

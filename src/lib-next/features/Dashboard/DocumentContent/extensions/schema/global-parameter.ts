@@ -29,6 +29,7 @@ type TGlobalParameterSchema = {
 
   rootTag?: string
 
+  class?: string
   Component: TGlobalParameterWidgetComponent
 
   /** Will be uploaded to API */
@@ -49,6 +50,7 @@ export type TGlobalParameterNode<GSchema extends TGlobalParameterSchema = any> =
   name: GSchema['name']
   keyPrefix: GSchema['keyPrefix']
 
+  class?: GSchema['class']
   Component: TGlobalParameterWidgetComponent
 
   initState: GSchema['initState']
@@ -69,10 +71,11 @@ export function createGlobalParameterSchema<GSchema extends TGlobalParameterSche
     name: schema.name as GSchema['name'],
     keyPrefix: schema.keyPrefix as GSchema['keyPrefix'],
 
+    class: schema.class as GSchema['class'],
+    Component: schema.Component,
+
     initState: schema.initState as GSchema['initState'],
     initSettings: schema.initSettings as GSchema['initSettings'],
-
-    Component: schema.Component,
 
     initNodeView(view: ViewProps['view']): TNodeViewInitResult | Promise<TNodeViewInitResult> {
       const { attrs } = view.$.node
