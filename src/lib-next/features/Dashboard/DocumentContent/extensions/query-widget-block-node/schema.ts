@@ -1,7 +1,7 @@
 import type { TDataWidgetKey } from '$lib-next/features/Dashboard/types'
 
 import { useDashboardDataWidgetsFlow } from '$lib-next/features/Dashboard/ctx/data-widgets.svelte'
-import Component from './Component.svelte'
+import Component from './ui/index.svelte'
 import {
   createDataWidgetSchema,
   type TDataWidgetComponent,

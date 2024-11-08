@@ -12,7 +12,7 @@
   import AssetLogo from 'san-webkit-next/ui/app/AssetLogo'
   import Input from 'san-webkit-next/ui/core/Input'
   import Button from 'san-webkit-next/ui/core/Button'
-  import { queryAllProjects, type TAsset } from './api'
+  import { queryAllProjects, type TAsset } from '../api'
 
   let { Controller }: TDialogProps<TAsset> = $props()
 

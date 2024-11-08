@@ -3,7 +3,7 @@ import {
   type TGlobalParameterNode,
   type TGlobalParameterWidgetComponent,
 } from '../schema/global-parameter'
-import Component from './Component.svelte'
+import Component from './ui/index.svelte'
 
 type T_ASSET_SELECTOR_NODE = {
   name: 'asset-selector'

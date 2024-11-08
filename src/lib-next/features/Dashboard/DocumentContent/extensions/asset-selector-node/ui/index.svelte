@@ -1,13 +1,13 @@
 <script lang="ts">
-  import type { ASSET_SELECTOR_NODE } from './schema'
-  import type { TGlobalParametersWidgetProps } from '../schema/global-parameter'
+  import type { ASSET_SELECTOR_NODE } from '../schema'
+  import type { TGlobalParametersWidgetProps } from '../../schema/global-parameter'
 
   import Svg from 'san-webkit-next/ui/core/Svg'
   import AssetLogo from 'san-webkit-next/ui/app/AssetLogo'
   import { NodeViewWrapper } from 'tiptap-svelte-adapter'
   import { useGlobalParameterWidgetFlow } from '$lib-next/features/Dashboard/ctx/global-parameters.svelte'
   import { showSelectAssetDialog$ } from './SelectAssetDialog.svelte'
-  import { useAssetFlow } from './asset.svelte'
+  import { useAssetFlow } from '../asset.svelte'
 
   let { view, data }: TGlobalParametersWidgetProps<typeof ASSET_SELECTOR_NODE> = $props()
 

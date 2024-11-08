@@ -1,12 +1,12 @@
 <script lang="ts">
-  import type { QUERY_WIDGET_BLOCK_NODE } from './schema'
-  import type { TDataWidgetProps } from '../schema/data-widget'
+  import type { QUERY_WIDGET_BLOCK_NODE } from '../schema'
+  import type { TDataWidgetProps } from '../../schema/data-widget'
 
   import { useDashboardCtx } from '$lib-next/features/Dashboard/ctx'
   import Visualisation from './Visualisation.svelte'
   import Header from './Header.svelte'
   import Parameters from './Parameters.svelte'
-  import { useSqlWidgetFlow } from './ctx'
+  import { useSqlWidgetFlow } from '../ctx'
 
   let { view, data }: TDataWidgetProps<typeof QUERY_WIDGET_BLOCK_NODE> = $props()
 

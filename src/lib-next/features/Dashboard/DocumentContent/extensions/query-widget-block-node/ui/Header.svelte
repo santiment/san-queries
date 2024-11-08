@@ -1,10 +1,11 @@
 <script lang="ts">
+  import type { QUERY_WIDGET_BLOCK_NODE } from '../schema'
+  import type { TDataWidgetProps } from '../../schema/data-widget'
+
   import Button from 'san-webkit-next/ui/core/Button'
   import { getSEOLinkFromIdAndTitle } from 'san-webkit-next/utils/url'
   import { useDashboardCtx } from '$lib-next/features/Dashboard/ctx'
   import User from '$lib/ui/User/index.svelte'
-  import type { TDataWidgetProps } from '../schema/data-widget'
-  import type { QUERY_WIDGET_BLOCK_NODE } from './schema'
 
   type TProps = {
     id: number
