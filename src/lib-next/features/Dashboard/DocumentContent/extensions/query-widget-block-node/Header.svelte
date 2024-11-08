@@ -12,14 +12,13 @@
     author: App.Author
     widget: TDataWidgetProps<typeof QUERY_WIDGET_BLOCK_NODE>['data']['widget']
     onRefreshClick: () => void
+    onDeleteClick?: () => void
   }
-  let { id, name, author, widget, onRefreshClick }: TProps = $props()
+  let { id, name, author, widget, onRefreshClick, onDeleteClick }: TProps = $props()
 
   const { dashboard } = useDashboardCtx.get()
 
   function onFullscreenClick() {}
-
-  function onDeleteClick() {}
 </script>
 
 <header class="flex items-center gap-2 py-3 pl-3 pr-[18px]">

@@ -2,60 +2,24 @@
   import type { QUERY_WIDGET_BLOCK_NODE } from './schema'
   import type { TDataWidgetProps } from '../schema/data-widget'
 
-  import { exhaustMap, tap, of, filter } from 'rxjs'
-  import { useObserveFnCall } from 'san-webkit-next/utils'
-  import { queryRunDashboardSqlQuery } from '$lib/Dashboard/flow/sqlData/api'
-  import { useDataWidgetParameterOverrides } from '$lib-next/features/Dashboard/ctx/data-widgets.svelte.js'
   import { useDashboardCtx } from '$lib-next/features/Dashboard/ctx'
-  import { useDashboardSqlQueriesCtx } from './ctx/dashboard-queries.svelte'
   import Visualisation from './Visualisation.svelte'
   import Header from './Header.svelte'
   import Parameters from './Parameters.svelte'
+  import { useSqlWidgetFlow } from './ctx'
 
-  let { data }: TDataWidgetProps<typeof QUERY_WIDGET_BLOCK_NODE> = $props()
+  let { view, data }: TDataWidgetProps<typeof QUERY_WIDGET_BLOCK_NODE> = $props()
 
   const { id, widget } = data
   const state = widget.state
 
   const { dashboard } = useDashboardCtx.get()
-  const { getDashboardSqlQueryById, sqlQueryCachedData } = useDashboardSqlQueriesCtx()
+  const { sqlQuery, sqlQueryCachedData, localParameters, parameterOverrides, loadSqlData } =
+    useSqlWidgetFlow(widget)
 
-  const sqlQuery = getDashboardSqlQueryById(id)!
-  const localParameters = sqlQuery.sqlQueryParameters
-
-  const { parameterOverrides } = useDataWidgetParameterOverrides(id, localParameters)
   const sqlData = $derived(state.$$.sqlData || sqlQueryCachedData.get(id))
 
-  Object.assign(state.$$.lastFetchedParameterValues, localParameters, parameterOverrides.$)
-
-  const loadSqlData = useObserveFnCall<{ isForced: boolean }>(() =>
-    exhaustMap(({ isForced = false }) =>
-      of(JSON.stringify(state.$$.lastFetchedParameterValues)).pipe(
-        filter(
-          (lastHash) =>
-            isForced ||
-            lastHash !== JSON.stringify({ ...localParameters, ...parameterOverrides.$ }),
-        ),
-        tap(() => (state.$$.isLoading = true)),
-        exhaustMap(() => {
-          const overrides = { ...parameterOverrides.$ }
-
-          return queryRunDashboardSqlQuery()(
-            dashboard.apiDashboard!.id,
-            widget.id,
-            JSON.stringify(overrides),
-          ).pipe(tap((sqlData) => onSqlUpdate(sqlData, overrides)))
-        }),
-      ),
-    ),
-  )
-  Object.assign(state.$$, { loadSqlData: (isForced = false) => loadSqlData({ isForced }) })
-
-  function onSqlUpdate(sqlData: null | App.SqlData, overrides: Record<string, any>) {
-    state.$$.sqlData = sqlData
-    state.$$.lastFetchedParameterValues = Object.assign({}, localParameters, overrides)
-    state.$$.isLoading = false
-  }
+  // TODO: Focus on editor when delete widget pressed
 </script>
 
 <section class="flex min-h-0 flex-1 flex-col rounded border bg-white">
@@ -65,6 +29,10 @@
     author={sqlQuery.user}
     {widget}
     onRefreshClick={() => loadSqlData({ isForced: true })}
+    onDeleteClick={() => {
+      view.$.deleteNode()
+      view.$.editor.commands.focus()
+    }}
   ></Header>
 
   {#if dashboard.isEditable}
