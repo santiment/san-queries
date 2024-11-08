@@ -9,14 +9,14 @@
   let { view, data }: TGlobalParametersWidgetProps<typeof CONTROLLED_LIST_BLOCK_NODE> = $props()
 
   const { globalParameter } = useControllerListCtx(view, data.widget)
-  const { state } = globalParameter
+  const { outputs } = globalParameter
 </script>
 
 <div class="flex-1 rounded border column">
-  {#key state.$$.value}
+  {#key outputs.$$.value}
     <DataTable
       class="column [&>table]:flex-1"
-      data={state.$$.value}
+      data={outputs.$$.value}
       columns={COLUMNS}
       pagination={false}
       minRows={4}

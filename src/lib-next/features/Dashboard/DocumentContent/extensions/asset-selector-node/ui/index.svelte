@@ -14,11 +14,11 @@
   const { getAssetBySlug } = useAssetFlow()
 
   const { globalParameter, update } = useGlobalParameterWidgetFlow(view, data.widget)
-  const { state } = globalParameter
+  const { outputs } = globalParameter
 
   const showSelectAssetDialog = showSelectAssetDialog$()
 
-  let asset = $derived(getAssetBySlug(state.$$.slug))
+  let asset = $derived(getAssetBySlug(outputs.$$.slug))
 
   function onAssetSelectorClick() {
     showSelectAssetDialog().then((asset) => {

@@ -14,7 +14,7 @@ type TSchema = {
 
   Component: TGlobalParameterWidgetComponent
 
-  initState(defaultState?: Partial<{ value: string[] }>): { value: string[] }
+  initOutputs(defaultOutputValues?: Partial<{ value: string[] }>): { value: string[] }
 
   initSettings(
     defaultSettings?: Partial<{
@@ -36,8 +36,8 @@ export const CONTROLLED_LIST_BLOCK_NODE: TGlobalParameterNode<TSchema> =
 
     Component,
 
-    initState(defaultState = {}) {
-      return { value: Array.isArray(defaultState.value) ? defaultState.value : [] }
+    initOutputs(defaultOutputValues = {}) {
+      return { value: Array.isArray(defaultOutputValues.value) ? defaultOutputValues.value : [] }
     },
 
     initSettings(defaultSettings = {}) {

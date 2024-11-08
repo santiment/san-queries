@@ -27,14 +27,14 @@ export const useControllerListCtx = createCtx(
     widget: TDashboardGlobalParameter<typeof CONTROLLED_LIST_BLOCK_NODE>,
   ) => {
     const { globalParameter, update } = useGlobalParameterWidgetFlow(view, widget)
-    const { state } = widget
+    const { outputs } = widget
 
     function addInputValue(value: string) {
-      update('value', Array.from(new Set([...state.$$.value, value])))
+      update('value', Array.from(new Set([...outputs.$$.value, value])))
     }
 
     function deleteItem(value: string) {
-      const set = new Set(state.$$.value)
+      const set = new Set(outputs.$$.value)
       set.delete(value)
       update('value', Array.from(set))
     }

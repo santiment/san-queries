@@ -33,7 +33,7 @@ type TGlobalParameterSchema = {
   Component: TGlobalParameterWidgetComponent
 
   /** Will be uploaded to API */
-  initState(defaultState?: Partial<{ [key: string]: unknown }>): { [key: string]: unknown }
+  initOutputs(defaultOutputValues?: Partial<{ [key: string]: unknown }>): { [key: string]: unknown }
 
   /** Will be uploaded to API */
   initSettings?: (defaultSettings?: Partial<{ [key: string]: unknown }>) => {
@@ -53,7 +53,7 @@ export type TGlobalParameterNode<GSchema extends TGlobalParameterSchema = any> =
   class?: GSchema['class']
   Component: TGlobalParameterWidgetComponent
 
-  initState: GSchema['initState']
+  initOutputs: GSchema['initOutputs']
   initSettings: GSchema['initSettings']
 
   initNodeView: (view: ViewProps['view']) => TNodeViewInitResult | Promise<TNodeViewInitResult>
@@ -74,7 +74,7 @@ export function createGlobalParameterSchema<GSchema extends TGlobalParameterSche
     class: schema.class as GSchema['class'],
     Component: schema.Component,
 
-    initState: schema.initState as GSchema['initState'],
+    initOutputs: schema.initOutputs as GSchema['initOutputs'],
     initSettings: schema.initSettings as GSchema['initSettings'],
 
     initNodeView(view: ViewProps['view']): TNodeViewInitResult | Promise<TNodeViewInitResult> {

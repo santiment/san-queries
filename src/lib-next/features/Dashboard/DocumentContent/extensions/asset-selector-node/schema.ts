@@ -5,7 +5,7 @@ import {
 } from '../schema/global-parameter'
 import Component from './ui/index.svelte'
 
-type T_ASSET_SELECTOR_NODE = {
+type TSchema = {
   name: 'asset-selector'
   keyPrefix: 'Asset'
 
@@ -13,25 +13,24 @@ type T_ASSET_SELECTOR_NODE = {
 
   Component: TGlobalParameterWidgetComponent
 
-  initState(defaultState?: Partial<{ slug: string }>): { slug: string }
+  initOutputs(defaultOutputValues?: Partial<{ slug: string }>): { slug: string }
 
   initSettings(defaultSettings?: Partial<{ test: number }>): { test: number }
 }
 
-export const ASSET_SELECTOR_NODE: TGlobalParameterNode<T_ASSET_SELECTOR_NODE> =
-  createGlobalParameterSchema({
-    name: 'asset-selector',
-    keyPrefix: 'Asset',
+export const ASSET_SELECTOR_NODE: TGlobalParameterNode<TSchema> = createGlobalParameterSchema({
+  name: 'asset-selector',
+  keyPrefix: 'Asset',
 
-    rootTag: 'span',
+  rootTag: 'span',
 
-    Component,
+  Component,
 
-    initState(defaultState = {}) {
-      return { slug: defaultState.slug || 'bitcoin' }
-    },
+  initOutputs(defaultOutputValues = {}) {
+    return { slug: defaultOutputValues.slug || 'bitcoin' }
+  },
 
-    initSettings(defaultSettings = {}) {
-      return { test: defaultSettings.test || 213 }
-    },
-  } as const)
+  initSettings(defaultSettings = {}) {
+    return { test: defaultSettings.test || 213 }
+  },
+} as const)

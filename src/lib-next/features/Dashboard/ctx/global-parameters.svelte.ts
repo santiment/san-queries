@@ -1,23 +1,24 @@
 import type { ViewProps } from 'tiptap-svelte-adapter'
-import { untrack } from 'svelte'
-import { ss, type SS } from 'svelte-runes'
-import { createCtx, getRandomKey } from 'san-webkit-next/utils'
-import { useDashboardCtx } from './dashboard.svelte'
 import type {
   TApiDashboardGlobalParameter,
   TDashboardGlobalParameterKey,
   TDataWidgetKey,
   TDataWidgetLocalParameterKey,
 } from '../types'
-import { GlobalParameterNodes } from '../DocumentContent/extensions'
 import type { TGlobalParameterNode } from '../DocumentContent/extensions/schema/global-parameter'
+
+import { untrack } from 'svelte'
+import { ss, type SS } from 'svelte-runes'
+import { createCtx, getRandomKey } from 'san-webkit-next/utils'
+import { useDashboardCtx } from './dashboard.svelte'
+import { GlobalParameterNodes } from '../DocumentContent/extensions'
 
 export type TDashboardGlobalParameter<GSchema extends TGlobalParameterNode> = {
   id: TDashboardGlobalParameterKey
   type: GSchema['name']
 
-  state: {
-    get $$(): ReturnType<NonNullable<GSchema['initState']>>
+  outputs: {
+    get $$(): ReturnType<NonNullable<GSchema['initOutputs']>>
   }
 
   settings?: {
@@ -26,7 +27,7 @@ export type TDashboardGlobalParameter<GSchema extends TGlobalParameterNode> = {
 
   overrides: SS<
     Record<
-      keyof ReturnType<GSchema['initState']>,
+      keyof ReturnType<GSchema['initOutputs']>,
       Map<TDataWidgetKey, TDataWidgetLocalParameterKey>
     >
   >
@@ -35,20 +36,22 @@ function createDashboardGlobalParameter<GSchema extends TGlobalParameterNode>(
   { id, type, value, overrides, settings }: TApiDashboardGlobalParameter,
   schema: GSchema,
 ): TDashboardGlobalParameter<GSchema> {
-  const defaultState = schema.initState(value!) || value
+  const defaultOutputValues = schema.initOutputs(value!) || value
   const defaultSettings = schema.initSettings(settings)
 
-  const stateKeys = Object.keys(defaultState) as (keyof ReturnType<GSchema['initState']>)[]
+  const outputKeys = Object.keys(defaultOutputValues) as (keyof ReturnType<
+    GSchema['initOutputs']
+  >)[]
 
-  const _state = $state<{ [key: string]: unknown }>(defaultState)
+  const _state = $state<{ [key: string]: unknown }>(defaultOutputValues)
   const _settings = $state<undefined | { [key: string]: unknown }>(defaultSettings)
 
   return {
     id,
     type: type as GSchema['name'],
-    state: {
+    outputs: {
       get $$() {
-        return _state as ReturnType<GSchema['initState']>
+        return _state as ReturnType<GSchema['initOutputs']>
       },
     },
     settings: schema.initSettings && {
@@ -58,7 +61,7 @@ function createDashboardGlobalParameter<GSchema extends TGlobalParameterNode>(
     },
 
     overrides: ss(
-      stateKeys.reduce(
+      outputKeys.reduce(
         (acc, stateKey) => {
           const override = overrides[stateKey as string]
 
@@ -68,7 +71,10 @@ function createDashboardGlobalParameter<GSchema extends TGlobalParameterNode>(
 
           return acc
         },
-        {} as Record<(typeof stateKeys)[number], Map<TDataWidgetKey, TDataWidgetLocalParameterKey>>,
+        {} as Record<
+          (typeof outputKeys)[number],
+          Map<TDataWidgetKey, TDataWidgetLocalParameterKey>
+        >,
       ),
     ),
   }
@@ -94,10 +100,10 @@ export const useDashboardGlobalParametersCtx = createCtx(
       new Map<string, () => unknown>(
         globalParameters.flatMap((globalParameter) => {
           const overrides = globalParameter.overrides.$
-          return Object.entries(overrides).flatMap(([stateKey, overrides]) => {
+          return Object.entries(overrides).flatMap(([outputKey, overrides]) => {
             return Array.from(overrides).map((keys) => [
               keys.join('') as string,
-              () => globalParameter.state.$$[stateKey],
+              () => globalParameter.outputs.$$[outputKey],
             ])
           })
         }),
@@ -155,16 +161,16 @@ export function useGlobalParameterWidgetFlow<GSchema extends TGlobalParameterNod
   view: ViewProps['view'],
   globalParameter: TDashboardGlobalParameter<GSchema>,
 ) {
-  const { registerGlobalParameter } = useDashboardGlobalParametersCtx.get()
+  // const { registerGlobalParameter } = useDashboardGlobalParametersCtx.get()
 
   const viewAttrs = view.$.node.attrs
 
   Object.assign(viewAttrs, {
-    ...globalParameter.state.$$,
+    ...globalParameter.outputs.$$,
     'data-id': globalParameter.id,
   })
 
-  const stateKeys = Object.keys(globalParameter.state.$$)
+  const outputKeys = Object.keys(globalParameter.outputs.$$)
   const viewStateAttrs = $derived(view.$.node.attrs)
 
   $effect(() => {
@@ -172,25 +178,25 @@ export function useGlobalParameterWidgetFlow<GSchema extends TGlobalParameterNod
     viewStateAttrs
 
     untrack(() => {
-      for (const stateKey of stateKeys) {
-        const attrValue = viewStateAttrs[stateKey]
-        if (attrValue === globalParameter.state.$$[stateKey]) continue
+      for (const outputKey of outputKeys) {
+        const attrValue = viewStateAttrs[outputKey]
+        if (attrValue === globalParameter.outputs.$$[outputKey]) continue
 
-        globalParameter.state.$$[stateKey as TStateKeys] = attrValue
+        globalParameter.outputs.$$[outputKey as TOutputKeys] = attrValue
       }
     })
   })
 
-  type TState = ReturnType<GSchema['initState']>
-  type TStateKeys = keyof TState
+  type TOutputs = ReturnType<GSchema['initOutputs']>
+  type TOutputKeys = keyof TOutputs
   return {
     globalParameter,
-    update<GStateKey extends TStateKeys>(stateKey: GStateKey, value: TState[GStateKey]) {
-      if (value === globalParameter.state.$$[stateKey]) {
+    update<GOutputKey extends TOutputKeys>(outputKey: GOutputKey, value: TOutputs[GOutputKey]) {
+      if (value === globalParameter.outputs.$$[outputKey]) {
         return
       }
 
-      view.$.updateAttributes({ [stateKey]: value })
+      view.$.updateAttributes({ [outputKey]: value })
     },
   }
 }
