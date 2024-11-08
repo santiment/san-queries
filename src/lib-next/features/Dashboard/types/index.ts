@@ -61,4 +61,5 @@ export type TApiDashboardGlobalParameter<GType extends string = string, GValue =
   // TODO: rename to state before moving to V3
   value: GValue
   overrides: Record<string, undefined | [TDataWidgetKey, TDataWidgetLocalParameterKey][]>
+  settings?: Record<string, undefined | any>
 }

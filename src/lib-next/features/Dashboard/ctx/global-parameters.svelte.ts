@@ -32,26 +32,28 @@ export type TDashboardGlobalParameter<GSchema extends TGlobalParameterNode> = {
   >
 }
 function createDashboardGlobalParameter<GSchema extends TGlobalParameterNode>(
-  { id, type, value, overrides }: TApiDashboardGlobalParameter,
+  { id, type, value, overrides, settings }: TApiDashboardGlobalParameter,
   schema: GSchema,
 ): TDashboardGlobalParameter<GSchema> {
   const defaultState = schema.initState(value!) || value
+  const defaultSettings = schema.initSettings(settings)
+
   const stateKeys = Object.keys(defaultState) as (keyof ReturnType<GSchema['initState']>)[]
 
-  const state = $state<{ [key: string]: unknown }>(defaultState)
-  const settings = $state<undefined | { [key: string]: unknown }>(schema.initSettings?.({}))
+  const _state = $state<{ [key: string]: unknown }>(defaultState)
+  const _settings = $state<undefined | { [key: string]: unknown }>(defaultSettings)
 
   return {
     id,
     type: type as GSchema['name'],
     state: {
       get $$() {
-        return state as ReturnType<GSchema['initState']>
+        return _state as ReturnType<GSchema['initState']>
       },
     },
     settings: schema.initSettings && {
       get $$() {
-        return settings as ReturnType<NonNullable<GSchema['initSettings']>>
+        return _settings as ReturnType<NonNullable<GSchema['initSettings']>>
       },
     },
 

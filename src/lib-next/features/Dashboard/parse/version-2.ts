@@ -57,12 +57,29 @@ export function parseDashboardJSON_v2(apiDashboard: TApiDashboard<TDashboardSett
       })
     }
 
-    const parameterNodeCorrections = new Map<string, { type?: string; value?: any }>()
+    const parameterNodeCorrections = new Map<
+      string,
+      { type?: string; value?: any; settings?: any; overridesKey?: string }
+    >()
     function correntGlobalParameterType(node: TDocumentNode) {
       if (node.type === 'asset-selector') {
-        const corrections = { type: node.type, value: { slug: node.attrs!['data-value'] } }
+        const corrections = {
+          type: node.type,
+          value: { slug: node.attrs!['data-value'] },
+          overridesKey: 'slug',
+        }
         parameterNodeCorrections.set(node.attrs!['data-id']!, corrections)
         return
+      } else if (node.type === 'controlled-list') {
+        const corrections = {
+          type: node.type,
+          value: { value: node.attrs!['data-value'] },
+          settings: {
+            linkedQuery: node.attrs!['data-link-query'],
+            linkedColumn: node.attrs!['data-link-column'],
+          },
+        }
+        parameterNodeCorrections.set(node.attrs!['data-id']!, corrections)
       }
 
       return node.content?.forEach(correntGlobalParameterType)
@@ -75,13 +92,18 @@ export function parseDashboardJSON_v2(apiDashboard: TApiDashboard<TDashboardSett
       if (corrections?.value) {
         globalParameter.value = corrections.value
 
-        globalParameter.overrides = { slug: globalParameter.overrides.value }
+        globalParameter.overrides = {
+          [corrections?.overridesKey || 'value']: globalParameter.overrides.value,
+        }
+      }
+
+      if (corrections?.settings) {
+        globalParameter.settings = corrections.settings
       }
     }
   }
 
   if (dataWidgets.length === 0) {
-    console.log(apiDashboard.queries)
     for (const query of apiDashboard.queries) {
       dataWidgets.push({
         id: query.dashboardQueryMappingId,

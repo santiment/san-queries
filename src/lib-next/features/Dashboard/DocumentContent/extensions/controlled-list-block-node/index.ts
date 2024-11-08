@@ -1,7 +1,5 @@
-import { mergeAttributes, Node } from '@tiptap/core'
-import { SvelteNodeViewRenderer } from 'tiptap-svelte-adapter'
-import Component from './Component.svelte'
-import { renderNodeViewUniversalHTML } from '$lib/DashboardNext/BlockEditor/nodes/ssr'
+import { Node } from '@tiptap/core'
+import { CONTROLLED_LIST_BLOCK_NODE } from './schema'
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
@@ -16,7 +14,7 @@ declare module '@tiptap/core' {
 }
 
 export default Node.create({
-  name: 'controlled-list',
+  ...CONTROLLED_LIST_BLOCK_NODE,
 
   group: 'block global-parameter',
 
@@ -27,7 +25,7 @@ export default Node.create({
     return {
       addControlledListWidget:
         () =>
-        ({ editor, commands, dispatch, chain }) => {
+        ({ chain }) => {
           return chain()
             .focus()
             .insertContent({ type: this.name, attrs: { 'data-id': '' } })
@@ -39,26 +37,13 @@ export default Node.create({
   addAttributes() {
     return {
       'data-id': { default: '' },
-      'data-value': { default: [] },
-      'data-link-query': { default: '' },
-      'data-link-column': { default: '' },
+      value: { default: '' },
+
       style: { default: '' },
     }
   },
 
   parseHTML() {
     return [{ tag: `div[data-type="${this.name}"]` }]
-  },
-
-  renderHTML({ HTMLAttributes }) {
-    return renderNodeViewUniversalHTML(
-      ['div', mergeAttributes(HTMLAttributes, { 'data-type': this.name })],
-      this.options,
-      Component,
-    )
-  },
-
-  addNodeView() {
-    return SvelteNodeViewRenderer(Component)
   },
 })

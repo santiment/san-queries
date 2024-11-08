@@ -26,7 +26,7 @@ import type { TGlobalParameterNode } from './schema/global-parameter'
 
 // import HiddenBlock from '../nodes/HiddenBlock'
 // import QueryTextColumnBlock from '../nodes/QueryTextColumnBlock'
-// import ControlledListBlock from '../nodes/ControlledListBlock'
+
 // import SanbaseChartBlock from '../nodes/SanbaseChartBlock'
 // import TextInputField from '../nodes/TextInputField'
 
@@ -66,7 +66,7 @@ export const getBaseExtensions = (ctx?: Map<string, any>) => [
   // QueryBlock.configure({ ctx }),
   // AssetSelector.configure({ ctx }),
   // QueryTextColumnBlock.configure({ ctx }),
-  // ControlledListBlock.configure({ ctx }),
+
   sanbaseChartBlockNode.configure({ ctx }),
   // TextInputField.configure({ ctx }),
 ]
