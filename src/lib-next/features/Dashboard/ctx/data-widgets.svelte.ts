@@ -50,7 +50,7 @@ export const useDashboardDataWidgetsFlow = createCtx(
           const schema = DataWidgetNodes[dataWidget.type]
           return schema && createDashboardDataWidget(dataWidget, schema)
         })
-        .filter(Boolean) as TDashboardDataWidget<any>[],
+        .filter((item) => !!item),
     )
 
     const dataWidgetMap = $derived(new Map(dataWidgets.map((item) => [item.id, item])))

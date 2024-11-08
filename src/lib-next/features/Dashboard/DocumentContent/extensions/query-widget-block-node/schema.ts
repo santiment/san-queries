@@ -8,7 +8,7 @@ import {
   type TDataWidgetNode,
 } from '../schema/data-widget'
 
-type T_QUERY_WIDGET_BLOCK_NODE = TDataWidgetNode<{
+type TSchema = TDataWidgetNode<{
   name: 'query-widget'
 
   Component: TDataWidgetComponent
@@ -21,7 +21,7 @@ type T_QUERY_WIDGET_BLOCK_NODE = TDataWidgetNode<{
   }
 }>
 
-export const QUERY_WIDGET_BLOCK_NODE: T_QUERY_WIDGET_BLOCK_NODE = createDataWidgetSchema({
+export const QUERY_WIDGET_BLOCK_NODE: TSchema = createDataWidgetSchema({
   name: 'query-widget',
 
   class: 'my-2 max-h-[1000px] min-h-[208px] column',

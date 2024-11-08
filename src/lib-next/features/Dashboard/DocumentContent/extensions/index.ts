@@ -20,7 +20,7 @@ import Paragraph from './paragraph-block-node'
 import AssetSelectorNode from './asset-selector-node'
 import QueryWidgetBlockNode from './query-widget-block-node'
 import ControlledListBlockNode from './controlled-list-block-node'
-import sanbaseChartBlockNode from './sanbase-chart-block-node'
+import SanbaseChartBlockNode from './sanbase-chart-block-node'
 import type { TDataWidgetNode } from './schema/data-widget'
 import type { TGlobalParameterNode } from './schema/global-parameter'
 
@@ -30,66 +30,63 @@ import type { TGlobalParameterNode } from './schema/global-parameter'
 // import SanbaseChartBlock from '../nodes/SanbaseChartBlock'
 // import TextInputField from '../nodes/TextInputField'
 
-export const getBaseExtensions = (ctx?: Map<string, any>) => [
-  Document,
-  Paragraph,
-  History,
+const DATA_WIDGET_NODES = [QueryWidgetBlockNode, SanbaseChartBlockNode] as const
+export type TDataWidgetNodes = (typeof DATA_WIDGET_NODES)[number]['__schema']
 
-  Text,
-  Bold,
-  Italic,
-  Strike,
+const GLOBAL_PARAMETER_WIDGET_NODES = [AssetSelectorNode, ControlledListBlockNode] as const
+export type TGlobalParameterWidgetNodes = (typeof GLOBAL_PARAMETER_WIDGET_NODES)[number]['__schema']
 
-  Heading.configure({ HTMLAttributes: { class: 'data-heading' } }),
-  Link.configure({ openOnClick: false, HTMLAttributes: { class: 'data-link' } }),
+export const getBaseExtensions = (ctx?: Map<string, any>) =>
+  [
+    Document,
+    Paragraph,
+    History,
 
-  OrderedList.configure({ HTMLAttributes: { class: 'data-list' } }),
-  BulletList.configure({ HTMLAttributes: { class: 'data-list' } }),
-  ListItem,
+    Text,
+    Bold,
+    Italic,
+    Strike,
 
-  Underline,
-  TextStyle,
-  Color,
-  Highlight.configure({
-    multicolor: true,
-  }),
+    Heading.configure({ HTMLAttributes: { class: 'data-heading' } }),
+    Link.configure({ openOnClick: false, HTMLAttributes: { class: 'data-link' } }),
 
-  Columns,
-  Column,
-  BlockLayout.configure({ dropareaColor: 'var(--droparea-color)' }),
+    OrderedList.configure({ HTMLAttributes: { class: 'data-list' } }),
+    BulletList.configure({ HTMLAttributes: { class: 'data-list' } }),
+    ListItem,
 
-  AssetSelectorNode.configure({ ctx }),
-  QueryWidgetBlockNode.configure({ ctx }),
-  ControlledListBlockNode.configure({ ctx }),
+    Underline,
+    TextStyle,
+    Color,
+    Highlight.configure({
+      multicolor: true,
+    }),
 
-  // HiddenBlock,
-  // QueryBlock.configure({ ctx }),
-  // AssetSelector.configure({ ctx }),
-  // QueryTextColumnBlock.configure({ ctx }),
+    Columns,
+    Column,
+    BlockLayout.configure({ dropareaColor: 'var(--droparea-color)' }),
 
-  sanbaseChartBlockNode.configure({ ctx }),
-  // TextInputField.configure({ ctx }),
-]
+    // HiddenBlock,
+    // QueryBlock.configure({ ctx }),
+    // AssetSelector.configure({ ctx }),
+    // QueryTextColumnBlock.configure({ ctx }),
 
-const BASE_EXTENSIONS = getBaseExtensions()
-export const GlobalParameterNodes = BASE_EXTENSIONS.reduce(
+    // TextInputField.configure({ ctx }),
+  ]
+    .concat(GLOBAL_PARAMETER_WIDGET_NODES.map((node) => node.configure({ ctx })))
+    .concat(DATA_WIDGET_NODES.map((node) => node.configure({ ctx })))
+
+export const GlobalParameterNodes = GLOBAL_PARAMETER_WIDGET_NODES.reduce(
   (acc, item) => {
-    if (item.config.isGlobalParameter) {
-      acc[item.config.name] = item.config as TGlobalParameterNode
-    }
-
+    acc[item.config.name] = item.config as TGlobalParameterNode
     return acc
   },
-  {} as Record<string, undefined | TGlobalParameterNode>,
+  {} as Record<string, undefined | TGlobalParameterWidgetNodes>,
 )
 
-export const DataWidgetNodes = BASE_EXTENSIONS.reduce(
+export const DataWidgetNodes = DATA_WIDGET_NODES.reduce(
   (acc, item) => {
-    if (item.config.isDataWidget) {
-      acc[item.config.name] = item.config as TDataWidgetNode
-    }
-
+    acc[item.config.name] = item.config as TDataWidgetNode
     return acc
   },
-  {} as Record<string, undefined | TDataWidgetNode>,
+  {} as Record<string, undefined | TDataWidgetNodes>,
 )

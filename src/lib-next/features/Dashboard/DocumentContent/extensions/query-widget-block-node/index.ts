@@ -45,4 +45,6 @@ export default Node.create({
   parseHTML() {
     return [{ tag: `div[data-type="${this.name}"]` }]
   },
-})
+}) as Node<any, any> & {
+  __schema: typeof QUERY_WIDGET_BLOCK_NODE
+}

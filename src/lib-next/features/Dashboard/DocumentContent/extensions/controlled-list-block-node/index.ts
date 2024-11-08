@@ -46,4 +46,4 @@ export default Node.create({
   parseHTML() {
     return [{ tag: `div[data-type="${this.name}"]` }]
   },
-})
+}) as Node & { __schema: typeof CONTROLLED_LIST_BLOCK_NODE }

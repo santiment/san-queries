@@ -1,6 +1,6 @@
 import { Node } from '@tiptap/core'
 import { SvelteNodeViewRenderer } from 'tiptap-svelte-adapter'
-import Component from './Component.svelte'
+import Component from './ui/index.svelte'
 import { renderNodeViewUniversalHTML } from '$lib/DashboardNext/BlockEditor/nodes/ssr'
 import { SANBASE_CHART_BLOCK_NODE } from './schema'
 
@@ -60,4 +60,6 @@ export default Node.create({
   addNodeView() {
     return SvelteNodeViewRenderer(Component)
   },
-})
+}) as Node<any, any> & {
+  __schema: typeof SANBASE_CHART_BLOCK_NODE
+}

@@ -21,9 +21,11 @@ export type TDashboardGlobalParameter<GSchema extends TGlobalParameterNode> = {
     get $$(): ReturnType<NonNullable<GSchema['initOutputs']>>
   }
 
-  settings?: {
-    get $$(): ReturnType<NonNullable<GSchema['initSettings']>>
-  }
+  settings: GSchema['initSettings'] extends () => infer TSettings
+    ? {
+        get $$(): TSettings
+      }
+    : undefined
 
   overrides: SS<
     Record<
@@ -37,7 +39,7 @@ function createDashboardGlobalParameter<GSchema extends TGlobalParameterNode>(
   schema: GSchema,
 ): TDashboardGlobalParameter<GSchema> {
   const defaultOutputValues = schema.initOutputs(value!) || value
-  const defaultSettings = schema.initSettings(settings)
+  const defaultSettings = schema.initSettings?.(settings)
 
   const outputKeys = Object.keys(defaultOutputValues) as (keyof ReturnType<
     GSchema['initOutputs']
@@ -91,14 +93,14 @@ export const useDashboardGlobalParametersCtx = createCtx(
           const schema = GlobalParameterNodes[apiParameter.type]
           return schema && createDashboardGlobalParameter(apiParameter, schema)
         })
-        .filter(Boolean) as TDashboardGlobalParameter<any>[],
+        .filter((item) => !!item),
     )
 
     const globalParameterMap = $derived(new Map(globalParameters.map((item) => [item.id, item])))
 
     const globalParameterByOverrideMap = $derived(
       new Map<string, () => unknown>(
-        globalParameters.flatMap((globalParameter) => {
+        globalParameters.flatMap((globalParameter: TDashboardGlobalParameter<any>) => {
           const overrides = globalParameter.overrides.$
           return Object.entries(overrides).flatMap(([outputKey, overrides]) => {
             return Array.from(overrides).map((keys) => [
