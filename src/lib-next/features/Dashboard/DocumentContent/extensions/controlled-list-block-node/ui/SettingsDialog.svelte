@@ -9,31 +9,35 @@
 
   import { dialogs$ } from 'san-webkit-next/ui/core/Dialog'
   import LinkParameterDialog from '$lib/DashboardNext/BlockEditor/nodes/AssetSelector/LinkParameterDialog.svelte'
-  import SelectOption from '../../SelectOption.svelte'
-  import { useControllerListCtx } from '../ctx'
-  import { useDashboardSqlQueriesCtx } from '../../query-widget-block-node/ctx/dashboard-queries.svelte'
-  import { useDashboardDataWidgets } from '$lib-next/features/Dashboard/ctx/data-widgets.svelte'
+  import {
+    useDashboardDataWidgets,
+    type TDashboardDataWidgetByType,
+  } from '$lib-next/features/Dashboard/ctx/data-widgets.svelte'
   import type { TDataWidgetKey } from '$lib-next/features/Dashboard/types'
+  import { useControllerListCtx } from '../ctx'
+  import SelectOption from '../../SelectOption.svelte'
 
   let { view, ...props }: ComponentProps<typeof LinkParameterDialog> & { view: any } = $props()
 
   const { globalParameter, linkedSqlDataWidget } = useControllerListCtx.get()
   const { dataWidgets } = useDashboardDataWidgets.get()
-  const { getDashboardSqlQueryById, sqlQueryCachedData } = useDashboardSqlQueriesCtx.get()
 
   const linkedQuery = $derived(linkedSqlDataWidget.$?.id)
-  const sqlQuery = $derived(getDashboardSqlQueryById(linkedQuery))
-  let linkedColumn = $derived(globalParameter.settings.$$.linkedColumn)
+  const linkedColumn = $derived(globalParameter.settings.$$.linkedColumn)
 
-  const queryOptions = $derived(dataWidgets.$.filter((item) => item.type === 'query-widget'))
-  const columnOptions = $derived(Object.keys(sqlQuery?.sqlQueryParameters || {}))
+  const queryOptions = $derived(
+    dataWidgets.$.filter(
+      (item) => item.type === 'query-widget',
+    ) as TDashboardDataWidgetByType['query-widget'][],
+  )
+  const columnOptions = $derived(linkedSqlDataWidget.$?.data.outputs || [])
 
   function onQuerySelect(value: string) {
     globalParameter.settings.$$.linkedQuery = value as TDataWidgetKey
   }
 
   function onColumnSelect(value: string) {
-    globalParameter.settings.$$.linkedColumn = value
+    globalParameter.settings.$$.linkedColumn = +value
   }
 </script>
 
@@ -51,7 +55,7 @@
         onChange={onQuerySelect}
       >
         {#snippet children({ option })}
-          <option value={option.id}>{option.data}</option>
+          <option value={option.id}>{option.data.sqlQuery?.name}</option>
         {/snippet}
       </SelectOption>
 

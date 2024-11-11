@@ -40,6 +40,9 @@ export type TDataWidgetSchema = {
   /** Will NOT be uploaded to API */
   initState(defaultState?: Partial<{ [key: string]: unknown }>): { [key: string]: unknown }
 
+  /** Will NOT be uploaded to API */
+  initData?: (id: TDataWidgetKey, allCtxs: Map<string, any>) => any
+
   /**
    * This function will run only once on component initialization. It's safe to use `getContext` here.
    *
@@ -66,6 +69,7 @@ export type TDataWidgetNode<GSchema extends TDataWidgetSchema = any> = {
   renderHTML(this: any, props: { HTMLAttributes: any }): any
 
   initState: GSchema['initState']
+  initData: GSchema['initData']
 
   initNodeView: (
     view: ViewProps['view'],
@@ -84,6 +88,8 @@ export function createDataWidgetSchema<GSchema extends TDataWidgetSchema>(
     Component: schema.Component,
 
     initState: schema.initState as GSchema['initState'],
+
+    initData: schema.initData as GSchema['initData'],
 
     initNodeView(
       view: ViewProps['view'],

@@ -1,5 +1,7 @@
-import type { TDataWidgetKey } from '$lib-next/features/Dashboard/types'
+import type { TApiDashboard, TDataWidgetKey } from '$lib-next/features/Dashboard/types'
 
+import { untrack } from 'svelte'
+import { SvelteMap } from 'svelte/reactivity'
 import { useDashboardDataWidgets } from '$lib-next/features/Dashboard/ctx/data-widgets.svelte'
 import Component from './ui/index.svelte'
 import {
@@ -7,7 +9,7 @@ import {
   type TDataWidgetComponent,
   type TDataWidgetNode,
 } from '../schema/data-widget'
-import { SvelteMap } from 'svelte/reactivity'
+import { useDashboardSqlQueriesCtx } from './ctx/dashboard-queries.svelte'
 
 export type TColumnActions = SvelteMap<
   string,
@@ -26,6 +28,14 @@ type TSchema = TDataWidgetNode<{
     loadSqlData: (isForced: boolean) => void
     __columnActions: TColumnActions
   }
+
+  initData(
+    id: TDataWidgetKey,
+    allCtxs: Map<string, any>,
+  ): {
+    sqlQuery: undefined | TApiDashboard<any>['queries'][number]
+    outputs: string[]
+  }
 }>
 
 export const QUERY_WIDGET_BLOCK_NODE: TSchema = createDataWidgetSchema({
@@ -42,6 +52,18 @@ export const QUERY_WIDGET_BLOCK_NODE: TSchema = createDataWidgetSchema({
       lastFetchedParameterValues: {},
       loadSqlData: () => {},
       __columnActions: new SvelteMap() as TColumnActions,
+    }
+  },
+
+  initData(id, allCtxs) {
+    const { getDashboardSqlQueryById, sqlQueryCachedData } = useDashboardSqlQueriesCtx.get(allCtxs)
+
+    const sqlQuery = untrack(() => getDashboardSqlQueryById(id))
+    const cachedData = sqlQueryCachedData.get(id)
+
+    return {
+      sqlQuery,
+      outputs: cachedData?.columns || [],
     }
   },
 
