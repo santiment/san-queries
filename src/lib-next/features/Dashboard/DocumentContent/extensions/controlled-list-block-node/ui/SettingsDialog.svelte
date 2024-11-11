@@ -8,7 +8,7 @@
   import type { ComponentProps } from 'svelte'
 
   import { dialogs$ } from 'san-webkit-next/ui/core/Dialog'
-  import LinkParameterDialog from '$lib/DashboardNext/BlockEditor/nodes/AssetSelector/LinkParameterDialog.svelte'
+
   import {
     useDashboardDataWidgets,
     type TDashboardDataWidgetByType,
@@ -16,8 +16,9 @@
   import type { TDataWidgetKey } from '$lib-next/features/Dashboard/types'
   import { useControllerListCtx } from '../ctx'
   import SelectOption from '../../SelectOption.svelte'
+  import LinkParameterDialog from '../../LinkParameterDialog.svelte'
 
-  let { view, ...props }: ComponentProps<typeof LinkParameterDialog> & { view: any } = $props()
+  let { ...props }: ComponentProps<typeof LinkParameterDialog> = $props()
 
   const { globalParameter, linkedSqlDataWidget } = useControllerListCtx.get()
   const { dataWidgets } = useDashboardDataWidgets.get()

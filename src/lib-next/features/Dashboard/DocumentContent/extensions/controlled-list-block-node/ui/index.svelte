@@ -16,7 +16,7 @@
   const showSettingsDialog = showSettingsDialog$()
 
   function onSettingsClick() {
-    showSettingsDialog({ parameter: {}, type: 'stringList', view })
+    showSettingsDialog({ globalParameter })
   }
 </script>
 

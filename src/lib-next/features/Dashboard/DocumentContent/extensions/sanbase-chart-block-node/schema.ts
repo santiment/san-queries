@@ -12,6 +12,8 @@ type TSchema = TDataWidgetNode<{
   Component: TDataWidgetComponent
 
   initState(defaultState?: Record<string, any>): any
+
+  initData(): { name: string; inputs: { slug: string; from: string; to: string } }
 }>
 
 export const SANBASE_CHART_BLOCK_NODE: TSchema = createDataWidgetSchema({
@@ -22,5 +24,12 @@ export const SANBASE_CHART_BLOCK_NODE: TSchema = createDataWidgetSchema({
 
   initState(defaultState = {}) {
     return {}
+  },
+
+  initData() {
+    return {
+      name: 'Sanbase Chart',
+      inputs: { slug: '', from: '', to: '' },
+    }
   },
 } as const)

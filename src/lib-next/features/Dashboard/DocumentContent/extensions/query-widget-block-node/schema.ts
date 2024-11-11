@@ -33,7 +33,9 @@ type TSchema = TDataWidgetNode<{
     id: TDataWidgetKey,
     allCtxs: Map<string, any>,
   ): {
+    name: string
     sqlQuery: undefined | TApiDashboard<any>['queries'][number]
+    inputs: Record<string, any>
     outputs: string[]
   }
 }>
@@ -62,7 +64,9 @@ export const QUERY_WIDGET_BLOCK_NODE: TSchema = createDataWidgetSchema({
     const cachedData = sqlQueryCachedData.get(id)
 
     return {
+      name: sqlQuery?.name || 'SQL Query',
       sqlQuery,
+      inputs: sqlQuery?.sqlQueryParameters || {},
       outputs: cachedData?.columns || [],
     }
   },
