@@ -17,6 +17,7 @@
   const { sqlQuery, sqlQueryCachedData, localParameters, parameterOverrides, loadSqlData } =
     useSqlWidgetFlow(widget)
 
+  const columnActions = $derived(state.$$.__columnActions)
   const sqlData = $derived(state.$$.sqlData || sqlQueryCachedData.get(id))
 
   // TODO: Focus on editor when delete widget pressed
@@ -58,7 +59,7 @@
 
     {#if sqlData}
       {#key sqlData}
-        <Visualisation {sqlQuery} {sqlData}></Visualisation>
+        <Visualisation {sqlQuery} {sqlData} {columnActions}></Visualisation>
       {/key}
     {:else if !!state.$$.isLoading}
       <div class="rounded bg-athens px-5 py-3 text-center">

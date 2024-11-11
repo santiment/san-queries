@@ -83,10 +83,14 @@ export const GlobalParameterNodes = GLOBAL_PARAMETER_WIDGET_NODES.reduce(
   {} as Record<string, undefined | TGlobalParameterWidgetNodes>,
 )
 
+type T_DATA_WIDGET_NODES = typeof DATA_WIDGET_NODES
 export const DataWidgetNodes = DATA_WIDGET_NODES.reduce(
   (acc, item) => {
+    // @ts-ignore
     acc[item.config.name] = item.config as TDataWidgetNode
     return acc
   },
-  {} as Record<string, undefined | TDataWidgetNodes>,
+  {} as {
+    [K in T_DATA_WIDGET_NODES[number] as K['__schema']['name']]: K['__schema']
+  },
 )

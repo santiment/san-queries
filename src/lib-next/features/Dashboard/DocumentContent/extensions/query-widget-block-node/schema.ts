@@ -1,12 +1,18 @@
 import type { TDataWidgetKey } from '$lib-next/features/Dashboard/types'
 
-import { useDashboardDataWidgetsFlow } from '$lib-next/features/Dashboard/ctx/data-widgets.svelte'
+import { useDashboardDataWidgets } from '$lib-next/features/Dashboard/ctx/data-widgets.svelte'
 import Component from './ui/index.svelte'
 import {
   createDataWidgetSchema,
   type TDataWidgetComponent,
   type TDataWidgetNode,
 } from '../schema/data-widget'
+import { SvelteMap } from 'svelte/reactivity'
+
+export type TColumnActions = SvelteMap<
+  string,
+  undefined | { label: string; onclick: (value: string) => void }
+>
 
 type TSchema = TDataWidgetNode<{
   name: 'query-widget'
@@ -18,6 +24,7 @@ type TSchema = TDataWidgetNode<{
     sqlData: null | App.SqlData
     lastFetchedParameterValues: Record<string, any>
     loadSqlData: (isForced: boolean) => void
+    __columnActions: TColumnActions
   }
 }>
 
@@ -34,6 +41,7 @@ export const QUERY_WIDGET_BLOCK_NODE: TSchema = createDataWidgetSchema({
       sqlData: null,
       lastFetchedParameterValues: {},
       loadSqlData: () => {},
+      __columnActions: new SvelteMap() as TColumnActions,
     }
   },
 
@@ -42,7 +50,7 @@ export const QUERY_WIDGET_BLOCK_NODE: TSchema = createDataWidgetSchema({
       return data
     }
 
-    const { createDashboardDataWidget } = useDashboardDataWidgetsFlow.get()
+    const { createDashboardDataWidget } = useDashboardDataWidgets.get()
 
     createDashboardDataWidget(
       {

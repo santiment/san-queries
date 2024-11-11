@@ -24,7 +24,7 @@
       global={globalValue}
       {parameter}
       value={globalValue}
-      changed={(globalValue || value) !== lastFetchedParameterValues[key]}
+      changed={(globalValue || value)?.toString() !== lastFetchedParameterValues[key]?.toString()}
     ></Parameter>
   {/each}
 </section>

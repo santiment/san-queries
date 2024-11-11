@@ -5,7 +5,7 @@
   import DocumentContent from './DocumentContent/DocumentContent.svelte'
   import { useDashboardGlobalParametersCtx } from './ctx/global-parameters.svelte'
   import { useDashboardSqlQueriesCtx } from './DocumentContent/extensions/query-widget-block-node/ctx/dashboard-queries.svelte'
-  import { useDashboardDataWidgetsFlow } from './ctx/data-widgets.svelte'
+  import { useDashboardDataWidgets } from './ctx/data-widgets.svelte'
   import type { TDashboardSqlData } from '$lib/Dashboard/flow/sqlData/api'
 
   type TProps = {
@@ -19,7 +19,7 @@
   useDashboardSqlQueriesCtx(apiDashboard, cache)
 
   useDashboardGlobalParametersCtx.set()
-  useDashboardDataWidgetsFlow.set()
+  useDashboardDataWidgets.set()
 
   console.log(ctx)
 </script>

@@ -6,7 +6,7 @@ import { SvelteNodeViewRenderer, type ViewProps } from 'tiptap-svelte-adapter'
 import { renderNodeViewUniversalHTML } from '$lib/DashboardNext/BlockEditor/nodes/ssr'
 import GenericNodeView from '../GenericNodeView.svelte'
 import {
-  useDashboardDataWidgetsFlow,
+  useDashboardDataWidgets,
   type TDashboardDataWidget,
 } from '../../../ctx/data-widgets.svelte'
 
@@ -55,7 +55,10 @@ export type TDataWidgetSchema = {
 
 export type TDataWidgetNode<GSchema extends TDataWidgetSchema = any> = {
   isDataWidget: true
+
   name: GSchema['name']
+
+  class?: GSchema['class']
 
   Component: TDataWidgetComponent
 
@@ -88,7 +91,7 @@ export function createDataWidgetSchema<GSchema extends TDataWidgetSchema>(
       const { attrs } = view.$.node
       const { 'data-id': id } = attrs
 
-      const { getDataWidget } = useDashboardDataWidgetsFlow.get()
+      const { getDataWidget } = useDashboardDataWidgets.get()
 
       const data: TDataWidgetNodeViewInitResult = { id, widget: getDataWidget(id) }
 

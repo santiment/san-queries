@@ -2,12 +2,16 @@ import type { CONTROLLED_LIST_BLOCK_NODE } from '../schema'
 import type { ViewProps } from 'tiptap-svelte-adapter'
 
 import { createCtx } from 'san-webkit-next/utils'
-import Cell from '../ui/Cell.svelte'
-import Header from '../ui/Header.svelte'
 import {
   useGlobalParameterWidgetFlow,
   type TDashboardGlobalParameter,
 } from '$lib-next/features/Dashboard/ctx/global-parameters.svelte'
+import {
+  useDashboardDataWidgets,
+  type TDashboardDataWidgetByType,
+} from '$lib-next/features/Dashboard/ctx/data-widgets.svelte'
+import Cell from '../ui/Cell.svelte'
+import Header from '../ui/Header.svelte'
 
 export const COLUMNS = [
   {
@@ -26,6 +30,7 @@ export const useControllerListCtx = createCtx(
     view: ViewProps['view'],
     widget: TDashboardGlobalParameter<typeof CONTROLLED_LIST_BLOCK_NODE>,
   ) => {
+    const { getDataWidget } = useDashboardDataWidgets.get()
     const { globalParameter, update } = useGlobalParameterWidgetFlow(view, widget)
     const { outputs, settings } = widget
 
@@ -48,6 +53,25 @@ export const useControllerListCtx = createCtx(
 
       if (!linkedQuery || linkedColumn === undefined) {
         return
+      }
+
+      const dataWidget = getDataWidget(linkedQuery)
+      if (dataWidget?.type !== 'query-widget') return
+
+      const queryWidget = dataWidget as TDashboardDataWidgetByType['query-widget']
+
+      const columnActions = queryWidget.state.$$.__columnActions
+      const column = linkedColumn.toString()
+
+      columnActions.set(column, {
+        label: 'Add to a list',
+        onclick: (value: string) => {
+          addInputValue(value)
+        },
+      })
+
+      return () => {
+        columnActions.delete(column)
       }
     })
 

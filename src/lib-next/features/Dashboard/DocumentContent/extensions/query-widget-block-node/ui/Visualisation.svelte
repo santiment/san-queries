@@ -3,9 +3,14 @@
   import Chart from '$lib/Visualization/Chart'
   import Table from '$lib/Visualization/Table'
   import { useQuerySettingsCtx } from '$lib/QueryEditor/ctx'
+  import type { TColumnActions } from '../schema'
 
-  type TProps = { sqlQuery: App.ApiQueryWidget; sqlData: App.SqlData }
-  let { sqlQuery, sqlData }: TProps = $props()
+  type TProps = {
+    sqlQuery: App.ApiQueryWidget
+    sqlData: App.SqlData
+    columnActions?: TColumnActions
+  }
+  let { sqlQuery, sqlData, columnActions }: TProps = $props()
 
   const { settings } = useQuerySettingsCtx(sqlQuery.settings)
 
@@ -16,5 +21,7 @@
 {#if queryVisualisation === 'Chart'}
   <Chart {sqlData} settings={columnSettings}></Chart>
 {:else}
-  <Table {sqlData} settings={columnSettings}></Table>
+  {#key columnActions?.size}
+    <Table {sqlData} settings={columnSettings} {columnActions}></Table>
+  {/key}
 {/if}

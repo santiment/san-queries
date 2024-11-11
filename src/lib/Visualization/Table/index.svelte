@@ -7,6 +7,7 @@
   import Header from './Selectable/Header.svelte'
   import Cell from './Selectable/Cell.svelte'
   import { useTableColumnsCtx } from './ctx.svelte'
+  import type { TColumnActions } from '$lib-next/features/Dashboard/DocumentContent/extensions/query-widget-block-node/schema'
 
   type Super = ComponentProps<DataTable<any>>
   let {
@@ -21,7 +22,7 @@
     sqlData: App.SqlData
     settings: SS<Record<string, any>>
     isSelectable?: boolean
-    columnActions?: Map<string, any>
+    columnActions?: TColumnActions
   } & Super = $props()
 
   const { dataColumns } = useTableColumnsCtx(sqlData, settings, columnActions)
