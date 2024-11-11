@@ -36,12 +36,7 @@
     from: fromParameter || 'utc_now-60d',
     to: toParameter || 'utc_now',
   })
-  const { metricSeries } = useMetricSeriesCtx([
-    {
-      name: 'price_usd',
-      style: 'line',
-    },
-  ])
+  const { metricSeries } = useMetricSeriesCtx.get()
 
   // const showMetricsDialogDialog = showMetricsDialogDialog$()
 

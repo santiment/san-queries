@@ -77,7 +77,7 @@ export const useDashboardDataWidgets = createCtx('dashboards_useDashboardDataWid
 
       dataWidgets = dataWidgets.concat(dataWidget)
 
-      return dataWidgets
+      return dataWidget
     },
   }
 })
@@ -88,15 +88,24 @@ export type TDashboardDataWidget<GSchema extends TDataWidgetNode> = {
   state: {
     get $$(): ReturnType<GSchema['initState']>
   }
+  settings: GSchema['initSettings'] extends () => infer TSettings
+    ? {
+        get $$(): TSettings
+      }
+    : undefined
+
   data: GSchema['initData'] extends (...args: any[]) => infer TData ? TData : undefined
 }
 function createDashboardDataWidget<GSchema extends TDataWidgetNode>(
-  { id, type }: TApiDataWidget,
+  { id, type, settings }: TApiDataWidget,
   schema: GSchema,
   allCtxs: Map<string, any>,
 ): TDashboardDataWidget<GSchema> {
   const defaultState = schema.initState()
+  const defaultSettings = schema.initSettings?.(settings)
+
   const _state = $state<{ [key: string]: unknown }>(defaultState)
+  const _settings = $state<undefined | { [key: string]: unknown }>(defaultSettings)
 
   return {
     id,
@@ -106,6 +115,13 @@ function createDashboardDataWidget<GSchema extends TDataWidgetNode>(
         return _state as ReturnType<GSchema['initState']>
       },
     },
+
+    settings: schema.initSettings && {
+      get $$() {
+        return _settings as ReturnType<NonNullable<GSchema['initSettings']>>
+      },
+    },
+
     data:
       schema.initData &&
       (schema.initData(id, allCtxs) as ReturnType<NonNullable<GSchema['initData']>>),

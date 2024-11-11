@@ -6,8 +6,8 @@ import { useDashboardDataWidgets } from '$lib-next/features/Dashboard/ctx/data-w
 import Component from './ui/index.svelte'
 import {
   createDataWidgetSchema,
-  type TDataWidgetComponent,
   type TDataWidgetNode,
+  type TDataWidgetSchema,
 } from '../schema/data-widget'
 import { useDashboardSqlQueriesCtx } from './ctx/dashboard-queries.svelte'
 
@@ -19,7 +19,9 @@ export type TColumnActions = SvelteMap<
 type TSchema = TDataWidgetNode<{
   name: 'query-widget'
 
-  Component: TDataWidgetComponent
+  Component: TDataWidgetSchema['Component']
+
+  create: TDataWidgetSchema['create']
 
   initState(defaultState?: Record<string, any>): {
     isLoading: boolean
@@ -71,7 +73,7 @@ export const QUERY_WIDGET_BLOCK_NODE: TSchema = createDataWidgetSchema({
     }
   },
 
-  initNodeView(data, schema) {
+  create(data, schema) {
     if (data.id) {
       return data
     }

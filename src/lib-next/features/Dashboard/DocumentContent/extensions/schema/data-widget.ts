@@ -30,9 +30,6 @@ export type TDataWidgetSchema = {
   Component: TDataWidgetComponent
 
   /** Will be uploaded to API */
-  data?: unknown
-
-  /** Will be uploaded to API */
   initSettings?: (defaultSettings?: Partial<{ [key: string]: unknown }>) => {
     [key: string]: unknown
   }
@@ -54,6 +51,12 @@ export type TDataWidgetSchema = {
     schema: TDataWidgetNode,
     view: ViewProps['view'],
   ) => TDataWidgetNodeViewInitResult | Promise<TDataWidgetNodeViewInitResult>
+
+  create(
+    data: TDataWidgetNodeViewInitResult,
+    schema: TDataWidgetNode,
+    view: ViewProps['view'],
+  ): TDataWidgetNodeViewInitResult | Promise<TDataWidgetNodeViewInitResult>
 }
 
 export type TDataWidgetNode<GSchema extends TDataWidgetSchema = any> = {
@@ -69,6 +72,7 @@ export type TDataWidgetNode<GSchema extends TDataWidgetSchema = any> = {
   renderHTML(this: any, props: { HTMLAttributes: any }): any
 
   initState: GSchema['initState']
+  initSettings: GSchema['initSettings']
   initData: GSchema['initData']
 
   initNodeView: (
@@ -89,6 +93,8 @@ export function createDataWidgetSchema<GSchema extends TDataWidgetSchema>(
 
     initState: schema.initState as GSchema['initState'],
 
+    initSettings: schema.initSettings as GSchema['initSettings'],
+
     initData: schema.initData as GSchema['initData'],
 
     initNodeView(
@@ -105,7 +111,7 @@ export function createDataWidgetSchema<GSchema extends TDataWidgetSchema>(
         return data
       }
 
-      return schema.initNodeView?.(data, this, view) || data
+      return schema.create?.(data, this, view) || data
     },
 
     addNodeView() {

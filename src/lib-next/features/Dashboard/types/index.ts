@@ -45,7 +45,7 @@ export type TApiDataWidget = {
   id: TDataWidgetKey
 
   /** Non-reactive (static) data */
-  data: any
+  data?: any
 
   /** Will be converted to the deeply shared signal */
   settings: any

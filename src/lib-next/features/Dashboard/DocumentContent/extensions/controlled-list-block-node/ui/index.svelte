@@ -40,7 +40,7 @@
   {/key}
 </div>
 
-<NodeSettings onclick={onSettingsClick}></NodeSettings>
+<NodeSettings class="self-start" onclick={onSettingsClick}></NodeSettings>
 
 <style lang="postcss">
   div :global {
