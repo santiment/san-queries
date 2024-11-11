@@ -34,6 +34,16 @@ export const useControllerListCtx = createCtx(
     const { globalParameter, update } = useGlobalParameterWidgetFlow(view, widget)
     const { outputs, settings } = widget
 
+    const linkedSqlDataWidget = $derived.by(() => {
+      const { linkedQuery } = settings.$$
+      if (!linkedQuery) return null
+
+      const dataWidget = getDataWidget(linkedQuery)
+      if (dataWidget?.type !== 'query-widget') return null
+
+      return dataWidget as TDashboardDataWidgetByType['query-widget']
+    })
+
     function addInputValue(value: string) {
       update('value', Array.from(new Set([...outputs.$$.value, value])))
     }
@@ -55,12 +65,11 @@ export const useControllerListCtx = createCtx(
         return
       }
 
-      const dataWidget = getDataWidget(linkedQuery)
-      if (dataWidget?.type !== 'query-widget') return
+      if (!linkedSqlDataWidget) {
+        return
+      }
 
-      const queryWidget = dataWidget as TDashboardDataWidgetByType['query-widget']
-
-      const columnActions = queryWidget.state.$$.__columnActions
+      const columnActions = linkedSqlDataWidget.state.$$.__columnActions
       const column = linkedColumn.toString()
 
       columnActions.set(column, {
@@ -75,6 +84,18 @@ export const useControllerListCtx = createCtx(
       }
     })
 
-    return { globalParameter, addInputValue, deleteItem, resetList }
+    return {
+      globalParameter,
+      update,
+
+      addInputValue,
+      deleteItem,
+      resetList,
+      linkedSqlDataWidget: {
+        get $() {
+          return linkedSqlDataWidget
+        },
+      },
+    }
   },
 )

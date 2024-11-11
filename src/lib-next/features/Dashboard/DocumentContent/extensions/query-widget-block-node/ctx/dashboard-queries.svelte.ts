@@ -20,8 +20,8 @@ export const useDashboardSqlQueriesCtx = createCtx(
 
     return {
       dashboardSqlQueries,
-      getDashboardSqlQueryById(id: TDataWidgetKey) {
-        return dashboardSqlQueryById.get(id)
+      getDashboardSqlQueryById(id: null | undefined | TDataWidgetKey) {
+        return dashboardSqlQueryById.get(id!)
       },
       sqlQueryCachedData,
     }

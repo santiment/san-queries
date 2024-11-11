@@ -58,7 +58,11 @@ export const useDashboardDataWidgets = createCtx('dashboards_useDashboardDataWid
   const dataWidgetMap = $derived(new Map(dataWidgets.map((item) => [item.id, item])))
 
   return {
-    dataWidgets,
+    dataWidgets: {
+      get $() {
+        return dataWidgets
+      },
+    },
     getDataWidget(dataWidgetKey: TDataWidgetKey) {
       return dataWidgetMap.get(dataWidgetKey)
     },

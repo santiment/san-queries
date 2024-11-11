@@ -5,11 +5,19 @@
   import DataTable from '$lib/ui/Table/DataTable.svelte'
   import InputForm from './InputForm.svelte'
   import { COLUMNS, useControllerListCtx } from '../ctx'
+  import NodeSettings from '../../NodeSettings.svelte'
+  import { showSettingsDialog$ } from './SettingsDialog.svelte'
 
   let { view, data }: TGlobalParametersWidgetProps<typeof CONTROLLED_LIST_BLOCK_NODE> = $props()
 
   const { globalParameter } = useControllerListCtx(view, data.widget)
   const { outputs } = globalParameter
+
+  const showSettingsDialog = showSettingsDialog$()
+
+  function onSettingsClick() {
+    showSettingsDialog({ parameter: {}, type: 'stringList', view })
+  }
 </script>
 
 <div class="flex-1 rounded border column">
@@ -31,6 +39,8 @@
     </DataTable>
   {/key}
 </div>
+
+<NodeSettings onclick={onSettingsClick}></NodeSettings>
 
 <style lang="postcss">
   div :global {
