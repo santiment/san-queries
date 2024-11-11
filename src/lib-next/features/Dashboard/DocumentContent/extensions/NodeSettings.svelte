@@ -9,7 +9,7 @@
 </script>
 
 {#if dashboard.isEditable}
-  <button class="ml-2 cursor-pointer self-start fill-waterloo hover:fill-green" {onclick}>
+  <button class="ml-2 cursor-pointer fill-waterloo hover:fill-green" {onclick}>
     <Svg id="cog" w="12"></Svg>
   </button>
 {/if}

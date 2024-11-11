@@ -13,9 +13,13 @@
   import Checkbox from 'san-webkit-next/ui/core/Checkbox'
   import Svg from 'san-webkit-next/ui/core/Svg'
   import { useDashboardDataWidgets } from '../../ctx/data-widgets.svelte'
+  import type { Snippet } from 'svelte'
 
-  type TProps = TDialogProps & { globalParameter: TDashboardGlobalParameter<any> }
-  let { Controller, globalParameter }: TProps = $props()
+  type TProps = TDialogProps & {
+    globalParameter: TDashboardGlobalParameter<any>
+    children?: Snippet
+  }
+  let { Controller, globalParameter, children }: TProps = $props()
 
   const { dataWidgets } = useDashboardDataWidgets.get()
 
@@ -40,6 +44,8 @@
 </script>
 
 <Dialog class="w-[480px] column">
+  {@render children?.()}
+
   <div class="overflow-auto p-4 py-3">
     {#if dataWidgetsWithInputs.length}
       <section class="flex flex-col gap-4">

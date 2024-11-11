@@ -43,34 +43,36 @@
 </script>
 
 <LinkParameterDialog {...props}>
-  <h2 class="text-base font-medium">Controlled list settings</h2>
-  <section class="mb-4 mt-2 gap-2">
-    <h3 class="text-xs text-waterloo">Shortcut action</h3>
+  <div class="p-3">
+    <h2 class="text-base font-medium">Controlled list settings</h2>
+    <section class="mb-4 mt-2 gap-2">
+      <h3 class="text-xs text-waterloo">Shortcut action</h3>
 
-    <form class="gap-2 column">
-      <SelectOption
-        title="Query"
-        name="query"
-        value={linkedQuery}
-        options={queryOptions}
-        onChange={onQuerySelect}
-      >
-        {#snippet children({ option })}
-          <option value={option.id}>{option.data.sqlQuery?.name}</option>
-        {/snippet}
-      </SelectOption>
+      <form class="gap-2 column">
+        <SelectOption
+          title="Query"
+          name="query"
+          value={linkedQuery}
+          options={queryOptions}
+          onChange={onQuerySelect}
+        >
+          {#snippet children({ option })}
+            <option value={option.id}>{option.data.sqlQuery?.name}</option>
+          {/snippet}
+        </SelectOption>
 
-      <SelectOption
-        title="Column"
-        name="column"
-        value={linkedColumn}
-        options={columnOptions}
-        onChange={onColumnSelect}
-      >
-        {#snippet children({ option, i })}
-          <option value={i}>{option}</option>
-        {/snippet}
-      </SelectOption>
-    </form>
-  </section>
+        <SelectOption
+          title="Column"
+          name="column"
+          value={linkedColumn}
+          options={columnOptions}
+          onChange={onColumnSelect}
+        >
+          {#snippet children({ option, i })}
+            <option value={i}>{option}</option>
+          {/snippet}
+        </SelectOption>
+      </form>
+    </section>
+  </div>
 </LinkParameterDialog>

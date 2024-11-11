@@ -23,6 +23,7 @@ export const ASSET_SELECTOR_NODE: TGlobalParameterNode<TSchema> = createGlobalPa
   keyPrefix: 'Asset',
 
   rootTag: 'span',
+  class: 'inline-flex center',
 
   Component,
 

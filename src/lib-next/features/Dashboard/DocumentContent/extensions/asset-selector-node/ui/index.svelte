@@ -4,10 +4,11 @@
 
   import Svg from 'san-webkit-next/ui/core/Svg'
   import AssetLogo from 'san-webkit-next/ui/app/AssetLogo'
-  import { NodeViewWrapper } from 'tiptap-svelte-adapter'
   import { useGlobalParameterWidgetFlow } from '$lib-next/features/Dashboard/ctx/global-parameters.svelte'
   import { showSelectAssetDialog$ } from './SelectAssetDialog.svelte'
   import { useAssetFlow } from '../asset.svelte'
+  import NodeSettings from '../../NodeSettings.svelte'
+  import { showLinkParameterDialog$ } from '../../LinkParameterDialog.svelte'
 
   let { view, data }: TGlobalParametersWidgetProps<typeof ASSET_SELECTOR_NODE> = $props()
 
@@ -17,6 +18,7 @@
   const { outputs } = globalParameter
 
   const showSelectAssetDialog = showSelectAssetDialog$()
+  const showLinkParameterDialog = showLinkParameterDialog$()
 
   let asset = $derived(getAssetBySlug(outputs.$$.slug))
 
@@ -25,19 +27,23 @@
       update('slug', asset.slug)
     })
   }
+
+  function onSettingsClick() {
+    showLinkParameterDialog({ globalParameter })
+  }
 </script>
 
-<NodeViewWrapper class="relative inline-flex px-[1px]">
-  <button
-    class="flex cursor-pointer gap-1 whitespace-nowrap rounded border px-1.5 center hover:border-green"
-    onclick={onAssetSelectorClick}
-  >
-    <AssetLogo slug={asset.slug || ''}></AssetLogo>
-    <span class="overflow-hidden text-ellipsis capitalize">{asset.name || asset.slug}</span>
-    {#if asset.ticker}
-      <span class="uppercase text-waterloo">({asset.ticker})</span>
-    {/if}
+<button
+  class="flex cursor-pointer gap-1 whitespace-nowrap rounded border px-1.5 center hover:border-green"
+  onclick={onAssetSelectorClick}
+>
+  <AssetLogo slug={asset.slug || ''}></AssetLogo>
+  <span class="overflow-hidden text-ellipsis capitalize">{asset.name || asset.slug}</span>
+  {#if asset.ticker}
+    <span class="uppercase text-waterloo">({asset.ticker})</span>
+  {/if}
 
-    <Svg id="arrow-down" w="8" class="ml-1.5"></Svg>
-  </button>
-</NodeViewWrapper>
+  <Svg id="arrow-down" w="8" class="ml-1.5"></Svg>
+</button>
+
+<NodeSettings onclick={onSettingsClick}></NodeSettings>
