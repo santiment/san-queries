@@ -12,18 +12,9 @@
 
   type TProps = {
     readonly: boolean
-    assetParameterId?: string
-    fromParameterId?: string
-    toParameterId?: string
     setMetricsWidgetState: (metrics: string[]) => void
   }
-  let {
-    readonly = true,
-    assetParameterId,
-    fromParameterId,
-    toParameterId,
-    setMetricsWidgetState,
-  }: TProps = $props()
+  let { readonly = true, setMetricsWidgetState }: TProps = $props()
 
   // const { globalParameterByKey } = useDashboardGlobalParametersCtx()
   let assetParameter = $derived(undefined)
@@ -31,33 +22,9 @@
   let toParameter = $derived(undefined)
 
   const { colorGenerator } = useColorGenerator()
-  const { globalParameters: chartGlobalParameters } = useChartGlobalParametersCtx.set({
-    selector: { slug: assetParameter || 'bitcoin' },
-    from: fromParameter || 'utc_now-60d',
-    to: toParameter || 'utc_now',
-  })
   const { metricSeries } = useMetricSeriesCtx.get()
 
   // const showMetricsDialogDialog = showMetricsDialogDialog$()
-
-  $effect(() => {
-    console.log({ assetParameter })
-    if (assetParameter) {
-      chartGlobalParameters.$$.selector.slug = assetParameter
-    }
-  })
-
-  $effect(() => {
-    if (fromParameter) {
-      chartGlobalParameters.$$.from = fromParameter
-    }
-  })
-
-  $effect(() => {
-    if (toParameter) {
-      chartGlobalParameters.$$.to = toParameter
-    }
-  })
 
   function onAddMetricClick() {
     // showMetricsDialogDialog({

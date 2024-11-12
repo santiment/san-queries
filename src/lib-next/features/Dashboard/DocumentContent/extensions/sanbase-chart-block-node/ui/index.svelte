@@ -6,21 +6,13 @@
   import type { SANBASE_CHART_BLOCK_NODE } from '../schema'
   import type { TDataWidgetProps } from '../../schema/data-widget'
   import { useMetricSeriesCtx } from 'san-webkit-next/ui/app/Chart/ctx'
+  import { useSanbaseChartWidgetFlow } from '../ctx'
   // import { showWidgetSettingsDialog$ } from './WidgetSettingsDialog.svelte'
 
   let { data }: TDataWidgetProps<typeof SANBASE_CHART_BLOCK_NODE> = $props()
 
-  const { id, widget } = data
-  const { settings } = widget
-
   const { dashboard } = useDashboardCtx.get()
-  const { parameterOverrides } = useDataWidgetParameterOverrides(id, widget.data.inputs)
-  const { metricSeries } = useMetricSeriesCtx(settings.$$.metrics)
-
-  console.log(widget, metricSeries)
-  // $inspect(parameterOverrides.$, id)
-
-  // const showWidgetSettingsDialog = showWidgetSettingsDialog$()
+  const {} = useSanbaseChartWidgetFlow(data.widget)
 
   function setMetricsWidgetState(metrics: any[]) {
     // view.$.updateAttributes({ metrics })
