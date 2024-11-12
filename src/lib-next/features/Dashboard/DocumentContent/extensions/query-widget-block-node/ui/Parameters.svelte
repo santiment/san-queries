@@ -1,6 +1,8 @@
 <script lang="ts">
-  import Parameter from '$lib/ui/Parameter'
   import type { SS } from 'svelte-runes'
+
+  import { BROWSER } from 'esm-env'
+  import Parameter from '$lib/ui/Parameter'
 
   type TProps = {
     localParameters: Record<string, any>
@@ -24,7 +26,8 @@
       global={globalValue}
       {parameter}
       value={globalValue}
-      changed={(globalValue || value)?.toString() !== lastFetchedParameterValues[key]?.toString()}
+      changed={BROWSER &&
+        (globalValue || value)?.toString() !== lastFetchedParameterValues[key]?.toString()}
     ></Parameter>
   {/each}
 </section>

@@ -1,6 +1,7 @@
 import type { QUERY_WIDGET_BLOCK_NODE } from '../schema'
 
 import { exhaustMap, tap, of, filter } from 'rxjs'
+import { onMount } from 'svelte'
 import { useObserveFnCall } from 'san-webkit-next/utils'
 import { useDashboardCtx } from '$lib-next/features/Dashboard/ctx'
 import {
@@ -21,7 +22,10 @@ export function useSqlWidgetFlow(widget: TDashboardDataWidget<typeof QUERY_WIDGE
 
   const { parameterOverrides } = useDataWidgetParameterOverrides(widget.id, localParameters)
 
-  Object.assign(state.$$.lastFetchedParameterValues, localParameters, parameterOverrides.$)
+  onMount(() => {
+    // HACK: Might not work. If params will show `Changed` on mount, then direct assignment required instead of Object.assign
+    Object.assign(state.$$.lastFetchedParameterValues, localParameters, parameterOverrides.$)
+  })
 
   const loadSqlData = useObserveFnCall<{ isForced: boolean }>(() =>
     exhaustMap(({ isForced = false }) =>

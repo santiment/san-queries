@@ -107,11 +107,18 @@ export function createDataWidgetSchema<GSchema extends TDataWidgetSchema>(
 
       const data: TDataWidgetNodeViewInitResult = { id, widget: getDataWidget(id) }
 
-      if (!BROWSER || data.widget || !editor.isEditable) {
+      if (!BROWSER || !editor.isEditable || !editor.isInitialized) {
         return data
       }
 
-      return schema.create(data, this, view)
+      // NOTE: This will enforce the order: 1) destroy -> 2) mount after global params
+      return Promise.resolve()
+        .then(() => Promise.resolve())
+        .then(() => {
+          if (data.widget) return data
+
+          return schema.create(data, this, view)
+        })
     },
 
     addNodeView() {

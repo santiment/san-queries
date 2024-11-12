@@ -89,16 +89,19 @@ export function createGlobalParameterSchema<GSchema extends TGlobalParameterSche
         return data
       }
 
-      const isNewWidget = untrack(() => !data.widget?.__isDestroyed.$)
+      // NOTE: This will enforce the order: 1) destroy -> 2) mount
+      return Promise.resolve().then(() => {
+        const isNewWidget = untrack(() => !data.widget?.__isDestroyed.$)
 
-      if (isNewWidget) {
-        const widget = registerGlobalParameter(undefined, node)
+        if (isNewWidget) {
+          const widget = registerGlobalParameter(undefined, node)
 
-        data.id = widget.id
-        data.widget = widget
-      }
+          data.id = widget.id
+          data.widget = widget
+        }
 
-      return schema.initNodeView?.(data as any) || data
+        return schema.initNodeView?.(data as any) || data
+      })
     },
 
     addNodeView() {
