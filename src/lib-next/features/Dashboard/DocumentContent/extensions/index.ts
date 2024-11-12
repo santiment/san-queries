@@ -26,6 +26,7 @@ import TextInputFieldNode from './text-input-field-node'
 import QueryWidgetBlockNode from './query-widget-block-node'
 import ControlledListBlockNode from './controlled-list-block-node'
 import SanbaseChartBlockNode from './sanbase-chart-block-node'
+import HiddenBlockNode from './hidden-block-node'
 
 // import HiddenBlock from '../nodes/HiddenBlock'
 // import QueryTextColumnBlock from '../nodes/QueryTextColumnBlock'
@@ -73,12 +74,8 @@ export const getBaseExtensions = (ctx?: Map<string, any>) =>
     Column,
     BlockLayout.configure({ dropareaColor: 'var(--droparea-color)' }),
 
-    // HiddenBlock,
-    // QueryBlock.configure({ ctx }),
-    // AssetSelector.configure({ ctx }),
+    HiddenBlockNode,
     // QueryTextColumnBlock.configure({ ctx }),
-
-    // TextInputField.configure({ ctx }),
   ]
     .concat(GLOBAL_PARAMETER_WIDGET_NODES.map((node) => node.configure({ ctx })))
     .concat(DATA_WIDGET_NODES.map((node) => node.configure({ ctx })))
