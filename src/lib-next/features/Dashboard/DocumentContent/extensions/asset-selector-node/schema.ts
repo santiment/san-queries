@@ -9,7 +9,7 @@ type TSchema = {
   name: 'asset-selector'
   keyPrefix: 'Asset'
 
-  rootTag: 'span'
+  // rootTag: 'span'
 
   Component: TGlobalParameterWidgetComponent
 
@@ -22,7 +22,7 @@ export const ASSET_SELECTOR_NODE: TGlobalParameterNode<TSchema> = createGlobalPa
   name: 'asset-selector',
   keyPrefix: 'Asset',
 
-  rootTag: 'span',
+  // rootTag: 'span',
   class: 'inline-flex center',
 
   Component,

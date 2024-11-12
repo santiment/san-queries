@@ -52,6 +52,6 @@ export default Node.create({
   },
 
   parseHTML() {
-    return [{ tag: `span[data-type="${this.name}"]` }]
+    return [{ tag: `div[data-type="${this.name}"]` }]
   },
 }) as Node & { __schema: typeof ASSET_SELECTOR_NODE }

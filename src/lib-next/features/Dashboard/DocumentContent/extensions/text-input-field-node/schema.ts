@@ -9,7 +9,7 @@ type TSchema = {
   name: 'text-input-field'
   keyPrefix: 'InputField'
 
-  rootTag: 'span'
+  // rootTag: 'span'
 
   Component: TGlobalParameterWidgetComponent
 
@@ -22,7 +22,7 @@ export const TEXT_INPUT_FIELD_NODE: TGlobalParameterNode<TSchema> = createGlobal
   name: 'text-input-field',
   keyPrefix: 'InputField',
 
-  rootTag: 'span',
+  // rootTag: 'span',
   class: 'inline-flex center text-sm',
 
   Component,

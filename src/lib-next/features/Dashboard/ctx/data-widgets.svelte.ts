@@ -1,6 +1,7 @@
 import type { TApiDataWidget, TDataWidgetKey, TDataWidgetLocalParameterKey } from '../types'
 import type { TDataWidgetNode } from '../DocumentContent/extensions/schema/data-widget'
 import { getAllContexts } from 'svelte'
+import { ss, type SS } from 'svelte-runes'
 import { createCtx } from 'san-webkit-next/utils'
 import { useDashboardGlobalParametersCtx } from './global-parameters.svelte'
 import { useDashboardCtx } from './dashboard.svelte'
@@ -95,6 +96,8 @@ export type TDashboardDataWidget<GSchema extends TDataWidgetNode> = {
     : undefined
 
   data: GSchema['initData'] extends (...args: any[]) => infer TData ? TData : undefined
+
+  __isDestroyed: SS<boolean>
 }
 function createDashboardDataWidget<GSchema extends TDataWidgetNode>(
   { id, type, settings }: TApiDataWidget,
@@ -125,5 +128,7 @@ function createDashboardDataWidget<GSchema extends TDataWidgetNode>(
     data:
       schema.initData &&
       (schema.initData(id, allCtxs) as ReturnType<NonNullable<GSchema['initData']>>),
+
+    __isDestroyed: ss(false),
   }
 }

@@ -1,4 +1,4 @@
-import type { Component } from 'svelte'
+import { untrack, type Component } from 'svelte'
 import type { TDashboardGlobalParameterKey } from '$lib-next/features/Dashboard/types'
 
 import { BROWSER } from 'esm-env'
@@ -78,22 +78,24 @@ export function createGlobalParameterSchema<GSchema extends TGlobalParameterSche
     initSettings: schema.initSettings as GSchema['initSettings'],
 
     initNodeView(view: ViewProps['view']): TNodeViewInitResult | Promise<TNodeViewInitResult> {
-      const { attrs } = view.$.node
-      const { 'data-id': id } = attrs
+      const { editor, node: viewNode } = view.$
+      const { 'data-id': id } = viewNode.attrs
 
       const { getGlobalParameter, registerGlobalParameter } = useDashboardGlobalParametersCtx.get()
 
       const data: TNodeViewInitResult = { id, widget: getGlobalParameter(id) }
 
-      if (!BROWSER) {
+      if (!BROWSER || !editor.isEditable || !editor.isInitialized) {
         return data
       }
 
-      if (!data.widget) {
-        const widget = registerGlobalParameter(data.id, node)
+      const isNewWidget = untrack(() => !data.widget?.__isDestroyed.$)
+
+      if (isNewWidget) {
+        const widget = registerGlobalParameter(undefined, node)
 
         data.id = widget.id
-        data.widget = widget as any
+        data.widget = widget
       }
 
       return schema.initNodeView?.(data as any) || data
@@ -106,7 +108,8 @@ export function createGlobalParameterSchema<GSchema extends TGlobalParameterSche
     renderHTML(this: any, { HTMLAttributes }: any) {
       return renderNodeViewUniversalHTML(
         [
-          schema.rootTag || 'div',
+          // schema.rootTag || 'div',
+          'div', // NOTE: For some reason, Tiptap doesn't parse `span` tag correctly, resulting in absent markup when pasting clipboard content
           {
             'data-type': this.name,
             'data-id': HTMLAttributes['data-id'],

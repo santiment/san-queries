@@ -1,12 +1,10 @@
 <script lang="ts">
-  import type { TDataWidgetNode, TDataWidgetProps } from './schema/data-widget'
-  import type {
-    TGlobalParameterNode,
-    TGlobalParametersWidgetProps,
-  } from './schema/global-parameter'
+  import type { TDataWidgetNode } from './schema/data-widget'
+  import type { TGlobalParameterNode } from './schema/global-parameter'
   import { NodeViewWrapper, type ViewProps } from 'tiptap-svelte-adapter'
   import SpinLoader from 'san-webkit/lib/ui/SpinLoader.svelte'
   import { cn } from 'san-webkit-next/ui/utils'
+  import ViewComponent from './ViewComponent.svelte'
 
   let { view }: ViewProps = $props()
 
@@ -15,6 +13,7 @@
   const nodeViewData = nodeConfig.initNodeView(view)
 </script>
 
+<!-- data-id={view.$.node.attrs['data-id']} -->
 <NodeViewWrapper class={cn('relative', nodeConfig.class)} style={view.$.node.attrs.style}>
   {#if nodeViewData instanceof Promise}
     {#await nodeViewData}
@@ -22,17 +21,9 @@
         <SpinLoader></SpinLoader>
       </div>
     {:then data}
-      {@render nodeView(data)}
+      <ViewComponent {view} {nodeConfig} {data}></ViewComponent>
     {/await}
   {:else}
-    {@render nodeView(nodeViewData)}
+    <ViewComponent {view} {nodeConfig} data={nodeViewData}></ViewComponent>
   {/if}
 </NodeViewWrapper>
-
-{#snippet nodeView(
-  data: Partial<TDataWidgetProps['data']> | Partial<TGlobalParametersWidgetProps['data']>,
-)}
-  {#if data.id && data.widget}
-    <nodeConfig.Component {view} data={data as any}></nodeConfig.Component>
-  {/if}
-{/snippet}

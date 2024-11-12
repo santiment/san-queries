@@ -33,6 +33,8 @@ export type TDashboardGlobalParameter<GSchema extends TGlobalParameterNode> = {
       Map<TDataWidgetKey, TDataWidgetLocalParameterKey>
     >
   >
+
+  __isDestroyed: SS<boolean>
 }
 function createDashboardGlobalParameter<GSchema extends TGlobalParameterNode>(
   { id, type, value, overrides, settings }: TApiDashboardGlobalParameter,
@@ -51,6 +53,7 @@ function createDashboardGlobalParameter<GSchema extends TGlobalParameterNode>(
   return {
     id,
     type: type as GSchema['name'],
+
     outputs: {
       get $$() {
         return _state as ReturnType<GSchema['initOutputs']>
@@ -79,6 +82,8 @@ function createDashboardGlobalParameter<GSchema extends TGlobalParameterNode>(
         >,
       ),
     ),
+
+    __isDestroyed: ss(false),
   }
 }
 
@@ -102,6 +107,10 @@ export const useDashboardGlobalParametersCtx = createCtx(
       new Map<string, () => unknown>(
         globalParameters.flatMap((globalParameter: TDashboardGlobalParameter<any>) => {
           const overrides = globalParameter.overrides.$
+          if (globalParameter.__isDestroyed.$) {
+            return []
+          }
+
           return Object.entries(overrides).flatMap(([outputKey, overrides]) => {
             return Array.from(overrides).map((keys) => [
               keys.join('') as string,

@@ -100,21 +100,18 @@ export function createDataWidgetSchema<GSchema extends TDataWidgetSchema>(
     initNodeView(
       view: ViewProps['view'],
     ): TDataWidgetNodeViewInitResult | Promise<TDataWidgetNodeViewInitResult> {
-      const { attrs } = view.$.node
-      const { 'data-id': id } = attrs
+      const { editor, node: viewNode } = view.$
+      const { 'data-id': id } = viewNode.attrs
 
       const { getDataWidget } = useDashboardDataWidgets.get()
 
       const data: TDataWidgetNodeViewInitResult = { id, widget: getDataWidget(id) }
 
-      if (!BROWSER) {
-        return data
-      }
-      if (data.widget) {
+      if (!BROWSER || data.widget || !editor.isEditable) {
         return data
       }
 
-      return normalizeCreationView(attrs, schema.create(data, this, view))
+      return schema.create(data, this, view)
     },
 
     addNodeView() {
@@ -140,20 +137,4 @@ export function createDataWidgetSchema<GSchema extends TDataWidgetSchema>(
   } as const
 
   return node
-}
-
-function normalizeCreationView(
-  attrs: Record<string, any>,
-  created: TDataWidgetNodeViewInitResult | Promise<TDataWidgetNodeViewInitResult>,
-) {
-  if (created instanceof Promise) {
-    return created.then((creation) => {
-      Object.assign(attrs, { 'data-id': creation.id })
-      return creation
-    })
-  } else {
-    Object.assign(attrs, { 'data-id': created.id })
-  }
-
-  return created
 }
