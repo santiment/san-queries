@@ -198,6 +198,7 @@ export function useGlobalParameterWidgetFlow<GSchema extends TGlobalParameterNod
         return
       }
 
+      view.$.editor.commands.focus(view.$.getPos())
       view.$.updateAttributes({ [outputKey]: value })
     },
   }

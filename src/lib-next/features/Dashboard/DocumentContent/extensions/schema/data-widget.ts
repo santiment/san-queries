@@ -110,8 +110,11 @@ export function createDataWidgetSchema<GSchema extends TDataWidgetSchema>(
       if (!BROWSER) {
         return data
       }
+      if (data.widget) {
+        return data
+      }
 
-      return schema.create?.(data, this, view) || data
+      return normalizeCreationView(attrs, schema.create(data, this, view))
     },
 
     addNodeView() {
@@ -137,4 +140,20 @@ export function createDataWidgetSchema<GSchema extends TDataWidgetSchema>(
   } as const
 
   return node
+}
+
+function normalizeCreationView(
+  attrs: Record<string, any>,
+  created: TDataWidgetNodeViewInitResult | Promise<TDataWidgetNodeViewInitResult>,
+) {
+  if (created instanceof Promise) {
+    return created.then((creation) => {
+      Object.assign(attrs, { 'data-id': creation.id })
+      return creation
+    })
+  } else {
+    Object.assign(attrs, { 'data-id': created.id })
+  }
+
+  return created
 }

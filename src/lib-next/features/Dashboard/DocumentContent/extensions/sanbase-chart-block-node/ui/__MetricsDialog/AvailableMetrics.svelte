@@ -1,5 +1,6 @@
 <script lang="ts">
   import Svg from 'san-webkit-next/ui/core/Svg'
+  import { cn } from 'san-webkit-next/ui/utils'
   import { SvelteSet } from 'svelte/reactivity'
 
   export let categories: any[]
@@ -39,19 +40,21 @@
     </button>
 
     {#if isOpened}
-      <section class="c-fiord column">
+      <section class="text-fiord column">
         {#each groups as metrics}
           {@const { group } = metrics[0]}
 
           {#if group}
-            <h4 class="caption txt-b c-waterloo group">{group}</h4>
+            <h4 class="group text-xs font-bold text-waterloo">{group}</h4>
           {/if}
 
           {#each metrics as metric (metric.key)}
-            {@const selected = selectedMetrics.has(metric)}
+            {@const selected = selectedMetrics.has(metric.key)}
             <button
-              class="metric btn v-center justify row"
-              class:selected
+              class={cn(
+                'metric btn items-center justify-between row',
+                selected && 'fill-waterloo text-green',
+              )}
               on:click={() => toggleMetric(metric)}
             >
               <span class="single-line">
@@ -102,11 +105,5 @@
 
   .group {
     margin: 24px 0 8px;
-  }
-
-  .selected {
-    --color: var(--green);
-    --fill: var(--waterloo);
-    --fill-hover: var(--waterloo);
   }
 </style>

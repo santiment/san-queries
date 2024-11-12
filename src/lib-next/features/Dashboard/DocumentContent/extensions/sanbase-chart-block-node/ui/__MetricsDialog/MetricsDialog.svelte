@@ -58,10 +58,10 @@
   }
 
   function toggleMetric(metric: any) {
-    if (selectedMetrics.has(metric)) {
-      selectedMetrics.delete(metric)
+    if (selectedMetrics.has(metric.key)) {
+      selectedMetrics.delete(metric.key)
     } else {
-      selectedMetrics.add(metric)
+      selectedMetrics.add(metric.key)
     }
 
     selectedMetrics = selectedMetrics

@@ -19,7 +19,7 @@ type TSchema = {
   initState(defaultState?: Record<string, any>): any
 
   initSettings(defaultSettings?: Partial<{ metrics: { name: string; style: 'line' }[] }>): {
-    metrics: { name: string; label: string; style: 'line' }[]
+    metrics: { name: string; style: 'line' }[]
   }
 
   initData(): { name: string; inputs: { slug: string; from: string; to: string } }
@@ -30,8 +30,6 @@ type TSchema = {
 const DEFAULT_METRICS = [
   {
     name: M.price_usd.key as string,
-    label: M.price_usd.label as string,
-    scaleId: 'right-price_usd',
     style: 'line' as const,
   },
 ]
@@ -47,9 +45,7 @@ export const SANBASE_CHART_BLOCK_NODE: TDataWidgetNode<TSchema> = createDataWidg
 
   initSettings({ metrics } = {}) {
     return {
-      metrics:
-        metrics?.map((item) => ({ ...item, label: M[item.name]?.label || item.name })) ||
-        DEFAULT_METRICS,
+      metrics: metrics || DEFAULT_METRICS,
     }
   },
 
@@ -61,10 +57,6 @@ export const SANBASE_CHART_BLOCK_NODE: TDataWidgetNode<TSchema> = createDataWidg
   },
 
   create(data, schema) {
-    if (data.id) {
-      return data
-    }
-
     const { createDashboardDataWidget } = useDashboardDataWidgets.get()
 
     const dataWidget = createDashboardDataWidget(

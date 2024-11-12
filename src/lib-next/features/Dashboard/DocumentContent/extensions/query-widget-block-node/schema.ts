@@ -74,10 +74,6 @@ export const QUERY_WIDGET_BLOCK_NODE: TSchema = createDataWidgetSchema({
   },
 
   create(data, schema) {
-    if (data.id) {
-      return data
-    }
-
     const { createDashboardDataWidget } = useDashboardDataWidgets.get()
 
     createDashboardDataWidget(
