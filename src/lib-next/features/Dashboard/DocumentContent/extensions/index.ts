@@ -1,6 +1,10 @@
+import type { TDataWidgetNode } from './schema/data-widget'
+import type { TGlobalParameterNode } from './schema/global-parameter'
+
 import Document from '@tiptap/extension-document'
 import Text from '@tiptap/extension-text'
 import TextStyle from '@tiptap/extension-text-style'
+import HorizontalRule from '@tiptap/extension-horizontal-rule'
 import Underline from '@tiptap/extension-underline'
 import Bold from '@tiptap/extension-bold'
 import Italic from '@tiptap/extension-italic'
@@ -18,11 +22,10 @@ import BlockLayout, { Column, Columns } from 'tiptap-block-layout'
 
 import Paragraph from './paragraph-block-node'
 import AssetSelectorNode from './asset-selector-node'
+import TextInputFieldNode from './text-input-field-node'
 import QueryWidgetBlockNode from './query-widget-block-node'
 import ControlledListBlockNode from './controlled-list-block-node'
 import SanbaseChartBlockNode from './sanbase-chart-block-node'
-import type { TDataWidgetNode } from './schema/data-widget'
-import type { TGlobalParameterNode } from './schema/global-parameter'
 
 // import HiddenBlock from '../nodes/HiddenBlock'
 // import QueryTextColumnBlock from '../nodes/QueryTextColumnBlock'
@@ -33,7 +36,11 @@ import type { TGlobalParameterNode } from './schema/global-parameter'
 const DATA_WIDGET_NODES = [QueryWidgetBlockNode, SanbaseChartBlockNode] as const
 export type TDataWidgetNodes = (typeof DATA_WIDGET_NODES)[number]['__schema']
 
-const GLOBAL_PARAMETER_WIDGET_NODES = [AssetSelectorNode, ControlledListBlockNode] as const
+const GLOBAL_PARAMETER_WIDGET_NODES = [
+  TextInputFieldNode,
+  AssetSelectorNode,
+  ControlledListBlockNode,
+] as const
 export type TGlobalParameterWidgetNodes = (typeof GLOBAL_PARAMETER_WIDGET_NODES)[number]['__schema']
 
 export const getBaseExtensions = (ctx?: Map<string, any>) =>
@@ -41,6 +48,7 @@ export const getBaseExtensions = (ctx?: Map<string, any>) =>
     Document,
     Paragraph,
     History,
+    HorizontalRule,
 
     Text,
     Bold,

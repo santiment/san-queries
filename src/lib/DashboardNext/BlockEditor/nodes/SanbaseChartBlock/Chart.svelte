@@ -4,7 +4,7 @@
   import Chart, { Tooltip, ApiMetricSeries } from 'san-webkit-next/ui/app/Chart'
   import {
     useColorGenerator,
-    useGlobalParametersCtx,
+    useChartGlobalParametersCtx,
     useMetricSeriesCtx,
   } from 'san-webkit-next/ui/app/Chart/ctx'
   import { showMetricsDialogDialog$ } from './__MetricsDialog/MetricsDialog.svelte'
@@ -37,7 +37,7 @@
   )
 
   const { colorGenerator } = useColorGenerator()
-  const { globalParameters: chartGlobalParameters } = useGlobalParametersCtx.set({
+  const { globalParameters: chartGlobalParameters } = useChartGlobalParametersCtx.set({
     selector: { slug: assetParameter || 'bitcoin' },
     from: fromParameter || 'utc_now-60d',
     to: toParameter || 'utc_now',

@@ -80,6 +80,9 @@ export function parseDashboardJSON_v2(apiDashboard: TApiDashboard<TDashboardSett
           },
         }
         parameterNodeCorrections.set(node.attrs!['data-id']!, corrections)
+      } else if (node.type === 'text-input-field') {
+        const corrections = { value: { value: node.attrs!['data-value'] } }
+        parameterNodeCorrections.set(node.attrs!['data-id']!, corrections)
       }
 
       return node.content?.forEach(correntGlobalParameterType)

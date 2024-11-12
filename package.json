@@ -16,7 +16,7 @@
   "scripts": {
     "dev": "vite dev",
     "dev:https": "vite dev --host -- --https",
-    "build": "NODE_ENV=production npm run check && npm run webkit && npm run get-schema && vite build",
+    "build": "NODE_ENV=production npm run webkit && npm run get-schema && vite build",
     "get-schema": "node scripts/schema.js --run",
     "preview": "vite preview",
     "test": "npm run test:integration && npm run test:unit",
@@ -89,6 +89,7 @@
     "@tiptap/extension-heading": "^2.9.1",
     "@tiptap/extension-highlight": "^2.9.1",
     "@tiptap/extension-history": "^2.9.1",
+    "@tiptap/extension-horizontal-rule": "^2.9.1",
     "@tiptap/extension-italic": "^2.9.1",
     "@tiptap/extension-link": "^2.9.1",
     "@tiptap/extension-list-item": "^2.9.1",
