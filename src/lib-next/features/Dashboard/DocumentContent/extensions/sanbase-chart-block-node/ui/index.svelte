@@ -10,7 +10,7 @@
   import { useSanbaseChartWidgetFlow } from '../ctx'
   import { showMetricsDialogDialog$ } from './__MetricsDialog/MetricsDialog.svelte'
 
-  let { data }: TDataWidgetProps<typeof SANBASE_CHART_BLOCK_NODE> = $props()
+  let { view, data }: TDataWidgetProps<typeof SANBASE_CHART_BLOCK_NODE> = $props()
 
   const { dashboard } = useDashboardCtx.get()
   const { metricSeries, chartParameters, normalizeMetric } = useSanbaseChartWidgetFlow(data.widget)
@@ -67,11 +67,22 @@
 
     {#if dashboard.isEditable}
       <Button variant="border" onclick={onAddMetricClick}>Add metric</Button>
+
+      <Button
+        class="ml-auto"
+        explanation="Remove widget"
+        icon="close"
+        iconSize={12}
+        onclick={() => {
+          view.$.deleteNode()
+          view.$.editor.commands.focus()
+        }}
+      ></Button>
     {/if}
   </div>
 
   {#if BROWSER}
-    <Chart class="flex-1 bg-white">
+    <Chart class="flex-1 bg-white" options={{ handleScroll: false, handleScale: false }}>
       {#each metricSeries.$ as item (item.id)}
         <ApiMetricSeries series={item}></ApiMetricSeries>
       {/each}

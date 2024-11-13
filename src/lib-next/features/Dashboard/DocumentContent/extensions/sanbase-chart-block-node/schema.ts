@@ -2,7 +2,6 @@ import type { TDataWidgetKey } from '$lib-next/features/Dashboard/types'
 
 import { Metric as M } from 'san-studio/lib/metrics'
 import { getRandomKey } from 'san-webkit-next/utils'
-import { useDashboardDataWidgets } from '$lib-next/features/Dashboard/ctx/data-widgets.svelte'
 import {
   createDataWidgetSchema,
   type TDataWidgetNode,
@@ -56,21 +55,11 @@ export const SANBASE_CHART_BLOCK_NODE: TDataWidgetNode<TSchema> = createDataWidg
     }
   },
 
-  create(data, schema) {
-    const { createDashboardDataWidget } = useDashboardDataWidgets.get()
-
-    const dataWidget = createDashboardDataWidget(
-      {
-        id: ('SanbaseChart' + getRandomKey()) as TDataWidgetKey,
-        type: 'sanbase-chart',
-        settings: { metrics: DEFAULT_METRICS },
-      },
-      schema,
-    )
-
-    data.id = dataWidget.id
-    data.widget = dataWidget
-
-    return data
+  create() {
+    return {
+      id: ('SanbaseChart' + getRandomKey()) as TDataWidgetKey,
+      type: this.name,
+      settings: { metrics: DEFAULT_METRICS },
+    }
   },
 } as const)

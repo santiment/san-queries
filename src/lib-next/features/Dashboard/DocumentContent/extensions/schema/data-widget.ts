@@ -1,5 +1,5 @@
 import type { Component } from 'svelte'
-import type { TDataWidgetKey } from '../../../types'
+import type { TApiDataWidget, TDataWidgetKey } from '../../../types'
 
 import { BROWSER } from 'esm-env'
 import { SvelteNodeViewRenderer, type ViewProps } from 'tiptap-svelte-adapter'
@@ -52,11 +52,7 @@ export type TDataWidgetSchema = {
     view: ViewProps['view'],
   ) => TDataWidgetNodeViewInitResult | Promise<TDataWidgetNodeViewInitResult>
 
-  create(
-    data: TDataWidgetNodeViewInitResult,
-    schema: TDataWidgetNode,
-    view: ViewProps['view'],
-  ): TDataWidgetNodeViewInitResult | Promise<TDataWidgetNodeViewInitResult>
+  create(this: TDataWidgetSchema): TApiDataWidget | Promise<TApiDataWidget>
 }
 
 export type TDataWidgetNode<GSchema extends TDataWidgetSchema = any> = {
@@ -103,7 +99,7 @@ export function createDataWidgetSchema<GSchema extends TDataWidgetSchema>(
       const { editor, node: viewNode } = view.$
       const { 'data-id': id } = viewNode.attrs
 
-      const { getDataWidget } = useDashboardDataWidgets.get()
+      const { getDataWidget, createDashboardDataWidget } = useDashboardDataWidgets.get()
 
       const data: TDataWidgetNodeViewInitResult = { id, widget: getDataWidget(id) }
 
@@ -117,7 +113,13 @@ export function createDataWidgetSchema<GSchema extends TDataWidgetSchema>(
         .then(() => {
           if (data.widget) return data
 
-          return schema.create(data, this, view)
+          const widget = createDashboardDataWidget(schema.create(), this)
+          data.id = widget.id
+          data.widget = widget
+
+          return data
+
+          // return schema.create(data, this, view)
         })
     },
 

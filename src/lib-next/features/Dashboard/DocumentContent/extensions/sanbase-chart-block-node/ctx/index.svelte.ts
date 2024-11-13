@@ -1,4 +1,6 @@
-import { untrack } from 'svelte'
+import type { SANBASE_CHART_BLOCK_NODE } from '../schema'
+import type { TMetric } from 'san-webkit-next/ui/app/Chart/ctx/series.svelte'
+import { millify } from 'san-webkit/lib/utils/formatting'
 import { Metric as M } from 'san-studio/lib/metrics'
 import {
   useDataWidgetParameterOverrides,
@@ -9,7 +11,6 @@ import {
   useColorGenerator,
   useMetricSeriesCtx,
 } from 'san-webkit-next/ui/app/Chart/ctx'
-import type { SANBASE_CHART_BLOCK_NODE } from '../schema'
 
 export function useSanbaseChartWidgetFlow(
   widget: TDashboardDataWidget<typeof SANBASE_CHART_BLOCK_NODE>,
@@ -46,16 +47,23 @@ export function useSanbaseChartWidgetFlow(
     }))
   })
 
-  function normalizeMetric(metric: { name: string; key?: string }) {
+  function normalizeMetric(metric: { name: string; key?: string }): TMetric {
     const { name, key = name } = metric
-    const studioMetric = M[key]
+    const {
+      label = key,
+      axisFormatter = yAxisFormatter,
+      formatter = defaultTooltipFormatter,
+    } = M[key] || {}
 
     return {
       name: key,
-      label: studioMetric?.label || key,
+      label,
       style: 'line' as const,
       color: colorGenerator.new(),
       scaleId: 'right-' + key,
+
+      tooltipFormatter: formatter,
+      scaleFormatter: axisFormatter,
     }
   }
 
@@ -81,4 +89,43 @@ function normalizeDate(dateInput = '') {
   } catch {
     return dateInput
   }
+}
+
+export function yAxisFormatter(value: number) {
+  const absValue = Math.abs(value)
+
+  if (absValue < 0.000001) {
+    return +value.toFixed(10)
+  }
+
+  if (absValue < 10) {
+    return +value.toFixed(4)
+  }
+
+  if (absValue > 999999) {
+    return millify(value, 2)
+  }
+
+  if (absValue > 99999) {
+    return millify(value, 2)
+  }
+
+  return millify(value, 2)
+}
+
+export function defaultTooltipFormatter(value: number) {
+  if (value === undefined || value === null) {
+    return 'Invalid data'
+  }
+
+  const absValue = Math.abs(value)
+  if (absValue > 99999) {
+    return millify(value, 3)
+  }
+
+  if (absValue < 0.000001) {
+    return +value.toFixed(10)
+  }
+
+  return +value.toFixed(2)
 }

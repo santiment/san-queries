@@ -51,7 +51,7 @@
         <Button
           variant="fill"
           loading={false}
-          href={seoLink ? '/dashboard-next/${seoLink}' : undefined}
+          href={seoLink ? `/dashboard-next/${seoLink}` : undefined}
         >
           Preview
         </Button>
