@@ -36,6 +36,8 @@ export type TApiDashboard<GSettings> = {
     user: { avatarUrl: null; id: '144899'; username: 'team' }
   }[]
 
+  textWidgets?: { body: null | string }[]
+
   settings: GSettings
 }
 

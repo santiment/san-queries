@@ -125,5 +125,6 @@ export function parseDashboardJSON_v2(apiDashboard: TApiDashboard<TDashboardSett
     documentContent,
     globalParameters,
     dataWidgets,
+    wasMigrated: true,
   }
 }
