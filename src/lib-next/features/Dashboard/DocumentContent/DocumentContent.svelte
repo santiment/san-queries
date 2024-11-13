@@ -15,7 +15,7 @@
 
   const { dashboard, dashboardDocument } = useDashboardCtx.get()
 
-  const { isEditable } = dashboard
+  const { isEditable, isReadonly } = dashboard
 
   // @ts-ignore
   let content = dashboardDocument.documentContent
@@ -23,7 +23,7 @@
   console.log({ content })
 </script>
 
-<section class="flex-1 column">
+<section class="flex-1 column" class:readonly={isReadonly}>
   {#if BROWSER}
     <Editor
       options={{
@@ -61,5 +61,11 @@
     @nested-import './list.css';
 
     @nested-import './columns.css';
+  }
+
+  .readonly :global {
+    [data-type='hidden-block'] {
+      display: none;
+    }
   }
 </style>

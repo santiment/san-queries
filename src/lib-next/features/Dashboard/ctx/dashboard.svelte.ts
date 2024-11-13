@@ -10,7 +10,7 @@ type TAuthor = null | {
 
 export const useDashboardCtx = createCtx(
   'queries_useDashboardCtx',
-  (apiDashboard: undefined | null | App.ApiDashboard, isReadonly = true) => {
+  (apiDashboard: undefined | null | App.ApiDashboard, isReadonly: boolean = true) => {
     const _apiDashboard: Partial<NonNullable<typeof apiDashboard>> = apiDashboard || {
       settings: {},
     }
