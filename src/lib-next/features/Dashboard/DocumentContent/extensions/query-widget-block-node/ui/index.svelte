@@ -28,7 +28,6 @@
     id={sqlQuery.id}
     name={sqlQuery.name}
     author={sqlQuery.user}
-    {widget}
     onRefreshClick={() => loadSqlData({ isForced: true })}
     onDeleteClick={() => {
       view.$.deleteNode()

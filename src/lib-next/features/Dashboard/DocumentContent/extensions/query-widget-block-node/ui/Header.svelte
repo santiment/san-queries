@@ -1,7 +1,4 @@
 <script lang="ts">
-  import type { QUERY_WIDGET_BLOCK_NODE } from '../schema'
-  import type { TDataWidgetProps } from '../../schema/data-widget'
-
   import Button from 'san-webkit-next/ui/core/Button'
   import { getSEOLinkFromIdAndTitle } from 'san-webkit-next/utils/url'
   import { useDashboardCtx } from '$lib-next/features/Dashboard/ctx'
@@ -11,11 +8,11 @@
     id: number
     name: string
     author: App.Author
-    widget: TDataWidgetProps<typeof QUERY_WIDGET_BLOCK_NODE>['data']['widget']
+
     onRefreshClick: () => void
     onDeleteClick?: () => void
   }
-  let { id, name, author, widget, onRefreshClick, onDeleteClick }: TProps = $props()
+  let { id, name, author, onRefreshClick, onDeleteClick }: TProps = $props()
 
   const { dashboard } = useDashboardCtx.get()
 

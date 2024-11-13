@@ -23,7 +23,7 @@
     />
 
     <Button href="https://santiment.net/discord" variant="ghost" icon="discord">Community</Button>
-    <Button href="/explorer" variant="ghost" icon="fire-filled">Explorer</Button>
+    <Button href="/explorer" variant="ghost" icon="fire-filled" class="fill-green">Explorer</Button>
 
     <Tooltip class="p-2">
       {#snippet children({ trigger, trigger$, isOpened })}

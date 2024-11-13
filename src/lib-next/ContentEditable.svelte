@@ -42,7 +42,7 @@
   class={cn('relative outline-none', className)}
   role={readonly ? undefined : 'textbox'}
   contenteditable={readonly ? 'false' : 'true'}
-  aria-placeholder={placeholder}
+  aria-placeholder={readonly ? undefined : placeholder}
   {onkeydown}
   onblur={readonly ? undefined : onblur}
 >
