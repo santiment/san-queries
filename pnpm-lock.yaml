@@ -43,6 +43,9 @@ dependencies:
   '@tiptap/extension-bullet-list':
     specifier: ^2.9.1
     version: 2.9.1(@tiptap/core@2.9.1)
+  '@tiptap/extension-code-block':
+    specifier: ^2.9.1
+    version: 2.9.1(@tiptap/core@2.9.1)(@tiptap/pm@2.9.1)
   '@tiptap/extension-color':
     specifier: ^2.9.1
     version: 2.9.1(@tiptap/core@2.9.1)(@tiptap/extension-text-style@2.9.1)
@@ -7230,6 +7233,16 @@ packages:
       '@tiptap/core': ^2.7.0
     dependencies:
       '@tiptap/core': 2.9.1(@tiptap/pm@2.9.1)
+    dev: false
+
+  /@tiptap/extension-code-block@2.9.1(@tiptap/core@2.9.1)(@tiptap/pm@2.9.1):
+    resolution: {integrity: sha512-A/50wPWDqEUUUPhrwRKILP5gXMO5UlQ0F6uBRGYB9CEVOREam9yIgvONOnZVJtszHqOayjIVMXbH/JMBeq11/g==}
+    peerDependencies:
+      '@tiptap/core': ^2.7.0
+      '@tiptap/pm': ^2.7.0
+    dependencies:
+      '@tiptap/core': 2.9.1(@tiptap/pm@2.9.1)
+      '@tiptap/pm': 2.9.1
     dev: false
 
   /@tiptap/extension-color@2.9.1(@tiptap/core@2.9.1)(@tiptap/extension-text-style@2.9.1):

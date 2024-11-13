@@ -17,6 +17,7 @@ import ListItem from '@tiptap/extension-list-item'
 import OrderedList from '@tiptap/extension-ordered-list'
 import BulletList from '@tiptap/extension-bullet-list'
 import History from '@tiptap/extension-history'
+import CodeBlock from '@tiptap/extension-code-block'
 
 import BlockLayout, { Column, Columns } from 'tiptap-block-layout'
 
@@ -64,6 +65,7 @@ export const getBaseExtensions = (ctx?: Map<string, any>) =>
     Highlight.configure({
       multicolor: true,
     }),
+    CodeBlock,
 
     Columns,
     Column,
