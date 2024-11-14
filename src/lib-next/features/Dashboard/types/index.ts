@@ -1,5 +1,11 @@
 import type { TNominal } from 'san-webkit-next/utils'
 
+export type TAuthor = {
+  id: string | number
+  username?: null | string
+  avatarUrl?: null | string
+}
+
 export type TDocumentNode<GType extends string = string> = {
   type: GType
   content?: TDocumentNode[]
@@ -11,6 +17,17 @@ export type TDashboardDocument = TDocumentNode<'doc'> & { content: TDocumentNode
 
 export type TApiDashboard<GSettings> = {
   id: TNominal<string, 'TApiDashboardId'>
+
+  name: string
+  description: null | string
+
+  user: TAuthor
+
+  isPublic: boolean
+
+  commentsCount: number
+
+  votes: { totalVotes: number; userVotes: number }
 
   parameters: Record<
     string,

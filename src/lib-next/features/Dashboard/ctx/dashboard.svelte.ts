@@ -1,23 +1,20 @@
+import type { Editor } from '@tiptap/core'
+import { ss } from 'svelte-runes'
 import { createCtx } from 'san-webkit-next/utils'
 import { useCustomerCtx } from 'san-webkit-next/ctx/customer'
 import { parseDashboardDocument } from '../parse'
-
-type TAuthor = null | {
-  id: string | number
-  username?: null | string
-  avatarUrl?: null | string
-}
+import type { TApiDashboard, TAuthor } from '../types'
 
 export const useDashboardCtx = createCtx(
   'queries_useDashboardCtx',
-  (apiDashboard: undefined | null | App.ApiDashboard, isReadonly: boolean = true) => {
+  (apiDashboard: undefined | null | TApiDashboard<any>, isReadonly: boolean = true) => {
     const _apiDashboard: Partial<NonNullable<typeof apiDashboard>> = apiDashboard || {
       settings: {},
     }
 
     const { currentUser } = useCustomerCtx.get()
 
-    const author: TAuthor = _apiDashboard.user || currentUser.$$
+    const author: null | TAuthor = _apiDashboard.user || currentUser.$$
     const isCurrentUserAuthor = author?.id === currentUser.$$?.id
 
     const state = $state({
@@ -47,6 +44,8 @@ export const useDashboardCtx = createCtx(
       },
 
       dashboardDocument: parseDashboardDocument(_apiDashboard),
+
+      documentEditor: ss<null | Editor>(null),
     }
   },
 )

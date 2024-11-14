@@ -2,6 +2,9 @@
   import ContentEditable from '$lib-next/ContentEditable.svelte'
   import { useDashboardCtx } from './ctx'
 
+  type TProps = { onChange: () => void }
+  let { onChange }: TProps = $props()
+
   const { dashboard } = useDashboardCtx.get()
   const { isReadonly } = dashboard
 
@@ -9,6 +12,7 @@
 
   function onFieldBlur(name: 'name' | 'description', value: string) {
     dashboard.state.$$[name] = value
+    onChange()
   }
 </script>
 
