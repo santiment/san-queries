@@ -20,7 +20,9 @@
   let searchTerm = $state('')
 
   let filtered = $derived(
-    assets.filter((item) => (item.name + item.ticker).toLowerCase().includes(searchTerm)),
+    assets.filter((item) =>
+      (item.name + item.ticker + item.slug).toLowerCase().includes(searchTerm),
+    ),
   )
 
   function onAssetClick(asset: TAsset) {

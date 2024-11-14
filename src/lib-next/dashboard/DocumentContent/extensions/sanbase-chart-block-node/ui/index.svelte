@@ -85,7 +85,11 @@
   {#if BROWSER}
     <Chart
       class="min-h-0 flex-1 bg-white"
-      options={{ handleScroll: false, handleScale: false, autoSize: true }}
+      options={{
+        handleScroll: { mouseWheel: false },
+        handleScale: { mouseWheel: false },
+        autoSize: true,
+      }}
     >
       {#each metricSeries.$ as item (item.id)}
         <ApiMetricSeries series={item}></ApiMetricSeries>
