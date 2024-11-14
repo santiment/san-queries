@@ -1,15 +1,19 @@
 <script lang="ts">
   import Button from 'san-webkit-next/ui/core/Button'
   import { useCustomerCtx } from 'san-webkit-next/ctx/customer'
-  import User from '$lib/ui/User/index.svelte'
+  import Popover from 'san-webkit-next/ui/core/Popover'
   import { showShareDialog } from 'san-webkit/lib/ui/Share/index.svelte'
   import { getSEOLinkFromIdAndTitle } from 'san-webkit-next/utils/url'
+  import User from '$lib/ui/User/index.svelte'
   import Vote from './Vote.svelte'
   import Comments from './Comments.svelte'
   import { useDashboardCtx } from '../ctx'
+  import { useDashboardDeleteFlow } from '../flow/delete'
 
   const { currentUser } = useCustomerCtx()
   const { dashboard } = useDashboardCtx.get()
+
+  const { deleteDashboard } = dashboard.isCurrentUserAuthor ? useDashboardDeleteFlow() : {}
 
   const id = $derived(dashboard.state.$$.id)
 
@@ -29,9 +33,9 @@
 <header class="flex items-center">
   <User user={dashboard.author || { username: '<hidden>' }} class="text-waterloo" />
 
-  {#if dashboard.state.$$.id}
-    {@const id = dashboard.state.$$.id}
+  {#if id}
     {@const name = dashboard.state.$$.name}
+
     <div class="ml-3 mr-4 flex min-h-8 gap-3 border-l fill-fiord pl-3">
       <Vote dashboardId={+id} votes={dashboard.state.$$.votes}></Vote>
       <Comments
@@ -73,6 +77,26 @@
       <Button icon="share-dots" explanation="Share"></Button>
 
       <Button icon="copy" explanation="Duplicate"></Button>
+
+      {#if id}
+        <Popover side="bottom" align="end">
+          {#snippet children({ ref })}
+            <Button {ref} icon="vert-dots" />
+          {/snippet}
+
+          {#snippet content({ close })}
+            <Button
+              variant="ghost"
+              onclick={() => {
+                deleteDashboard?.({ id })
+                close()
+              }}
+            >
+              Delete
+            </Button>
+          {/snippet}
+        </Popover>
+      {/if}
     {:else if currentUser.$$}
       <Button icon="copy" explanation="Duplicate"></Button>
     {/if}

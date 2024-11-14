@@ -10,7 +10,7 @@
   }: { isActive?: boolean; item: { id: number; type: 'dashboard' | 'query'; name: string } } =
     $props()
 
-  let href = $derived(`/${item.type}/${getSEOLinkFromIdAndTitle(item.id, item.name)}`)
+  let href = $derived(`/${item.type}-next/${getSEOLinkFromIdAndTitle(item.id, item.name)}`)
 </script>
 
 <article
@@ -20,7 +20,7 @@
   )}
 >
   <Svg id={item.type} w="12"></Svg>
-  <a {href} class="link-as-bg single-line flex-1">
+  <a {href} class="flex-1 single-line link-as-bg">
     {item.name}
   </a>
 

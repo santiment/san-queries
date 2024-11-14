@@ -15,8 +15,9 @@ export type TDocumentNode<GType extends string = string> = {
 
 export type TDashboardDocument = TDocumentNode<'doc'> & { content: TDocumentNode[] }
 
+export type TDashboardKey = TNominal<string, 'TApiDashboardId'>
 export type TApiDashboard<GSettings> = {
-  id: TNominal<string, 'TApiDashboardId'>
+  id: TDashboardKey
 
   name: string
   description: null | string
