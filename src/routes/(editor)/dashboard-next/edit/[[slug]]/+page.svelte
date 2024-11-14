@@ -4,7 +4,7 @@
   let { data } = $props()
 </script>
 
-{#key data.apiDashboard?.id}
+{#key data.forced || data.apiDashboard?.id}
   <Dashboard readonly={false} apiDashboard={data.apiDashboard} cache={data.dashboardDataCache}
   ></Dashboard>
 {/key}

@@ -1,3 +1,4 @@
+import { BROWSER } from 'esm-env'
 import { redirect } from '@sveltejs/kit'
 import { loadPageDashboard } from '../../utils.js'
 
@@ -12,7 +13,10 @@ export async function load(event) {
   const { slug = 'new' } = event.params
 
   if (slug === 'new') {
-    return {}
+    // NOTE: Enforce `/new` page. This will trigger `#key` block in `+page.svelte`
+    // Otherwise it doesn't work in some cases, e.g.
+    // 1) `/new` opened; 2) entity created and replaceState used; 3) trying to open `/new`
+    return { forced: BROWSER ? Date.now() : undefined }
   }
 
   const [apiDashboard, dashboardDataCache] = await loadPageDashboard(event)

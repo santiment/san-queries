@@ -11,7 +11,7 @@ import { getPlaceholderName } from '$lib/utils'
 import { mutateCreateDashboard, mutateUpdateDashboard } from '../api/save'
 import { useSaveIndicatorCtx } from '$lib/SaveIndicator'
 import { useDashboardCtx } from '../ctx'
-import { catchError, debounceTime, delay, exhaustMap, mergeMap, of, pipe, tap } from 'rxjs'
+import { catchError, debounceTime, delay, exhaustMap, map, mergeMap, of, pipe, tap } from 'rxjs'
 import {
   serializeParameterWidget,
   useDashboardParameterWidgetsCtx,
@@ -34,20 +34,29 @@ export const useDashboardSaveFlowCtx = createCtx('dashboards_useDashboardSaveFlo
   const startQuickSave = useObserveFnCall(() => exhaustMap(createSave$))
 
   function createSave$() {
+    const page = get(page$)
     return of(serializeDashboard(dashboardCtx, parameterWidgetsCtx, dataWidgetsCtx)).pipe(
       tap(() => saveIndicatorCtx.emit.saving()),
+
+      tap((serialized) => {
+        dashboard.state.$$.name = serialized.name
+      }),
 
       mergeMap((serialized) => {
         return (serialized.id ? mutateUpdateDashboard : mutateCreateDashboard)()(serialized)
       }),
 
-      tap((apiDashboard) => {
+      map((apiDashboard) => {
+        const { id, name } = apiDashboard
+
         dashboard.apiDashboard = apiDashboard
-        dashboard.state.$$.id = apiDashboard.id
+        dashboard.state.$$.id = id
+
+        return (page.params.slug = getSEOLinkFromIdAndTitle(id, name))
       }),
 
-      tap(({ id, name }) => {
-        replaceState('/dashboard-next/edit/' + getSEOLinkFromIdAndTitle(id, name), get(page$).state)
+      tap((slug) => {
+        replaceState('/dashboard-next/edit/' + slug, page.state)
       }),
 
       delay(1500),

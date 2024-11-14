@@ -3,6 +3,7 @@ import type { TParsedDashboard } from '../parse'
 import type { TDocumentNode } from '../types'
 
 export function validateDashboardDocument(data: TParsedDashboard) {
+  const { documentContent } = data
   const extensions = getBaseExtensions()
 
   const knownExtensionSet = new Set(extensions.map((item) => item.name))
@@ -16,7 +17,11 @@ export function validateDashboardDocument(data: TParsedDashboard) {
     return true
   }
 
-  data.documentContent.content = data.documentContent.content.filter(validateContent)
+  documentContent.content = documentContent.content.filter(validateContent)
+
+  if (documentContent.content.length === 0) {
+    documentContent.content.push({ type: 'paragraph' })
+  }
 
   return data
 }
