@@ -3,9 +3,9 @@ import type { ViewProps } from 'tiptap-svelte-adapter'
 
 import { createCtx } from 'san-webkit-next/utils'
 import {
-  useGlobalParameterWidgetFlow,
-  type TDashboardGlobalParameter,
-} from '$lib-next/features/Dashboard/ctx/global-parameters.svelte'
+  useParameterWidgetFlow,
+  type TDashboardParameterWidget,
+} from '$lib-next/features/Dashboard/ctx/parameter-widgets.svelte'
 import {
   useDashboardDataWidgets,
   type TDashboardDataWidgetByType,
@@ -28,10 +28,10 @@ export const useControllerListCtx = createCtx(
   'dashboards_useControllerListCtx',
   (
     view: ViewProps['view'],
-    widget: TDashboardGlobalParameter<typeof CONTROLLED_LIST_BLOCK_NODE>,
+    widget: TDashboardParameterWidget<typeof CONTROLLED_LIST_BLOCK_NODE>,
   ) => {
     const { getDataWidget } = useDashboardDataWidgets.get()
-    const { globalParameter, update } = useGlobalParameterWidgetFlow(view, widget)
+    const { globalParameter, update } = useParameterWidgetFlow(view, widget)
     const { outputs, settings } = widget
 
     const linkedSqlDataWidget = $derived.by(() => {

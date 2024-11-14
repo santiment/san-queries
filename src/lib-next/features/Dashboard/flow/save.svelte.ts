@@ -6,15 +6,15 @@ import type { TDashboardDocument } from '../types'
 import type { TParsedDashboard } from '../parse'
 import {
   serializeParameterWidget,
-  useDashboardGlobalParametersCtx,
-} from '../ctx/global-parameters.svelte'
+  useDashboardParameterWidgetsCtx,
+} from '../ctx/parameter-widgets.svelte'
 import { serializeDataWidget, useDashboardDataWidgets } from '../ctx/data-widgets.svelte'
 
 export const useDashboardSaveFlowCtx = createCtx('dashboards_useDashboardSaveFlow', () => {
   const saveIndicatorCtx = useSaveIndicatorCtx.get()
 
   const { dashboard, documentEditor } = useDashboardCtx.get()
-  const { parameterWidgets } = useDashboardGlobalParametersCtx.get()
+  const { parameterWidgets } = useDashboardParameterWidgetsCtx.get()
   const { dataWidgets } = useDashboardDataWidgets.get()
 
   const _ = useObserveFnCall(() =>

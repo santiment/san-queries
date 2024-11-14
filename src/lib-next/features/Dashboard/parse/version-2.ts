@@ -28,7 +28,7 @@ export type TDashboardSettings_v2 = {
   globalParameters?: TApiDashboardGlobalParameter[]
 }
 
-export function parseDashboardJSON_v2(apiDashboard: TApiDashboard<TDashboardSettings_v2>) {
+export function parseDashboardJSON_v2_to_v3(apiDashboard: TApiDashboard<TDashboardSettings_v2>) {
   const documentContent = apiDashboard.settings.documentContent ||
     apiDashboard.settings.__editorJson || {
       type: 'doc',
@@ -36,14 +36,14 @@ export function parseDashboardJSON_v2(apiDashboard: TApiDashboard<TDashboardSett
     }
   const isEmptyDocument = documentContent.content.length === 0
 
-  const dataWidgets = apiDashboard.settings.dataWidgets || []
-  const globalParameters = apiDashboard.settings.globalParameters || []
+  const dataWidgets: TApiDataWidget[] = []
+  const parameterWidgets: TApiDashboardGlobalParameter[] = []
 
-  if (globalParameters.length === 0) {
+  if (parameterWidgets.length === 0) {
     for (const [parameterId, parameter] of Object.entries(apiDashboard.parameters)) {
       if (!parameter) continue
 
-      globalParameters.push({
+      parameterWidgets.push({
         id: parameterId as TDashboardGlobalParameterKey,
         type: 'text-input-field',
         value: parameter.value,
@@ -89,7 +89,7 @@ export function parseDashboardJSON_v2(apiDashboard: TApiDashboard<TDashboardSett
     }
     documentContent.content.forEach(correntGlobalParameterType)
 
-    for (const globalParameter of globalParameters) {
+    for (const globalParameter of parameterWidgets) {
       const corrections = parameterNodeCorrections.get(globalParameter.id)
       if (corrections?.type) globalParameter.type = corrections.type
       if (corrections?.value) {
@@ -122,8 +122,9 @@ export function parseDashboardJSON_v2(apiDashboard: TApiDashboard<TDashboardSett
   }
 
   return {
+    version: 3 as const,
     documentContent,
-    globalParameters,
+    parameterWidgets,
     dataWidgets,
     wasMigrated: true,
   }

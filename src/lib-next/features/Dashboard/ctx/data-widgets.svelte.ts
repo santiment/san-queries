@@ -3,7 +3,7 @@ import type { TDataWidgetNode } from '../DocumentContent/extensions/schema/data-
 import { getAllContexts } from 'svelte'
 import { ss, type SS } from 'svelte-runes'
 import { createCtx } from 'san-webkit-next/utils'
-import { useDashboardGlobalParametersCtx } from './global-parameters.svelte'
+import { useDashboardParameterWidgetsCtx } from './parameter-widgets.svelte'
 import { useDashboardCtx } from './dashboard.svelte'
 import { DataWidgetNodes, type TDataWidgetNodeSchemas } from '../DocumentContent/extensions'
 
@@ -15,7 +15,7 @@ export function useDataWidgetParameterOverrides<
     [localParameterKey: TDataWidgetLocalParameterKey]: any
   },
 >(id: TDataWidgetKey, localParameters: GParams) {
-  const { getGlobalParameterByOverride } = useDashboardGlobalParametersCtx.get()
+  const { getParameterWidgetByOverride } = useDashboardParameterWidgetsCtx.get()
 
   const globalParameterOverrides = $derived(
     Object.keys(localParameters)
@@ -23,7 +23,7 @@ export function useDataWidgetParameterOverrides<
         (localParameter) =>
           [
             localParameter,
-            getGlobalParameterByOverride(id, localParameter as TDataWidgetLocalParameterKey),
+            getParameterWidgetByOverride(id, localParameter as TDataWidgetLocalParameterKey),
           ] as const,
       )
       .reduce(

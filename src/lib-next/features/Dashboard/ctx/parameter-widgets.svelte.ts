@@ -16,10 +16,10 @@ import {
   type TParameterWidgetNodeSchemas,
 } from '../DocumentContent/extensions'
 
-type TMap<T extends TGlobalParameterNode> = T extends any ? TDashboardGlobalParameter<T> : never
+type TMap<T extends TGlobalParameterNode> = T extends any ? TDashboardParameterWidget<T> : never
 export type TDashboardParameterWidgets = TMap<TParameterWidgetNodeSchemas>
 
-export type TDashboardGlobalParameter<GSchema extends TGlobalParameterNode> = {
+export type TDashboardParameterWidget<GSchema extends TGlobalParameterNode> = {
   id: TDashboardGlobalParameterKey
   type: GSchema['name']
 
@@ -42,10 +42,10 @@ export type TDashboardGlobalParameter<GSchema extends TGlobalParameterNode> = {
 
   __isDestroyed: SS<boolean>
 }
-function createDashboardGlobalParameter<GSchema extends TGlobalParameterNode>(
+function createDashboardParameterWidget<GSchema extends TGlobalParameterNode>(
   { id, type, value, overrides, settings }: TApiDashboardGlobalParameter,
   schema: GSchema,
-): TDashboardGlobalParameter<GSchema> {
+): TDashboardParameterWidget<GSchema> {
   const defaultOutputValues = schema.initOutputs(value!) || value
   const defaultSettings = schema.initSettings?.(settings)
 
@@ -93,28 +93,28 @@ function createDashboardGlobalParameter<GSchema extends TGlobalParameterNode>(
   }
 }
 
-export const useDashboardGlobalParametersCtx = createCtx(
-  'queries_useDashboardGlobalParametersCtx',
+export const useDashboardParameterWidgetsCtx = createCtx(
+  'queries_useDashboarParameterWidgetsCtx',
   () => {
     const { dashboardDocument } = useDashboardCtx.get()
 
-    let globalParameters = $state.raw(
-      dashboardDocument.globalParameters
+    let parameterWidgets = $state.raw(
+      dashboardDocument.parameterWidgets
         .map((apiParameter) => {
           const schema = GlobalParameterNodes[apiParameter.type]
           return (
             schema &&
-            (createDashboardGlobalParameter(apiParameter, schema) as TDashboardParameterWidgets)
+            (createDashboardParameterWidget(apiParameter, schema) as TDashboardParameterWidgets)
           )
         })
         .filter((item) => !!item),
     )
 
-    const globalParameterMap = $derived(new Map(globalParameters.map((item) => [item.id, item])))
+    const parameterWidgetMap = $derived(new Map(parameterWidgets.map((item) => [item.id, item])))
 
-    const globalParameterByOverrideMap = $derived(
+    const parameterWidgetByOverrideMap = $derived(
       new Map<string, () => unknown>(
-        globalParameters.flatMap((globalParameter: TDashboardGlobalParameter<any>) => {
+        parameterWidgets.flatMap((globalParameter: TDashboardParameterWidget<any>) => {
           const overrides = globalParameter.overrides.$
           if (globalParameter.__isDestroyed.$) {
             return []
@@ -133,23 +133,23 @@ export const useDashboardGlobalParametersCtx = createCtx(
     return {
       parameterWidgets: {
         get $() {
-          return globalParameters
+          return parameterWidgets
         },
       },
-      getGlobalParameter(globalParameterKey: TDashboardGlobalParameterKey) {
-        return globalParameterMap.get(globalParameterKey)
+      getParameterWidget(globalParameterKey: TDashboardGlobalParameterKey) {
+        return parameterWidgetMap.get(globalParameterKey)
       },
 
-      registerGlobalParameter<GSchema extends TGlobalParameterNode>(
+      registerParameterWidget<GSchema extends TGlobalParameterNode>(
         globalParameterKey: undefined | TDashboardGlobalParameterKey,
         schema: GSchema,
       ) {
-        const existing = globalParameterKey && globalParameterMap.get(globalParameterKey)
+        const existing = globalParameterKey && parameterWidgetMap.get(globalParameterKey)
         if (existing) {
-          return existing as TDashboardGlobalParameter<GSchema>
+          return existing as TDashboardParameterWidget<GSchema>
         }
 
-        const globalParameter = createDashboardGlobalParameter(
+        const globalParameter = createDashboardParameterWidget(
           {
             id: `${schema.keyPrefix}-${getRandomKey()}` as TDashboardGlobalParameterKey,
             type: schema.name,
@@ -159,16 +159,16 @@ export const useDashboardGlobalParametersCtx = createCtx(
           schema,
         )
 
-        globalParameters = globalParameters.concat(globalParameter)
+        parameterWidgets = parameterWidgets.concat(globalParameter)
 
         return globalParameter
       },
 
-      getGlobalParameterByOverride(
+      getParameterWidgetByOverride(
         dataWidgetId: TDataWidgetKey,
         localParameter: TDataWidgetLocalParameterKey,
       ) {
-        return globalParameterByOverrideMap.get(dataWidgetId + localParameter)
+        return parameterWidgetByOverrideMap.get(dataWidgetId + localParameter)
       },
     }
   },
@@ -182,9 +182,9 @@ export const useDashboardGlobalParametersCtx = createCtx(
  * @param schema - Global parameter schema
  * @returns
  */
-export function useGlobalParameterWidgetFlow<GSchema extends TGlobalParameterNode>(
+export function useParameterWidgetFlow<GSchema extends TGlobalParameterNode>(
   view: ViewProps['view'],
-  globalParameter: TDashboardGlobalParameter<GSchema>,
+  globalParameter: TDashboardParameterWidget<GSchema>,
 ) {
   // const { registerGlobalParameter } = useDashboardGlobalParametersCtx.get()
 

@@ -6,7 +6,7 @@
   import Header from './Header/Header.svelte'
   import DocumentHeading from './DocumentHeading.svelte'
   import DocumentContent from './DocumentContent/DocumentContent.svelte'
-  import { useDashboardGlobalParametersCtx } from './ctx/global-parameters.svelte'
+  import { useDashboardParameterWidgetsCtx } from './ctx/parameter-widgets.svelte'
   import { useDashboardSqlQueriesCtx } from './DocumentContent/extensions/query-widget-block-node/ctx/dashboard-queries.svelte'
   import { useDashboardDataWidgets } from './ctx/data-widgets.svelte'
   import { useDashboardSaveFlowCtx } from './flow'
@@ -22,7 +22,7 @@
 
   useDashboardSqlQueriesCtx.set(apiDashboard, cache)
 
-  useDashboardGlobalParametersCtx.set()
+  useDashboardParameterWidgetsCtx.set()
   useDashboardDataWidgets.set()
 
   const { scheduleSave } = useDashboardSaveFlowCtx.set()

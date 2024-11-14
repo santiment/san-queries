@@ -4,7 +4,7 @@
 
   import Svg from 'san-webkit-next/ui/core/Svg'
   import AssetLogo from 'san-webkit-next/ui/app/AssetLogo'
-  import { useGlobalParameterWidgetFlow } from '$lib-next/features/Dashboard/ctx/global-parameters.svelte'
+  import { useParameterWidgetFlow } from '$lib-next/features/Dashboard/ctx/parameter-widgets.svelte'
   import { showSelectAssetDialog$ } from './SelectAssetDialog.svelte'
   import { useAssetFlow } from '../asset.svelte'
   import NodeSettings from '../../NodeSettings.svelte'
@@ -14,7 +14,7 @@
 
   const { getAssetBySlug } = useAssetFlow()
 
-  const { globalParameter, update } = useGlobalParameterWidgetFlow(view, data.widget)
+  const { globalParameter, update } = useParameterWidgetFlow(view, data.widget)
   const { outputs } = globalParameter
 
   const showSelectAssetDialog = showSelectAssetDialog$()

@@ -5,9 +5,9 @@ import { BROWSER } from 'esm-env'
 import { SvelteNodeViewRenderer, type ViewProps } from 'tiptap-svelte-adapter'
 import { renderNodeViewUniversalHTML } from '$lib/DashboardNext/BlockEditor/nodes/ssr'
 import {
-  useDashboardGlobalParametersCtx,
-  type TDashboardGlobalParameter,
-} from '$lib-next/features/Dashboard/ctx/global-parameters.svelte'
+  useDashboardParameterWidgetsCtx,
+  type TDashboardParameterWidget,
+} from '$lib-next/features/Dashboard/ctx/parameter-widgets.svelte'
 import GenericNodeView from '../GenericNodeView.svelte'
 
 export type TGlobalParametersWidgetProps<
@@ -16,7 +16,7 @@ export type TGlobalParametersWidgetProps<
   view: ViewProps['view']
   data: {
     id: TDashboardGlobalParameterKey
-    widget: TDashboardGlobalParameter<GGlobalParameterWidget>
+    widget: TDashboardParameterWidget<GGlobalParameterWidget>
   }
 }
 
@@ -81,9 +81,9 @@ export function createGlobalParameterSchema<GSchema extends TGlobalParameterSche
       const { editor, node: viewNode } = view.$
       const { 'data-id': id } = viewNode.attrs
 
-      const { getGlobalParameter, registerGlobalParameter } = useDashboardGlobalParametersCtx.get()
+      const { getParameterWidget, registerParameterWidget } = useDashboardParameterWidgetsCtx.get()
 
-      const data: TNodeViewInitResult = { id, widget: getGlobalParameter(id) }
+      const data: TNodeViewInitResult = { id, widget: getParameterWidget(id) }
 
       if (!BROWSER || !editor.isEditable || !editor.isInitialized) {
         return data
@@ -94,7 +94,7 @@ export function createGlobalParameterSchema<GSchema extends TGlobalParameterSche
         const isNewWidget = untrack(() => !data.widget?.__isDestroyed.$)
 
         if (isNewWidget) {
-          const widget = registerGlobalParameter(undefined, node)
+          const widget = registerParameterWidget(undefined, node)
 
           data.id = widget.id
           data.widget = widget

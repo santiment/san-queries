@@ -7,7 +7,7 @@ export type TDashboardSettings_v1 = {
   layout: any[]
 }
 
-export function parseDashboardJSON_v1(apiDashboard: TApiDashboard<TDashboardSettings_v1>) {
+export function parseDashboardJSON_v1_to_v3(apiDashboard: TApiDashboard<TDashboardSettings_v1>) {
   const documentContent: TDashboardDocument = { type: 'doc', content: [] }
   const dataWidgets = []
 
@@ -39,9 +39,10 @@ export function parseDashboardJSON_v1(apiDashboard: TApiDashboard<TDashboardSett
   }
 
   return {
+    version: 3 as const,
     documentContent,
     dataWidgets,
-    globalParameters: [],
+    parameterWidgets: [],
     wasMigrated: true,
   }
 }

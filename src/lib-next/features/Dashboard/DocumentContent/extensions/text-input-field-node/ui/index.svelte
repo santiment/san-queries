@@ -3,13 +3,13 @@
   import type { TGlobalParametersWidgetProps } from '../../schema/global-parameter'
 
   import Input from 'san-webkit-next/ui/core/Input'
-  import { useGlobalParameterWidgetFlow } from '$lib-next/features/Dashboard/ctx/global-parameters.svelte'
+  import { useParameterWidgetFlow } from '$lib-next/features/Dashboard/ctx/parameter-widgets.svelte'
   import NodeSettings from '../../NodeSettings.svelte'
   import { showLinkParameterDialog$ } from '../../LinkParameterDialog.svelte'
 
   let { view, data }: TGlobalParametersWidgetProps<typeof TEXT_INPUT_FIELD_NODE> = $props()
 
-  const { globalParameter, update } = useGlobalParameterWidgetFlow(view, data.widget)
+  const { globalParameter, update } = useParameterWidgetFlow(view, data.widget)
   const { outputs } = globalParameter
 
   const showLinkParameterDialog = showLinkParameterDialog$()

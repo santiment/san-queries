@@ -5,9 +5,10 @@
 </script>
 
 <script lang="ts">
-  import { SvelteMap } from 'svelte/reactivity'
-  import type { TDashboardGlobalParameter } from '../../ctx/global-parameters.svelte'
+  import type { TDashboardParameterWidget } from '../../ctx/parameter-widgets.svelte'
   import type { TDataWidgetKey, TDataWidgetLocalParameterKey } from '../../types'
+
+  import { SvelteMap } from 'svelte/reactivity'
   import Dialog, { dialogs$, type TDialogProps } from 'san-webkit-next/ui/core/Dialog'
   import Button from 'san-webkit-next/ui/core/Button'
   import Checkbox from 'san-webkit-next/ui/core/Checkbox'
@@ -16,7 +17,7 @@
   import type { Snippet } from 'svelte'
 
   type TProps = TDialogProps & {
-    globalParameter: TDashboardGlobalParameter<any>
+    globalParameter: TDashboardParameterWidget<any>
     children?: Snippet
   }
   let { Controller, globalParameter, children }: TProps = $props()
