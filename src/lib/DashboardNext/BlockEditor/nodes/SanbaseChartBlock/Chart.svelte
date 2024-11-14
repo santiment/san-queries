@@ -7,8 +7,8 @@
     useChartGlobalParametersCtx,
     useMetricSeriesCtx,
   } from 'san-webkit-next/ui/app/Chart/ctx'
-  import { showMetricsDialogDialog$ } from '../../../../../lib-next/features/Dashboard/DocumentContent/extensions/sanbase-chart-block-node/ui/__MetricsDialog/MetricsDialog.svelte'
   import { useGlobalParametersCtx as useDashboardGlobalParametersCtx } from '$lib/Dashboard/ctx/parameters'
+  import { showMetricsDialogDialog$ } from '$lib-next/dashboard/DocumentContent/extensions/sanbase-chart-block-node/ui/__MetricsDialog/MetricsDialog.svelte'
 
   type TProps = {
     readonly: boolean

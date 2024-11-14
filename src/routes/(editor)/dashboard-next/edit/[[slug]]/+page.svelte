@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Dashboard from '$lib-next/features/Dashboard'
+  import { Dashboard } from '$lib-next/dashboard'
 
   let { data } = $props()
 </script>

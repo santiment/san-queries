@@ -2,7 +2,7 @@ import { delay, exhaustMap, filter, pipe, tap } from 'rxjs'
 import { notifications$ } from 'san-webkit/lib/ui/Notifications'
 import { useSaveIndicatorCtx } from '$lib/SaveIndicator/index.svelte'
 import { useObserveFnCall } from '$lib/ui/utils/state.svelte'
-import { mutateUpdateDashboard } from '../save/api'
+import { mutateUpdateDashboard } from '$lib-next/dashboard/api/save'
 
 export function useToggleDashboardPublicity() {
   const saveIndicatorCtx = useSaveIndicatorCtx()

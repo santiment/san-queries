@@ -3,7 +3,7 @@ import type DashboardEditor from '$lib/Dashboard/Dashboard.svelte'
 
 import { catchError, debounceTime, delay, exhaustMap, filter, mergeMap, of, pipe, tap } from 'rxjs'
 import { getSEOLinkFromIdAndTitle } from 'san-webkit/lib/utils/url'
-import { mutateCreateDashboard, mutateUpdateDashboard } from './api'
+import { mutateCreateDashboard, mutateUpdateDashboard } from '$lib-next/dashboard/api/save'
 import { useSaveIndicatorCtx } from '$lib/SaveIndicator/index.svelte'
 import { useObserveFnCall } from '$lib/ui/utils/state.svelte'
 import { useChangeIndicatorCtx } from '$lib/ChangeIndicator'

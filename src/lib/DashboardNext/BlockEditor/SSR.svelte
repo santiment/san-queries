@@ -3,7 +3,7 @@
 
   import { getAllContexts } from 'svelte'
   import { generateHTML } from '@tiptap/html'
-  import { getBaseExtensions } from '$lib-next/features/Dashboard/DocumentContent/extensions'
+  import { getBaseExtensions } from '$lib-next/dashboard/DocumentContent/extensions'
 
   let { content }: { content: JSONContent } = $props()
 
