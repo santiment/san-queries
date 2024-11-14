@@ -30,9 +30,14 @@
   <User user={dashboard.author || { username: '<hidden>' }} class="text-waterloo" />
 
   {#if dashboard.state.$$.id}
+    {@const id = dashboard.state.$$.id}
+    {@const name = dashboard.state.$$.name}
     <div class="ml-3 mr-4 flex min-h-8 gap-3 border-l fill-fiord pl-3">
-      <Vote dashboardId={dashboard.state.$$.id} votes={dashboard.state.$$.votes}></Vote>
-      <Comments count={dashboard.state.$$.commentsCount}></Comments>
+      <Vote dashboardId={+id} votes={dashboard.state.$$.votes}></Vote>
+      <Comments
+        commentsFor={{ id, title: name!, user: dashboard.author || {} }}
+        bind:count={dashboard.state.$$.commentsCount}
+      ></Comments>
     </div>
   {/if}
 
