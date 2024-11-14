@@ -11,7 +11,13 @@ import { untrack } from 'svelte'
 import { ss, type SS } from 'svelte-runes'
 import { createCtx, getRandomKey } from 'san-webkit-next/utils'
 import { useDashboardCtx } from './dashboard.svelte'
-import { GlobalParameterNodes } from '../DocumentContent/extensions'
+import {
+  GlobalParameterNodes,
+  type TParameterWidgetNodeSchemas,
+} from '../DocumentContent/extensions'
+
+type TMap<T extends TGlobalParameterNode> = T extends any ? TDashboardGlobalParameter<T> : never
+export type TDashboardParameterWidgets = TMap<TParameterWidgetNodeSchemas>
 
 export type TDashboardGlobalParameter<GSchema extends TGlobalParameterNode> = {
   id: TDashboardGlobalParameterKey
@@ -96,7 +102,10 @@ export const useDashboardGlobalParametersCtx = createCtx(
       dashboardDocument.globalParameters
         .map((apiParameter) => {
           const schema = GlobalParameterNodes[apiParameter.type]
-          return schema && createDashboardGlobalParameter(apiParameter, schema)
+          return (
+            schema &&
+            (createDashboardGlobalParameter(apiParameter, schema) as TDashboardParameterWidgets)
+          )
         })
         .filter((item) => !!item),
     )
@@ -122,6 +131,11 @@ export const useDashboardGlobalParametersCtx = createCtx(
     )
 
     return {
+      parameterWidgets: {
+        get $() {
+          return globalParameters
+        },
+      },
       getGlobalParameter(globalParameterKey: TDashboardGlobalParameterKey) {
         return globalParameterMap.get(globalParameterKey)
       },
@@ -210,5 +224,28 @@ export function useGlobalParameterWidgetFlow<GSchema extends TGlobalParameterNod
       view.$.editor.commands.focus(view.$.getPos())
       view.$.updateAttributes({ [outputKey]: value })
     },
+  }
+}
+
+export function serializeParameterWidget(
+  item: TDashboardParameterWidgets,
+  usedIds?: Set<string>,
+): TApiDashboardGlobalParameter {
+  const { id, type, outputs, overrides, settings } = item
+
+  return {
+    id,
+    type,
+    outputs: $state.snapshot(outputs.$$),
+    overrides: Object.entries<Map<TDataWidgetKey, TDataWidgetLocalParameterKey>>(
+      $state.snapshot(overrides.$),
+    ).reduce((acc, [key, overrides]) => {
+      const _overrides = Array.from(overrides)
+
+      acc[key] = usedIds ? _overrides.filter(([id]) => usedIds.has(id)) : _overrides
+
+      return acc
+    }, {} as any),
+    settings: $state.snapshot(settings.$$),
   }
 }

@@ -73,19 +73,15 @@ export const QUERY_WIDGET_BLOCK_NODE: TSchema = createDataWidgetSchema({
     }
   },
 
-  create(data, schema) {
-    const { createDashboardDataWidget } = useDashboardDataWidgets.get()
+  create() {
+    throw Error('TODO: Create async query mapping')
+    // return {
+    //   id: '' as TDataWidgetKey,
+    //   type: this.name,
+    //   data: null,
+    //   settings: {},
+    // }
 
-    createDashboardDataWidget(
-      {
-        id: '' as TDataWidgetKey,
-        type: schema.name,
-        data: null,
-        settings: {},
-      },
-      schema,
-    )
-
-    return Promise.resolve(data)
+    // // return Promise.resolve(data)
   },
 } as const)

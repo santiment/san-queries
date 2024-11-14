@@ -78,6 +78,8 @@ export const getBaseExtensions = (ctx?: Map<string, any>) =>
     .concat(GLOBAL_PARAMETER_WIDGET_NODES.map((node) => node.configure({ ctx })))
     .concat(DATA_WIDGET_NODES.map((node) => node.configure({ ctx })))
 
+type T_GLOBAL_PARAMETER_WIDGET_NODES = typeof GLOBAL_PARAMETER_WIDGET_NODES
+export type TParameterWidgetNodeSchemas = T_GLOBAL_PARAMETER_WIDGET_NODES[number]['__schema']
 export const GlobalParameterNodes = GLOBAL_PARAMETER_WIDGET_NODES.reduce(
   (acc, item) => {
     acc[item.config.name] = item.config as TGlobalParameterNode
@@ -87,6 +89,7 @@ export const GlobalParameterNodes = GLOBAL_PARAMETER_WIDGET_NODES.reduce(
 )
 
 type T_DATA_WIDGET_NODES = typeof DATA_WIDGET_NODES
+export type TDataWidgetNodeSchemas = T_DATA_WIDGET_NODES[number]['__schema']
 export const DataWidgetNodes = DATA_WIDGET_NODES.reduce(
   (acc, item) => {
     // @ts-ignore

@@ -1,5 +1,5 @@
 import { QUERY_FRAGMENT } from '$lib/QueryEditor/api'
-import { Fetcher } from '$lib/api'
+import { ApiMutation } from 'san-webkit-next/api'
 
 export const DASHBOARD_FRAGMENT = `
   id
@@ -16,7 +16,7 @@ export const DASHBOARD_FRAGMENT = `
   user {id username avatarUrl}
 `
 
-export const mutateCreateDashboard = Fetcher(
+export const mutateCreateDashboard = ApiMutation(
   ({ name, description }: { name: string; description?: string }) => ({
     schema: `mutation ($name: String!, $description: String) {
     data:createDashboard(name:$name, description:$description) {
@@ -28,7 +28,7 @@ export const mutateCreateDashboard = Fetcher(
   (gql: { data: App.ApiDashboard }) => gql.data,
 )
 
-export const mutateUpdateDashboard = Fetcher(
+export const mutateUpdateDashboard = ApiMutation(
   ({
     id,
     name,

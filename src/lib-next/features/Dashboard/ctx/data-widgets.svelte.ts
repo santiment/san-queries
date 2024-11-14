@@ -5,7 +5,10 @@ import { ss, type SS } from 'svelte-runes'
 import { createCtx } from 'san-webkit-next/utils'
 import { useDashboardGlobalParametersCtx } from './global-parameters.svelte'
 import { useDashboardCtx } from './dashboard.svelte'
-import { DataWidgetNodes } from '../DocumentContent/extensions'
+import { DataWidgetNodes, type TDataWidgetNodeSchemas } from '../DocumentContent/extensions'
+
+type TMap<T extends TDataWidgetNode> = T extends any ? TDashboardDataWidget<T> : never
+type TDashboardDataWidgets = TMap<TDataWidgetNodeSchemas>
 
 export function useDataWidgetParameterOverrides<
   GParams extends {
@@ -53,7 +56,10 @@ export const useDashboardDataWidgets = createCtx('dashboards_useDashboardDataWid
     dashboardDocument.dataWidgets
       .map((dataWidget) => {
         const schema = DataWidgetNodes[dataWidget.type as keyof typeof DataWidgetNodes]
-        return schema && createDashboardDataWidget(dataWidget, schema, ALL_CTXS)
+        return (
+          schema &&
+          (createDashboardDataWidget(dataWidget, schema, ALL_CTXS) as TDashboardDataWidgets)
+        )
       })
       .filter((item) => !!item),
   )
@@ -130,5 +136,16 @@ function createDashboardDataWidget<GSchema extends TDataWidgetNode>(
       (schema.initData(id, allCtxs) as ReturnType<NonNullable<GSchema['initData']>>),
 
     __isDestroyed: ss(false),
+  }
+}
+
+export function serializeDataWidget(item: TDashboardDataWidgets): TApiDataWidget {
+  const { id, type, settings } = item
+
+  return {
+    id,
+    type,
+
+    settings: settings ? $state.snapshot(settings.$$) : undefined,
   }
 }
