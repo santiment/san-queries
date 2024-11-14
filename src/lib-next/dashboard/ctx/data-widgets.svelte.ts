@@ -95,6 +95,8 @@ export type TDashboardDataWidget<GSchema extends TDataWidgetNode> = {
   state: {
     get $$(): ReturnType<GSchema['initState']>
   }
+
+  /** Deep changes will trigger API save action */
   settings: GSchema['initSettings'] extends () => infer TSettings
     ? {
         get $$(): TSettings

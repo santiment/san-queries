@@ -4,6 +4,7 @@
   import type { TParameterWidgetProps } from './schema/parameter-widget'
   import { onMount } from 'svelte'
   import { BROWSER } from 'esm-env'
+  import { triggerEmptyUpdate, useDeepChangeEffect } from './utils'
 
   type TProps = {
     nodeConfig: any
@@ -15,6 +16,11 @@
 
   if (BROWSER && data.id && view.$.editor.isEditable) {
     Object.assign(view.$.node.attrs, { 'data-id': data.id })
+
+    if (data.widget?.settings) {
+      const { settings } = data.widget
+      useDeepChangeEffect(settings, () => triggerEmptyUpdate(view))
+    }
   }
 
   onMount(() => {

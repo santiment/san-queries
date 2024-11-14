@@ -61,6 +61,7 @@ export const useDashboardSaveFlowCtx = createCtx('dashboards_useDashboardSaveFlo
   }
 
   function scheduleSave() {
+    if (dashboard.isReadonly) return
     if (dashboard.isCurrentUserAuthor === false) return
 
     console.log('scheduled')

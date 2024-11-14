@@ -98,6 +98,10 @@ export function yAxisFormatter(value: number) {
     return +value.toFixed(10)
   }
 
+  if (absValue < 0.001) {
+    return +value.toFixed(6)
+  }
+
   if (absValue < 10) {
     return +value.toFixed(4)
   }

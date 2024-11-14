@@ -27,6 +27,7 @@ export type TDashboardParameterWidget<GSchema extends TParameterWidgetNode> = {
     get $$(): ReturnType<NonNullable<GSchema['initOutputs']>>
   }
 
+  /** Deep changes will trigger API save action */
   settings: GSchema['initSettings'] extends () => infer TSettings
     ? {
         get $$(): TSettings
