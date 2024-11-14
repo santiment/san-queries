@@ -8,10 +8,11 @@
   import DocumentHeading from './DocumentHeading.svelte'
   import DocumentContent from './DocumentContent/DocumentContent.svelte'
   import { useDashboardParameterWidgetsCtx } from './ctx/parameter-widgets.svelte'
-  import { useDashboardSqlQueriesCtx } from './DocumentContent/extensions/query-widget-block-node/ctx/dashboard-queries.svelte'
+  import { useDashboardSqlQueriesCtx } from './ctx/dashboard-queries.svelte'
   import { useDashboardDataWidgets } from './ctx/data-widgets.svelte'
   import { useDashboardSaveFlowCtx } from './flow'
   import { usePublishToggleFlow } from './flow/publish'
+  import { useDashboardDuplicateFlow } from '$lib/Dashboard/flow/duplicate'
 
   type TProps = {
     apiDashboard: undefined | null | TApiDashboard<any>
@@ -28,6 +29,7 @@
   useDashboardDataWidgets.set()
 
   const { scheduleSave } = useDashboardSaveFlowCtx.set()
+  const { onDuplicateClick } = useDashboardDuplicateFlow()
   const { publishDashboard, unpublishDashboard } = dashboard.isCurrentUserAuthor
     ? usePublishToggleFlow()
     : {}
@@ -63,7 +65,7 @@
 </script>
 
 <article class="flex-1 gap-4 p-6 px-12 pb-20 column">
-  <Header {onPublishToggle} onDataUpdateClick={console.log} onDuplicateClick={console.log}></Header>
+  <Header {onPublishToggle} onDataUpdateClick={console.log} {onDuplicateClick}></Header>
 
   <DocumentHeading onChange={onDocumentUpdate}></DocumentHeading>
 

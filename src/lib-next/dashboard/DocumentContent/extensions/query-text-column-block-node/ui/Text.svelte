@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { TDashboardDataWidgetByType } from '$lib-next/dashboard/ctx/data-widgets.svelte'
-  import { useDashboardSqlQueriesCtx } from '../../query-widget-block-node/ctx/dashboard-queries.svelte'
+  import { useDashboardSqlQueriesCtx } from '$lib-next/dashboard/ctx/dashboard-queries.svelte'
 
   type TProps = { sqlDataWidget?: TDashboardDataWidgetByType['query-widget']; column: number }
   let { sqlDataWidget, column }: TProps = $props()

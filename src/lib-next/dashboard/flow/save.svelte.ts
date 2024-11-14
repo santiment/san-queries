@@ -17,15 +17,14 @@ import {
   useDashboardParameterWidgetsCtx,
 } from '../ctx/parameter-widgets.svelte'
 import { serializeDataWidget, useDashboardDataWidgets } from '../ctx/data-widgets.svelte'
+import { useDashboardSqlQueriesCtx } from '../ctx/dashboard-queries.svelte'
 
 export const useDashboardSaveFlowCtx = createCtx('dashboards_useDashboardSaveFlow', () => {
   const saveIndicatorCtx = useSaveIndicatorCtx.get()
 
-  const dashboardCtx = useDashboardCtx.get()
-  const { dashboard } = dashboardCtx
+  const { dashboard } = useDashboardCtx.get()
 
-  const parameterWidgetsCtx = useDashboardParameterWidgetsCtx.get()
-  const dataWidgetsCtx = useDashboardDataWidgets.get()
+  const { serializeDashboard } = useDashboardSerializeFlow()
 
   const startDelayedSave = useObserveFnCall(() =>
     pipe(debounceTime(1500), exhaustMapWithTrailing(createSave$)),
@@ -35,7 +34,7 @@ export const useDashboardSaveFlowCtx = createCtx('dashboards_useDashboardSaveFlo
 
   function createSave$() {
     const page = get(page$)
-    return of(serializeDashboard(dashboardCtx, parameterWidgetsCtx, dataWidgetsCtx)).pipe(
+    return of(serializeDashboard()).pipe(
       tap(() => saveIndicatorCtx.emit.saving()),
 
       tap((serialized) => {
@@ -90,12 +89,14 @@ export const useDashboardSaveFlowCtx = createCtx('dashboards_useDashboardSaveFlo
 export type TSerializedDashboard = ReturnType<typeof serializeDashboard>
 function serializeDashboard(
   dashboardCtx: ReturnType<typeof useDashboardCtx>,
+  sqlQueriesCtx: ReturnType<typeof useDashboardSqlQueriesCtx>,
   parameterWidgetsCtx: ReturnType<typeof useDashboardParameterWidgetsCtx>,
   dataWidgetsCtx: ReturnType<typeof useDashboardDataWidgets>,
 ) {
   const { dashboard, documentEditor } = dashboardCtx
   const { parameterWidgets } = parameterWidgetsCtx
   const { dataWidgets } = dataWidgetsCtx
+  const { dashboardSqlQueries } = sqlQueriesCtx
 
   const { id, name, description, isPublic } = dashboard.state.$$
 
@@ -129,5 +130,19 @@ function serializeDashboard(
     name: name || getPlaceholderName(),
     description: description || '',
     settings,
+    sqlQueries: dashboardSqlQueries.$,
+  }
+}
+
+export function useDashboardSerializeFlow() {
+  const dashboardCtx = useDashboardCtx.get()
+  const sqlQueriesCtx = useDashboardSqlQueriesCtx.get()
+
+  const parameterWidgetsCtx = useDashboardParameterWidgetsCtx.get()
+  const dataWidgetsCtx = useDashboardDataWidgets.get()
+
+  return {
+    serializeDashboard: () =>
+      serializeDashboard(dashboardCtx, sqlQueriesCtx, parameterWidgetsCtx, dataWidgetsCtx),
   }
 }

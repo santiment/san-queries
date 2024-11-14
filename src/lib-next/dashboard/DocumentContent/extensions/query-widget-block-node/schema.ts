@@ -9,7 +9,7 @@ import {
   type TDataWidgetNode,
   type TDataWidgetSchema,
 } from '../schema/data-widget'
-import { useDashboardSqlQueriesCtx } from './ctx/dashboard-queries.svelte'
+import { useDashboardSqlQueriesCtx } from '../../../ctx/dashboard-queries.svelte'
 
 export type TColumnActions = SvelteMap<
   string,

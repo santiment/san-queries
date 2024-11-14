@@ -9,7 +9,7 @@ import {
   type TDashboardDataWidget,
 } from '$lib-next/dashboard/ctx/data-widgets.svelte'
 import { queryRunDashboardSqlQuery } from '$lib/Dashboard/flow/sqlData/api'
-import { useDashboardSqlQueriesCtx } from './dashboard-queries.svelte'
+import { useDashboardSqlQueriesCtx } from '$lib-next/dashboard/ctx/dashboard-queries.svelte'
 
 export function useSqlWidgetFlow(widget: TDashboardDataWidget<typeof QUERY_WIDGET_BLOCK_NODE>) {
   const { state } = widget

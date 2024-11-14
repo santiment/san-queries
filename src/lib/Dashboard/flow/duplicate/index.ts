@@ -1,9 +1,8 @@
-import type DashboardEditor from '$lib/Dashboard/Dashboard.svelte'
-
 import {
   Observable,
   catchError,
   concatAll,
+  defaultIfEmpty,
   delay,
   exhaustMap,
   filter,
@@ -15,7 +14,7 @@ import {
   tap,
   toArray,
 } from 'rxjs'
-import { type SS } from 'svelte-runes'
+
 import { notifications$ } from 'san-webkit/lib/ui/Notifications'
 import { getSEOLinkFromIdAndTitle } from 'san-webkit/lib/utils/url'
 
@@ -29,17 +28,23 @@ import { mutateAddDashboardTextWidget, mutateCreateDashboardQuery } from '../wid
 import { useEditorSidebarCtx } from '$lib/EditorSidebar/ctx'
 import { mutateStoreDashboardQueryExecution } from '../sqlData/api'
 import { compressData } from '$lib/utils/compress'
+import {
+  useDashboardSerializeFlow,
+  type TSerializedDashboard,
+} from '$lib-next/dashboard/flow/save.svelte'
+import { useDashboardSqlQueriesCtx } from '$lib-next/dashboard/ctx/dashboard-queries.svelte'
 
-function substituteDashboard(dashboardEditor: App.DashboardEditor) {
+function substituteDashboard(dashboardEditor: TSerializedDashboard) {
   let stringified = JSON.stringify({
     settings: dashboardEditor.settings,
-    parameters: dashboardEditor.parameters.map((parameter) => ({
-      ...parameter,
-      overrides: Array.from(parameter.overrides),
-    })),
+    parameters: [],
+    // parameters: dashboardEditor.parameters.map((parameter) => ({
+    //   ...parameter,
+    //   overrides: Array.from(parameter.overrides),
+    // })),
   })
 
-  const alias = {} as Record<string, strin | string>
+  const alias = {} as Record<string, undefined | string>
 
   return {
     replaceOldWidgetIds(oldToNewWidgetId: [string, string][]) {
@@ -51,51 +56,44 @@ function substituteDashboard(dashboardEditor: App.DashboardEditor) {
       }
     },
 
-    getNewWidgetId(oldId: string): null | stirng {
+    getNewWidgetId(oldId: string): null | string {
       return alias[oldId] ?? null
     },
 
     getSettings() {
-      return JSON.parse(stringified).settings as App.DashboardEditor['settings']
+      return JSON.parse(stringified).settings as TSerializedDashboard['settings']
     },
 
     getParameters() {
-      type Parameter = App.DashboardEditor['parameters'][number]
-      return JSON.parse(stringified).parameters as (Parameter & { overrides: [string, string][] })[]
+      return []
+      // type Parameter = App.DashboardEditor['parameters'][number]
+      // return JSON.parse(stringified).parameters as (Parameter & { overrides: [string, string][] })[]
     },
   }
 }
 
-export function useDashboardDuplicateFlow(EditorRef: SS<DashboardEditor>) {
+export function useDashboardDuplicateFlow() {
   const saveIndicatorCtx = useSaveIndicatorCtx()
   const editorSidebarCtx = useEditorSidebarCtx()
+  const { serializeDashboard } = useDashboardSerializeFlow()
+  const { sqlQueryCachedData } = useDashboardSqlQueriesCtx.get()
 
   const onDuplicateClick = useObserveFnCall(() => {
-    const createDuplicateWidgets$ = (
+    const createDuplicateQueries$ = (
       dashboardId: number,
-      widgets: (App.Dashboard.QueryWidget | App.Dashboard.TextWidget)[],
+      sqlQuries: TSerializedDashboard['sqlQueries'],
     ) =>
       forkJoin(
-        widgets.map((widget): Observable<[string, string]> => {
-          switch (widget.type) {
-            case 'QUERY':
-              return mutateCreateDashboardQuery()({ dashboardId, queryId: +widget.query.id }).pipe(
-                map((apiQuery) => [widget.id, apiQuery.dashboardQueryMappingId]),
-              )
-
-            case 'TEXT':
-              return mutateAddDashboardTextWidget()({ dashboardId, body: widget.value || '' }).pipe(
-                map((apiWidget) => [widget.id, apiWidget.id]),
-              )
-
-            default:
-              return of(['', ''])
-          }
+        sqlQuries.map((sqlQuery): Observable<[string, string]> => {
+          return mutateCreateDashboardQuery()({ dashboardId, queryId: +sqlQuery.id }).pipe(
+            // oldId, newId
+            map((apiQuery) => [sqlQuery.dashboardQueryMappingId, apiQuery.dashboardQueryMappingId]),
+          )
         }),
-      )
+      ).pipe(defaultIfEmpty([]))
 
     return exhaustMap(() => {
-      const dashboardEditor = EditorRef.$?.getState()
+      const dashboardEditor = serializeDashboard()
       const substituted = substituteDashboard(dashboardEditor)
 
       return of(dashboardEditor).pipe(
@@ -108,40 +106,41 @@ export function useDashboardDuplicateFlow(EditorRef: SS<DashboardEditor>) {
 
         mergeMap(({ id: dashboardId, name }) =>
           of(null).pipe(
-            mergeMap(() => createDuplicateWidgets$(dashboardId, dashboardEditor.widgets)),
+            mergeMap(() => createDuplicateQueries$(dashboardId, dashboardEditor.sqlQueries)),
             map((oldToNewWidgetId) => substituted.replaceOldWidgetIds(oldToNewWidgetId)),
 
             mergeMap(() =>
               mutateUpdateDashboard()({ id: dashboardId, settings: substituted.getSettings() }),
             ),
 
-            mergeMap(() =>
-              forkJoin(
-                dashboardEditor.parameters.map(({ key, value }) =>
-                  mutateAddDashboardGlobalParameter()({
-                    dashboardId,
-                    key,
-                    value: { [Array.isArray(value) ? 'stringList' : 'string']: value },
-                  }),
-                ),
-              ),
-            ),
-            mergeMap(() =>
-              from(substituted.getParameters()).pipe(
-                map(({ key, overrides }) =>
-                  createAddGlobalParameterOverrides$(dashboardId, key, overrides),
-                ),
-                concatAll(),
-                toArray(),
-              ),
-            ),
+            // mergeMap(() =>
+            //   forkJoin(
+            //     dashboardEditor.parameters.map(({ key, value }) =>
+            //       mutateAddDashboardGlobalParameter()({
+            //         dashboardId,
+            //         key,
+            //         value: { [Array.isArray(value) ? 'stringList' : 'string']: value },
+            //       }),
+            //     ),
+            //   ),
+            // ),
+            // mergeMap(() =>
+            //   from(substituted.getParameters()).pipe(
+            //     map(({ key, overrides }) =>
+            //       createAddGlobalParameterOverrides$(dashboardId, key, overrides),
+            //     ),
+            //     concatAll(),
+            //     toArray(),
+            //   ),
+            // ),
 
             mergeMap(() =>
               from(
-                dashboardEditor.queriesData.map((data) => ({
+                Array.from(sqlQueryCachedData).map(([key, data]) => ({
                   ...data,
-                  // @ts-expect-error
-                  dashboardQueryMappingId: substituted.getNewWidgetId(data.dashboardQueryMappingId),
+                  dashboardQueryMappingId: substituted.getNewWidgetId(
+                    data!.dashboardQueryMappingId,
+                  )!,
                 })),
               ).pipe(
                 mergeMap((data) =>
@@ -169,7 +168,7 @@ export function useDashboardDuplicateFlow(EditorRef: SS<DashboardEditor>) {
 
         delay(1000),
         tap(() => saveIndicatorCtx.emit.success()),
-        tap(({ id, name }) => goto('/dashboard/' + getSEOLinkFromIdAndTitle(id, name))),
+        tap(({ id, name }) => goto('/dashboard-next/' + getSEOLinkFromIdAndTitle(id, name))),
         tap(() =>
           notifications$.show({
             type: 'success',

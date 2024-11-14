@@ -31,7 +31,13 @@ export const mutateCreateDashboard = ApiMutation(
 )
 
 export const mutateUpdateDashboard = ApiMutation(
-  ({ id, name, description, isPublic, settings }: Partial<TSerializedDashboard>) => ({
+  ({
+    id,
+    name,
+    description,
+    isPublic,
+    settings,
+  }: Partial<Omit<TSerializedDashboard, 'sqlQueries'>>) => ({
     schema: `mutation ($id: Int!, $name: String, $description: String, $isPublic: Boolean, $settings: json) {
     data:updateDashboard(id:$id, name:$name, description:$description, isPublic:$isPublic, settings: $settings) {
       ${DASHBOARD_FRAGMENT}
