@@ -10,13 +10,12 @@
     author: App.Author
 
     onRefreshClick: () => void
+    onFullscreenClick: () => void
     onDeleteClick?: () => void
   }
-  let { id, name, author, onRefreshClick, onDeleteClick }: TProps = $props()
+  let { id, name, author, onRefreshClick, onFullscreenClick, onDeleteClick }: TProps = $props()
 
   const { dashboard } = useDashboardCtx.get()
-
-  function onFullscreenClick() {}
 </script>
 
 <header class="flex items-center gap-2 py-3 pl-3 pr-[18px]">

@@ -7,6 +7,7 @@
   import Header from './Header.svelte'
   import Parameters from './Parameters.svelte'
   import { useSqlWidgetFlow } from '../ctx'
+  import { showFullscreenDialog$ } from './FullscreenDialog.svelte'
 
   let { view, data }: TDataWidgetProps<typeof QUERY_WIDGET_BLOCK_NODE> = $props()
 
@@ -16,6 +17,8 @@
   const { dashboard } = useDashboardCtx.get()
   const { sqlQuery, sqlQueryCachedData, localParameters, parameterOverrides, loadSqlData } =
     useSqlWidgetFlow(widget)
+
+  const showFullscreenDialog = showFullscreenDialog$()
 
   const columnActions = $derived(state.$$.__columnActions)
   const sqlData = $derived(state.$$.sqlData || sqlQueryCachedData.get(id))
@@ -28,6 +31,7 @@
     id={sqlQuery.id}
     name={sqlQuery.name}
     author={sqlQuery.user}
+    onFullscreenClick={() => sqlData && showFullscreenDialog({ sqlQuery, sqlData })}
     onRefreshClick={() => loadSqlData({ isForced: true })}
     onDeleteClick={() => {
       view.$.deleteNode()
