@@ -2,6 +2,7 @@
   import type { TDashboardSqlData } from '$lib/Dashboard/flow/sqlData/api'
   import type { TApiDashboard } from './types'
 
+  import { showDashboardPublishedDialog$ } from '$lib/DashboardPublishedDialog/index.svelte'
   import { useDashboardCtx } from './ctx'
   import Header from './Header/Header.svelte'
   import DocumentHeading from './DocumentHeading.svelte'
@@ -10,6 +11,7 @@
   import { useDashboardSqlQueriesCtx } from './DocumentContent/extensions/query-widget-block-node/ctx/dashboard-queries.svelte'
   import { useDashboardDataWidgets } from './ctx/data-widgets.svelte'
   import { useDashboardSaveFlowCtx } from './flow'
+  import { usePublishToggleFlow } from './flow/publish'
 
   type TProps = {
     apiDashboard: undefined | null | TApiDashboard<any>
@@ -26,6 +28,11 @@
   useDashboardDataWidgets.set()
 
   const { scheduleSave } = useDashboardSaveFlowCtx.set()
+  const { publishDashboard, unpublishDashboard } = dashboard.isCurrentUserAuthor
+    ? usePublishToggleFlow()
+    : {}
+
+  const showDashboardPublishedDialog = showDashboardPublishedDialog$()
 
   function onDocumentUpdate() {
     scheduleSave()
@@ -36,14 +43,27 @@
 
     scheduleSave()
   }
+
+  function onPublishToggle() {
+    const { id, isPublic } = dashboard.state.$$
+
+    if (!id || !unpublishDashboard || !publishDashboard) {
+      return
+    }
+
+    const action = isPublic ? unpublishDashboard : publishDashboard
+
+    action({ id, onComplete })
+
+    function onComplete() {
+      dashboard.state.$$.isPublic = !isPublic
+      if (!isPublic) showDashboardPublishedDialog()
+    }
+  }
 </script>
 
 <article class="flex-1 gap-4 p-6 px-12 pb-20 column">
-  <Header
-    onPublishToggle={console.log}
-    onDataUpdateClick={console.log}
-    onDuplicateClick={console.log}
-  ></Header>
+  <Header {onPublishToggle} onDataUpdateClick={console.log} onDuplicateClick={console.log}></Header>
 
   <DocumentHeading onChange={onDocumentUpdate}></DocumentHeading>
 
