@@ -1,6 +1,6 @@
 <script>
   import { NodeViewWrapper, NodeViewContent } from 'tiptap-svelte-adapter'
-  import Note from '../../Note.svelte'
+  import Note from '../../utils/Note.svelte'
 </script>
 
 <NodeViewWrapper>

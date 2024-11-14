@@ -7,7 +7,7 @@
     useDashboardDataWidgets,
     type TDashboardDataWidgetByType,
   } from '$lib-next/dashboard/ctx/data-widgets.svelte'
-  import Note from '../../Note.svelte'
+  import Note from '../../utils/Note.svelte'
   import SelectOption from '../../SelectOption.svelte'
   import Text from './Text.svelte'
 

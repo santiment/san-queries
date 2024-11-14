@@ -3,7 +3,7 @@
   import QueryWidget from '$lib/Dashboard/Widgets/QueryWidget/index.svelte'
   import { useDahboardSqlDataCtx } from '$lib/Dashboard/flow/sqlData/index.svelte'
   import { useDashboardEditorCtx, useEditorWidget } from '$lib/DashboardNext/ctx'
-  import Resizer from '../../Resizer.svelte'
+  import Resizer from '$lib-next/dashboard/DocumentContent/extensions/utils/Resizer.svelte'
 
   let { view }: ViewProps = $props()
 

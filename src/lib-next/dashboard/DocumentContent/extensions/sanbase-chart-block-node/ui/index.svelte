@@ -7,8 +7,9 @@
   import Chart, { Tooltip, ApiMetricSeries } from 'san-webkit-next/ui/app/Chart'
   import Button from 'san-webkit-next/ui/core/Button'
   import { useDashboardCtx } from '$lib-next/dashboard/ctx'
-  import { useSanbaseChartWidgetFlow } from '../ctx'
   import { showMetricsDialogDialog$ } from './__MetricsDialog/MetricsDialog.svelte'
+  import { useSanbaseChartWidgetFlow } from '../ctx'
+  import Resizer from '../../utils/Resizer.svelte'
 
   let { view, data }: TDataWidgetProps<typeof SANBASE_CHART_BLOCK_NODE> = $props()
 
@@ -82,7 +83,10 @@
   </div>
 
   {#if BROWSER}
-    <Chart class="flex-1 bg-white" options={{ handleScroll: false, handleScale: false }}>
+    <Chart
+      class="min-h-0 flex-1 bg-white"
+      options={{ handleScroll: false, handleScale: false, autoSize: true }}
+    >
       {#each metricSeries.$ as item (item.id)}
         <ApiMetricSeries series={item}></ApiMetricSeries>
       {/each}
@@ -91,6 +95,10 @@
     </Chart>
   {/if}
 </div>
+
+{#if dashboard.isEditable}
+  <Resizer {view}></Resizer>
+{/if}
 
 <style>
   .color {

@@ -1,5 +1,8 @@
 <script lang="ts">
-  let { onEnd }: { onEnd: (newHeight: string) => void } = $props()
+  import type { ViewProps } from 'tiptap-svelte-adapter'
+
+  type TProps = ViewProps & { onEnd?: (newHeight: string) => void }
+  let { view, onEnd }: TProps = $props()
 
   function onPointerDown(e: PointerEvent) {
     const resizer = e.currentTarget as HTMLElement
@@ -17,7 +20,11 @@
       resizer.removeEventListener('pointermove', onPointerMove)
       resizer.releasePointerCapture(e.pointerId)
 
-      onEnd(parentNode.style.height)
+      const height = parentNode.clientHeight + 'px'
+
+      view.$.updateAttributes({ style: 'height:' + height })
+
+      onEnd?.(height)
     }
 
     function onPointerMove(eventMove: MouseEvent) {
@@ -31,16 +38,16 @@
   }
 </script>
 
-<button onpointerdown={onPointerDown}></button>
+<button
+  aria-label="Resize widget"
+  onpointerdown={onPointerDown}
+  class="absolute z-10 size-5 cursor-se-resize"
+></button>
 
 <style>
   button {
-    cursor: se-resize;
-    position: absolute;
     bottom: 0;
     right: 0;
-    width: 20px;
-    height: 20px;
 
     &:hover::after {
       opacity: 1;

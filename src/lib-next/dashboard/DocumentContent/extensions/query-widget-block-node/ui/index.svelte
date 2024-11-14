@@ -8,6 +8,7 @@
   import Parameters from './Parameters.svelte'
   import { useSqlWidgetFlow } from '../ctx'
   import { showFullscreenDialog$ } from './FullscreenDialog.svelte'
+  import Resizer from '../../utils/Resizer.svelte'
 
   let { view, data }: TDataWidgetProps<typeof QUERY_WIDGET_BLOCK_NODE> = $props()
 
@@ -72,3 +73,7 @@
     {/if}
   </div>
 </section>
+
+{#if dashboard.isEditable}
+  <Resizer {view}></Resizer>
+{/if}
