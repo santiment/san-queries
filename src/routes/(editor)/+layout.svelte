@@ -23,3 +23,19 @@
     <slot />
   </main>
 </screen>
+
+<style lang="postcss">
+  :global(#dialogs) :global {
+    input[readonly] {
+      flex: 1;
+    }
+
+    .btn-3 {
+      @apply inline-flex center;
+    }
+
+    .mrg-xl.mrg--b {
+      @apply mb-6;
+    }
+  }
+</style>

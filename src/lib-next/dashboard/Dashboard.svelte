@@ -39,7 +39,11 @@
 </script>
 
 <article class="flex-1 gap-4 p-6 px-12 pb-20 column">
-  <Header></Header>
+  <Header
+    onPublishToggle={console.log}
+    onDataUpdateClick={console.log}
+    onDuplicateClick={console.log}
+  ></Header>
 
   <DocumentHeading onChange={onDocumentUpdate}></DocumentHeading>
 

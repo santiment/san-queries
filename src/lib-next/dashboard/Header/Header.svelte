@@ -10,6 +10,13 @@
   import { useDashboardCtx } from '../ctx'
   import { useDashboardDeleteFlow } from '../flow/delete'
 
+  type TProps = {
+    onPublishToggle: () => void
+    onDataUpdateClick: () => void
+    onDuplicateClick: () => void
+  }
+  let { onPublishToggle, onDataUpdateClick, onDuplicateClick }: TProps = $props()
+
   const { currentUser } = useCustomerCtx()
   const { dashboard } = useDashboardCtx.get()
 
@@ -24,14 +31,15 @@
       feature: 'dashboard',
       source: 'dashboard_head',
       data: {
-        link: window.location.origin + `/dashboard/${getSEOLinkFromIdAndTitle(id!, name)}`,
+        link:
+          window.location.origin + `/dashboard/${id ? getSEOLinkFromIdAndTitle(id, name) : 'new'}`,
       },
     })
   }
 </script>
 
 <header class="flex items-center">
-  <User user={dashboard.author || { username: '<hidden>' }} class="text-waterloo" />
+  <User user={dashboard.author || { username: '<hidden>' }} class="text-waterloo"></User>
 
   {#if id}
     {@const name = dashboard.state.$$.name}
@@ -47,38 +55,47 @@
 
   <div class="ml-auto flex items-center gap-4">
     {#if dashboard.isCurrentUserAuthor}
-      {@const seoLink = id && getSEOLinkFromIdAndTitle(id, dashboard.state.$$.name)}
-      {#if dashboard.isReadonly}
-        <Button variant="fill" loading={false}>
-          {dashboard.state.$$.isPublic ? 'Unpublish' : 'Publish'}
-        </Button>
+      {#if id}
+        {@const seoLink = getSEOLinkFromIdAndTitle(id, dashboard.state.$$.name)}
+        {#if dashboard.isReadonly}
+          <Button variant="fill" loading={false} onclick={onPublishToggle}>
+            {dashboard.state.$$.isPublic ? 'Unpublish' : 'Publish'}
+          </Button>
 
-        <Button variant="border" icon="pencil" iconSize="10" href="/dashboard-next/edit/{seoLink}">
-          Edit
-        </Button>
-      {:else}
-        <Button
-          variant="fill"
-          loading={false}
-          href={seoLink ? `/dashboard-next/${seoLink}` : undefined}
-        >
-          Preview
-        </Button>
+          <Button
+            variant="border"
+            icon="pencil"
+            iconSize="10"
+            href="/dashboard-next/edit/{seoLink}"
+          >
+            Edit
+          </Button>
+        {:else}
+          <Button
+            variant="fill"
+            loading={false}
+            href={seoLink ? `/dashboard-next/${seoLink}` : undefined}
+          >
+            Preview
+          </Button>
 
-        <Button variant="border" icon="refresh" iconSize="10">Update</Button>
+          <Button variant="border" icon="refresh" iconSize="10" onclick={onDataUpdateClick}>
+            Update
+          </Button>
+        {/if}
       {/if}
     {:else}
-      <Button variant="fill" onclick={id ? onShareClick : null}>Share</Button>
+      <Button variant="fill" onclick={onShareClick}>Share</Button>
     {/if}
   </div>
 
   <div class="ml-4 flex gap-2">
     {#if dashboard.isCurrentUserAuthor}
-      <Button icon="share-dots" explanation="Share"></Button>
-
-      <Button icon="copy" explanation="Duplicate"></Button>
+      <Button icon="share-dots" explanation="Share" onclick={onShareClick}></Button>
 
       {#if id}
+        <Button icon="copy" explanation="Duplicate" onclick={onDuplicateClick}></Button>
+
         <Popover side="bottom" align="end">
           {#snippet children({ ref })}
             <Button {ref} icon="vert-dots" />
@@ -98,7 +115,7 @@
         </Popover>
       {/if}
     {:else if currentUser.$$}
-      <Button icon="copy" explanation="Duplicate"></Button>
+      <Button icon="copy" explanation="Duplicate" onclick={onDuplicateClick}></Button>
     {/if}
   </div>
 </header>
