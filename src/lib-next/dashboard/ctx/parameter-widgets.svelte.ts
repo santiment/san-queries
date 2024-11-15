@@ -247,6 +247,6 @@ export function serializeParameterWidget(
 
       return acc
     }, {} as any),
-    settings: $state.snapshot(settings.$$),
+    settings: settings && $state.snapshot(settings.$$),
   }
 }

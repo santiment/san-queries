@@ -117,7 +117,7 @@
     "rxjs-exhaustmap-with-trailing": "^2.1.1",
     "san-studio": "github:santiment/san-studio#52a167b",
     "san-webkit": "github:santiment/san-webkit#2b179d6a",
-    "san-webkit-next": "github:santiment/san-webkit#lib-d6ccc088-131124",
+    "san-webkit-next": "github:santiment/san-webkit#lib-5545bba0-151124",
     "svelte-runes": "^0.0.6",
     "tailwind-merge": "^2.2.1",
     "tippy.js": "^6.3.7",

@@ -158,8 +158,8 @@ dependencies:
     specifier: github:santiment/san-webkit#2b179d6a
     version: github.com/santiment/san-webkit/2b179d6a(patch_hash=sbifrofulxn6pfdnfgffvc6pra)(@types/gtag.js@0.0.4)(@types/medium-editor@5.0.8)(@types/stripe-v3@3.1.33)(ethers@5.7.2)(marked@6.0.0)(medium-editor@5.23.3)(node-fetch@2.7.0)(react-dom@18.3.1)(react@18.3.1)(svelte@5.1.15)(turndown@7.2.0)
   san-webkit-next:
-    specifier: github:santiment/san-webkit#lib-d6ccc088-131124
-    version: github.com/santiment/san-webkit/32b607e0e5881fc11f8e2a993223283a432b9811(@coinbase/wallet-sdk@4.0.3)(@melt-ui/svelte@0.86.0)(@santiment-network/chart@1.0.2)(@sveltejs/adapter-auto@3.3.1)(@sveltejs/adapter-node@5.2.9)(@sveltejs/kit@2.8.0)(@sveltejs/vite-plugin-svelte@4.0.0)(@types/react@18.3.3)(@wagmi/connectors@5.3.10)(@wagmi/core@2.14.6)(bits-ui@0.21.16)(estree-walker@3.0.3)(graphql@16.9.0)(react-dom@18.3.1)(react@18.3.1)(rxjs@7.8.1)(svelte@5.1.15)(tailwind-merge@2.2.1)(tailwindcss@3.4.1)(typescript@5.6.3)(viem@2.21.45)(vite@5.4.10)(wagmi@2.12.32)
+    specifier: github:santiment/san-webkit#lib-5545bba0-151124
+    version: github.com/santiment/san-webkit/5c2d00b7e2a1bf13502aab2fdae75bd660faea39(@coinbase/wallet-sdk@4.0.3)(@melt-ui/svelte@0.86.0)(@santiment-network/chart@1.0.2)(@sveltejs/adapter-auto@3.3.1)(@sveltejs/adapter-node@5.2.9)(@sveltejs/kit@2.8.0)(@sveltejs/vite-plugin-svelte@4.0.0)(@types/react@18.3.3)(@wagmi/connectors@5.3.10)(@wagmi/core@2.14.6)(bits-ui@0.21.16)(estree-walker@3.0.3)(graphql@16.9.0)(react-dom@18.3.1)(react@18.3.1)(rxjs@7.8.1)(svelte@5.1.15)(tailwind-merge@2.2.1)(tailwindcss@3.4.1)(typescript@5.6.3)(viem@2.21.45)(vite@5.4.10)(wagmi@2.12.32)
   svelte:
     specifier: 5.1.15
     version: 5.1.15
@@ -5482,7 +5482,7 @@ packages:
     dependencies:
       bignumber.js: 9.1.2
       dayjs: 1.11.10
-      viem: 2.21.44(typescript@5.6.3)(zod@3.22.4)
+      viem: 2.21.45(typescript@5.6.3)(zod@3.22.4)
     transitivePeerDependencies:
       - bufferutil
       - typescript
@@ -5495,7 +5495,7 @@ packages:
     dependencies:
       bignumber.js: 9.1.2
       dayjs: 1.11.10
-      viem: 2.21.44(typescript@5.6.3)(zod@3.23.8)
+      viem: 2.21.45(typescript@5.6.3)(zod@3.23.8)
     transitivePeerDependencies:
       - bufferutil
       - typescript
@@ -5510,7 +5510,7 @@ packages:
       '@reown/appkit-wallet': 1.2.0(typescript@5.6.3)
       '@walletconnect/universal-provider': 2.17.0
       valtio: 1.11.2(@types/react@18.3.3)(react@18.3.1)
-      viem: 2.21.44(typescript@5.6.3)(zod@3.23.8)
+      viem: 2.21.45(typescript@5.6.3)(zod@3.23.8)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -5633,7 +5633,7 @@ packages:
       '@walletconnect/logger': 2.1.2
       '@walletconnect/universal-provider': 2.17.0
       valtio: 1.11.2(@types/react@18.3.3)(react@18.3.1)
-      viem: 2.21.44(typescript@5.6.3)(zod@3.23.8)
+      viem: 2.21.45(typescript@5.6.3)(zod@3.23.8)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -5685,7 +5685,7 @@ packages:
       '@walletconnect/universal-provider': 2.17.0
       '@walletconnect/utils': 2.17.0
       valtio: 1.11.2(@types/react@18.3.3)(react@18.3.1)
-      viem: 2.21.44(typescript@5.6.3)(zod@3.23.8)
+      viem: 2.21.45(typescript@5.6.3)(zod@3.23.8)
     transitivePeerDependencies:
       - '@azure/app-configuration'
       - '@azure/cosmos'
@@ -16215,8 +16215,8 @@ packages:
     engines: {node: '>= 0.8'}
     dev: true
 
-  /viem@2.21.44(typescript@5.6.3)(zod@3.22.4):
-    resolution: {integrity: sha512-oyLTCt7OQUetQN2m9KPNgSA//MzpnQLABAyglPKh+fAypU8cTT/hC5UyLQvaYt4WPg6dkbKOxfsahV4739pu9w==}
+  /viem@2.21.45(typescript@5.6.3)(zod@3.22.4):
+    resolution: {integrity: sha512-I+On/IiaObQdhDKWU5Rurh6nf3G7reVkAODG5ECIfjsrGQ3EPJnxirUPT4FNV6bWER5iphoG62/TidwuTSOA1A==}
     peerDependencies:
       typescript: '>=5.0.4'
     peerDependenciesMeta:
@@ -16230,30 +16230,6 @@ packages:
       abitype: 1.0.6(typescript@5.6.3)(zod@3.22.4)
       isows: 1.0.6(ws@8.18.0)
       ox: 0.1.2(typescript@5.6.3)(zod@3.22.4)
-      typescript: 5.6.3
-      webauthn-p256: 0.0.10
-      ws: 8.18.0
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-      - zod
-    dev: false
-
-  /viem@2.21.44(typescript@5.6.3)(zod@3.23.8):
-    resolution: {integrity: sha512-oyLTCt7OQUetQN2m9KPNgSA//MzpnQLABAyglPKh+fAypU8cTT/hC5UyLQvaYt4WPg6dkbKOxfsahV4739pu9w==}
-    peerDependencies:
-      typescript: '>=5.0.4'
-    peerDependenciesMeta:
-      typescript:
-        optional: true
-    dependencies:
-      '@noble/curves': 1.6.0
-      '@noble/hashes': 1.5.0
-      '@scure/bip32': 1.5.0
-      '@scure/bip39': 1.4.0
-      abitype: 1.0.6(typescript@5.6.3)(zod@3.23.8)
-      isows: 1.0.6(ws@8.18.0)
-      ox: 0.1.2(typescript@5.6.3)(zod@3.23.8)
       typescript: 5.6.3
       webauthn-p256: 0.0.10
       ws: 8.18.0
@@ -16932,9 +16908,9 @@ packages:
     dev: false
     patched: true
 
-  github.com/santiment/san-webkit/32b607e0e5881fc11f8e2a993223283a432b9811(@coinbase/wallet-sdk@4.0.3)(@melt-ui/svelte@0.86.0)(@santiment-network/chart@1.0.2)(@sveltejs/adapter-auto@3.3.1)(@sveltejs/adapter-node@5.2.9)(@sveltejs/kit@2.8.0)(@sveltejs/vite-plugin-svelte@4.0.0)(@types/react@18.3.3)(@wagmi/connectors@5.3.10)(@wagmi/core@2.14.6)(bits-ui@0.21.16)(estree-walker@3.0.3)(graphql@16.9.0)(react-dom@18.3.1)(react@18.3.1)(rxjs@7.8.1)(svelte@5.1.15)(tailwind-merge@2.2.1)(tailwindcss@3.4.1)(typescript@5.6.3)(viem@2.21.45)(vite@5.4.10)(wagmi@2.12.32):
-    resolution: {tarball: https://codeload.github.com/santiment/san-webkit/tar.gz/32b607e0e5881fc11f8e2a993223283a432b9811}
-    id: github.com/santiment/san-webkit/32b607e0e5881fc11f8e2a993223283a432b9811
+  github.com/santiment/san-webkit/5c2d00b7e2a1bf13502aab2fdae75bd660faea39(@coinbase/wallet-sdk@4.0.3)(@melt-ui/svelte@0.86.0)(@santiment-network/chart@1.0.2)(@sveltejs/adapter-auto@3.3.1)(@sveltejs/adapter-node@5.2.9)(@sveltejs/kit@2.8.0)(@sveltejs/vite-plugin-svelte@4.0.0)(@types/react@18.3.3)(@wagmi/connectors@5.3.10)(@wagmi/core@2.14.6)(bits-ui@0.21.16)(estree-walker@3.0.3)(graphql@16.9.0)(react-dom@18.3.1)(react@18.3.1)(rxjs@7.8.1)(svelte@5.1.15)(tailwind-merge@2.2.1)(tailwindcss@3.4.1)(typescript@5.6.3)(viem@2.21.45)(vite@5.4.10)(wagmi@2.12.32):
+    resolution: {tarball: https://codeload.github.com/santiment/san-webkit/tar.gz/5c2d00b7e2a1bf13502aab2fdae75bd660faea39}
+    id: github.com/santiment/san-webkit/5c2d00b7e2a1bf13502aab2fdae75bd660faea39
     name: san-webkit-next
     version: 0.0.1
     hasBin: true

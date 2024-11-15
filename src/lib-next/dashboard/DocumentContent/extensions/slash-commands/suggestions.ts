@@ -60,6 +60,13 @@ export const COMMANDS = [
   },
 
   {
+    title: 'Date calendar field',
+    command: ({ editor, range }) => {
+      editor.chain().focus().deleteRange(range).addDateCalendarFieldWidget().run()
+    },
+  },
+
+  {
     title: 'Hidden block',
     command: ({ editor, range }) => {
       editor.chain().focus().deleteRange(range).addHiddenBlock().run()

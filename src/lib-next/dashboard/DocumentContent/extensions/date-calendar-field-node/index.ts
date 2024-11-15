@@ -1,20 +1,20 @@
 import { Node } from '@tiptap/core'
-import { TEXT_INPUT_FIELD_NODE } from './schema'
+import { DATE_CALENDAR_FIELD_NODE } from './schema'
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
-    textInputField: {
+    dateCalendarField: {
       /**
        * Add asset selector widget
-       * @example editor.commands.addInputFieldWidget()
+       * @example editor.commands.addDateCalendarFieldWidget()
        */
-      addInputFieldWidget: () => ReturnType
+      addDateCalendarFieldWidget: () => ReturnType
     }
   }
 }
 
 export default Node.create({
-  ...TEXT_INPUT_FIELD_NODE,
+  ...DATE_CALENDAR_FIELD_NODE,
 
   priority: 101,
 
@@ -28,7 +28,7 @@ export default Node.create({
 
   addCommands() {
     return {
-      addInputFieldWidget:
+      addDateCalendarFieldWidget:
         (value?: string) =>
         ({ chain }) => {
           const id = ''
@@ -53,4 +53,4 @@ export default Node.create({
   parseHTML() {
     return [{ tag: `div[data-type="${this.name}"]` }]
   },
-}) as Node & { __schema: typeof TEXT_INPUT_FIELD_NODE }
+}) as Node & { __schema: typeof DATE_CALENDAR_FIELD_NODE }

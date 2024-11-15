@@ -36,7 +36,7 @@
 </script>
 
 <button
-  class="flex cursor-pointer gap-1 whitespace-nowrap rounded border px-1.5 center hover:border-green"
+  class="ml-0.5 flex cursor-pointer gap-1 whitespace-nowrap rounded border px-1.5 center hover:border-green"
   onclick={onAssetSelectorClick}
 >
   <AssetLogo slug={asset.slug || ''}></AssetLogo>
