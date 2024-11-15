@@ -1,6 +1,6 @@
 <script lang="ts">
+  import { BROWSER } from 'esm-env'
   import Button from 'san-webkit-next/ui/core/Button'
-  import Comments from 'san-webkit/lib/ui/Comments/svelte'
   import { CommentsType } from 'san-webkit/lib/api/comments'
   import { useCustomerCtx } from 'san-webkit-next/ctx/customer'
   import type { TAuthor } from '../types'
@@ -18,6 +18,8 @@
   function onNewComment(_: any, comments: any[]) {
     count = comments.length
   }
+
+  const AsyncComments = BROWSER ? import('san-webkit/lib/ui/Comments/svelte') : null
 </script>
 
 <Button
@@ -35,12 +37,16 @@
     <div class="clickaway" onclick={() => (isOpened = false)}></div>
 
     <main class="mrg-a mrg--l column">
-      <Comments
-        type={CommentsType.Dashboard}
-        commentsFor={commentsFor as any}
-        currentUser={currentUser.$$ as any}
-        {onNewComment}
-      />
+      {#if AsyncComments}
+        {#await AsyncComments then { default: Comments }}
+          <Comments
+            type={CommentsType.Dashboard}
+            commentsFor={commentsFor as any}
+            currentUser={currentUser.$$ as any}
+            {onNewComment}
+          />
+        {/await}
+      {/if}
     </main>
   </div>
 {/if}
