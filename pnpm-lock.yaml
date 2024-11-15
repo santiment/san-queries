@@ -133,6 +133,9 @@ dependencies:
   lucide-svelte:
     specifier: ^0.395.0
     version: 0.395.0(svelte@5.1.15)
+  magic-string:
+    specifier: ^0.30.8
+    version: 0.30.8
   monaco-editor:
     specifier: ^0.47.0
     version: 0.47.0
@@ -267,9 +270,6 @@ devDependencies:
   estree-walker:
     specifier: ^3.0.3
     version: 3.0.3
-  magic-string:
-    specifier: ^0.30.8
-    version: 0.30.8
   postcss:
     specifier: ^8.4.35
     version: 8.4.35
