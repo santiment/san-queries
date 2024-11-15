@@ -15,33 +15,23 @@ import {
   toArray,
 } from 'rxjs'
 
-import { notifications$ } from 'san-webkit/lib/ui/Notifications'
-import { getSEOLinkFromIdAndTitle } from 'san-webkit/lib/utils/url'
-
+import { useObserveFnCall } from 'san-webkit-next/utils'
+import { notification } from 'san-webkit-next/ui/core/Notifications'
+import { getSEOLinkFromIdAndTitle } from 'san-webkit-next/utils/url'
 import { goto } from '$app/navigation'
-import { useSaveIndicatorCtx } from '$lib/SaveIndicator/index.svelte'
-import { useObserveFnCall } from '$lib/ui/utils/state.svelte'
-import { mutateCreateDashboard, mutateUpdateDashboard } from '$lib-next/dashboard/api/save'
-import { mutateAddDashboardGlobalParameter } from '$lib/Dashboard/GlobalParameters/api'
-import { createAddGlobalParameterOverrides$ } from '$lib/Dashboard/GlobalParameters/flow'
-import { mutateAddDashboardTextWidget, mutateCreateDashboardQuery } from '../widgets/api'
+import { useSaveIndicatorCtx } from '$lib/SaveIndicator'
+import { mutateCreateDashboard, mutateUpdateDashboard } from '../api/save'
 import { useEditorSidebarCtx } from '$lib/EditorSidebar/ctx'
-import { mutateStoreDashboardQueryExecution } from '../sqlData/api'
 import { compressData } from '$lib/utils/compress'
-import {
-  useDashboardSerializeFlow,
-  type TSerializedDashboard,
-} from '$lib-next/dashboard/flow/save.svelte'
-import { useDashboardSqlQueriesCtx } from '$lib-next/dashboard/ctx/dashboard-queries.svelte'
+import { useDashboardSerializeFlow, type TSerializedDashboard } from './save.svelte'
+import { useDashboardSqlQueriesCtx } from '../ctx/dashboard-queries.svelte'
+import { mutateCreateDashboardQuery } from '../sql-query/api'
+import { mutateStoreDashboardQueryExecution } from '../sql-query/api/cache'
+import type { TDashboardKey, TDataWidgetKey } from '../types'
 
 function substituteDashboard(dashboardEditor: TSerializedDashboard) {
   let stringified = JSON.stringify({
     settings: dashboardEditor.settings,
-    parameters: [],
-    // parameters: dashboardEditor.parameters.map((parameter) => ({
-    //   ...parameter,
-    //   overrides: Array.from(parameter.overrides),
-    // })),
   })
 
   const alias = {} as Record<string, undefined | string>
@@ -63,12 +53,6 @@ function substituteDashboard(dashboardEditor: TSerializedDashboard) {
     getSettings() {
       return JSON.parse(stringified).settings as TSerializedDashboard['settings']
     },
-
-    getParameters() {
-      return []
-      // type Parameter = App.DashboardEditor['parameters'][number]
-      // return JSON.parse(stringified).parameters as (Parameter & { overrides: [string, string][] })[]
-    },
   }
 }
 
@@ -78,9 +62,9 @@ export function useDashboardDuplicateFlow() {
   const { serializeDashboard } = useDashboardSerializeFlow()
   const { sqlQueryCachedData } = useDashboardSqlQueriesCtx.get()
 
-  const onDuplicateClick = useObserveFnCall(() => {
+  const duplicateDashboard = useObserveFnCall(() => {
     const createDuplicateQueries$ = (
-      dashboardId: number,
+      dashboardId: TDashboardKey,
       sqlQuries: TSerializedDashboard['sqlQueries'],
     ) =>
       forkJoin(
@@ -113,34 +97,13 @@ export function useDashboardDuplicateFlow() {
               mutateUpdateDashboard()({ id: dashboardId, settings: substituted.getSettings() }),
             ),
 
-            // mergeMap(() =>
-            //   forkJoin(
-            //     dashboardEditor.parameters.map(({ key, value }) =>
-            //       mutateAddDashboardGlobalParameter()({
-            //         dashboardId,
-            //         key,
-            //         value: { [Array.isArray(value) ? 'stringList' : 'string']: value },
-            //       }),
-            //     ),
-            //   ),
-            // ),
-            // mergeMap(() =>
-            //   from(substituted.getParameters()).pipe(
-            //     map(({ key, overrides }) =>
-            //       createAddGlobalParameterOverrides$(dashboardId, key, overrides),
-            //     ),
-            //     concatAll(),
-            //     toArray(),
-            //   ),
-            // ),
-
             mergeMap(() =>
               from(
-                Array.from(sqlQueryCachedData).map(([key, data]) => ({
+                Array.from(sqlQueryCachedData).map(([_key, data]) => ({
                   ...data,
                   dashboardQueryMappingId: substituted.getNewWidgetId(
                     data!.dashboardQueryMappingId,
-                  )!,
+                  ) as TDataWidgetKey,
                 })),
               ).pipe(
                 mergeMap((data) =>
@@ -169,13 +132,7 @@ export function useDashboardDuplicateFlow() {
         delay(1000),
         tap(() => saveIndicatorCtx.emit.success()),
         tap(({ id, name }) => goto('/dashboard-next/' + getSEOLinkFromIdAndTitle(id, name))),
-        tap(() =>
-          notifications$.show({
-            type: 'success',
-            title: 'Dashboard duplicated!',
-            dismissAfter: 5000,
-          }),
-        ),
+        tap(() => notification.success('Dashboard duplicated!')),
         tap(() => editorSidebarCtx.emit.refreshDashboards()),
 
         catchError((e) =>
@@ -188,5 +145,5 @@ export function useDashboardDuplicateFlow() {
     })
   })
 
-  return { onDuplicateClick }
+  return { duplicateDashboard }
 }

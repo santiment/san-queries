@@ -1,3 +1,4 @@
+import type { TDashboardKey, TDataWidgetKey } from '$lib-next/dashboard/types'
 import { ApiQuery } from 'san-webkit-next/api'
 
 export type TDashboardSqlData = App.SqlData & {
@@ -6,7 +7,7 @@ export type TDashboardSqlData = App.SqlData & {
 }
 
 export const queryGetCachedDashboardQueriesExecutions = ApiQuery(
-  (dashboardId: number) =>
+  (dashboardId: TDashboardKey) =>
     `{
     data:getCachedDashboardQueriesExecutions(dashboardId:${dashboardId}) {
       queries{
@@ -34,8 +35,8 @@ export const queryGetCachedDashboardQueriesExecutions = ApiQuery(
 export const mutateStoreDashboardQueryExecution = ApiQuery(
   (variables: {
     compressedData: string
-    dashboardId: number
-    dashboardQueryMappingId: string
+    dashboardId: TDashboardKey
+    dashboardQueryMappingId: TDataWidgetKey
   }) => ({
     schema: `mutation ($compressedData: String!, $dashboardId: Int!, $dashboardQueryMappingId: String!) {
     dashboard:storeDashboardQueryExecution(compressedQueryExecutionResult: $compressedData, dashboardId:$dashboardId, dashboardQueryMappingId:$dashboardQueryMappingId) {
@@ -47,7 +48,11 @@ export const mutateStoreDashboardQueryExecution = ApiQuery(
 )
 
 export const queryRunDashboardSqlQuery = ApiQuery(
-  (dashboardId: number, dashboardQueryMappingId: string, parameterOverrides?: string) => ({
+  (
+    dashboardId: TDashboardKey,
+    dashboardQueryMappingId: TDataWidgetKey,
+    parameterOverrides?: string,
+  ) => ({
     schema: `query($parameterOverrides:json){
     data:runDashboardSqlQuery(dashboardId:${dashboardId}, dashboardQueryMappingId:"${dashboardQueryMappingId}", parametersOverride:$parameterOverrides) {
         rows

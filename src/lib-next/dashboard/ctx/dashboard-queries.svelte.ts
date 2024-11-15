@@ -1,5 +1,5 @@
 import type { TApiDashboard, TDataWidgetKey } from '$lib-next/dashboard/types'
-import type { TDashboardSqlData } from '$lib/Dashboard/flow/sqlData/api'
+import type { TDashboardSqlData } from '../sql-query/api/cache'
 
 import { ss } from 'svelte-runes'
 import { createCtx } from 'san-webkit-next/utils'
@@ -15,7 +15,7 @@ export const useDashboardSqlQueriesCtx = createCtx(
       new Map(dashboardSqlQueries.$.map((item) => [item.dashboardQueryMappingId, item])),
     )
 
-    const sqlQueryCachedData = new Map<string, undefined | App.SqlData>(
+    const sqlQueryCachedData = new Map<string, undefined | TDashboardSqlData>(
       (cache || []).map((item) => [item.dashboardQueryMappingId, item] as const),
     )
 
