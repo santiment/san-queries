@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { SS } from 'svelte-runes'
 
-  import Metric from '$lib/Dashboard/Widgets/l__Chart/Metric.svelte'
+  import Metric from '$lib/l__Chart/Metric.svelte'
   import Chart from '$lib/l__Chart/index.svelte'
   import { useChartVisualizationCtx } from './ctx.svelte'
 

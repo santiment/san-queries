@@ -5,24 +5,23 @@
   import { goto } from '$app/navigation'
   import { mutateVerifyEmail } from './api'
   import { BROWSER } from 'esm-env'
+  import { useCustomerCtx } from 'san-webkit-next/ctx/customer'
   // import { tick } from 'svelte'
   // import { trackSignupLogin } from '$lib/utils/analytics'
   // import PageLoader from '$lib/PageLoader.svelte'
 
   export let data: import('./$types').PageData
 
-  const { currentUser$ } = getCurrentUser$Ctx()
-  const { customer$ } = getCustomer$Ctx()
+  const { customer } = useCustomerCtx()
 
   if (BROWSER) {
     const { email, token, successRedirect } = data
 
     mutateVerifyEmail(email as string, token as string)
       .then((currentUser) => {
-        currentUser$.set(currentUser)
-        customer$.refetch()
-
-        goto(successRedirect)
+        customer.reload().then(() => {
+          goto(successRedirect)
+        })
 
         // trackSignupLogin(currentUser.firstLogin, LoginType.EMAIL)
       })

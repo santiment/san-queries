@@ -1,32 +1,13 @@
 <script lang="ts">
-  import { tick } from 'svelte'
-  import { goto } from '$app/navigation'
   import Product from 'san-webkit/lib/ui/Product.svelte'
   // import AccountStatus from 'san-webkit/lib/ui/AccountStatus.svelte'
   // import AccountDropdown from 'san-webkit/lib/ui/AccountDropdown/index.svelte'
   import AccountDropdown from 'san-webkit-next/ui/app/AccountDropdown'
   import AccountStatus from 'san-webkit-next/ui/app/AccountStatus'
   import Products from 'san-webkit/lib/ui/Products/svelte'
-  import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
-  import { getCustomer$Ctx } from 'san-webkit/lib/stores/customer'
-  import { startLogoutFlow } from '$lib/flow/logout'
   import Tooltip from '../Tooltip'
   import { cn } from '../utils'
   import Button from '../Button.svelte'
-
-  const { currentUser$ } = getCurrentUser$Ctx()
-  const { customer$ } = getCustomer$Ctx()
-
-  // $: currentUser = $currentUser$
-  let currentUser = $currentUser$
-
-  function onLogoutClick() {
-    startLogoutFlow(currentUser$, customer$)
-
-    tick().then(() => {
-      goto('/login')
-    })
-  }
 </script>
 
 <header class="border-b bg-white px-6 py-4">
@@ -42,7 +23,7 @@
     />
 
     <Button href="https://santiment.net/discord" variant="ghost" icon="discord">Community</Button>
-    <Button href="/explorer" variant="ghost" icon="fire-filled">Explorer</Button>
+    <Button href="/explorer" variant="ghost" icon="fire-filled" class="fill-green">Explorer</Button>
 
     <Tooltip class="p-2">
       {#snippet children({ trigger, trigger$, isOpened })}

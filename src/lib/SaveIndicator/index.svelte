@@ -1,8 +1,9 @@
-<script context="module" lang="ts">
-  import { Emitter, createCtx } from '$lib/ctx'
+<script module lang="ts">
+  import { createCtx } from 'san-webkit-next/utils'
+  import { Emitter } from '$lib/ctx'
 
-  export const useSaveIndicatorCtx = createCtx('useSaveIndicatorCtx', () => {
-    const subject = new Subject<EventType>()
+  export const useSaveIndicatorCtx = createCtx('queries_useSaveIndicatorCtx', () => {
+    const subject = new ReplaySubject<EventType>(1)
     const emit = (event: Exclude<EventType, EventType.Hidden>) => subject.next(event)
 
     const hideAfter = (ms: number) => of(EventType.Hidden).pipe(delay(ms))
@@ -23,15 +24,13 @@
             : merge(of(v), hideAfter(3000)),
         ),
         startWith(EventType.Hidden),
-        share(),
       ),
     }
   })
 </script>
 
 <script lang="ts">
-  import { Subject, concat, delay, merge, of, share, startWith, switchMap } from 'rxjs'
-  import { useObservable } from 'svelte-runes'
+  import { ReplaySubject, concat, delay, merge, of, startWith, switchMap } from 'rxjs'
   import { fade, scale, fly } from 'svelte/transition'
   import Svg from 'san-webkit-next/ui/core/Svg'
   import { cn } from 'san-webkit-next/ui/utils'
@@ -39,8 +38,7 @@
 
   const { state$ } = useSaveIndicatorCtx()
 
-  let _state = useObservable(state$)
-  let state = $derived(_state.$)
+  let state = $derived($state$)
 </script>
 
 {#if state !== EventType.Hidden}

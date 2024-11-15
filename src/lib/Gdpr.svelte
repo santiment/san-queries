@@ -1,32 +1,22 @@
 <script lang="ts">
-  import { getCustomer$Ctx } from 'san-webkit/lib/stores/customer'
   import Gdpr from 'san-webkit/lib/ui/LoginPrompt/Gdpr.svelte'
-  import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
   import { page } from '$app/stores'
   import { goto } from '$app/navigation'
+  import { useCustomerCtx } from 'san-webkit-next/ctx/customer'
 
-  const { currentUser$ } = getCurrentUser$Ctx()
-  const { customer$ } = getCustomer$Ctx()
-
-  $: currentUser = $currentUser$ as App.CurrentUser | null
+  const { currentUser, customer } = useCustomerCtx()
 
   function onAccept(username: string) {
-    const currentUser = $currentUser$
-    if (currentUser) {
-      currentUser.username = username
-      currentUser$.set(currentUser)
-    }
-
-    customer$.refetch()
+    customer.reload()
     goto('/')
   }
 </script>
 
-{#if !currentUser || currentUser?.privacyPolicyAccepted || $page.url.pathname === '/privacy-policy'}
+{#if !currentUser.$$ || currentUser.$$?.privacyPolicyAccepted || $page.url.pathname === '/privacy-policy'}
   <slot />
 {:else}
-  <gdpr class="row hv-center">
-    <Gdpr currentUser={$currentUser$} {onAccept} />
+  <gdpr class="hv-center row">
+    <Gdpr currentUser={currentUser.$$} {onAccept} />
   </gdpr>
 {/if}
 

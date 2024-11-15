@@ -1,0 +1,50 @@
+diff --git a/src/exports/vite/index.js b/src/exports/vite/index.js
+index 40fa4c6edb56f4e4ead02a87d1a9b6e6bee5180e..532e3a793abf8262b535f068604812e4387c20d6 100644
+--- a/src/exports/vite/index.js
++++ b/src/exports/vite/index.js
+@@ -583,6 +583,7 @@ async function kit({ svelte_config }) {
+ 			if (is_build) {
+ 				const ssr = /** @type {boolean} */ (config.build?.ssr);
+ 				const prefix = `${kit.appDir}/immutable`;
++        Object.assign(config.define, ssr ? config.serverDefines : config.clientDefines)
+ 
+ 				/** @type {Record<string, string>} */
+ 				const input = {};
+diff --git a/src/runtime/server/fetch.js b/src/runtime/server/fetch.js
+index 417b59c93063ab284f6f46515f00d19dcb9c70da..d4dc81b9f535efa725dd56aaa2068733e9264b2e 100644
+--- a/src/runtime/server/fetch.js
++++ b/src/runtime/server/fetch.js
+@@ -65,7 +65,7 @@ export function create_fetch({ event, options, manifest, state, get_cookie_heade
+ 					// leading dot prevents mydomain.com matching domain.com
+ 					// Do not forward other cookies for "credentials: include" because we don't know
+ 					// which cookie belongs to which domain (browser does not pass this info)
+-					if (`.${url.hostname}`.endsWith(`.${event.url.hostname}`) && credentials !== 'omit') {
++					if ((url.hostname.includes(process.env.CORS_HOSTNAME) || `.${url.hostname}`.endsWith(`.${event.url.hostname}`)) && credentials !== 'omit') {
+ 						const cookie = get_cookie_header(url, request.headers.get('cookie'));
+ 						if (cookie) request.headers.set('cookie', cookie);
+ 					}
+diff --git a/src/runtime/server/page/load_data.js b/src/runtime/server/page/load_data.js
+index e2af144654e67c65be5f62503e33f2f09237b76f..a8248e7bd8f2fae9cc66112cbdff1fd7a5fa496a 100644
+--- a/src/runtime/server/page/load_data.js
++++ b/src/runtime/server/page/load_data.js
+@@ -190,6 +190,9 @@ export async function load_data({
+ 	}
+ 
+ 	const result = await node.universal.load.call(null, {
++       		request: event.request,
++          getClientAddress: event.getClientAddress,
++          
+ 		url: event.url,
+ 		params: event.params,
+ 		data: server_data_node?.data ?? null,
+@@ -232,7 +235,9 @@ export function create_universal_fetch(event, state, fetched, csr, resolve_opts)
+ 		let response = await event.fetch(input, init);
+ 
+ 		const url = new URL(input instanceof Request ? input.url : input, event.url);
+-		const same_origin = url.origin === event.url.origin;
++		const same_domain = url.hostname.includes(process.env.CORS_HOSTNAME);
++const same_origin = same_domain || url.origin === event.url.origin;
++        
+ 
+ 		/** @type {import('types').PrerenderDependency} */
+ 		let dependency;

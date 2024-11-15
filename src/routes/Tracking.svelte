@@ -2,27 +2,25 @@
   import type { CurrentUserType } from 'san-webkit/lib/stores/user'
 
   import { BROWSER } from 'esm-env'
-  import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
   import { updateAmplitude } from 'san-webkit/lib/analytics/amplitude'
   import { startLinksListener } from 'san-webkit/lib/analytics/links'
   import { trackPageView } from 'san-webkit/lib/analytics/events/general'
   import { parseAuthSearchParams } from 'san-webkit/lib/utils/auth'
   import { page } from '$app/stores'
   import { getPageType, trackSignupLogin } from '$lib/utils/analytics'
+  import { useCustomerCtx } from 'san-webkit-next/ctx/customer'
 
-  const { currentUser$ } = getCurrentUser$Ctx()
+  const { currentUser } = useCustomerCtx()
 
   let source = ''
   let sourceSearchParams = ''
 
   if (BROWSER) {
     startLinksListener()
-    currentUser$.subscribe(setupAmplitude)
     page.subscribe(({ url }) => trackPageChange(url))
 
     setTimeout(() => {
-      const currentUser = $currentUser$
-      trackAuth(currentUser)
+      trackAuth(currentUser.$$)
     }, 1000)
   }
 

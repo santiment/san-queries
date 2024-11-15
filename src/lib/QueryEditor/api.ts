@@ -1,4 +1,4 @@
-import { Fetcher } from '$lib/api'
+import { ApiQuery } from 'san-webkit-next/api'
 
 export const QUERY_FRAGMENT = `id
       name
@@ -16,7 +16,7 @@ export type TRawSqlData = App.SqlData & {
   clickhouseQueryId: string
   queryId?: number | string
 }
-export const queryRunRawSqlQuery = Fetcher(
+export const queryRunRawSqlQuery = ApiQuery(
   (variables: { sql: string; parameters?: null | Record<string, any> }) => ({
     schema: `query($sql: String!, $parameters: json!="{}") {
     data:runRawSqlQuery(sqlQueryText: $sql, sqlQueryParameters: $parameters) {
@@ -39,7 +39,7 @@ export const queryRunRawSqlQuery = Fetcher(
   (gql: { data: TRawSqlData }) => gql.data,
 )
 
-export const queryGetCachedQueryExecutions = Fetcher(
+export const queryGetCachedQueryExecutions = ApiQuery(
   (queryId: number) =>
     `{
       data:getCachedQueryExecutions(queryId:${queryId}) {
@@ -80,7 +80,7 @@ export const queryGetCachedQueryExecutions = Fetcher(
   },
 )
 
-export const mutateCreateSqlQuery = Fetcher(
+export const mutateCreateSqlQuery = ApiQuery(
   (variables: {
     name: string
     description?: null | string
@@ -117,12 +117,12 @@ export function serializeParameters(parameters: { key: string; value: unknown }[
   return JSON.stringify(shareParameters(parameters))
 }
 
-export const mutateDeleteSqlQuery = Fetcher(
+export const mutateDeleteSqlQuery = ApiQuery(
   (queryId: number) => `mutation { deleteSqlQuery(id:${queryId}) { id } }`,
   (gql: { deleteSqlQuery: { id: number } }) => gql.deleteSqlQuery,
 )
 
-export const mutateUpdateSqlQuery = Fetcher(
+export const mutateUpdateSqlQuery = ApiQuery(
   (
     variables: { id: number } & Partial<{
       name: string

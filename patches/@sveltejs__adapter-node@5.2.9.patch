@@ -1,0 +1,12 @@
+diff --git a/files/handler.js b/files/handler.js
+index 4920764589c1a714ae5c11fdec2be0281e96af43..e9eaa95dd8f6fb79ec99d96702ae354c9e89bb57 100644
+--- a/files/handler.js
++++ b/files/handler.js
+@@ -1213,6 +1213,7 @@ function serve(path, client = false) {
+ 					// only apply to build directory, not e.g. version.json
+ 					if (pathname.startsWith(`/${manifest.appPath}/immutable/`) && res.statusCode === 200) {
+ 						res.setHeader('cache-control', 'public,max-age=31536000,immutable');
++        if(pathname.endsWith('.woff2')) res.setHeader('Access-Control-Allow-Origin', '*')
+ 					}
+ 				})
+ 		})

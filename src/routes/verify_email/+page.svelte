@@ -1,13 +1,13 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
   import { BROWSER } from 'esm-env'
+  import { useCustomerCtx } from 'san-webkit-next/ctx/customer'
   import { mutate } from 'san-webkit/lib/api'
-  import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
   import { notifications$ } from 'san-webkit/lib/ui/Notifications'
 
   export let data: import('./$types').PageData
 
-  const { currentUser$ } = getCurrentUser$Ctx()
+  const { currentUser } = useCustomerCtx()
 
   if (BROWSER) {
     const { emailCandidate, token } = data
@@ -24,11 +24,10 @@
       { variables: { emailCandidate, token } },
     )
       .then(({ emailChangeVerify }) => {
-        const currentUser = $currentUser$
         const { user } = emailChangeVerify as any
 
-        if (currentUser && user?.email) {
-          currentUser.email = user?.email
+        if (currentUser.$$ && user?.email) {
+          currentUser.$$.email = user?.email
         }
 
         return notifications$.show({

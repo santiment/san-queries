@@ -20,7 +20,7 @@
   )}
 >
   <Svg id={item.type} w="12"></Svg>
-  <a {href} class="link-as-bg single-line flex-1">
+  <a {href} class="flex-1 single-line link-as-bg">
     {item.name}
   </a>
 

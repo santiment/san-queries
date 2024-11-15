@@ -1,44 +1,17 @@
 import { redirect } from '@sveltejs/kit'
-import { getIdFromSEOLink } from 'san-webkit/lib/utils/url'
-import { BootFlag } from 'san-webkit-next/utils'
-import { UniQuery } from 'san-webkit-next/api/executor.js'
-import { queryGetCachedDashboardQueriesExecutions } from '$lib/Dashboard/flow/sqlData/api'
-import { queryGetDashboard } from './api'
-import { gotoDashboardPage } from './utils'
+import { loadPageDashboard } from '../utils.js'
 
-export const ssr = false
+export async function load(event) {
+  // const { session } = await event.parent()
+  // const { customer } = session
 
-async function queryServerDashboardCache(
-  executor: ReturnType<typeof UniQuery>,
-  dashboardId: number,
-) {
-  if (BootFlag.get()) {
-    return null
-  }
+  const { slug = 'new' } = event.params
 
-  return await queryGetCachedDashboardQueriesExecutions(executor)(dashboardId).catch(() => null)
-}
-
-export const load = async (event) => {
-  const { slug = '' } = event.params
-
-  const dashboardId = getIdFromSEOLink(slug)
-
-  if (Number.isInteger(dashboardId) === false) {
+  if (slug === 'new') {
     throw redirect(302, '/dashboard/edit/new')
   }
 
-  const executor = UniQuery(event.fetch)
-
-  // const preloaded = gotoDashboardPage.get()
-  const [apiDashboard, serverDashboardCache] = await Promise.all([
-    queryGetDashboard(executor)(dashboardId).catch((e) => {
-      console.error(e)
-      return null
-    }),
-
-    queryServerDashboardCache(executor, dashboardId),
-  ])
+  const [apiDashboard, dashboardDataCache] = await loadPageDashboard(event)
 
   if (!apiDashboard) {
     throw redirect(302, '/dashboard/edit/new')
@@ -46,6 +19,6 @@ export const load = async (event) => {
 
   return {
     apiDashboard,
-    serverDashboardCache,
+    dashboardDataCache,
   }
 }
