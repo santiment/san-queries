@@ -15,7 +15,9 @@ type TSchema = {
 
   initOutputs(defaultOutputValues?: Partial<{ slug: string }>): { slug: string }
 
-  initSettings(defaultSettings?: Partial<{ test: number }>): { test: number }
+  initSettings(defaultSettings?: Partial<{ slugsByText: string[] }>): {
+    slugsByText: undefined | string[]
+  }
 }
 
 export const ASSET_SELECTOR_NODE: TParameterWidgetNode<TSchema> = createParameterWidgetSchema({
@@ -32,6 +34,6 @@ export const ASSET_SELECTOR_NODE: TParameterWidgetNode<TSchema> = createParamete
   },
 
   initSettings(defaultSettings = {}) {
-    return { test: defaultSettings.test || 213 }
+    return { slugsByText: defaultSettings.slugsByText }
   },
 } as const)

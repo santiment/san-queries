@@ -6,30 +6,32 @@
   import AssetLogo from 'san-webkit-next/ui/app/AssetLogo'
   import { useParameterWidgetFlow } from '$lib-next/dashboard/ctx/parameter-widgets.svelte'
   import { showSelectAssetDialog$ } from './SelectAssetDialog.svelte'
+  import { showSettingsDialog$ } from './SettingsDialog.svelte'
   import { useAssetFlow } from '../asset.svelte'
   import NodeSettings from '../../NodeSettings.svelte'
-  import { showLinkParameterDialog$ } from '../../LinkParameterDialog.svelte'
 
   let { view, data }: TParameterWidgetProps<typeof ASSET_SELECTOR_NODE> = $props()
 
   const { getAssetBySlug } = useAssetFlow()
 
   const { globalParameter, update } = useParameterWidgetFlow(view, data.widget)
-  const { outputs } = globalParameter
+  const { outputs, settings } = globalParameter
 
   const showSelectAssetDialog = showSelectAssetDialog$()
-  const showLinkParameterDialog = showLinkParameterDialog$()
+  const showSettingsDialog = showSettingsDialog$()
 
   let asset = $derived(getAssetBySlug(outputs.$$.slug))
 
   function onAssetSelectorClick() {
-    showSelectAssetDialog().then((asset) => {
+    showSelectAssetDialog({
+      slugsByText: settings.$$.slugsByText,
+    }).then((asset) => {
       update('slug', asset.slug)
     })
   }
 
   function onSettingsClick() {
-    showLinkParameterDialog({ globalParameter })
+    showSettingsDialog({ globalParameter })
   }
 </script>
 

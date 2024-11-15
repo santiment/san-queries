@@ -14,7 +14,8 @@
   import Button from 'san-webkit-next/ui/core/Button'
   import { queryAllProjects, type TAsset } from '../api'
 
-  let { Controller }: TDialogProps<TAsset> = $props()
+  type TProps = TDialogProps<TAsset> & { slugsByText?: string[] }
+  let { Controller, slugsByText }: TProps = $props()
 
   let assets = $state.raw<TAsset[]>([])
   let searchTerm = $state('')
@@ -30,7 +31,18 @@
     Controller.close()
   }
 
-  useObserve(() => queryAllProjects()().pipe(tap((data) => (assets = data))))
+  useObserve(() =>
+    queryAllProjects()().pipe(
+      tap((data) => {
+        if (slugsByText?.length) {
+          const slugs = new Set(slugsByText)
+          assets = data.filter((item) => slugs.has(item.slug))
+        } else {
+          assets = data
+        }
+      }),
+    ),
+  )
 </script>
 
 <Dialog class="max-h-[480px] w-[500px] rounded-lg">
