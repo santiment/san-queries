@@ -76,7 +76,10 @@
         </div>
       </div>
     {:else}
-      <UpdatePrompt isOpened={dirtyParametersMap.size > 0}></UpdatePrompt>
+      <UpdatePrompt
+        isOpened={dirtyParametersMap.size > 0}
+        onUpdateClick={() => loadSqlData({ isForced: false })}
+      ></UpdatePrompt>
     {/if}
 
     {#if sqlData}

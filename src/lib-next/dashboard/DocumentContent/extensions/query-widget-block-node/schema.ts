@@ -2,7 +2,6 @@ import type { TApiDashboard, TDataWidgetKey } from '$lib-next/dashboard/types'
 
 import { untrack } from 'svelte'
 import { SvelteMap } from 'svelte/reactivity'
-import { useDashboardDataWidgets } from '$lib-next/dashboard/ctx/data-widgets.svelte'
 import Component from './ui/index.svelte'
 import {
   createDataWidgetSchema,
@@ -16,7 +15,7 @@ export type TColumnActions = SvelteMap<
   undefined | { label: string; onclick: (value: string) => void }
 >
 
-type TSchema = TDataWidgetNode<{
+type TSchema = {
   name: 'query-widget'
 
   Component: TDataWidgetSchema['Component']
@@ -31,6 +30,10 @@ type TSchema = TDataWidgetNode<{
     __columnActions: TColumnActions
   }
 
+  initSettings(defaultSettings?: Partial<{ sqlQueryId: number }>): {
+    sqlQueryId: undefined | number
+  }
+
   initData(
     id: TDataWidgetKey,
     allCtxs: Map<string, any>,
@@ -40,9 +43,9 @@ type TSchema = TDataWidgetNode<{
     inputs: Record<string, any>
     outputs: string[]
   }
-}>
+}
 
-export const QUERY_WIDGET_BLOCK_NODE: TSchema = createDataWidgetSchema({
+export const QUERY_WIDGET_BLOCK_NODE: TDataWidgetNode<TSchema> = createDataWidgetSchema({
   name: 'query-widget',
 
   class: 'my-2 max-h-[1000px] min-h-[208px] column',
@@ -59,6 +62,10 @@ export const QUERY_WIDGET_BLOCK_NODE: TSchema = createDataWidgetSchema({
     }
   },
 
+  initSettings({ sqlQueryId } = {}) {
+    return { sqlQueryId }
+  },
+
   initData(id, allCtxs) {
     const { getDashboardSqlQueryById, sqlQueryCachedData } = useDashboardSqlQueriesCtx.get(allCtxs)
 
@@ -73,13 +80,14 @@ export const QUERY_WIDGET_BLOCK_NODE: TSchema = createDataWidgetSchema({
     }
   },
 
-  create({ id }) {
+  create({ id }, view) {
+    const attrs = view.$.node.attrs
     // TODO: Create a new query using in node selector when ID is missing
     return {
       id: id || ('' as TDataWidgetKey),
       type: this.name,
       data: null,
-      settings: {},
+      settings: { sqlQueryId: attrs.sqlQueryId },
     }
 
     // // return Promise.resolve(data)

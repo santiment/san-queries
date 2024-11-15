@@ -1,8 +1,8 @@
 <script lang="ts">
   import Button from 'san-webkit-next/ui/core/Button'
 
-  type TProps = { isOpened: boolean }
-  let { isOpened = $bindable(false) }: TProps = $props()
+  type TProps = { isOpened: boolean; onUpdateClick: () => void }
+  let { isOpened = $bindable(false), onUpdateClick }: TProps = $props()
 </script>
 
 {#if isOpened}
@@ -13,7 +13,9 @@
       <h3 class="body-2 font-semibold">The query is out-of-date</h3>
       <p class="mb-4 text-xs">Click bellow to update it</p>
 
-      <Button icon="refresh" variant="border" class="self-center">Update query</Button>
+      <Button icon="refresh" variant="border" class="self-center" onclick={onUpdateClick}>
+        Update query
+      </Button>
 
       <Button
         icon="close"

@@ -28,7 +28,7 @@
   import { createStoreDashboardSqlCache$ } from '$lib-next/dashboard/sql-query/flow/cache'
 
   type TProps = TDialogProps<TApiDashboardSqlQuery> & {
-    onComplete: (dashboardQueryMappingId: TDataWidgetKey) => void
+    onComplete: (dashboardQueryMappingId: TDataWidgetKey, sqlQueryId: number) => void
   }
 
   let { Controller, onComplete }: TProps = $props()
@@ -93,7 +93,7 @@
 
     // createDashboardDataWidget(apiSqlQuery, QUERY_WIDGET_BLOCK_NODE)
     loadSqlQueryCache(apiSqlQuery.id, apiSqlQuery.dashboardQueryMappingId).then((cache) => {
-      onComplete(apiSqlQuery.dashboardQueryMappingId)
+      onComplete(apiSqlQuery.dashboardQueryMappingId, apiSqlQuery.id)
 
       if (cache) {
         createStoreDashboardSqlCache$(dashboard.apiDashboard!.id, cache).pipe(take(1)).subscribe()

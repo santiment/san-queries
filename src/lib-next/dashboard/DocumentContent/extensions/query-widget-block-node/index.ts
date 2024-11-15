@@ -8,7 +8,7 @@ declare module '@tiptap/core' {
        * Add query block
        * @example editor.commands.addQueryWidget("")
        */
-      addQueryWidget: (dashboardQueryMappingId: string) => ReturnType
+      addQueryWidget: (dashboardQueryMappingId: string, sqlQueryId: number) => ReturnType
     }
   }
 }
@@ -24,11 +24,11 @@ export default Node.create({
   addCommands() {
     return {
       addQueryWidget:
-        (id: string) =>
+        (id: string, sqlQueryId: number) =>
         ({ chain }) => {
           return chain()
             .focus()
-            .insertContent({ type: this.name, attrs: { 'data-id': id } })
+            .insertContent({ type: this.name, attrs: { 'data-id': id, sqlQueryId } })
             .run()
         },
     }
@@ -37,7 +37,7 @@ export default Node.create({
   addAttributes() {
     return {
       'data-id': { default: '' },
-      queryId: { default: '' },
+      sqlQueryId: { default: '' },
       style: { default: '' },
     }
   },

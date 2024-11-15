@@ -38,8 +38,8 @@ export const COMMANDS = [
     command: ({ editor, range }) => {
       // @ts-ignore
       editor.options.editorProps.showAddSqlQueryDialog({
-        onComplete(id: string) {
-          editor.chain().focus().deleteRange(range).addQueryWidget(id).run()
+        onComplete(id: string, sqlQueryId: number) {
+          editor.chain().focus().deleteRange(range).addQueryWidget(id, sqlQueryId).run()
         },
       })
     },
