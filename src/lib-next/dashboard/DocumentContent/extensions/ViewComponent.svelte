@@ -14,17 +14,22 @@
 
   let { nodeConfig, view, data }: TProps = $props()
 
+  const { widget } = data
+
   if (BROWSER && data.id && view.$.editor.isEditable) {
     Object.assign(view.$.node.attrs, { 'data-id': data.id })
 
-    if (data.widget?.settings) {
-      const { settings } = data.widget
+    if (widget?.settings) {
+      const { settings } = widget
       useDeepChangeEffect(settings, () => triggerEmptyUpdate(view))
+    }
+
+    if (widget && 'overrides' in widget) {
+      useDeepChangeEffect(widget.overrides, () => triggerEmptyUpdate(view))
     }
   }
 
   onMount(() => {
-    const { widget } = data
     if (!widget) return
     if (view.$.editor.isEditable === false) return
 

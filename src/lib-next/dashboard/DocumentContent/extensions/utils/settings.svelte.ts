@@ -1,10 +1,13 @@
 import { untrack } from 'svelte'
 
-export function useDeepChangeEffect<T>(sharedSignal: { $$: T }, fn: (snapshot: T) => void) {
+export function useDeepChangeEffect<T>(
+  sharedSignal: { $$: T } | { $: T },
+  fn: (snapshot: T) => void,
+) {
   let shouldSkipInit = true
 
   $effect(() => {
-    const snapshot = $state.snapshot(sharedSignal.$$)
+    const snapshot = $state.snapshot('$' in sharedSignal ? sharedSignal.$ : sharedSignal.$$)
 
     if (shouldSkipInit) {
       shouldSkipInit = false

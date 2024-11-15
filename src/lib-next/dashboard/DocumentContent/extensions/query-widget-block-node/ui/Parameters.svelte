@@ -7,9 +7,9 @@
   type TProps = {
     localParameters: Record<string, any>
     parameterOverrides: SS<Record<string, undefined | any>>
-    lastFetchedParameterValues: Record<string, any>
+    dirtyParametersMap: Map<string, null | string>
   }
-  let { localParameters, parameterOverrides, lastFetchedParameterValues }: TProps = $props()
+  let { localParameters, parameterOverrides, dirtyParametersMap }: TProps = $props()
 
   const parameters = Object.keys(localParameters).map((key) => ({
     key,
@@ -19,15 +19,14 @@
 
 <section class="flex flex-wrap gap-2 px-3 pb-3">
   {#each parameters as parameter}
-    {@const { key, value } = parameter}
+    {@const { key } = parameter}
     {@const globalValue = parameterOverrides.$[key]}
 
     <Parameter
       global={globalValue}
       {parameter}
       value={globalValue}
-      changed={BROWSER &&
-        (globalValue || value)?.toString() !== lastFetchedParameterValues[key]?.toString()}
+      changed={BROWSER && !!dirtyParametersMap.get(key)}
     ></Parameter>
   {/each}
 </section>
