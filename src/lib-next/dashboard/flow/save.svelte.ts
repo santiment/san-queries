@@ -18,9 +18,11 @@ import {
 } from '../ctx/parameter-widgets.svelte'
 import { serializeDataWidget, useDashboardDataWidgets } from '../ctx/data-widgets.svelte'
 import { useDashboardSqlQueriesCtx } from '../ctx/dashboard-queries.svelte'
+import { useEditorSidebarCtx } from '$lib/EditorSidebar/ctx'
 
 export const useDashboardSaveFlowCtx = createCtx('dashboards_useDashboardSaveFlow', () => {
   const saveIndicatorCtx = useSaveIndicatorCtx.get()
+  const editorSidebarCtx = useEditorSidebarCtx.get()
 
   const { dashboard } = useDashboardCtx.get()
 
@@ -47,6 +49,10 @@ export const useDashboardSaveFlowCtx = createCtx('dashboards_useDashboardSaveFlo
 
       map((apiDashboard) => {
         const { id, name } = apiDashboard
+
+        if (!dashboard.apiDashboard) {
+          editorSidebarCtx.emit.refreshDashboards()
+        }
 
         dashboard.apiDashboard = apiDashboard
         dashboard.state.$$.id = id

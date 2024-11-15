@@ -22,6 +22,8 @@
   }
   let { apiDashboard, cache, readonly = true }: TProps = $props()
 
+  // TODO: Cleanup unused sql queries in readonly mode
+
   const { dashboard } = useDashboardCtx.set(apiDashboard, readonly)
 
   useDashboardSqlQueriesCtx.set(apiDashboard, cache)
