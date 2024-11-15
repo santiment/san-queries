@@ -1,8 +1,6 @@
 import { redirect } from '@sveltejs/kit'
 import { loadPageDashboard } from '../utils.js'
 
-export const ssr = false
-
 export async function load(event) {
   // const { session } = await event.parent()
   // const { customer } = session
