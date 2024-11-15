@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { TDashboardSqlData } from '$lib/Dashboard/flow/sqlData/api'
+  import type { TDashboardSqlData } from './sql-query/api/cache'
   import type { TApiDashboard } from './types'
 
   import { showDashboardPublishedDialog$ } from '$lib/DashboardPublishedDialog/index.svelte'
@@ -12,7 +12,7 @@
   import { useDashboardDataWidgets } from './ctx/data-widgets.svelte'
   import { useDashboardSaveFlowCtx } from './flow'
   import { usePublishToggleFlow } from './flow/publish'
-  import { useDashboardDuplicateFlow } from '$lib/Dashboard/flow/duplicate'
+  import { useDashboardDuplicateFlow } from './flow/duplicate'
 
   type TProps = {
     apiDashboard: undefined | null | TApiDashboard<any>
@@ -26,10 +26,10 @@
   useDashboardSqlQueriesCtx.set(apiDashboard, cache)
 
   useDashboardParameterWidgetsCtx.set()
-  useDashboardDataWidgets.set()
+  const { dataWidgets } = useDashboardDataWidgets.set()
 
   const { scheduleSave } = useDashboardSaveFlowCtx.set()
-  const { onDuplicateClick } = useDashboardDuplicateFlow()
+  const { duplicateDashboard } = useDashboardDuplicateFlow()
   const { publishDashboard, unpublishDashboard } = dashboard.isCurrentUserAuthor
     ? usePublishToggleFlow()
     : {}
@@ -62,10 +62,20 @@
       if (!isPublic) showDashboardPublishedDialog()
     }
   }
+
+  function onDataUpdateClick() {
+    for (const dataWidget of dataWidgets.$) {
+      if (dataWidget.type !== 'query-widget') continue
+
+      const { loadSqlData } = dataWidget.state.$$
+
+      loadSqlData(true)
+    }
+  }
 </script>
 
 <article class="flex-1 gap-4 p-6 px-12 pb-20 column">
-  <Header {onPublishToggle} onDataUpdateClick={console.log} {onDuplicateClick}></Header>
+  <Header {onPublishToggle} {onDataUpdateClick} onDuplicateClick={duplicateDashboard}></Header>
 
   <DocumentHeading onChange={onDocumentUpdate}></DocumentHeading>
 

@@ -22,12 +22,11 @@ import { goto } from '$app/navigation'
 import { useSaveIndicatorCtx } from '$lib/SaveIndicator'
 import { mutateCreateDashboard, mutateUpdateDashboard } from '../api/save'
 import { useEditorSidebarCtx } from '$lib/EditorSidebar/ctx'
-import { compressData } from '$lib/utils/compress'
 import { useDashboardSerializeFlow, type TSerializedDashboard } from './save.svelte'
 import { useDashboardSqlQueriesCtx } from '../ctx/dashboard-queries.svelte'
 import { mutateCreateDashboardQuery } from '../sql-query/api'
-import { mutateStoreDashboardQueryExecution } from '../sql-query/api/cache'
 import type { TDashboardKey, TDataWidgetKey } from '../types'
+import { createStoreDashboardSqlCache$ } from '../sql-query/flow/cache'
 
 function substituteDashboard(dashboardEditor: TSerializedDashboard) {
   let stringified = JSON.stringify({
@@ -106,20 +105,7 @@ export function useDashboardDuplicateFlow() {
                   ) as TDataWidgetKey,
                 })),
               ).pipe(
-                mergeMap((data) =>
-                  from(
-                    compressData(data).then(
-                      (compressed) => [data.dashboardQueryMappingId, compressed] as const,
-                    ),
-                  ),
-                ),
-                map(([dashboardQueryMappingId, compressedData]) =>
-                  mutateStoreDashboardQueryExecution()({
-                    compressedData,
-                    dashboardId,
-                    dashboardQueryMappingId,
-                  }).pipe(catchError(() => of(null))),
-                ),
+                map((data) => createStoreDashboardSqlCache$(dashboardId, data)),
                 concatAll(),
                 toArray(),
               ),

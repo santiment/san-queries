@@ -3,7 +3,7 @@ import { ApiQuery } from 'san-webkit-next/api'
 
 export type TDashboardSqlData = App.SqlData & {
   clickhouseQueryId: string
-  dashboardQueryMappingId: string
+  dashboardQueryMappingId: TDataWidgetKey
 }
 
 export const queryGetCachedDashboardQueriesExecutions = ApiQuery(

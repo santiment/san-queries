@@ -80,7 +80,7 @@
           </Button>
 
           <Button variant="border" icon="refresh" iconSize="10" onclick={onDataUpdateClick}>
-            Update
+            Update data
           </Button>
         {/if}
       {/if}

@@ -1,6 +1,6 @@
 import type { QUERY_WIDGET_BLOCK_NODE } from '../schema'
 
-import { exhaustMap, tap, of, filter } from 'rxjs'
+import { exhaustMap, tap, of, filter, switchMap } from 'rxjs'
 import { onMount } from 'svelte'
 import { useObserveFnCall } from 'san-webkit-next/utils'
 import { useDashboardCtx } from '$lib-next/dashboard/ctx'
@@ -8,8 +8,12 @@ import {
   useDataWidgetParameterOverrides,
   type TDashboardDataWidget,
 } from '$lib-next/dashboard/ctx/data-widgets.svelte'
-import { queryRunDashboardSqlQuery } from '$lib/Dashboard/flow/sqlData/api'
 import { useDashboardSqlQueriesCtx } from '$lib-next/dashboard/ctx/dashboard-queries.svelte'
+import {
+  queryRunDashboardSqlQuery,
+  type TDashboardSqlData,
+} from '$lib-next/dashboard/sql-query/api/cache'
+import { createStoreDashboardSqlCache$ } from '$lib-next/dashboard/sql-query/flow/cache'
 
 export function useSqlWidgetFlow(widget: TDashboardDataWidget<typeof QUERY_WIDGET_BLOCK_NODE>) {
   const { state } = widget
@@ -45,12 +49,19 @@ export function useSqlWidgetFlow(widget: TDashboardDataWidget<typeof QUERY_WIDGE
             JSON.stringify(overrides),
           ).pipe(tap((sqlData) => onSqlUpdate(sqlData, overrides)))
         }),
+        switchMap((sqlData) => {
+          const { isEditable, apiDashboard } = dashboard
+          return isEditable ? createStoreDashboardSqlCache$(apiDashboard!.id, sqlData) : of(null)
+        }),
       ),
     ),
   )
   Object.assign(state.$$, { loadSqlData: (isForced = false) => loadSqlData({ isForced }) })
 
-  function onSqlUpdate(sqlData: null | App.SqlData, overrides: Record<string, any>) {
+  function onSqlUpdate(sqlData: null | TDashboardSqlData, overrides: Record<string, any>) {
+    if (sqlData && !sqlData.dashboardQueryMappingId) {
+      sqlData.dashboardQueryMappingId = widget.id
+    }
     state.$$.sqlData = sqlData
     state.$$.lastFetchedParameterValues = Object.assign({}, localParameters, overrides)
     state.$$.isLoading = false
