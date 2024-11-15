@@ -14,7 +14,7 @@
   import Svg from '$lib/ui/Svg.svelte'
   import { useObserve } from 'svelte-runes'
   import Button from '$lib/ui/Button.svelte'
-  import { mutateCreateDashboardQuery } from '$lib/Dashboard/flow/widgets/api'
+  import { mutateCreateDashboardQuery } from '$lib-next/dashboard/sql-query/api'
 
   let { queryId, ...rest }: { queryId: number } = $props()
 

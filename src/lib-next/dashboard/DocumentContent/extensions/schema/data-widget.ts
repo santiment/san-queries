@@ -3,8 +3,9 @@ import type { TApiDataWidget, TDataWidgetKey } from '../../../types'
 
 import { BROWSER } from 'esm-env'
 import { SvelteNodeViewRenderer, type ViewProps } from 'tiptap-svelte-adapter'
-import { renderNodeViewUniversalHTML } from '$lib/DashboardNext/BlockEditor/nodes/ssr'
+
 import GenericNodeView from '../GenericNodeView.svelte'
+import { renderNodeViewUniversalHTML } from '../../SSR'
 import {
   useDashboardDataWidgets,
   type TDashboardDataWidget,

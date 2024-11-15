@@ -1,34 +1,25 @@
+import { BROWSER } from 'esm-env'
 import { redirect } from '@sveltejs/kit'
-import { getIdFromSEOLink } from 'san-webkit/lib/utils/url'
-import { UniQuery } from '$lib/api/index'
-import { queryGetDashboard } from '../../[[slug]]/api'
-import { gotoDashboardPage } from '../../[[slug]]/utils'
+import { loadPageDashboard } from '../../utils.js'
 
-export const ssr = false
-
-export const load = async (event) => {
+export async function load(event) {
   const { session } = await event.parent()
   const { customer } = session
 
   if (!customer.currentUser) {
-    throw redirect(302, '/dashboard/edit/new')
+    throw redirect(302, '/')
   }
 
   const { slug = 'new' } = event.params
 
-  if (slug === 'new') return
-
-  const dashboardId = getIdFromSEOLink(slug)
-
-  if (Number.isInteger(dashboardId) === false) {
-    throw redirect(302, '/dashboard/edit/new')
+  if (slug === 'new') {
+    // NOTE: Enforce `/new` page. This will trigger `#key` block in `+page.svelte`
+    // Otherwise it doesn't work in some cases, e.g.
+    // 1) `/new` opened; 2) entity created and replaceState used; 3) trying to open `/new`
+    return { forced: BROWSER ? Date.now() : undefined }
   }
 
-  const preloaded = gotoDashboardPage.get()
-  const apiDashboard =
-    preloaded?.apiDashboard === undefined
-      ? await queryGetDashboard(UniQuery(event.fetch))(dashboardId).catch(() => null)
-      : preloaded.apiDashboard
+  const [apiDashboard, dashboardDataCache] = await loadPageDashboard(event)
 
   if (!apiDashboard) {
     throw redirect(302, '/dashboard/edit/new')
@@ -40,5 +31,6 @@ export const load = async (event) => {
 
   return {
     apiDashboard,
+    dashboardDataCache,
   }
 }

@@ -61,7 +61,7 @@ export const useDashboardSaveFlowCtx = createCtx('dashboards_useDashboardSaveFlo
       }),
 
       tap((slug) => {
-        replaceState('/dashboard-next/edit/' + slug, page.state)
+        replaceState('/dashboard/edit/' + slug, page.state)
       }),
 
       delay(1500),

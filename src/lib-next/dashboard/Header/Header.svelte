@@ -62,19 +62,14 @@
             {dashboard.state.$$.isPublic ? 'Unpublish' : 'Publish'}
           </Button>
 
-          <Button
-            variant="border"
-            icon="pencil"
-            iconSize="10"
-            href="/dashboard-next/edit/{seoLink}"
-          >
+          <Button variant="border" icon="pencil" iconSize="10" href="/dashboard/edit/{seoLink}">
             Edit
           </Button>
         {:else}
           <Button
             variant="fill"
             loading={false}
-            href={seoLink ? `/dashboard-next/${seoLink}` : undefined}
+            href={seoLink ? `/dashboard/${seoLink}` : undefined}
           >
             Preview
           </Button>

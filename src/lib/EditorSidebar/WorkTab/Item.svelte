@@ -10,7 +10,7 @@
   }: { isActive?: boolean; item: { id: number; type: 'dashboard' | 'query'; name: string } } =
     $props()
 
-  let href = $derived(`/${item.type}-next/${getSEOLinkFromIdAndTitle(item.id, item.name)}`)
+  let href = $derived(`/${item.type}/${getSEOLinkFromIdAndTitle(item.id, item.name)}`)
 </script>
 
 <article

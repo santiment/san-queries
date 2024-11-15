@@ -59,3 +59,5 @@ export function renderNodeViewUniversalHTML(
     }),
   ]
 }
+
+export { default } from './SSR.svelte'

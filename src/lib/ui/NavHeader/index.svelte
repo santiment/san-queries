@@ -47,7 +47,7 @@
 
         <Button
           variant="ghost"
-          href="/dashboard-next/edit/new"
+          href="/dashboard/edit/new"
           icon="dashboard"
           iconSize="12"
           class="hover:fill-green"

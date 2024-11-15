@@ -20,10 +20,10 @@
   import Dialogs from 'san-webkit/lib/ui/Dialog/Dialogs.svelte'
   import Notifications from 'san-webkit/lib/ui/Notifications'
   import FeatureWalkthrough from 'san-webkit/lib/ui/FeatureWalkthrough/svelte'
-  import OnlyOnDevice from 'san-webkit/lib/ui/OnlyOnDevice.svelte'
   import NavHeader from '$lib/ui/NavHeader'
   import Gdpr from '$lib/Gdpr.svelte'
   import Tracking from './Tracking.svelte'
+  import OnlyOnDevice from 'san-webkit-next/ui/utils/OnlyOnDevice'
 
   // export let data: LayoutData
   let { data } = $props()

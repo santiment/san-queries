@@ -3,12 +3,12 @@ import type { TDashboardGlobalParameterKey } from '$lib-next/dashboard/types'
 
 import { BROWSER } from 'esm-env'
 import { SvelteNodeViewRenderer, type ViewProps } from 'tiptap-svelte-adapter'
-import { renderNodeViewUniversalHTML } from '$lib/DashboardNext/BlockEditor/nodes/ssr'
 import {
   useDashboardParameterWidgetsCtx,
   type TDashboardParameterWidget,
 } from '$lib-next/dashboard/ctx/parameter-widgets.svelte'
 import GenericNodeView from '../GenericNodeView.svelte'
+import { renderNodeViewUniversalHTML } from '../../SSR'
 
 export type TParameterWidgetProps<
   GParameterWidget extends TParameterWidgetNode = TParameterWidgetNode,

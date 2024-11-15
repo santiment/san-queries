@@ -1,17 +1,16 @@
 <script lang="ts">
+  import type { EditorOptions } from '@tiptap/core'
   import { BROWSER } from 'esm-env'
-
   import { onMount } from 'svelte'
   import Editor from 'tiptap-svelte-adapter'
-  import BlockActions from '$lib/DashboardNext/BlockEditor/extensions/BlockActions/index.svelte'
-  import BubbleMenu from '$lib/DashboardNext/BlockEditor/extensions/BubbleMenu/index.svelte'
-  import SSR from '$lib/DashboardNext/BlockEditor/SSR.svelte'
-  import Placeholder from '$lib/DashboardNext/BlockEditor/extensions/Placeholder'
-  import TrailingNode from '$lib/DashboardNext/BlockEditor/extensions/TrailingNode'
-  import SlashCommands from './extensions/slash-commands'
+  import SSR from './SSR'
   import { getBaseExtensions } from './extensions'
+  import BlockActions from './extensions/block-actions'
+  import SlashCommands from './extensions/slash-commands'
+  import TrailingNode from './extensions/trailing-node'
+  import BubbleMenu from './extensions/bubble-menu'
+  import Placeholder from './extensions/placeholder'
   import { useDashboardCtx } from '../ctx'
-  import type { EditorOptions } from '@tiptap/core'
 
   type TProps = { onclickcapture?: (e: MouseEvent) => void; onUpdate: () => void } & {
     editorProps?: EditorOptions['editorProps'] & Record<string, any>

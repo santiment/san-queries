@@ -1,7 +1,7 @@
 import { SvelteNodeViewRenderer } from 'tiptap-svelte-adapter'
 import { mergeAttributes, Node } from '@tiptap/core'
-import { renderNodeViewUniversalHTML } from '$lib/DashboardNext/BlockEditor/nodes/ssr'
 import Component from './ui/index.svelte'
+import { renderNodeViewUniversalHTML } from '../../SSR'
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {

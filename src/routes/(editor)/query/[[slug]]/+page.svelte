@@ -44,8 +44,6 @@
   }
 </script>
 
-<SaveIndicator></SaveIndicator>
-
 {#key data.forced || apiQuery.$?.id}
   <QueryEditor
     bind:this={QueryEditorRef.$}

@@ -1,51 +1,10 @@
 <script lang="ts">
-  import type { PageData } from './$types'
+  import { Dashboard } from '$lib-next/dashboard'
 
-  import { ss, ssd, useStore } from 'svelte-runes'
-  import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
-  import { GlobalShortcut$ } from 'san-webkit/lib/utils/events'
-  import Dashboard from '$lib/DashboardNext/index.svelte'
-  import SaveIndicator from '$lib/SaveIndicator'
-  import { useSaveIndicatorCtx } from '$lib/SaveIndicator/index.svelte'
-  import { useChangeIndicatorCtx } from '$lib/ChangeIndicator'
-  import { useDashboardDuplicateFlow } from '$lib/Dashboard/flow/duplicate'
-  import { useAutoSaveFlow, useSaveEmptyFlowCtx, useSaveFlow } from '$lib/Dashboard/flow/save'
-  import { useDashboardDeleteFlow } from '$lib/Dashboard/flow/delete'
-  import { useCustomerCtx } from 'san-webkit-next/ctx/customer'
-
-  let { data }: { data: PageData } = $props()
-
-  const apiDashboard = ssd(() => data.apiDashboard)
-  const { currentUser } = useCustomerCtx()
-  const changeIndicatorCtx = useChangeIndicatorCtx()
-  const _saveIndicatorCtx = useSaveIndicatorCtx()
-  const EditorRef = ss<Dashboard>()
-
-  $inspect(data)
-
-  let isAuthor = ssd(() =>
-    apiDashboard.$ ? +apiDashboard.$.user.id === +currentUser.$$?.id! : true,
-  )
-
-  useAutoSaveFlow(EditorRef, isAuthor)
-  const { saveEmptyDashboard } = useSaveEmptyFlowCtx(apiDashboard)
-  const { saveDashboard } = useSaveFlow(EditorRef, isAuthor)
-  const { onDuplicateClick } = useDashboardDuplicateFlow(EditorRef)
-  const { onDeleteClick } = useDashboardDeleteFlow(apiDashboard)
-
-  useStore(GlobalShortcut$('CMD+S', () => saveDashboard(), false))
+  let { data } = $props()
 </script>
 
-<SaveIndicator></SaveIndicator>
-
-{#key apiDashboard.$?.id}
-  <Dashboard
-    bind:this={EditorRef.$}
-    dashboard={apiDashboard.$}
-    isAuthor={true}
-    readonly={false}
-    currentUser={currentUser.$$}
-    {onDuplicateClick}
-    {onDeleteClick}
+{#key data.forced || data.apiDashboard?.id}
+  <Dashboard readonly={false} apiDashboard={data.apiDashboard} cache={data.dashboardDataCache}
   ></Dashboard>
 {/key}

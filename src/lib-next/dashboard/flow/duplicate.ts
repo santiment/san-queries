@@ -117,7 +117,7 @@ export function useDashboardDuplicateFlow() {
 
         delay(1000),
         tap(() => saveIndicatorCtx.emit.success()),
-        tap(({ id, name }) => goto('/dashboard-next/' + getSEOLinkFromIdAndTitle(id, name))),
+        tap(({ id, name }) => goto('/dashboard/' + getSEOLinkFromIdAndTitle(id, name))),
         tap(() => notification.success('Dashboard duplicated!')),
         tap(() => editorSidebarCtx.emit.refreshDashboards()),
 

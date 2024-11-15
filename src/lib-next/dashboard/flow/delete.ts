@@ -19,7 +19,7 @@ export function useDashboardDeleteFlow() {
       filter(() => confirm('Delete this dashboard? This action cannot be undone')),
       exhaustMap(({ id }) =>
         mutateDeleteDashboard()(id as any).pipe(
-          tap(() => goto('/dashboard-next/edit/new')),
+          tap(() => goto('/dashboard/edit/new')),
           tap(() => notification.info('Dashboard deleted')),
           tap(() => editorSidebarCtx.emit.refreshDashboards()),
         ),
