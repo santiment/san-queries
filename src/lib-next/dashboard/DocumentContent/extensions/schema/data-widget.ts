@@ -52,7 +52,10 @@ export type TDataWidgetSchema = {
     view: ViewProps['view'],
   ) => TDataWidgetNodeViewInitResult | Promise<TDataWidgetNodeViewInitResult>
 
-  create(this: TDataWidgetSchema): TApiDataWidget | Promise<TApiDataWidget>
+  create(
+    this: TDataWidgetSchema,
+    data: { id?: TDataWidgetKey },
+  ): TApiDataWidget | Promise<TApiDataWidget>
 }
 
 export type TDataWidgetNode<GSchema extends TDataWidgetSchema = any> = {
@@ -113,7 +116,7 @@ export function createDataWidgetSchema<GSchema extends TDataWidgetSchema>(
         .then(() => {
           if (data.widget) return data
 
-          const widget = createDashboardDataWidget(schema.create(), this)
+          const widget = createDashboardDataWidget(schema.create({ id: data.id }), this)
           data.id = widget.id
           data.widget = widget
 

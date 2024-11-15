@@ -1,4 +1,8 @@
-import type { TDashboardKey, TDataWidgetKey } from '$lib-next/dashboard/types'
+import type {
+  TApiDashboardSqlQuery,
+  TDashboardKey,
+  TDataWidgetKey,
+} from '$lib-next/dashboard/types'
 
 import { ApiMutation } from 'san-webkit-next/api'
 import { QUERY_FRAGMENT } from '$lib/QueryEditor/api'
@@ -13,8 +17,10 @@ export const mutateCreateDashboardQuery = ApiMutation(
   }`,
     variables,
   }),
-  ({ created: { id, query } }: { created: { id: string; query: App.ApiQueryWidget } }) => {
+  ({ created: { id, query } }: { created: { id: string; query: TApiDashboardSqlQuery } }) => {
+    // @ts-ignore
     query.dashboardQueryMappingId = id
+    // @ts-ignore
     if (!query.user) query.user = { id: 0, username: '' }
     return query
   },

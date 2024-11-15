@@ -36,16 +36,10 @@ export const COMMANDS = [
   {
     title: 'Query widget',
     command: ({ editor, range }) => {
-      editor.options.editorProps.showAddQueryToDashboardDialog({
-        onComplete(widget) {
-          editor.options.editorProps.addQueryWidget(widget)
-
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .addQueryWidget(widget.dashboardQueryMappingId)
-            .run()
+      // @ts-ignore
+      editor.options.editorProps.showAddSqlQueryDialog({
+        onComplete(id: string) {
+          editor.chain().focus().deleteRange(range).addQueryWidget(id).run()
         },
       })
     },

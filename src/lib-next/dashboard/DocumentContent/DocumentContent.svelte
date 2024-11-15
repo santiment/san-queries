@@ -8,13 +8,16 @@
   import SSR from '$lib/DashboardNext/BlockEditor/SSR.svelte'
   import Placeholder from '$lib/DashboardNext/BlockEditor/extensions/Placeholder'
   import TrailingNode from '$lib/DashboardNext/BlockEditor/extensions/TrailingNode'
-  import SlashCommands from '$lib/DashboardNext/BlockEditor/extensions/SlashCommands'
+  import SlashCommands from './extensions/slash-commands'
   import { getBaseExtensions } from './extensions'
   import { useDashboardCtx } from '../ctx'
+  import type { EditorOptions } from '@tiptap/core'
 
-  type TProps = { onclickcapture?: (e: MouseEvent) => void; onUpdate: () => void }
+  type TProps = { onclickcapture?: (e: MouseEvent) => void; onUpdate: () => void } & {
+    editorProps?: EditorOptions['editorProps'] & Record<string, any>
+  }
 
-  let { onUpdate, ...rest }: TProps = $props()
+  let { editorProps, onUpdate, ...rest }: TProps = $props()
 
   const { dashboard, dashboardDocument, documentEditor } = useDashboardCtx.get()
 
@@ -37,7 +40,7 @@
         editable: isEditable,
 
         content,
-        // editorProps,
+        editorProps,
 
         extensions: getBaseExtensions().concat(
           isEditable ? [Placeholder, TrailingNode, SlashCommands] : [],

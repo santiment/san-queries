@@ -13,6 +13,7 @@
   import { useDashboardSaveFlowCtx } from './flow'
   import { usePublishToggleFlow } from './flow/publish'
   import { useDashboardDuplicateFlow } from './flow/duplicate'
+  import { showAddSqlQueryDialog$ } from './DocumentContent/extensions/query-widget-block-node/ui/AddSqlQueryDialog.svelte'
 
   type TProps = {
     apiDashboard: undefined | null | TApiDashboard<any>
@@ -35,6 +36,7 @@
     : {}
 
   const showDashboardPublishedDialog = showDashboardPublishedDialog$()
+  const showAddSqlQueryDialog = showAddSqlQueryDialog$()
 
   function onDocumentUpdate() {
     scheduleSave()
@@ -79,5 +81,9 @@
 
   <DocumentHeading onChange={onDocumentUpdate}></DocumentHeading>
 
-  <DocumentContent onclickcapture={onContentClick} onUpdate={onDocumentUpdate}></DocumentContent>
+  <DocumentContent
+    onclickcapture={onContentClick}
+    onUpdate={onDocumentUpdate}
+    editorProps={{ showAddSqlQueryDialog }}
+  ></DocumentContent>
 </article>

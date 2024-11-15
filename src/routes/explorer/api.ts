@@ -67,3 +67,6 @@ export const queryGetMostRecent = Fetcher(
 export type TData = API.ExtractData<typeof queryGetMostRecent>
 export type TEntities = TData['items']
 export type TEntity = NonNullable<TEntities[number]>
+export type TEntityMap = {
+  [K in TEntity['type']]: Entity<K>
+}

@@ -3,6 +3,8 @@ import type { TDashboardSqlData } from '../sql-query/api/cache'
 
 import { ss } from 'svelte-runes'
 import { createCtx } from 'san-webkit-next/utils'
+import { Query } from 'san-webkit-next/api/executor.js'
+import { queryGetCachedQueryExecutions } from '$lib/QueryEditor/api'
 
 export const useDashboardSqlQueriesCtx = createCtx(
   'dashboard_useDashboardSqlQueriesCtx',
@@ -25,6 +27,19 @@ export const useDashboardSqlQueriesCtx = createCtx(
         return dashboardSqlQueryById.get(id!)
       },
       sqlQueryCachedData,
+
+      loadSqlQueryCache(sqlQueryId: number, dashboardMappingId?: TDataWidgetKey) {
+        return queryGetCachedQueryExecutions(Query)(sqlQueryId).then((caches) => {
+          const cache = caches[0]?.result as undefined | TDashboardSqlData
+
+          if (cache && dashboardMappingId) {
+            cache.dashboardQueryMappingId = dashboardMappingId
+            sqlQueryCachedData.set(dashboardMappingId, cache)
+          }
+
+          return cache
+        })
+      },
     }
   },
 )

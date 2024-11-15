@@ -16,6 +16,7 @@ export type TDocumentNode<GType extends string = string> = {
 export type TDashboardDocument = TDocumentNode<'doc'> & { content: TDocumentNode[] }
 
 export type TDashboardKey = TNominal<string, 'TApiDashboardId'>
+
 export type TApiDashboard<GSettings> = {
   id: TDashboardKey
 
@@ -58,6 +59,8 @@ export type TApiDashboard<GSettings> = {
 
   settings: GSettings
 }
+
+export type TApiDashboardSqlQuery = TApiDashboard<any>['queries'][number]
 
 export type TDataWidgetKey = TNominal<string, 'TDataWidgetKey'>
 export type TApiDataWidget = {

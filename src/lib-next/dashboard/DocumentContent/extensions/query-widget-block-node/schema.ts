@@ -73,14 +73,14 @@ export const QUERY_WIDGET_BLOCK_NODE: TSchema = createDataWidgetSchema({
     }
   },
 
-  create() {
-    throw Error('TODO: Create async query mapping')
-    // return {
-    //   id: '' as TDataWidgetKey,
-    //   type: this.name,
-    //   data: null,
-    //   settings: {},
-    // }
+  create({ id }) {
+    // TODO: Create a new query using in node selector when ID is missing
+    return {
+      id: id || ('' as TDataWidgetKey),
+      type: this.name,
+      data: null,
+      settings: {},
+    }
 
     // // return Promise.resolve(data)
   },

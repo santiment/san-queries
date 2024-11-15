@@ -6,7 +6,7 @@
 
   import TrailingNode from './extensions/TrailingNode'
   import Placeholder from './extensions/Placeholder'
-  import SlashCommands from './extensions/SlashCommands'
+  import SlashCommands from '../../../lib-next/dashboard/DocumentContent/extensions/slash-commands'
   import BlockActions from './extensions/BlockActions/index.svelte'
   import BubbleMenu from './extensions/BubbleMenu/index.svelte'
 
