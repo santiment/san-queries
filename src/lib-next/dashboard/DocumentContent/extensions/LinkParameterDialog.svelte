@@ -18,15 +18,16 @@
 
   type TProps = TDialogProps & {
     globalParameter: TDashboardParameterWidget<any>
+    onApprove?: () => void
     children?: Snippet
   }
-  let { Controller, globalParameter, children }: TProps = $props()
+  let { Controller, globalParameter, onApprove, children }: TProps = $props()
 
   const { dataWidgets } = useDashboardDataWidgets.get()
 
   const dataWidgetsWithInputs = $derived(dataWidgets.$.filter((item) => !!item.data?.inputs))
 
-  const firstOutput = Object.keys(globalParameter.overrides.$)[0]
+  const firstOutput = Object.keys(globalParameter.outputs.$$)[0]
   const firstOutputOverrides = new SvelteMap(globalParameter.overrides.$[firstOutput])
 
   function onOverrideToggle(widgetId: TDataWidgetKey, inputKey: string) {
@@ -39,6 +40,8 @@
   function onApproveClick() {
     globalParameter.overrides.$[firstOutput] = new Map(firstOutputOverrides)
     globalParameter.overrides.$ = Object.assign({}, globalParameter.overrides.$)
+
+    onApprove?.()
 
     Controller.close()
   }
