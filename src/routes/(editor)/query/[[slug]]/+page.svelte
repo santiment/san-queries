@@ -16,16 +16,16 @@
     useSaveEmptyFlow,
     useSaveFlow,
   } from '$lib/QueryEditor/flow/autoSave.svelte'
+  import { useCustomerCtx } from 'san-webkit-next/ctx/customer'
 
   let { data }: { data: PageData } = $props()
-  const { currentUser$ } = getCurrentUser$Ctx()
+  const { currentUser } = useCustomerCtx()
   const _saveIndicatorCtx = useSaveIndicatorCtx()
   const changeIndicatorCtx = useChangeIndicatorCtx()
   const QueryEditorRef = ss<QueryEditor>()
   const apiQuery = ssd(() => data.apiQuery)
 
-  let currentUser = $currentUser$
-  let isAuthor = ssd(() => (apiQuery.$ ? +apiQuery.$.user.id === +currentUser?.id! : true))
+  let isAuthor = ssd(() => (apiQuery.$ ? +apiQuery.$.user.id === +currentUser.$$?.id! : true))
 
   useAutoSaveFlow(QueryEditorRef, isAuthor)
   const { saveQuery } = useSaveFlow(QueryEditorRef, isAuthor)
@@ -44,13 +44,11 @@
   }
 </script>
 
-<SaveIndicator></SaveIndicator>
-
-{#key apiQuery.$?.id}
+{#key data.forced || apiQuery.$?.id}
   <QueryEditor
     bind:this={QueryEditorRef.$}
     query={apiQuery.$}
-    {currentUser}
+    currentUser={currentUser.$$}
     isAuthor={isAuthor.$}
     {onDuplicateClick}
     {onDeleteClick}

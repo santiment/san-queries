@@ -49,6 +49,10 @@
       text-overflow: ellipsis;
     }
 
+    tbody td > * {
+      vertical-align: top;
+    }
+
     tbody tr:hover td {
       background: var(--athens);
     }

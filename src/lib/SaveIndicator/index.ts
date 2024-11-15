@@ -1,1 +1,1 @@
-export { default } from './index.svelte'
+export { default, useSaveIndicatorCtx } from './index.svelte'

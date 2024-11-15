@@ -9,23 +9,23 @@
   import Button from '$lib/ui/Button.svelte'
   import { queryUserCredits } from '$lib/api/user'
   import { useObserveFnCall } from '$lib/ui/utils/state.svelte'
+  import { useCustomerCtx } from 'san-webkit-next/ctx/customer'
 
-  const { currentUser$ } = getCurrentUser$Ctx()
-  let currentUser = useStore(currentUser$)
+  const { currentUser } = useCustomerCtx()
 
   let {
     creditsRemainingMonth = 0,
     creditsAvailalbeMonth,
     creditsSpentMonth,
-  } = $derived(currentUser.$?.queriesExecutionsInfo || {})
+  } = $derived(currentUser.$$?.queriesExecutionsInfo || {})
 
   const updateCreditsData = useObserveFnCall(() =>
     pipe(
-      filter(() => !!currentUser),
+      filter(() => !!currentUser.$$),
       switchMap(() =>
         queryUserCredits()().pipe(
           filter((data) => !!data),
-          tap((data) => (currentUser.$ = Object.assign(currentUser.$, data))),
+          tap((data) => Object.assign(currentUser.$$, data)),
         ),
       ),
     ),
@@ -43,7 +43,7 @@
   }
 </script>
 
-{#if currentUser.$}
+{#if currentUser.$$}
   <section class="sticky bottom-0 -mx-6 flex justify-between bg-porcelain px-6 py-1.5">
     Credits left: {creditsRemainingMonth}
 
@@ -66,7 +66,7 @@
             <user class="mb-6 flex items-center justify-between gap-6 rounded-md bg-athens p-2">
               <user-plan class="flex items-center gap-2">
                 Plan:
-                <AccountStatus currentUser={currentUser.$} />
+                <AccountStatus currentUser={currentUser.$$} />
               </user-plan>
 
               <value>

@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { editor as monacoEditor } from 'monaco-editor'
 
-  import { untrack, type Snippet } from 'svelte'
+  import { onMount, untrack, type Snippet } from 'svelte'
   import { cn } from '$lib/ui/utils'
   import { createEditor } from './editor'
   import { getEditorState, saveEditorState } from './utils'
@@ -32,8 +32,6 @@
   let height = $state<number>(0)
   let isFocused = $state(false)
 
-  $inspect(id)
-
   export function getValue() {
     return untrack(() => ctx?.editor?.getValue())
   }
@@ -47,12 +45,15 @@
   }
 
   function onFocus() {
-    isFocused = true
+    untrack(() => {
+      isFocused = true
+    })
   }
 
   function onBlur() {
-    isFocused = false
-    // onBlur(value)
+    untrack(() => {
+      isFocused = false
+    })
   }
 
   $effect(() => {
@@ -60,32 +61,33 @@
   })
 
   $effect(() => {
-    // @ts-expect-error
-    untrack(async () => {
-      if (!sqlEditorNode) return
+    ctx?.editor.layout({ width, height })
+  })
 
-      const { model, viewState } = getEditorState(id)
-      ctx = await createEditor(sqlEditorNode, value, { model })
+  async function mountEditor() {
+    if (!sqlEditorNode) return
 
-      ctx.editor.onDidBlurEditorText(onBlur)
-      ctx.editor.onDidFocusEditorWidget(onFocus)
-      if (onModelChange) ctx.editor.onDidChangeModelContent(onModelChange)
+    const { model, viewState } = getEditorState(id)
+    ctx = await createEditor(sqlEditorNode, value, { model })
 
-      if (viewState) {
-        ctx.editor.restoreViewState(viewState)
-        ctx.editor.focus()
-        onFocus()
-      }
-    })
+    ctx.editor.onDidBlurEditorText(onBlur)
+    ctx.editor.onDidFocusEditorWidget(onFocus)
+    if (onModelChange) ctx.editor.onDidChangeModelContent(onModelChange)
+
+    if (viewState) {
+      ctx.editor.restoreViewState(viewState)
+      ctx.editor.focus()
+      onFocus()
+    }
+  }
+
+  onMount(() => {
+    mountEditor()
 
     return () => {
       saveState()
       ctx?.editor.dispose()
     }
-  })
-
-  $effect(() => {
-    ctx?.editor.layout({ width, height })
   })
 </script>
 

@@ -6,7 +6,12 @@
   import 'san-webkit-next/app.css'
 
   import { BROWSER } from 'esm-env'
+  import { useCustomerCtx } from 'san-webkit-next/ctx/customer'
+  import { useUiCtx } from 'san-webkit-next/ctx/ui'
+  import { useDeviceCtx } from 'san-webkit-next/ctx/device'
+  import NextNotifications from 'san-webkit-next/ui/core/Notifications'
   import { BootFlag } from 'san-webkit-next/utils'
+
   import { Customer$$ } from 'san-webkit/lib/stores/customer'
   import { CurrentUser$$ } from 'san-webkit/lib/stores/user'
   import { Device$$ } from 'san-webkit/lib/stores/responsive'
@@ -15,10 +20,10 @@
   import Dialogs from 'san-webkit/lib/ui/Dialog/Dialogs.svelte'
   import Notifications from 'san-webkit/lib/ui/Notifications'
   import FeatureWalkthrough from 'san-webkit/lib/ui/FeatureWalkthrough/svelte'
-  import OnlyOnDevice from 'san-webkit/lib/ui/OnlyOnDevice.svelte'
   import NavHeader from '$lib/ui/NavHeader'
   import Gdpr from '$lib/Gdpr.svelte'
   import Tracking from './Tracking.svelte'
+  import OnlyOnDevice from 'san-webkit-next/ui/utils/OnlyOnDevice'
 
   // export let data: LayoutData
   let { data } = $props()
@@ -28,6 +33,10 @@
   Customer$$(data.session.customer)
   UI$$()
   const { device$ } = Device$$(data.session.device)
+
+  useCustomerCtx(data.session.customer)
+  useUiCtx()
+  useDeviceCtx(data.session.device)
 
   $effect(() => {
     BootFlag.set()
@@ -54,6 +63,8 @@
   <Notifications />
 
   <Tracking />
+
+  <NextNotifications></NextNotifications>
 {/if}
 
 <style lang="postcss">

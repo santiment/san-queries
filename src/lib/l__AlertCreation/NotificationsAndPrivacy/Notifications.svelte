@@ -3,12 +3,12 @@
 
   import Section from './Section.svelte'
   import Channel from './Channel.svelte'
-  import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
+  import { useCustomerCtx } from 'san-webkit-next/ctx/customer'
 
   export let channel: Step['value']['channel']
 
-  const { currentUser$ } = getCurrentUser$Ctx()
-  const currentUser = $currentUser$ as App.CurrentUser
+  const { currentUser: _currentUser } = useCustomerCtx()
+  const currentUser = _currentUser.$$!
 
   $: settings = currentUser.settings
   $: ({ alertNotifyEmail, alertNotifyTelegram } = settings)

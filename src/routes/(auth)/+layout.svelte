@@ -1,21 +1,19 @@
 <script lang="ts">
-  import { getCustomer$Ctx } from 'san-webkit/lib/stores/customer'
-  import { getCurrentUser$Ctx } from 'san-webkit/lib/stores/user'
   import { setAuthCtx, startEthLoginFlow } from './ctx'
+  import { useCustomerCtx } from 'san-webkit-next/ctx/customer'
 
-  const { currentUser$ } = getCurrentUser$Ctx()
-  const { customer$ } = getCustomer$Ctx()
+  const { customer } = useCustomerCtx()
 
   function onMetamaskClick() {
-    return startEthLoginFlow(currentUser$).then(() => {
-      customer$.refetch()
+    return startEthLoginFlow().then(() => {
+      customer.reload()
     })
   }
 
   setAuthCtx(onMetamaskClick)
 </script>
 
-<auth-page class="row hv-center">
+<auth-page class="hv-center row">
   <slot />
 </auth-page>
 

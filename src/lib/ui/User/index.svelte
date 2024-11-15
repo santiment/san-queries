@@ -2,7 +2,7 @@
   import { createAvatar, melt } from '@melt-ui/svelte'
 
   import { cn } from '$lib/ui/utils'
-  import Svg from '../Svg.svelte'
+  import Svg from 'san-webkit-next/ui/core/Svg'
 
   let {
     user,

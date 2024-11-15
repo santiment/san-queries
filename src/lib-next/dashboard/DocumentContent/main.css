@@ -1,0 +1,63 @@
+.hide {
+  @apply hidden;
+}
+
+.tiptap {
+  @apply -mx-12 -mt-4 flex flex-1 flex-col p-6 px-12 pb-20 outline-none;
+  @apply md:mx-0 md:px-0;
+}
+
+[data-type='query-text-column'],
+[data-type='paragraph'] {
+  @apply min-h-7 py-0.5 text-base;
+}
+
+a.data-link {
+  @apply text-green;
+}
+
+[data-node-view-wrapper] {
+  max-width: calc(100vw - 32px);
+}
+
+[data-node-view-wrapper] > * {
+  max-width: 100%;
+}
+
+.is-empty[data-type='paragraph']::before,
+.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: var(--casper);
+  pointer-events: none;
+  height: 0;
+}
+
+/*
+
+.tiptap {
+  .data-heading,
+  .data-link,
+  [data-type='paragraph'],
+  :not(.svelte-renderer *):not([data-type='column-resizer']),
+  .svelte-renderer {
+    position: relative;
+  }
+}
+
+:not(.dragging) .ProseMirror-selectednode::after {
+  display: block;
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  inset: 0px;
+  background: rgba(35, 131, 226, 0.14);
+  z-index: 51;
+  border-radius: 4px;
+  opacity: 1;
+  transition-property: opacity;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+}
+
+*/

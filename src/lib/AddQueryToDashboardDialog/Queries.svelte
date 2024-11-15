@@ -26,7 +26,7 @@
 
 <queries class="flex flex-1 flex-col gap-2">
   <VirtualList data={queries} getKey={(v) => v.id}>
-    {#snippet children({ item })}
+    {#snippet children(item)}
       <!-- {#each queries as item} -->
       {@const isAdded = addedSet.has(item)}
       <query class="flex h-12 items-center gap-2 rounded-lg px-3 py-2 hover:bg-athens">
