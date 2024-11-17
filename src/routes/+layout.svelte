@@ -9,6 +9,7 @@
   import { useCustomerCtx } from 'san-webkit-next/ctx/customer'
   import { useUiCtx } from 'san-webkit-next/ctx/ui'
   import { useDeviceCtx } from 'san-webkit-next/ctx/device'
+  import { useAssetsCtx } from 'san-webkit-next/ctx/assets'
   import NextNotifications from 'san-webkit-next/ui/core/Notifications'
   import { BootFlag } from 'san-webkit-next/utils'
 
@@ -37,6 +38,7 @@
   useCustomerCtx(data.session.customer)
   useUiCtx()
   useDeviceCtx(data.session.device)
+  useAssetsCtx()
 
   $effect(() => {
     BootFlag.set()
