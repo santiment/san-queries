@@ -4,15 +4,16 @@
 
   import Svg from 'san-webkit-next/ui/core/Svg'
   import AssetLogo from 'san-webkit-next/ui/app/AssetLogo'
+  import { useAssetsCtx } from 'san-webkit-next/ctx/assets'
+  import { capitalize } from 'san-webkit/lib/utils/formatting'
   import { useParameterWidgetFlow } from '$lib-next/dashboard/ctx/parameter-widgets.svelte'
   import { showSelectAssetDialog$ } from './SelectAssetDialog.svelte'
   import { showSettingsDialog$ } from './SettingsDialog.svelte'
-  import { useAssetFlow } from '../asset.svelte'
   import NodeSettings from '../../NodeSettings.svelte'
 
   let { view, data }: TParameterWidgetProps<typeof ASSET_SELECTOR_NODE> = $props()
 
-  const { getAssetBySlug } = useAssetFlow()
+  const { getAssetBySlug } = useAssetsCtx()
 
   const { globalParameter, update } = useParameterWidgetFlow(view, data.widget)
   const { outputs, settings } = globalParameter
@@ -20,7 +21,8 @@
   const showSelectAssetDialog = showSelectAssetDialog$()
   const showSettingsDialog = showSettingsDialog$()
 
-  let asset = $derived(getAssetBySlug(outputs.$$.slug))
+  const slug = $derived(outputs.$$.slug)
+  const asset = $derived(getAssetBySlug(slug) || { slug, ticker: '', name: capitalize(slug) })
 
   function onAssetSelectorClick() {
     showSelectAssetDialog({
@@ -40,7 +42,7 @@
   onclick={onAssetSelectorClick}
 >
   <AssetLogo slug={asset.slug || ''}></AssetLogo>
-  <span class="overflow-hidden text-ellipsis capitalize">{asset.name || asset.slug}</span>
+  <span class="overflow-hidden text-ellipsis">{asset.name || asset.slug}</span>
   {#if asset.ticker}
     <span class="uppercase text-waterloo">({asset.ticker})</span>
   {/if}

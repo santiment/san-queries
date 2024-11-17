@@ -5,22 +5,24 @@
 </script>
 
 <script lang="ts">
-  import { tap } from 'rxjs'
-  import { useObserve } from 'svelte-runes'
+  import { useAssetsCtx, type TAsset } from 'san-webkit-next/ctx/assets'
   import Dialog, { dialogs$, type TDialogProps } from 'san-webkit-next/ui/core/Dialog'
   import VirtualList from 'san-webkit-next/ui/app/VirtualList'
   import AssetLogo from 'san-webkit-next/ui/app/AssetLogo'
   import Input from 'san-webkit-next/ui/core/Input'
   import Button from 'san-webkit-next/ui/core/Button'
-  import { queryAllProjects, type TAsset } from '../api'
 
   type TProps = TDialogProps<TAsset> & { slugsByText?: string[] }
   let { Controller, slugsByText }: TProps = $props()
 
-  let assets = $state.raw<TAsset[]>([])
+  const { assets: allAssets } = useAssetsCtx.get()
+
+  const slugs = new Set(slugsByText)
+
   let searchTerm = $state('')
 
-  let filtered = $derived(
+  const assets = $derived(slugs.size ? allAssets.$.filter(strictListFilter) : allAssets.$)
+  const filtered = $derived(
     assets.filter((item) =>
       (item.name + item.ticker + item.slug).toLowerCase().includes(searchTerm),
     ),
@@ -31,18 +33,9 @@
     Controller.close()
   }
 
-  useObserve(() =>
-    queryAllProjects()().pipe(
-      tap((data) => {
-        if (slugsByText?.length) {
-          const slugs = new Set(slugsByText)
-          assets = data.filter((item) => slugs.has(item.slug))
-        } else {
-          assets = data
-        }
-      }),
-    ),
-  )
+  function strictListFilter(item: TAsset) {
+    return slugs.has(item.slug)
+  }
 </script>
 
 <Dialog class="max-h-[480px] w-[500px] rounded-lg">
@@ -51,7 +44,7 @@
     iconSize="16"
     class="border-none [&>svg]:left-5"
     inputClass="p-4 pl-12 text-base"
-    placeholder="Search for asset or address..."
+    placeholder="Search for an asset..."
     oninput={(e) => (searchTerm = e.currentTarget.value.trim())}
   ></Input>
 

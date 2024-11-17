@@ -46,6 +46,7 @@
     <textarea
       bind:this={textareaNode}
       name="slugs"
+      placeholder="Comma separated list of slugs to keep inside selector"
       class="flex-1 rounded border px-1.5 py-2 outline-none focus:border-green"
       rows="3"
       value={settings.$$.slugsByText?.join(', ') || ''}
