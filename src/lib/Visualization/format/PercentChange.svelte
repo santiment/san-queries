@@ -10,5 +10,8 @@
 {#if value === null}
   -
 {:else}
-  <Change class={cn(className, 'text-[var(--color)]')} change={formatPercentChange(+value * 100)} />
+  <Change
+    class={cn(className, 'gap-1 text-[var(--color)]')}
+    change={formatPercentChange(+value * 100)}
+  />
 {/if}

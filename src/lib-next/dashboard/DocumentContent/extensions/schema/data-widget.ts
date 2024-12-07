@@ -36,7 +36,7 @@ export type TDataWidgetSchema = {
   }
 
   /** Will NOT be uploaded to API */
-  initState(defaultState?: Partial<{ [key: string]: unknown }>): { [key: string]: unknown }
+  initState(defaultSettings?: Partial<{ [key: string]: unknown }>): { [key: string]: unknown }
 
   /** Will NOT be uploaded to API */
   initData?: (id: TDataWidgetKey, allCtxs: Map<string, any>) => any
