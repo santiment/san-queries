@@ -100,4 +100,11 @@ export const COMMANDS = [
       editor.chain().focus().deleteRange(range).addAssetInfoWidget().run()
     },
   },
+
+  {
+    title: 'Asset tweets',
+    command: ({ editor, range }) => {
+      editor.chain().focus().deleteRange(range).addAssetTweetsWidget().run()
+    },
+  },
 ] as { title: string; command: (args: { editor: Editor; range: Range }) => void }[]

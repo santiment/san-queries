@@ -31,8 +31,14 @@ import HiddenBlockNode from './hidden-block-node'
 import QueryTextColumnBlockNode from './query-text-column-block-node'
 import DateCalendarFieldNode from './date-calendar-field-node'
 import AssetInfoBlockNode from './asset-info-block-node'
+import AssetTweetsBlockNode from './asset-tweets-block-node'
 
-const DATA_WIDGET_NODES = [QueryWidgetBlockNode, SanbaseChartBlockNode, AssetInfoBlockNode] as const
+const DATA_WIDGET_NODES = [
+  QueryWidgetBlockNode,
+  SanbaseChartBlockNode,
+  AssetInfoBlockNode,
+  AssetTweetsBlockNode,
+] as const
 export type TDataWidgetNodes = (typeof DATA_WIDGET_NODES)[number]['__schema']
 
 const GLOBAL_PARAMETER_WIDGET_NODES = [
