@@ -54,7 +54,7 @@ export const queryRunDashboardSqlQuery = ApiQuery(
     parameterOverrides?: string,
   ) => ({
     schema: `query($parameterOverrides:json){
-    data:runDashboardSqlQuery(dashboardId:${dashboardId}, dashboardQueryMappingId:"${dashboardQueryMappingId}", parametersOverride:$parameterOverrides) {
+    data:runDashboardSqlQuery(dashboardId:${dashboardId}, dashboardQueryMappingId:"${dashboardQueryMappingId}", parametersOverride:$parameterOverrides, forceParametersOverride: true) {
         rows
         columns
         columnTypes
