@@ -11,6 +11,8 @@
   import { showNameDescriptionDialog$ } from './NameDescriptionDialog/index.svelte'
   import { useQueryEditorCtx } from './ctx'
   import { showAddToDashboardDialog$ } from './AddToDashboardDialog/index.svelte'
+  import { useStore } from 'svelte-runes'
+  import { GlobalShortcut$ } from 'san-webkit/lib/utils/events'
 
   let {
     author,
@@ -32,9 +34,15 @@
     onDeleteClick: () => void
   } = $props()
 
+  const useShortcut = (keys: string, clb: () => void) => useStore(GlobalShortcut$(keys, clb, false))
+
   const { queryEditor } = useQueryEditorCtx()
   const showNameDescriptionDialog = showNameDescriptionDialog$()
   const showAddToDashboardDialog = showAddToDashboardDialog$()
+
+  useShortcut('CMD+ENTER', () => {
+    onExecuteClick()
+  })
 
   function onAddToDashboardClick() {
     if (queryEditor.id) {
