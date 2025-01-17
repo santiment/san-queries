@@ -14,6 +14,7 @@
   import { usePublishToggleFlow } from './flow/publish'
   import { useDashboardDuplicateFlow } from './flow/duplicate'
   import { showAddSqlQueryDialog$ } from './DocumentContent/extensions/query-widget-block-node/ui/AddSqlQueryDialog.svelte'
+  import { onMount } from 'svelte'
 
   type TProps = {
     apiDashboard: undefined | null | TApiDashboard<any>
@@ -39,6 +40,20 @@
 
   const showDashboardPublishedDialog = showDashboardPublishedDialog$()
   const showAddSqlQueryDialog = showAddSqlQueryDialog$()
+
+  onMount(() => {
+    if (!dashboard.isReadonly) {
+      return
+    }
+
+    const timer = setTimeout(() => {
+      for (const item of document.querySelectorAll('.svelte-renderer[draggable]')) {
+        item.removeAttribute('draggable')
+      }
+    }, 2000)
+
+    return () => clearTimeout(timer)
+  })
 
   function onDocumentUpdate() {
     scheduleSave()

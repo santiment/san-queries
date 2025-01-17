@@ -45,7 +45,7 @@
     class="border-none [&>svg]:left-5"
     inputClass="p-4 pl-12 text-base"
     placeholder="Search for an asset..."
-    oninput={(e) => (searchTerm = e.currentTarget.value.trim())}
+    oninput={(e) => (searchTerm = e.currentTarget.value.trim().toLowerCase())}
   ></Input>
 
   <VirtualList
