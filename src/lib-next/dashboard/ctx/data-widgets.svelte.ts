@@ -112,7 +112,7 @@ function createDashboardDataWidget<GSchema extends TDataWidgetNode>(
   schema: GSchema,
   allCtxs: Map<string, any>,
 ): TDashboardDataWidget<GSchema> {
-  const defaultState = schema.initState()
+  const defaultState = schema.initState(settings)
   const defaultSettings = schema.initSettings?.(settings)
 
   const _state = $state<{ [key: string]: unknown }>(defaultState)
