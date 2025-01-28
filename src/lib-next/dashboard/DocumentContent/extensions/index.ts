@@ -40,6 +40,7 @@ const DATA_WIDGET_NODES = [
   AssetInfoBlockNode,
   AssetTweetsBlockNode,
   AssetFoundersBlockNode,
+  QueryTextColumnBlockNode
 ] as const
 export type TDataWidgetNodes = (typeof DATA_WIDGET_NODES)[number]['__schema']
 
@@ -84,7 +85,6 @@ export const getBaseExtensions = (ctx?: Map<string, any>) =>
 
     HiddenBlockNode,
 
-    QueryTextColumnBlockNode.configure({ ctx }),
   ]
     .concat(GLOBAL_PARAMETER_WIDGET_NODES.map((node) => node.configure({ ctx })))
     .concat(DATA_WIDGET_NODES.map((node) => node.configure({ ctx })))
@@ -108,6 +108,6 @@ export const DataWidgetNodes = DATA_WIDGET_NODES.reduce(
     return acc
   },
   {} as {
-    [K in T_DATA_WIDGET_NODES[number] as K['__schema']['name']]: K['__schema']
+    [K in T_DATA_WIDGET_NODES[number]as K['__schema']['name']]: K['__schema']
   },
 )
