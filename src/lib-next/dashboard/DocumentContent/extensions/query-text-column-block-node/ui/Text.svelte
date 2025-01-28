@@ -14,13 +14,13 @@
     },
   )
   const rows = $derived(sqlData?.rows || [])
-  const columnData = $derived(rows.slice(0, 1).flatMap((row) => row[column]))
+  const columnData = $derived(rows.flatMap((row) => row[column]))
 </script>
 
 {#if !columnData || columnData.length === 0}
   Data is empty
 {:else}
   <div class="whitespace-pre-line">
-    {columnData.slice(0, 200)}...
+    {columnData.slice(0, 1)}...
   </div>
 {/if}
