@@ -6,6 +6,8 @@ export type TAssetInfoData = {
   percentChange24h: string
   tags: { name: string }[]
   info: null | { summary: string }
+  sentiment_positive_total: number
+  sentiment_negative_total: number
 }
 export const queryAssetInfo = ApiQuery(
   (variables: { slug: string }) => ({
@@ -20,6 +22,9 @@ export const queryAssetInfo = ApiQuery(
     info {
       summary
     }
+
+    sentiment_positive_total: aggregatedTimeseriesData(aggregation:LAST, metric:"sentiment_positive_total",from:"utc_now-1d", to:"utc_now", includeIncompleteData: true)
+    sentiment_negative_total: aggregatedTimeseriesData(aggregation:LAST, metric:"sentiment_negative_total",from:"utc_now-1d", to:"utc_now", includeIncompleteData: true)
   }
 }
 `,
