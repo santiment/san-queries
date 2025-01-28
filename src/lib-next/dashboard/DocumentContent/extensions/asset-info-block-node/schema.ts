@@ -8,7 +8,7 @@ import {
 } from '../schema/data-widget'
 import Component from './ui/index.svelte'
 
-export type TField = 'price' | 'marketcap' | 'description'
+export type TField = 'price' | 'marketcap' | 'description' | 'bb-meter'
 
 type TSchema = {
   name: '_asset-info'

@@ -12,6 +12,7 @@
   import PercentChange from '$lib/Visualization/format/PercentChange.svelte'
   import Checkbox from 'san-webkit-next/ui/core/Checkbox'
   import { formatUsd, millify } from 'san-webkit/lib/utils/formatting'
+  import BBMeter from './BBMeter.svelte'
 
   let { data }: TDataWidgetProps<typeof ASSET_INFO_BLOCK_NODE> = $props()
 
@@ -27,6 +28,8 @@
     percentChange24h: '0',
     info: { summary: '' },
     tags: [],
+    sentiment_positive_total: 0,
+    sentiment_negative_total: 0,
   })
 
   const loadAssetInfo = useObserveFnCall<{ slug: string }>(() =>
@@ -58,6 +61,8 @@
     {@render visibleControl({ field: 'marketcap', children: marketcap })}
 
     {@render visibleControl({ field: 'description', children: description })}
+
+    {@render visibleControl({ field: 'bb-meter', children: bbMeter })}
   </div>
 {:else}
   <section class="gap-2 column">
@@ -71,6 +76,10 @@
 
     {#if widget.state.$$.fields.has('description')}
       {@render description()}
+    {/if}
+
+    {#if widget.state.$$.fields.has('bb-meter')}
+      {@render bbMeter()}
     {/if}
   </section>
 {/if}
@@ -117,4 +126,8 @@
       {/each}
     </section>
   {/if}
+{/snippet}
+
+{#snippet bbMeter()}
+  <BBMeter data={assetInfo}></BBMeter>
 {/snippet}

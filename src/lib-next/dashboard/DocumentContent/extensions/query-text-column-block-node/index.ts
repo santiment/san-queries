@@ -1,7 +1,5 @@
-import { SvelteNodeViewRenderer } from 'tiptap-svelte-adapter'
-import { mergeAttributes, Node } from '@tiptap/core'
-import Component from './ui/index.svelte'
-import { renderNodeViewUniversalHTML } from '../../SSR'
+import { Node } from '@tiptap/core'
+import { QUERY_TEXT_COLUMN_BLOCK_NODE } from './schema'
 
 declare module '@tiptap/core' {
   interface Commands<ReturnType> {
@@ -16,20 +14,20 @@ declare module '@tiptap/core' {
 }
 
 export default Node.create({
-  name: 'query-text-column',
+  ...QUERY_TEXT_COLUMN_BLOCK_NODE,
 
   group: 'block',
 
-  draggable: false,
+  //draggable: false,
   selectable: true,
 
   addCommands() {
     return {
       addQueryTextColumn:
         () =>
-        ({ chain }) => {
-          return chain().focus().insertContent({ type: 'query-text-column', attrs: {} }).run()
-        },
+          ({ chain }) => {
+            return chain().focus().insertContent({ type: this.name, attrs: {} }).run()
+          },
     }
   },
 
@@ -59,15 +57,15 @@ export default Node.create({
     return [{ tag: `div[data-type="${this.name}"]` }]
   },
 
-  renderHTML({ HTMLAttributes }) {
-    return renderNodeViewUniversalHTML(
-      ['div', mergeAttributes(HTMLAttributes, { 'data-type': this.name })],
-      this.options,
-      Component,
-    )
-  },
+  //renderHTML({ HTMLAttributes }) {
+  //  return renderNodeViewUniversalHTML(
+  //    ['div', mergeAttributes(HTMLAttributes, { 'data-type': this.name })],
+  //    this.options,
+  //    Component,
+  //  )
+  //},
 
-  addNodeView() {
-    return SvelteNodeViewRenderer(Component)
-  },
+  //addNodeView() {
+  //  return SvelteNodeViewRenderer(Component)
+  //},
 })

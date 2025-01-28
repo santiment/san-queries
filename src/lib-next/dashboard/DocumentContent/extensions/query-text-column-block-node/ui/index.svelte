@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { TDataWidgetKey } from '$lib-next/dashboard/types'
 
-  import { NodeViewWrapper, type ViewProps } from 'tiptap-svelte-adapter'
+  import { NodeViewWrapper } from 'tiptap-svelte-adapter'
   import { useDashboardCtx } from '$lib-next/dashboard/ctx'
   import {
     useDashboardDataWidgets,
@@ -10,17 +10,18 @@
   import Note from '../../utils/Note.svelte'
   import SelectOption from '../../SelectOption.svelte'
   import Text from './Text.svelte'
+  import type { TDataWidgetProps } from '../../schema/data-widget'
+  import type { QUERY_TEXT_COLUMN_BLOCK_NODE } from '../schema'
 
-  let { view }: ViewProps = $props()
+  let { data }: TDataWidgetProps<typeof QUERY_TEXT_COLUMN_BLOCK_NODE> = $props()
 
   const { dashboard } = useDashboardCtx.get()
   const { dataWidgets } = useDashboardDataWidgets.get()
 
-  const attrs = $derived(view.$.node.attrs)
-  const linkedQueryKey = $derived(attrs.linkedQuery || attrs['data-link-query']) as
-    | ''
-    | TDataWidgetKey
-  const linkedColumnKey = $derived(+(attrs.linkedColumn || attrs['data-link-column'])) as number
+  const { widget } = data
+
+  const linkedQueryKey = $derived(widget.settings.$$.linkedQuery) as '' | TDataWidgetKey
+  const linkedColumnKey = $derived(+widget.settings.$$.linkedColumn!) as number
 
   const queryOptions = $derived(
     dataWidgets.$.filter(
@@ -29,6 +30,14 @@
   )
 
   const linkedSqlDataWidget = $derived(queryOptions.find((item) => item.id === linkedQueryKey))
+
+  function onQuerySelect(value: string) {
+    widget.settings.$$.linkedQuery = value as TDataWidgetKey
+  }
+
+  function onColumnSelect(value: string) {
+    widget.settings.$$.linkedColumn = value
+  }
 </script>
 
 <NodeViewWrapper>
@@ -44,7 +53,7 @@
           name="query"
           value={linkedQueryKey}
           options={queryOptions}
-          onChange={console.log}
+          onChange={onQuerySelect}
         >
           {#snippet children({ option })}
             <option value={option.id}>{option.data.sqlQuery?.name}</option>
@@ -56,7 +65,7 @@
           name="column"
           value={linkedColumnKey}
           options={columnOptions}
-          onChange={console.log}
+          onChange={onColumnSelect}
         >
           {#snippet children({ option, i })}
             <option value={i}>{option}</option>

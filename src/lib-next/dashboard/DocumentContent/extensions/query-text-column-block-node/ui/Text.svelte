@@ -20,5 +20,7 @@
 {#if !columnData || columnData.length === 0}
   Data is empty
 {:else}
-  {columnData}
+  <div class="whitespace-pre-line">
+    {columnData.slice(0, 1)}...
+  </div>
 {/if}
