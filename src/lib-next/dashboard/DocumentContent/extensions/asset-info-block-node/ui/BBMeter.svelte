@@ -2,10 +2,7 @@
   import arrowDay from './arrow-day.svg'
   import arrowNight from './arrow-night.svg'
   import { useUiCtx } from 'san-webkit-next/ctx/ui'
-  import Svg from 'san-webkit-next/ui/core/Svg'
-  import Tooltip from 'san-webkit-next/ui/core/Tooltip'
   import type { TAssetInfoData } from './api'
-  import Step from '$lib/l__AlertCreation/MetricsAndConditions/Step.svelte'
 
   let { data }: { data: TAssetInfoData } = $props()
 
@@ -15,21 +12,35 @@
   const arrowHeight = 49
   const MAX_ANGLE = 80
 
-  let tooltipVisible = $state(false)
-
-  const negative = $derived(data.sentiment_negative_total ?? 0)
-  const positive = $derived(data.sentiment_positive_total ?? 0)
+  const negative = $derived(data.sentiment_negative_total || 1)
+  const positive = $derived(data.sentiment_positive_total || 1)
+  const max = $derived(Math.max(negative, positive))
+  const min = $derived(Math.min(negative, positive))
   const angle = $derived(getAngle(negative, positive))
 
-  const getAbsAngle = (negative: number, positive: number) =>
-    MAX_ANGLE * Math.abs(positive - negative)
+  function getAbsAngle() {
+    const diff = 1 - min / max
+    let scaleFactor = 1
+
+    if (max < 10) {
+      scaleFactor = 0.1
+    } else if (max < 20) {
+      scaleFactor = 0.2
+    } else if (max < 30) {
+      scaleFactor = 0.3
+    } else if (max < 60) {
+      scaleFactor = 0.5
+    }
+
+    return MAX_ANGLE * diff * scaleFactor
+  }
 
   function getAngleSign(negative: number, positive: number) {
     return negative > positive ? -1 : 1
   }
 
   function getAngle(negative: number, positive: number) {
-    return getAbsAngle(negative, positive) * getAngleSign(negative, positive)
+    return getAngleSign(negative, positive) * getAbsAngle()
   }
 </script>
 
@@ -67,7 +78,15 @@
   </figure>
 
   <p class="c-waterloo caption v-center justify fluid whitespace-nowrap row">
-    <span>Crowd Sentiment: <strong>Neutral</strong></span>
+    <span
+      >Market Sentiment: <strong>
+        {#if Math.abs(angle) > 30}
+          {angle > 0 ? 'Bullish' : 'Bearish'}
+        {:else}
+          Neutral
+        {/if}
+      </strong></span
+    >
   </p>
 </article>
 

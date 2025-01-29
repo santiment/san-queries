@@ -37,7 +37,11 @@
   )
 
   $effect(() => {
-    loadAssetInfo((parameterOverrides.$ as any) || { slug: 'bitcoin' })
+    if (!parameterOverrides.$?.slug) {
+      return
+    }
+
+    loadAssetInfo(parameterOverrides.$ as any)
   })
 
   function toggleField(field: TField) {
