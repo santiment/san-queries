@@ -23,8 +23,8 @@ export const queryAssetInfo = ApiQuery(
       summary
     }
 
-    sentiment_positive_total: aggregatedTimeseriesData(aggregation:LAST, metric:"sentiment_positive_total",from:"utc_now-1d", to:"utc_now", includeIncompleteData: true)
-    sentiment_negative_total: aggregatedTimeseriesData(aggregation:LAST, metric:"sentiment_negative_total",from:"utc_now-1d", to:"utc_now", includeIncompleteData: true)
+    sentiment_positive_total: aggregatedTimeseriesData(aggregation:SUM, metric:"sentiment_positive_total",from:"utc_now-12h", to:"utc_now", includeIncompleteData: true)
+    sentiment_negative_total: aggregatedTimeseriesData(aggregation:SUM, metric:"sentiment_negative_total",from:"utc_now-12h", to:"utc_now", includeIncompleteData: true)
   }
 }
 `,
