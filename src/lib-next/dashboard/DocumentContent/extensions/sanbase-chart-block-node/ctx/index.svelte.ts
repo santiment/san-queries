@@ -7,10 +7,13 @@ import {
   type TDashboardDataWidget,
 } from '$lib-next/dashboard/ctx/data-widgets.svelte'
 import {
+  useChartCtx,
   useChartGlobalParametersCtx,
   useColorGenerator,
   useMetricSeriesCtx,
 } from 'san-webkit-next/ui/app/Chart/ctx'
+import type { TMetricData } from 'san-webkit-next/ui/app/Chart/api'
+import { onMount } from 'svelte'
 
 export function useSanbaseChartWidgetFlow(
   widget: TDashboardDataWidget<typeof SANBASE_CHART_BLOCK_NODE>,
@@ -18,6 +21,7 @@ export function useSanbaseChartWidgetFlow(
   const { id, settings } = widget
   const defaults = widget.data.inputs
 
+  const { chart } = useChartCtx()
   const { colorGenerator } = useColorGenerator()
   const defaultMetrics = settings.$$.metrics.map((item) => normalizeMetric(item))
 
@@ -47,6 +51,20 @@ export function useSanbaseChartWidgetFlow(
     }))
   })
 
+  onMount(() => {
+    setTimeout(() => {
+      updateAltPaneHeight()
+    }, 200)
+  })
+
+  function updateAltPaneHeight() {
+    const _chart = chart.$
+    if (!_chart) return
+
+    const altPane = _chart.panes()[1]
+    altPane?.setHeight(100)
+  }
+
   function normalizeMetric(metric: { name: string; key?: string }): TMetric {
     const { name, key = name } = metric
     const {
@@ -55,12 +73,30 @@ export function useSanbaseChartWidgetFlow(
       formatter = defaultTooltipFormatter,
     } = M[key] || {}
 
+    const _options = {} as any
+
+    if (key.includes('sentiment_')) {
+      _options.pane = 1
+      _options.scaleId = 'right-sentiment'
+      _options.scaleFormatter = (value: any) => Math.abs(value).toFixed(2)
+      _options.style = 'histogram'
+
+      if (key === 'sentiment_negative_total') {
+        _options.color = 'red'
+        _options.transformData = (data: TMetricData) => data.map((item) => ({ ...item, value: -item.value }))
+      } else {
+        _options.color = 'green'
+      }
+    }
+
     return {
       name: key,
       label,
       style: 'line' as const,
       color: colorGenerator.new(),
       scaleId: 'right-' + key,
+
+      ..._options,
 
       tooltipFormatter: formatter,
       scaleFormatter: axisFormatter,
