@@ -1,8 +1,11 @@
 <script lang="ts">
+  import Tooltip from 'san-webkit-next/ui/core/Tooltip'
+
   import arrowDay from './arrow-day.svg'
   import arrowNight from './arrow-night.svg'
   import { useUiCtx } from 'san-webkit-next/ctx/ui'
   import type { TAssetInfoData } from './api'
+  import Button from 'san-webkit-next/ui/core/Button'
 
   let { data }: { data: TAssetInfoData } = $props()
 
@@ -77,16 +80,22 @@
     />
   </figure>
 
-  <p class="c-waterloo caption v-center justify fluid whitespace-nowrap row">
-    <span
-      >Market Sentiment: <strong>
-        {#if Math.abs(angle) > 30}
-          {angle > 0 ? 'Bullish' : 'Bearish'}
-        {:else}
-          Neutral
-        {/if}
-      </strong></span
-    >
+  <p class="caption flex w-full items-center justify-between text-waterloo">
+    <span>Bearish</span>
+
+    <Tooltip position="bottom">
+      {#snippet children({ ref })}
+        <Button {ref} icon="info" iconSize="12"></Button>
+      {/snippet}
+
+      {#snippet content()}
+        <tooltip class="c-fiord body-3 txt-r">
+          This widget shows aggregated sentiment of the crowd and not Santiment's trading advice
+        </tooltip>
+      {/snippet}
+    </Tooltip>
+
+    <span>Bullish</span>
   </p>
 </article>
 
@@ -112,16 +121,6 @@
   p {
     text-transform: capitalize;
     font-size: 11px;
-  }
-
-  .tooltip-trigger {
-    fill: var(--fiord);
-    height: 20px;
-    width: 20px;
-
-    &.active {
-      background-color: var(--athens);
-    }
   }
 
   tooltip {
