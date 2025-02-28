@@ -81,11 +81,12 @@ export function useSanbaseChartWidgetFlow(
       _options.scaleFormatter = (value: any) => Math.abs(value).toFixed(2)
       _options.style = 'histogram'
 
+
       if (key === 'sentiment_negative_total') {
-        _options.color = 'red'
+        _options.color = '#FF6363'
         _options.transformData = (data: TMetricData) => data.map((item) => ({ ...item, value: -item.value }))
       } else {
-        _options.color = 'green'
+        _options.color = '#26C953'
       }
     }
 

@@ -92,8 +92,8 @@
         <Button icon="copy" explanation="Duplicate" onclick={onDuplicateClick}></Button>
 
         <Popover side="bottom" align="end">
-          {#snippet children({ ref })}
-            <Button {ref} icon="vert-dots" />
+          {#snippet children({ props })}
+            <Button {...props} icon="vert-dots" />
           {/snippet}
 
           {#snippet content({ close })}

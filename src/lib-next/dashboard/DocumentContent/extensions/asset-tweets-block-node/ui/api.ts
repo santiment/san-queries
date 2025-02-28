@@ -7,11 +7,11 @@ export type TAssetTweetsData = {
 export const queryAssetTweets = ApiQuery(
   (variables: { slug: string }) => ({
     schema: `query($slug: String!){
-  negative:getMostTweets(from: "utc_now-60d", to: "utc_now", size: 1, tweetType:MOST_NEGATIVE, selector:{slug:$slug}) {
+  negative:getMostTweets(from: "utc_now-1d", to: "utc_now", size: 1, tweetType:MOST_NEGATIVE, selector:{slug:$slug}) {
     tweets { tweetId }
   }
   
-  positive:getMostTweets(from: "utc_now-60d", to: "utc_now", size: 1, tweetType:MOST_POSITIVE,selector:{slug:$slug}) {
+  positive:getMostTweets(from: "utc_now-1d", to: "utc_now", size: 1, tweetType:MOST_POSITIVE,selector:{slug:$slug}) {
     tweets { tweetId }
   }
 }`,

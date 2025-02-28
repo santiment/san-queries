@@ -57,8 +57,7 @@
   >
     {#snippet children(item)}
       <Button
-        variant="ghost"
-        class="w-full gap-2 whitespace-nowrap rounded p-2"
+        class="h-[48px] w-full gap-2 whitespace-nowrap rounded p-2"
         onclick={() => onAssetClick(item)}
       >
         <AssetLogo class="size-8" slug={item.slug}></AssetLogo>
