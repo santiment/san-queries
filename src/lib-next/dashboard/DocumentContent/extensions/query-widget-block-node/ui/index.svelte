@@ -45,6 +45,18 @@
   })
 
   // TODO: Focus on editor when delete widget pressed
+
+  let htmlNode = $state<HTMLElement | null>(null)
+  $effect(() => {
+    if (dashboard.isEditable) return
+    if (!htmlNode) return
+
+    const isInsideHiddenBlock = !!htmlNode.closest('[data-type="hidden-block"]')
+
+    if (isInsideHiddenBlock && dirtyParametersMap.size > 0) {
+      loadSqlData({ isForced: false })
+    }
+  })
 </script>
 
 <section class="flex min-h-0 flex-1 flex-col rounded border bg-white">
@@ -66,7 +78,10 @@
     {/key}
   {/if}
 
-  <div class="relative flex min-h-0 flex-1 flex-col items-center justify-center border-t">
+  <div
+    bind:this={htmlNode}
+    class="relative flex min-h-0 flex-1 flex-col items-center justify-center border-t"
+  >
     {#if _state.$$.isLoading}
       <div
         class="absolute left-0 top-0 z-[2] flex h-full w-full items-center justify-center bg-white/70"
