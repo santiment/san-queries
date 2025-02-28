@@ -77,15 +77,16 @@
       {item.name}
     </h2>
 
-    <div class="gap-1.5 column">
+    <div class="gap-1.5 whitespace-nowrap column">
       <p class="text-xs">Social reputation</p>
 
-      <div class="text-xs row">
+      <div class="min-w-[190px] text-xs row">
         <div class="sentiment positive"></div>
         <div class="sentiment negative"></div>
       </div>
     </div>
 
+    <!--
     <p class="">
       Lorem, ipsum dolor sit amet consectetur adipisicing elit. Commodi eos dolores sed animi fugiat
       vel veritatis inventore similique corporis, incidunt in vitae nemo ipsam error accusantium
@@ -99,6 +100,7 @@
 
       2,5K followers on X
     </div>
+    -->
   </article>
 {/snippet}
 

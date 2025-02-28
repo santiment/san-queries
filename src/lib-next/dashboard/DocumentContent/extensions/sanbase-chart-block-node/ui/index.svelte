@@ -6,6 +6,7 @@
   import { BROWSER } from 'esm-env'
   import Chart, { Tooltip, ApiMetricSeries } from 'san-webkit-next/ui/app/Chart'
   import Button from 'san-webkit-next/ui/core/Button'
+  import SpikeExplanations from 'san-webkit-next/ui/app/Chart/SpikeExplanations'
   import { useDashboardCtx } from '$lib-next/dashboard/ctx'
   import { showMetricsDialogDialog$ } from './__MetricsDialog/MetricsDialog.svelte'
   import { useSanbaseChartWidgetFlow } from '../ctx'
@@ -94,6 +95,8 @@
       {#each metricSeries.$ as item (item.id)}
         <ApiMetricSeries series={item}></ApiMetricSeries>
       {/each}
+
+      <SpikeExplanations></SpikeExplanations>
 
       <Tooltip></Tooltip>
     </Chart>

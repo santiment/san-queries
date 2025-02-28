@@ -40,8 +40,8 @@
   }}
 >
   <LinkSelector>
-    {#snippet children({ ref })}
-      <button bind:this={ref.$}>
+    {#snippet children({ props })}
+      <button {...props}>
         <LinkIcon size="16"></LinkIcon>
       </button>
     {/snippet}
@@ -64,8 +64,8 @@
   </button>
 
   <ColorSelector>
-    {#snippet children({ ref })}
-      <button bind:this={ref.$} class="!w-auto gap-1 px-1.5">
+    {#snippet children({ props })}
+      <button {...props} class="!w-auto gap-1 px-1.5">
         <span class="size-4 min-w-4 rounded-full bg-black"></span>
         <ChevronDown size="12" />
       </button>
