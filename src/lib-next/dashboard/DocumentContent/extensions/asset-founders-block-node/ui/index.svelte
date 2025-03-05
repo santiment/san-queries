@@ -16,7 +16,7 @@
   import Picture from 'san-webkit-next/ui/app/Picture'
   import Svg from 'san-webkit-next/ui/core/Svg'
 
-  import ragData from './rag.json'
+  import ragData from '../rag.json'
 
   let { data }: TDataWidgetProps<typeof ASSET_FOUNDERS_BLOCK_NODE> = $props()
 
@@ -39,7 +39,7 @@
         tap((data) => {
           const asset = getAssetBySlug(variables.slug)
 
-          assetFounders = asset ? data.filter((item) => item.project.name === asset.name).map(({ name }) => ({ name, role: getRole(asset.slug, name) })) : []
+          assetFounders = asset ? data.filter((item) => item.project.name === asset.name).map(({ name }) => ({ name, role: getRole(ragData, asset.slug, name) })) : []
         }),
       ),
     ),
@@ -49,19 +49,8 @@
     if (asset) loadAssetFounders(asset)
   })
 
-  function getRole(slug: string, name: string) {
-    type DataType = { [slug: string]: { name: string; confidence: number; role: string }[] }[];
-    const typedRagData = ragData as unknown as DataType
-
-    for (const founders of typedRagData) {
-      if (founders[slug]) {
-        const person = founders[slug].find((person) => person.name === name);
-
-        if (person) return person.role;
-      }
-    }
-
-    return null
+  const getRole = (data: unknown, slug: string, name: string): string | null => {
+    return (data as Record<string, { name: string; confidence: number; role: string }[]>)[slug]?.find(person => person.name === name)?.role || null
   }
 </script>
 
