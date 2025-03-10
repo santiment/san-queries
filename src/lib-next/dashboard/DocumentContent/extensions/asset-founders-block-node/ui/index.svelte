@@ -39,7 +39,15 @@
         tap((data) => {
           const asset = getAssetBySlug(variables.slug)
 
-          assetFounders = asset ? data.filter((item) => item.project.name === asset.name).map(({ name }) => ({ name, role: getRole(ragData, asset.slug, name) })) : []
+          if (asset) {
+            const ragFounders = getFoundersBySlug(ragData, asset.slug)
+
+            assetFounders = ragFounders
+              ? ragFounders.map(({ name, role }) => ({ name, role }))
+              : data.filter((item) => item.project.name === asset.name)
+          } else {
+            assetFounders = []
+          }
         }),
       ),
     ),
@@ -49,8 +57,8 @@
     if (asset) loadAssetFounders(asset)
   })
 
-  const getRole = (data: unknown, slug: string, name: string): string | null => {
-    return (data as Record<string, { name: string; confidence: number; role: string }[]>)[slug]?.find(person => person.name === name)?.role || null
+  const getFoundersBySlug = (data: unknown, slug: string) => {
+    return (data as Record<string, { name: string; confidence: number; role: string }[]>)[slug]
   }
 </script>
 
@@ -74,7 +82,7 @@
   </section>
 {/snippet}
 
-{#snippet founder(item: { name: string, role?: string })}
+{#snippet founder(item: { name: string; role?: string })}
   <article class="max-w-[300px] gap-3 text-fiord column">
     <header class="flex items-center gap-4">
       <Picture class="size-11 text-base">
