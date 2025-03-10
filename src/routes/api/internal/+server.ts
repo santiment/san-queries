@@ -1,11 +1,9 @@
 import type { RequestHandler } from './$types'
-import { GQL_BASIC_AUTH_USERNAME, GQL_BASIC_AUTH_PASSWORD } from '$env/static/private';
+import { GQL_BASIC_AUTH_USERNAME, GQL_BASIC_AUTH_PASSWORD } from '$env/static/private'
 
-import { BROWSER } from 'esm-env';
 import { error, json } from '@sveltejs/kit'
 
-const ENDPOINT = ((!BROWSER && process.env.NODE_GQL_SERVER_URL) ||
-    process.env.GQL_SERVER_URL);
+const ENDPOINT = process.env.NODE_GQL_SERVER_URL || process.env.GQL_SERVER_URL
 
 export const POST: RequestHandler = async (event) => {
   const { headers, body } = event.request
@@ -13,7 +11,10 @@ export const POST: RequestHandler = async (event) => {
   headers.delete('content-length')
 
   if (GQL_BASIC_AUTH_USERNAME && GQL_BASIC_AUTH_PASSWORD) {
-    headers.set('Authorization', `Basic ${btoa(`${GQL_BASIC_AUTH_USERNAME}:${GQL_BASIC_AUTH_PASSWORD}`)}`)
+    headers.set(
+      'Authorization',
+      `Basic ${btoa(`${GQL_BASIC_AUTH_USERNAME}:${GQL_BASIC_AUTH_PASSWORD}`)}`,
+    )
   }
 
   try {
@@ -26,4 +27,4 @@ export const POST: RequestHandler = async (event) => {
     console.error(e)
     return error(500, 'Internal server error')
   }
-};
+}
