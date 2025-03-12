@@ -11,6 +11,7 @@
   import { showMetricsDialogDialog$ } from './__MetricsDialog/MetricsDialog.svelte'
   import { useSanbaseChartWidgetFlow } from '../ctx'
   import Resizer from '../../utils/Resizer.svelte'
+  import ChartsButton from './ChartsButton.svelte'
   import { internalProxyFetcher } from '../../utils/api'
 
   let { view, data }: TDataWidgetProps<typeof SANBASE_CHART_BLOCK_NODE> = $props()
@@ -82,6 +83,15 @@
         }}
       ></Button>
     {/if}
+
+    <div class="ml-auto flex gap-2">
+      <ChartsButton slug={chartParameters.$$.selector.slug} metrics={metricSeries.$} />
+      <Button
+        variant="border"
+        href={`https://app.santiment.net/labs/trends/explore/${chartParameters.$$.selector.slug}`}
+        >Search in Context</Button
+      >
+    </div>
   </div>
 
   {#if BROWSER}
