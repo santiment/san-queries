@@ -6,7 +6,7 @@ export const queryGetDashboard = ApiQuery(
   (id: number | string) => `{
   data:getDashboard(id:${id}) {
     ${DASHBOARD_FRAGMENT}
-    panels {id  name  description  settings  sql {    query    parameters  }  }  
+    #panels {id  name  description  settings  sql {    query    parameters  }  }  
   }
 }`,
   (gql: { data: TApiDashboard<any> }) => gql.data,
