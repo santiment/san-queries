@@ -161,8 +161,8 @@ dependencies:
     specifier: github:santiment/san-webkit#2b179d6a
     version: github.com/santiment/san-webkit/2b179d6a(patch_hash=sbifrofulxn6pfdnfgffvc6pra)(@types/gtag.js@0.0.4)(@types/medium-editor@5.0.8)(@types/stripe-v3@3.1.33)(ethers@5.8.0)(marked@6.0.0)(medium-editor@5.23.3)(node-fetch@2.7.0)(react-dom@18.3.1)(react@18.3.1)(svelte@5.20.5)(turndown@7.2.0)
   san-webkit-next:
-    specifier: github:santiment/san-webkit#lib-73a9054f-270225
-    version: github.com/santiment/san-webkit/870c5c1f06da0659fe78bea80eb71a08b4675496(@melt-ui/svelte@0.86.2)(@rrweb/types@2.0.0-alpha.17)(@santiment-network/chart@1.0.4)(@sveltejs/adapter-auto@3.3.1)(@sveltejs/adapter-node@5.2.12)(@sveltejs/kit@2.17.3)(@sveltejs/vite-plugin-svelte@5.0.3)(@types/react@18.3.3)(@wagmi/connectors@5.7.8)(@wagmi/core@2.16.5)(bits-ui@1.3.4)(estree-walker@3.0.3)(graphql@16.10.0)(react-dom@18.3.1)(react@18.3.1)(rxjs@7.8.2)(svelte@5.20.5)(tailwind-merge@2.2.1)(tailwindcss@3.4.1)(typescript@5.7.2)(viem@2.23.5)(vite@6.2.0)(wagmi@2.14.12)
+    specifier: github:santiment/san-webkit#lib-c0c230e0-070325
+    version: github.com/santiment/san-webkit/e12cc86272acc2b9aaef67fb02c6641465b1c363(@melt-ui/svelte@0.86.2)(@rrweb/types@2.0.0-alpha.17)(@santiment-network/chart@1.0.4)(@sveltejs/adapter-auto@3.3.1)(@sveltejs/adapter-node@5.2.12)(@sveltejs/kit@2.17.3)(@sveltejs/vite-plugin-svelte@5.0.3)(@types/react@18.3.3)(@wagmi/connectors@5.7.8)(@wagmi/core@2.16.5)(bits-ui@1.3.4)(estree-walker@3.0.3)(graphql@16.10.0)(react-dom@18.3.1)(react@18.3.1)(rxjs@7.8.2)(svelte@5.20.5)(tailwind-merge@2.2.1)(tailwindcss@3.4.1)(typescript@5.7.2)(viem@2.23.5)(vite@6.2.0)(wagmi@2.14.12)
   svelte:
     specifier: 5.20.5
     version: 5.20.5
@@ -4452,7 +4452,7 @@ packages:
         optional: true
     dependencies:
       '@rollup/pluginutils': 5.1.4(rollup@4.34.8)
-      magic-string: 0.30.8
+      magic-string: 0.30.17
     dev: false
 
   /@rollup/pluginutils@5.1.4(rollup@4.34.8):
@@ -14907,9 +14907,9 @@ packages:
     dev: false
     patched: true
 
-  github.com/santiment/san-webkit/870c5c1f06da0659fe78bea80eb71a08b4675496(@melt-ui/svelte@0.86.2)(@rrweb/types@2.0.0-alpha.17)(@santiment-network/chart@1.0.4)(@sveltejs/adapter-auto@3.3.1)(@sveltejs/adapter-node@5.2.12)(@sveltejs/kit@2.17.3)(@sveltejs/vite-plugin-svelte@5.0.3)(@types/react@18.3.3)(@wagmi/connectors@5.7.8)(@wagmi/core@2.16.5)(bits-ui@1.3.4)(estree-walker@3.0.3)(graphql@16.10.0)(react-dom@18.3.1)(react@18.3.1)(rxjs@7.8.2)(svelte@5.20.5)(tailwind-merge@2.2.1)(tailwindcss@3.4.1)(typescript@5.7.2)(viem@2.23.5)(vite@6.2.0)(wagmi@2.14.12):
-    resolution: {tarball: https://codeload.github.com/santiment/san-webkit/tar.gz/870c5c1f06da0659fe78bea80eb71a08b4675496}
-    id: github.com/santiment/san-webkit/870c5c1f06da0659fe78bea80eb71a08b4675496
+  github.com/santiment/san-webkit/e12cc86272acc2b9aaef67fb02c6641465b1c363(@melt-ui/svelte@0.86.2)(@rrweb/types@2.0.0-alpha.17)(@santiment-network/chart@1.0.4)(@sveltejs/adapter-auto@3.3.1)(@sveltejs/adapter-node@5.2.12)(@sveltejs/kit@2.17.3)(@sveltejs/vite-plugin-svelte@5.0.3)(@types/react@18.3.3)(@wagmi/connectors@5.7.8)(@wagmi/core@2.16.5)(bits-ui@1.3.4)(estree-walker@3.0.3)(graphql@16.10.0)(react-dom@18.3.1)(react@18.3.1)(rxjs@7.8.2)(svelte@5.20.5)(tailwind-merge@2.2.1)(tailwindcss@3.4.1)(typescript@5.7.2)(viem@2.23.5)(vite@6.2.0)(wagmi@2.14.12):
+    resolution: {tarball: https://codeload.github.com/santiment/san-webkit/tar.gz/e12cc86272acc2b9aaef67fb02c6641465b1c363}
+    id: github.com/santiment/san-webkit/e12cc86272acc2b9aaef67fb02c6641465b1c363
     name: san-webkit-next
     version: 0.0.1
     hasBin: true

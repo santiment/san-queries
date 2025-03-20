@@ -1,4 +1,5 @@
 import { ApiQuery } from 'san-webkit-next/api'
+import { internalProxyFetcher } from '../../utils/api'
 
 export type TAssetInfoData = {
   priceUsd: number
@@ -9,6 +10,7 @@ export type TAssetInfoData = {
   sentiment_positive_total: number
   sentiment_negative_total: number
 }
+
 export const queryAssetInfo = ApiQuery(
   (variables: { slug: string }) => ({
     schema: `query($slug: String!){
@@ -33,4 +35,7 @@ export const queryAssetInfo = ApiQuery(
     },
   }),
   (gql: { data: TAssetInfoData }) => gql.data,
+  {
+    fetcher: internalProxyFetcher,
+  }
 )
