@@ -56,7 +56,7 @@ const config = mergeConfig(
       'process.env.ICONS_PATH': JSON.stringify(process.env.ICONS_PATH),
 
       'process.env.API_FETCH_ORIGIN': JSON.stringify('https://app.santiment.net'),
-      'process.env.SANBASE_ORIGIN': JSON.stringify(''),
+      'process.env.SANBASE_ORIGIN': JSON.stringify('https://app.santiment.net'),
 
       'process.env.VERSION': JSON.stringify(VERSION),
     },

@@ -16,6 +16,8 @@
   import Picture from 'san-webkit-next/ui/app/Picture'
   import Svg from 'san-webkit-next/ui/core/Svg'
 
+  import ragData from '../rag.json'
+
   let { data }: TDataWidgetProps<typeof ASSET_FOUNDERS_BLOCK_NODE> = $props()
 
   const { widget } = data
@@ -36,7 +38,16 @@
       queryAssetFounders()(variables).pipe(
         tap((data) => {
           const asset = getAssetBySlug(variables.slug)
-          assetFounders = asset ? data.filter((item) => item.project.name === asset.name) : []
+
+          if (asset) {
+            const ragFounders = getFoundersBySlug(ragData, asset.slug)
+
+            assetFounders = ragFounders
+              ? ragFounders.map(({ name, role }) => ({ name, role }))
+              : data.filter((item) => item.project.name === asset.name)
+          } else {
+            assetFounders = []
+          }
         }),
       ),
     ),
@@ -45,6 +56,10 @@
   $effect(() => {
     if (asset) loadAssetFounders(asset)
   })
+
+  const getFoundersBySlug = (data: unknown, slug: string) => {
+    return (data as Record<string, { name: string; confidence: number; role: string }[]>)[slug]
+  }
 </script>
 
 {#if dashboard.isEditable}
@@ -67,15 +82,21 @@
   </section>
 {/snippet}
 
-{#snippet founder(item: { name: string })}
+{#snippet founder(item: { name: string; role?: string })}
   <article class="max-w-[300px] gap-3 text-fiord column">
-    <h2 class="text-medium flex items-center gap-4 text-base text-black">
+    <header class="flex items-center gap-4">
       <Picture class="size-11 text-base">
         {(item.name || '').slice(0, 1).toUpperCase()}
       </Picture>
-
-      {item.name}
-    </h2>
+      <div>
+        <h2 class="text-medium text-base text-black">
+          {item.name}
+        </h2>
+        {#if item.role}
+          <p>{item.role}</p>
+        {/if}
+      </div>
+    </header>
 
     <div class="gap-1.5 whitespace-nowrap column">
       <p class="text-xs">Social reputation</p>
