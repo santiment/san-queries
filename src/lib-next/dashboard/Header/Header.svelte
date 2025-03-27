@@ -9,6 +9,7 @@
   import Comments from './Comments.svelte'
   import { useDashboardCtx } from '../ctx'
   import { useDashboardDeleteFlow } from '../flow/delete'
+  import Svg from 'san-webkit-next/ui/core/Svg'
 
   type TProps = {
     onPublishToggle: () => void
@@ -40,6 +41,10 @@
 
 <header class="flex items-center">
   <User user={dashboard.author || { username: '<hidden>' }} class="text-waterloo"></User>
+
+  {#if +(dashboard.author?.id ?? 0) === 144899}
+    <Svg illus id="editorial" w="95" h="32" class="ml-2"></Svg>
+  {/if}
 
   {#if id}
     {@const name = dashboard.state.$$.name}
@@ -110,7 +115,9 @@
         </Popover>
       {/if}
     {:else if currentUser.$$}
-      <Button icon="copy" explanation="Duplicate" onclick={onDuplicateClick}></Button>
+      {#if false}
+        <Button icon="copy" explanation="Duplicate" onclick={onDuplicateClick}></Button>
+      {/if}
     {/if}
   </div>
 </header>
