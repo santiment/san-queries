@@ -11,6 +11,7 @@
   import { showMetricsDialogDialog$ } from './__MetricsDialog/MetricsDialog.svelte'
   import { useSanbaseChartWidgetFlow } from '../ctx'
   import Resizer from '../../utils/Resizer.svelte'
+  import { internalProxyFetcher } from '../../utils/api'
 
   let { view, data }: TDataWidgetProps<typeof SANBASE_CHART_BLOCK_NODE> = $props()
 
@@ -93,7 +94,7 @@
       }}
     >
       {#each metricSeries.$ as item (item.id)}
-        <ApiMetricSeries series={item}></ApiMetricSeries>
+        <ApiMetricSeries series={item} fetcher={internalProxyFetcher}></ApiMetricSeries>
       {/each}
 
       <SpikeExplanations></SpikeExplanations>
