@@ -51,7 +51,7 @@ export const SANBASE_CHART_BLOCK_NODE: TDataWidgetNode<TSchema> = createDataWidg
   initData() {
     return {
       name: 'Sanbase Chart',
-      inputs: { slug: 'bitcoin', from: 'utc_now-60d', to: 'utc_now' },
+      inputs: { slug: 'bitcoin', from: 'utc_now-2y', to: 'utc_now' },
     }
   },
 

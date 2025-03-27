@@ -60,6 +60,10 @@
   $effect(() => {
     if (asset) loadAssetFounders(asset)
   })
+
+  const getFoundersBySlug = (data: unknown, slug: string) => {
+    return (data as Record<string, { name: string; confidence: number; role: string }[]>)[slug]
+  }
 </script>
 
 {#if dashboard.isEditable}
@@ -88,13 +92,19 @@
   {@const negative_percent = 100 - positive_percent}
 
   <article class="max-w-[300px] gap-3 text-fiord column">
-    <h2 class="text-medium flex items-center gap-4 text-base text-black">
+    <header class="flex items-center gap-4">
       <Picture class="size-11 text-base">
         {(item.name || '').slice(0, 1).toUpperCase()}
       </Picture>
-
-      {item.name}
-    </h2>
+      <div>
+        <h2 class="text-medium text-base text-black">
+          {item.name}
+        </h2>
+        {#if item.role}
+          <p>{item.role}</p>
+        {/if}
+      </div>
+    </header>
 
     <div class="gap-1.5 whitespace-nowrap column">
       <p class="text-xs">Social reputation</p>

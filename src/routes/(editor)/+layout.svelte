@@ -4,16 +4,21 @@
   import EditorSidebar from '$lib/EditorSidebar/index.svelte'
   import { useEditorSidebarCtx } from '$lib/EditorSidebar/ctx'
   import SaveIndicator, { useSaveIndicatorCtx } from '$lib/SaveIndicator'
+  import { checkIsDyorDashboard } from '$lib-next/utils/index'
 
   const _editorSidebarCtx = useEditorSidebarCtx()
 
   useSaveIndicatorCtx.set()
+
+  const isDyorDashboardPage = $derived(checkIsDyorDashboard())
 </script>
 
 <screen class="flex flex-1">
-  <OnlyOnDevice desktop>
-    <EditorSidebar />
-  </OnlyOnDevice>
+  {#if !isDyorDashboardPage}
+    <OnlyOnDevice desktop>
+      <EditorSidebar />
+    </OnlyOnDevice>
+  {/if}
 
   <main class="flex min-w-0 flex-1 flex-col">
     <slot />
