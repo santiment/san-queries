@@ -16,7 +16,7 @@
   import Picture from 'san-webkit-next/ui/app/Picture'
   import Svg from 'san-webkit-next/ui/core/Svg'
 
-  import ragData from '../rag.json'
+  import foundersData from '../founders.json'
 
   let { data }: TDataWidgetProps<typeof ASSET_FOUNDERS_BLOCK_NODE> = $props()
 
@@ -40,10 +40,14 @@
           const asset = getAssetBySlug(variables.slug)
 
           if (asset) {
-            const ragFounders = getFoundersBySlug(ragData, asset.slug)
+            const ragFounders = getFoundersBySlug(foundersData, asset.slug)
 
             assetFounders = ragFounders
-              ? ragFounders.map(({ name, role }) => ({ name, role }))
+              ? ragFounders.map(({ name, role, positive_to_sum }) => ({
+                  name,
+                  role,
+                  positive_to_sum,
+                }))
               : data.filter((item) => item.project.name === asset.name)
           } else {
             assetFounders = []
@@ -82,7 +86,11 @@
   </section>
 {/snippet}
 
-{#snippet founder(item: { name: string; role?: string })}
+{#snippet founder(item: { name: string; role?: string; positive_to_sum: number })}
+  {@const hasData = item.positive_to_sum !== undefined && item.positive_to_sum !== null}
+  {@const positive_percent = hasData ? Math.round(item.positive_to_sum * 100) : 50}
+  {@const negative_percent = 100 - positive_percent}
+
   <article class="max-w-[300px] gap-3 text-fiord column">
     <header class="flex items-center gap-4">
       <Picture class="size-11 text-base">
@@ -102,9 +110,20 @@
       <p class="text-xs">Social reputation</p>
 
       <div class="min-w-[190px] text-xs row">
-        <div class="sentiment positive"></div>
-        <div class="sentiment negative"></div>
+        <div class="sentiment positive" style="width: {positive_percent}%"></div>
+        <div class="sentiment negative" style="width: {negative_percent}%"></div>
       </div>
+
+      {#if hasData}
+        <div class="flex justify-between text-xs">
+          <span class="text-green">{positive_percent}% Positive</span>
+          <span class="text-red">{negative_percent}% Negative</span>
+        </div>
+      {/if}
+
+      {#if !hasData}
+        <p class="text-center text-xs">No data available</p>
+      {/if}
     </div>
 
     <!--
@@ -127,7 +146,7 @@
 
 <style>
   .sentiment {
-    flex: 1;
+    display: inline-block;
   }
 
   .sentiment::before {
@@ -139,7 +158,6 @@
   }
 
   .sentiment::after {
-    content: '55% Positive';
     color: var(--green);
   }
 
@@ -152,7 +170,6 @@
   }
 
   .sentiment.negative::after {
-    content: '45% Negative';
     color: var(--red);
   }
 </style>
