@@ -62,12 +62,7 @@
   })
 
   const getFoundersBySlug = (data: unknown, slug: string) => {
-    return (
-      data as Record<
-        string,
-        { name: string; confidence: number; role: string; positive_to_sum: number }[]
-      >
-    )[slug]
+    return (data as Record<string, { name: string; confidence: number; role: string }[]>)[slug]
   }
 </script>
 
