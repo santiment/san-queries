@@ -116,4 +116,8 @@
   button {
     --v-padding: 12px;
   }
+
+  main :global(input[placeholder='Search for metrics']) {
+    background: var(--white);
+  }
 </style>

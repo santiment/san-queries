@@ -14,6 +14,7 @@ import {
 } from 'san-webkit-next/ui/app/Chart/ctx'
 import type { TMetricData } from 'san-webkit-next/ui/app/Chart/api'
 import { onMount } from 'svelte'
+import { suggestPeriodInterval } from 'san-webkit-next/utils/dates'
 
 export function useSanbaseChartWidgetFlow(
   widget: TDashboardDataWidget<typeof SANBASE_CHART_BLOCK_NODE>,
@@ -36,6 +37,13 @@ export function useSanbaseChartWidgetFlow(
     selector: { slug },
     from,
     to,
+  })
+
+  $effect.pre(() => {
+    chartParameters.$$.interval = suggestPeriodInterval(
+      chartParameters.dates$.fromUtcDate,
+      chartParameters.dates$.toUtcDate,
+    )
   })
 
   $effect(() => {
@@ -81,10 +89,10 @@ export function useSanbaseChartWidgetFlow(
       _options.scaleFormatter = (value: any) => Math.abs(value).toFixed(2)
       _options.style = 'histogram'
 
-
       if (key === 'sentiment_negative_total') {
         _options.color = '#FF6363'
-        _options.transformData = (data: TMetricData) => data.map((item) => ({ ...item, value: -item.value }))
+        _options.transformData = (data: TMetricData) =>
+          data.map((item) => ({ ...item, value: -item.value }))
       } else {
         _options.color = '#26C953'
       }
