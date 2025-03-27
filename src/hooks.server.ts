@@ -9,6 +9,7 @@ import {
   sanbaseVersionHandle,
   cookiePolicyHandle,
   amplitudeTrackHandle,
+  posthogTrackHandle,
 } from 'san-webkit-next/sveltekit/hooks'
 
 function normalizeDeviceType(type: string | undefined): Device {
@@ -23,6 +24,7 @@ function normalizeDeviceType(type: string | undefined): Device {
 }
 
 export const handle = sequence(
+  posthogTrackHandle,
   amplitudeTrackHandle,
   appSessionHandle,
   cookiePolicyHandle,
