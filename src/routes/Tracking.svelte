@@ -3,11 +3,10 @@
 
   import { BROWSER } from 'esm-env'
   import { updateAmplitude } from 'san-webkit/lib/analytics/amplitude'
-  import { startLinksListener } from 'san-webkit/lib/analytics/links'
   import { parseAuthSearchParams } from 'san-webkit/lib/utils/auth'
   import { trackSignupLogin } from '$lib/utils/analytics'
   import { useCustomerCtx } from 'san-webkit-next/ctx/customer'
-  import { usePageViewEventTracking } from 'san-webkit-next/analytics'
+  import { startLinksListener, usePageViewEventTracking } from 'san-webkit-next/analytics'
 
   const { currentUser } = useCustomerCtx()
 

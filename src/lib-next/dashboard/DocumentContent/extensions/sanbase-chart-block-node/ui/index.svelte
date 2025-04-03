@@ -89,8 +89,11 @@
       <Button
         variant="border"
         href={`https://app.santiment.net/labs/trends/explore/${chartParameters.$$.selector.slug}`}
-        >Search in Context</Button
+        data-source="dashboard_sanbase_chart_widget"
+        data-type="search_in_context"
       >
+        Search in Context
+      </Button>
     </div>
   </div>
 

@@ -25,4 +25,6 @@
   })
 </script>
 
-<Button variant="fill" {href}>See on Charts</Button>
+<Button variant="fill" {href} data-source="dashboard_sanbase_chart_widget" data-type="see_on_charts"
+  >See on Charts</Button
+>
