@@ -25,6 +25,7 @@
   import Gdpr from '$lib/Gdpr.svelte'
   import Tracking from './Tracking.svelte'
   import OnlyOnDevice from 'san-webkit-next/ui/utils/OnlyOnDevice'
+  import Meta from './Meta.svelte'
 
   // export let data: LayoutData
   let { data } = $props()
@@ -45,11 +46,9 @@
   })
 </script>
 
-<svelte:head>
-  <title>Santiment Queries</title>
-</svelte:head>
-
 <svelte:window on:resize={device$.onResize} />
+
+<Meta />
 
 <OnlyOnDevice desktop>
   <NavHeader />
