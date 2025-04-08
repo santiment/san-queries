@@ -1,6 +1,5 @@
-import type { HandleServerError } from '@sveltejs/kit'
+import type { Handle, HandleServerError } from '@sveltejs/kit'
 
-import { redirect } from '@sveltejs/kit'
 import { Device } from 'san-webkit/lib/responsive'
 import { sequence } from '@sveltejs/kit/hooks'
 
@@ -11,6 +10,7 @@ import {
   amplitudeTrackHandle,
   posthogTrackHandle,
 } from 'san-webkit-next/sveltekit/hooks'
+import { DeviceType } from 'san-webkit-next/ctx/device'
 
 function normalizeDeviceType(type: string | undefined): Device {
   switch (type) {
@@ -23,10 +23,19 @@ function normalizeDeviceType(type: string | undefined): Device {
   }
 }
 
+const appHandle: Handle = async ({ event, resolve }) => {
+  event.locals.device = DeviceType.Desktop
+  event.locals.customer = undefined
+  event.locals.theme = ''
+
+  return resolve(event)
+}
+
 export const handle = sequence(
   posthogTrackHandle,
   amplitudeTrackHandle,
-  appSessionHandle,
+  //appSessionHandle,
+  appHandle,
   cookiePolicyHandle,
   sanbaseVersionHandle,
 )
