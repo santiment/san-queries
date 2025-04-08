@@ -32,12 +32,12 @@ const appHandle: Handle = async ({ event, resolve }) => {
 }
 
 export const handle = sequence(
-  posthogTrackHandle,
-  amplitudeTrackHandle,
+  //posthogTrackHandle,
+  //amplitudeTrackHandle,
   //appSessionHandle,
   appHandle,
-  cookiePolicyHandle,
-  sanbaseVersionHandle,
+  //cookiePolicyHandle,
+  //sanbaseVersionHandle,
 )
 
 export const handleError: HandleServerError = ({ error }: any) => {
