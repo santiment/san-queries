@@ -34,8 +34,8 @@ const appHandle: Handle = async ({ event, resolve }) => {
 export const handle = sequence(
   posthogTrackHandle,
   amplitudeTrackHandle,
-  //appSessionHandle,
-  appHandle,
+  appSessionHandle,
+  //appHandle,
   //cookiePolicyHandle,
   //sanbaseVersionHandle,
 )
