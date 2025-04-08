@@ -9,7 +9,7 @@ declare global {
       theme: 'night-mode' | ''
       isCookiesVisible: boolean
 
-      customer: import('san-webkit-next/ctx/customer/api').TCustomer
+      customer: import('san-webkit-next/ctx/customer/api').TCustomer | undefined
       device: import('san-webkit-next/ctx/device').DeviceType
     }
     // interface PageData {}

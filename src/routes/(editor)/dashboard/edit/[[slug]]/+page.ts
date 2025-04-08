@@ -8,7 +8,7 @@ export async function load(event) {
   const { session } = await event.parent()
   const { customer } = session
 
-  if (!customer.currentUser) {
+  if (!customer?.currentUser) {
     throw redirect(302, '/')
   }
 
@@ -27,7 +27,7 @@ export async function load(event) {
     throw redirect(302, '/dashboard/edit/new')
   }
 
-  if (+apiDashboard.user.id !== +customer.currentUser.id) {
+  if (+apiDashboard.user.id !== +customer?.currentUser.id) {
     throw redirect(302, '/dashboard/edit/new')
   }
 
