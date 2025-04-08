@@ -1,4 +1,4 @@
-import type { Handle, HandleServerError } from '@sveltejs/kit'
+import { redirect, type Handle, type HandleServerError } from '@sveltejs/kit'
 
 import { Device } from 'san-webkit/lib/responsive'
 import { sequence } from '@sveltejs/kit/hooks'
@@ -32,8 +32,8 @@ const appHandle: Handle = async ({ event, resolve }) => {
 }
 
 export const handle = sequence(
-  //posthogTrackHandle,
-  //amplitudeTrackHandle,
+  posthogTrackHandle,
+  amplitudeTrackHandle,
   //appSessionHandle,
   appHandle,
   //cookiePolicyHandle,
@@ -45,6 +45,7 @@ export const handleError: HandleServerError = ({ error }: any) => {
   console.error(error)
 
   if ((message || '').startsWith('Not found:')) {
+    throw redirect(302, '/query/new')
     // throw redirect(302, '/query/new')
   }
 
