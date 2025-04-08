@@ -1,7 +1,7 @@
 import { redirect } from '@sveltejs/kit'
 import { loadPageDashboard } from '../utils.js'
 
-export const ssr = false
+//export const ssr = false
 
 export async function load(event) {
   // const { session } = await event.parent()
@@ -22,5 +22,9 @@ export async function load(event) {
   return {
     apiDashboard,
     dashboardDataCache,
+
+    meta: {
+      title: `${apiDashboard.name} - Santiment Dashboard`,
+    },
   }
 }
