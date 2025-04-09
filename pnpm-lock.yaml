@@ -9,7 +9,7 @@ patchedDependencies:
     hash: hitjywtc6dhlkudhdicjfgneme
     path: patches/@sveltejs__adapter-node@5.2.9.patch
   '@sveltejs/kit@2.20.4':
-    hash: sts5yywaepp44eypxqpnvu3cqa
+    hash: xeq4flqfevc7uzgurljltfnhii
     path: patches/@sveltejs__kit@2.8.0.patch
   san-webkit@0.0.1:
     hash: sbifrofulxn6pfdnfgffvc6pra
@@ -45,7 +45,7 @@ dependencies:
     version: 5.2.12(patch_hash=hitjywtc6dhlkudhdicjfgneme)(@sveltejs/kit@2.20.4)
   '@sveltejs/kit':
     specifier: ^2.20.4
-    version: 2.20.4(patch_hash=sts5yywaepp44eypxqpnvu3cqa)(@sveltejs/vite-plugin-svelte@5.0.3)(svelte@5.25.8)(vite@6.2.5)
+    version: 2.20.4(patch_hash=xeq4flqfevc7uzgurljltfnhii)(@sveltejs/vite-plugin-svelte@5.0.3)(svelte@5.25.8)(vite@6.2.5)
   '@sveltejs/vite-plugin-svelte':
     specifier: 5.0.3
     version: 5.0.3(svelte@5.25.8)(vite@6.2.5)
@@ -4981,7 +4981,7 @@ packages:
       '@sentry/types': 8.36.0
       '@sentry/utils': 8.36.0
       '@sentry/vite-plugin': 2.22.6
-      '@sveltejs/kit': 2.20.4(patch_hash=sts5yywaepp44eypxqpnvu3cqa)(@sveltejs/vite-plugin-svelte@5.0.3)(svelte@5.25.8)(vite@6.2.5)
+      '@sveltejs/kit': 2.20.4(patch_hash=xeq4flqfevc7uzgurljltfnhii)(@sveltejs/vite-plugin-svelte@5.0.3)(svelte@5.25.8)(vite@6.2.5)
       magic-string: 0.30.7
       magicast: 0.2.8
       sorcery: 1.0.0
@@ -5614,7 +5614,7 @@ packages:
     peerDependencies:
       '@sveltejs/kit': ^2.0.0
     dependencies:
-      '@sveltejs/kit': 2.20.4(patch_hash=sts5yywaepp44eypxqpnvu3cqa)(@sveltejs/vite-plugin-svelte@5.0.3)(svelte@5.25.8)(vite@6.2.5)
+      '@sveltejs/kit': 2.20.4(patch_hash=xeq4flqfevc7uzgurljltfnhii)(@sveltejs/vite-plugin-svelte@5.0.3)(svelte@5.25.8)(vite@6.2.5)
       import-meta-resolve: 4.1.0
     dev: false
 
@@ -5626,12 +5626,12 @@ packages:
       '@rollup/plugin-commonjs': 28.0.3(rollup@4.39.0)
       '@rollup/plugin-json': 6.1.0(rollup@4.39.0)
       '@rollup/plugin-node-resolve': 16.0.1(rollup@4.39.0)
-      '@sveltejs/kit': 2.20.4(patch_hash=sts5yywaepp44eypxqpnvu3cqa)(@sveltejs/vite-plugin-svelte@5.0.3)(svelte@5.25.8)(vite@6.2.5)
+      '@sveltejs/kit': 2.20.4(patch_hash=xeq4flqfevc7uzgurljltfnhii)(@sveltejs/vite-plugin-svelte@5.0.3)(svelte@5.25.8)(vite@6.2.5)
       rollup: 4.39.0
     dev: false
     patched: true
 
-  /@sveltejs/kit@2.20.4(patch_hash=sts5yywaepp44eypxqpnvu3cqa)(@sveltejs/vite-plugin-svelte@5.0.3)(svelte@5.25.8)(vite@6.2.5):
+  /@sveltejs/kit@2.20.4(patch_hash=xeq4flqfevc7uzgurljltfnhii)(@sveltejs/vite-plugin-svelte@5.0.3)(svelte@5.25.8)(vite@6.2.5):
     resolution: {integrity: sha512-B3Y1mb1Qjt57zXLVch5tfqsK/ebHe6uYTcFSnGFNwRpId3+fplLgQK6Z2zhDVBezSsPuhDq6Pry+9PA88ocN6Q==}
     engines: {node: '>=18.13'}
     hasBin: true
@@ -14913,7 +14913,7 @@ packages:
       '@stripe/stripe-js': 4.10.0
       '@sveltejs/adapter-auto': 3.3.1(@sveltejs/kit@2.20.4)
       '@sveltejs/adapter-node': 5.2.12(patch_hash=hitjywtc6dhlkudhdicjfgneme)(@sveltejs/kit@2.20.4)
-      '@sveltejs/kit': 2.20.4(patch_hash=sts5yywaepp44eypxqpnvu3cqa)(@sveltejs/vite-plugin-svelte@5.0.3)(svelte@5.25.8)(vite@6.2.5)
+      '@sveltejs/kit': 2.20.4(patch_hash=xeq4flqfevc7uzgurljltfnhii)(@sveltejs/vite-plugin-svelte@5.0.3)(svelte@5.25.8)(vite@6.2.5)
       '@sveltejs/vite-plugin-svelte': 5.0.3(svelte@5.25.8)(vite@6.2.5)
       '@wagmi/connectors': 5.7.12(@types/react@18.3.3)(@wagmi/core@2.16.7)(react@18.3.1)(typescript@5.7.2)(viem@2.26.2)(zod@3.23.8)
       '@wagmi/core': 2.16.7(@types/react@18.3.3)(react@18.3.1)(typescript@5.7.2)(use-sync-external-store@1.4.0)(viem@2.26.2)
