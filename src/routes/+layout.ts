@@ -49,15 +49,19 @@ function getPageType(pathname: string) {
 
 export const load: LayoutLoad = (event) => {
   const { data } = event
+  console.log(event.route)
+  console.log(data)
+
+  console.log('------')
 
   setupKitClientSession(data)
 
-  if (!data.customer?.currentUser) {
-    if (event.route.id?.startsWith('/(editor)/') && event.url.pathname.includes('/new')) {
-      // if (event.route.id?.startsWith('/(editor)/')) {
-      throw redirect(302, '/sign-up?from=' + encodeURIComponent(event.url.href))
-    }
-  }
+  //if (!data.customer?.currentUser) {
+  //  if (event.route.id?.startsWith('/(editor)/') && event.url.pathname.includes('/new')) {
+  //    // if (event.route.id?.startsWith('/(editor)/')) {
+  //    throw redirect(302, '/sign-up?from=' + encodeURIComponent(event.url.href))
+  //  }
+  //}
 
   return {
     session: data,
