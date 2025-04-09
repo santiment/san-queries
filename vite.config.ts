@@ -31,7 +31,8 @@ const config = mergeConfig(
 
     serverDefines: {
       'process.env.GQL_SERVER_URL': JSON.stringify(
-        process.env.NODE_GQL_SERVER_URL || GQL_SERVER_URL,
+        GQL_SERVER_URL,
+        //process.env.NODE_GQL_SERVER_URL || GQL_SERVER_URL,
       ),
     },
 
