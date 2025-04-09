@@ -1,6 +1,4 @@
 <script lang="ts">
-  import type { LayoutData } from './$types'
-
   // import '../app.css'
   import './app.css'
   import 'san-webkit-next/app.css'
@@ -13,11 +11,6 @@
   import NextNotifications from 'san-webkit-next/ui/core/Notifications'
   import { BootFlag } from 'san-webkit-next/utils'
 
-  import { Customer$$ } from 'san-webkit/lib/stores/customer'
-  import { CurrentUser$$ } from 'san-webkit/lib/stores/user'
-  import { Device$$ } from 'san-webkit/lib/stores/responsive'
-  import { newAppTooltipsCtx } from 'san-webkit/lib/ui/Tooltip/ctx'
-  import { UI$$ } from 'san-webkit/lib/stores/ui'
   import Dialogs from 'san-webkit/lib/ui/Dialog/Dialogs.svelte'
   import Notifications from 'san-webkit/lib/ui/Notifications'
   import FeatureWalkthrough from 'san-webkit/lib/ui/FeatureWalkthrough/svelte'
@@ -26,15 +19,10 @@
   import Tracking from './Tracking.svelte'
   import OnlyOnDevice from 'san-webkit-next/ui/utils/OnlyOnDevice'
   import Meta from './Meta.svelte'
+  import Legacy from './Legacy.svelte'
 
   // export let data: LayoutData
   let { data } = $props()
-
-  newAppTooltipsCtx()
-  CurrentUser$$(data.session.old_currentUser)
-  Customer$$(data.session.old_customer || {})
-  UI$$()
-  const { device$ } = Device$$(data.session.old_device)
 
   useCustomerCtx(data.session.customer)
   useUiCtx()
@@ -46,26 +34,28 @@
   })
 </script>
 
-<svelte:window on:resize={device$.onResize} />
-
 <Meta />
 
-<OnlyOnDevice desktop>
-  <NavHeader />
-</OnlyOnDevice>
-
-<Gdpr>
-  <slot />
-</Gdpr>
-
 {#if BROWSER}
-  <Dialogs />
-  <FeatureWalkthrough />
-  <Notifications />
+  <Legacy {data}>
+    <OnlyOnDevice desktop>
+      <NavHeader />
+    </OnlyOnDevice>
 
-  <Tracking />
+    <Gdpr>
+      <slot />
+    </Gdpr>
 
-  <NextNotifications></NextNotifications>
+    {#if BROWSER}
+      <Dialogs />
+      <FeatureWalkthrough />
+      <Notifications />
+
+      <Tracking />
+
+      <NextNotifications></NextNotifications>
+    {/if}
+  </Legacy>
 {/if}
 
 <style lang="postcss">
