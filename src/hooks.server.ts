@@ -11,6 +11,9 @@ import {
   posthogTrackHandle,
 } from 'san-webkit-next/sveltekit/hooks'
 import { DeviceType } from 'san-webkit-next/ctx/device'
+import { getDeviceInfo } from 'san-webkit/lib/stores/responsive'
+import { UAParser } from 'ua-parser-js'
+import { DEFAULT } from 'san-webkit/lib/stores/customer'
 
 function normalizeDeviceType(type: string | undefined): Device {
   switch (type) {
@@ -30,11 +33,22 @@ const appHandle: Handle = async ({ event, resolve }) => {
 
   return resolve(event)
 }
+export const old_appHandle: Handle = async ({ event, resolve }) => {
+  const userAgent = UAParser(event.request.headers.get('user-agent') as any)
+  const device = getDeviceInfo(normalizeDeviceType(userAgent.device.type))
+
+  event.locals.old_device = device
+  event.locals.old_currentUser = null
+  event.locals.old_customer = DEFAULT
+
+  return resolve(event)
+}
 
 export const handle = sequence(
   posthogTrackHandle,
   amplitudeTrackHandle,
   appSessionHandle,
+  old_appHandle,
   //appHandle,
   //cookiePolicyHandle,
   //sanbaseVersionHandle,

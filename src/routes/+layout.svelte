@@ -31,10 +31,10 @@
   let { data } = $props()
 
   newAppTooltipsCtx()
-  CurrentUser$$(data.session.currentUser)
-  Customer$$(data.session.customer)
+  CurrentUser$$(data.session.old_currentUser)
+  Customer$$(data.session.old_customer || {})
   UI$$()
-  const { device$ } = Device$$(data.session.device)
+  const { device$ } = Device$$(data.session.old_device)
 
   useCustomerCtx(data.session.customer)
   useUiCtx()
