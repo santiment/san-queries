@@ -36,27 +36,25 @@
 
 <Meta />
 
-{#if BROWSER}
-  <Legacy {data}>
-    <OnlyOnDevice desktop>
-      <NavHeader />
-    </OnlyOnDevice>
+<Legacy {data}>
+  <OnlyOnDevice desktop>
+    <NavHeader />
+  </OnlyOnDevice>
 
-    <Gdpr>
-      <slot />
-    </Gdpr>
+  <Gdpr>
+    <slot />
+  </Gdpr>
 
-    {#if BROWSER}
-      <Dialogs />
-      <FeatureWalkthrough />
-      <Notifications />
+  {#if BROWSER}
+    <Dialogs />
+    <FeatureWalkthrough />
+    <Notifications />
 
-      <Tracking />
+    <Tracking />
 
-      <NextNotifications></NextNotifications>
-    {/if}
-  </Legacy>
-{/if}
+    <NextNotifications></NextNotifications>
+  {/if}
+</Legacy>
 
 <style lang="postcss">
   :root {
