@@ -8,17 +8,17 @@
     user,
     class: className = '',
   }: {
-    user: App.Author
+    user: null | undefined | App.Author
     class?: string
   } = $props()
 
   const {
     elements: { image, fallback },
-  } = createAvatar({ src: user.avatarUrl ?? '' })
+  } = createAvatar({ src: user?.avatarUrl ?? '' })
 </script>
 
 <a
-  href="https://app.santiment.net/profile/{user.id}"
+  href="https://app.santiment.net/profile/{user?.id}"
   target="_blank"
   class={cn('group flex items-center gap-2', className)}
 >
@@ -28,7 +28,7 @@
     <img use:melt={$image} alt="Avatar" class="h-full w-full rounded-[inherit]" />
 
     <span use:melt={$fallback} class="fill-waterloo text-xs font-medium uppercase text-waterloo">
-      {#if user.username}
+      {#if user?.username}
         {user.username.slice(0, 1)}
       {:else}
         <Svg id="user" w="14" />
@@ -37,6 +37,6 @@
   </div>
 
   <span class="group-hover:text-green">
-    {user.username ? '@' + user.username : '<hidden>'}
+    {user?.username ? '@' + user.username : '<hidden>'}
   </span>
 </a>
