@@ -4,13 +4,13 @@
       "name": "Sam Bankman-Fried",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.403097833250539
+      "positive_to_sum": 0.4764563279189382
     },
     {
       "name": "Gary Wang",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.850299054974839
+      "positive_to_sum": 0.6127705722806323
     }
   ],
   "usd-coin": [
@@ -18,106 +18,201 @@
       "name": "Jeremy Allaire",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.940693660252574
+      "positive_to_sum": 0.7233538593814417
     },
-    { "name": "Sean Neville", "confidence": 1, "role": "Founder", "positive_to_sum": 0 }
+    {
+      "name": "Sean Neville",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.5360011618137706
+    }
   ],
   "chainlink": [
     {
       "name": "Sergey Nazarov",
       "confidence": 1,
       "role": "Co-founder and CEO",
-      "positive_to_sum": 0.753069217672636
+      "positive_to_sum": 0.5910517051786468
     },
     {
       "name": "Steve Ellis",
       "confidence": 1,
       "role": "Co-founder",
-      "positive_to_sum": 0.645182363156656
+      "positive_to_sum": 0.5506584702521942
     }
   ],
   "jasmy": [
-    { "name": "Kunitake Ando", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "Kazumasa Sato", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "Masanobu Yoshida", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "Hiroshi Harada", "confidence": 1, "role": "Founder", "positive_to_sum": 1 }
+    {
+      "name": "Kunitake Ando",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.4818325048138945
+    },
+    {
+      "name": "Kazumasa Sato",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    },
+    {
+      "name": "Masanobu Yoshida",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    },
+    {
+      "name": "Hiroshi Harada",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.7312920093536377
+    }
   ],
   "tezos": [
-    { "name": "Arthur Breitman", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
-    { "name": "Kathleen Breitman", "confidence": 1, "role": "Founder", "positive_to_sum": 1 }
+    {
+      "name": "Arthur Breitman",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.751535879764086
+    },
+    {
+      "name": "Kathleen Breitman",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.6124280906464343
+    }
   ],
   "the-sandbox": [
-    { "name": "Arthur Madrid", "confidence": 1, "role": "Co-Founder", "positive_to_sum": 0 },
-    { "name": "Sebastien Borget", "confidence": 1, "role": "Co-Founder", "positive_to_sum": 1 }
+    {
+      "name": "Arthur Madrid",
+      "confidence": 1,
+      "role": "Co-Founder",
+      "positive_to_sum": 0.8514810768832226
+    },
+    {
+      "name": "Sebastien Borget",
+      "confidence": 1,
+      "role": "Co-Founder",
+      "positive_to_sum": 0.7745080909910838
+    }
   ],
   "basic-attention-token": [
     {
       "name": "Brendan Eich",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.75379390893903
+      "positive_to_sum": 0.6330110199088796
     },
-    { "name": "Brian Bondy", "confidence": 1, "role": "Founder", "positive_to_sum": 0 }
+    {
+      "name": "Brian Bondy",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.5645961333690922
+    }
   ],
   "kaspa": [
     {
       "name": "Yonatan Sompolinsky",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.801166282169391
+      "positive_to_sum": 0.5903455108139406
     }
   ],
   "zilliqa": [
-    { "name": "Prateek Saxena", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "Max Kantelia", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
-    { "name": "Juzar Motiwalla", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "Dong Xinshu", "confidence": 1, "role": "CEO", "positive_to_sum": 0 },
+    {
+      "name": "Prateek Saxena",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    },
+    {
+      "name": "Max Kantelia",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.7517715367925413
+    },
+    {
+      "name": "Juzar Motiwalla",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    },
+    {
+      "name": "Dong Xinshu",
+      "confidence": 1,
+      "role": "CEO",
+      "positive_to_sum": null
+    },
     {
       "name": "Yaoqi Jia",
       "confidence": 1,
       "role": "Chief Technology Officer",
-      "positive_to_sum": 0
+      "positive_to_sum": 0.4412831580830091
     },
     {
       "name": "Amrit Kumar",
       "confidence": 1,
       "role": "Chief Scientific Officer",
-      "positive_to_sum": 1
+      "positive_to_sum": 0.8248122811317444
     }
   ],
   "polygon": [
-    { "name": "Jaynti Kanani", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
+    {
+      "name": "Jaynti Kanani",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    },
     {
       "name": "Sandeep Nailwal",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.959002582553033
+      "positive_to_sum": 0.6830886752441508
     },
     {
       "name": "Anurag Arjun",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.803646723151364
+      "positive_to_sum": 0.615629176011609
     }
   ],
   "avalanche": [
-    { "name": "Emin Gün Sirer", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
+    {
+      "name": "Emin Gün Sirer",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.6024832967553073
+    },
     {
       "name": "Kevin Sekniqi",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.455606470803421
+      "positive_to_sum": 0.5579558791135384
     },
-    { "name": "Maofan “Ted” Yin", "confidence": 1, "role": "Founder", "positive_to_sum": 0 }
+    {
+      "name": "Maofan “Ted” Yin",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    }
   ],
   "amp": [
-    { "name": "Trevor Filter", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "Zachary Kilgore", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
+    {
+      "name": "Trevor Filter",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.5367699503898621
+    },
+    {
+      "name": "Zachary Kilgore",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.7586422775837525
+    },
     {
       "name": "Tyler Spalding",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.406614164472449
+      "positive_to_sum": 0.4799114736915834
     }
   ],
   "sui": [
@@ -125,23 +220,53 @@
       "name": "Evan Cheng",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.918802471141291
+      "positive_to_sum": 0.6426072050674119
     },
-    { "name": "Adeniyi Abiodun", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
-    { "name": "Sam Blackshear", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "George Danezis", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "Kostas Chalkias", "confidence": 1, "role": "Founder", "positive_to_sum": 1 }
+    {
+      "name": "Adeniyi Abiodun",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.6380527442766252
+    },
+    {
+      "name": "Sam Blackshear",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.42704063653945923
+    },
+    {
+      "name": "George Danezis",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    },
+    {
+      "name": "Kostas Chalkias",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.592408875074155
+    }
   ],
   "axie-infinity": [
-    { "name": "Trung Nguyen", "confidence": 1, "role": "Founder, CEO", "positive_to_sum": 1 },
-    { "name": "Aleksander Larsen", "confidence": 1, "role": "Founder, COO", "positive_to_sum": 1 }
+    {
+      "name": "Trung Nguyen",
+      "confidence": 1,
+      "role": "Founder, CEO",
+      "positive_to_sum": 0.6402298754487913
+    },
+    {
+      "name": "Aleksander Larsen",
+      "confidence": 1,
+      "role": "Founder, COO",
+      "positive_to_sum": 0.6613807313709494
+    }
   ],
   "harmony": [
     {
       "name": "Stephen Tse",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.201208899046345
+      "positive_to_sum": 0.40100853546777604
     }
   ],
   "bitcoin": [
@@ -149,40 +274,75 @@
       "name": "Satoshi Nakamoto",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.725457028267398
+      "positive_to_sum": 0.5796855557512894
     },
     {
       "name": "Gavin Andresen",
       "confidence": 1,
       "role": "Lead Developer",
-      "positive_to_sum": 0.320895973715216
+      "positive_to_sum": 0.4599059349874203
     }
   ],
   "just": [
-    { "name": "Terance F", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "Elvis Zhang", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "C Wu", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "GL Kong", "confidence": 1, "role": "Founder", "positive_to_sum": 0 }
+    {
+      "name": "Terance F",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    },
+    {
+      "name": "Elvis Zhang",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    },
+    {
+      "name": "C Wu",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    },
+    {
+      "name": "GL Kong",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    }
   ],
   "shiba-inu": [
-    { "name": "Ryoshi", "confidence": 1, "role": "Founder", "positive_to_sum": 0.647170902975556 }
+    {
+      "name": "Ryoshi",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.5553464113105401
+    }
   ],
   "siacoin": [
-    { "name": "David Vorick", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "Luke Champine", "confidence": 1, "role": "Founder", "positive_to_sum": 0 }
+    {
+      "name": "David Vorick",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.3424954814462507
+    },
+    {
+      "name": "Luke Champine",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    }
   ],
   "bitcoin-cash": [
     {
       "name": "Satoshi Nakamoto",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.725457028267398
+      "positive_to_sum": 0.5796855557512894
     },
     {
       "name": "Roger Ver",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.631088979085281
+      "positive_to_sum": 0.5493487240802258
     }
   ],
   "layerzero": [
@@ -190,56 +350,111 @@
       "name": "Bryan Pellegrino",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.931728178748424
+      "positive_to_sum": 0.6406525890984899
     },
-    { "name": "Ryan Zarick", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "Caleb Banister", "confidence": 1, "role": "Founder", "positive_to_sum": 0 }
+    {
+      "name": "Ryan Zarick",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    },
+    {
+      "name": "Caleb Banister",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    }
   ],
   "polkadot-new": [
     {
       "name": "Dr. Gavin Wood",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.887962710651772
+      "positive_to_sum": 0.6277075670233266
     },
-    { "name": "Robert Habermeier", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
-    { "name": "Peter Czaban", "confidence": 1, "role": "Founder", "positive_to_sum": 1 }
+    {
+      "name": "Robert Habermeier",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.6567486856704088
+    },
+    {
+      "name": "Peter Czaban",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.7484505772590637
+    }
   ],
   "terra-luna": [
-    { "name": "Daniel Shin", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "Do Kwon", "confidence": 1, "role": "Founder", "positive_to_sum": 0.221703223952141 }
+    {
+      "name": "Daniel Shin",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.31627732515335083
+    },
+    {
+      "name": "Do Kwon",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.4198897630184235
+    }
   ],
   "dash": [
-    { "name": "Evan Duffield", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "Kyle Hagan", "confidence": 1, "role": "Founder", "positive_to_sum": 0 }
+    {
+      "name": "Evan Duffield",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.5068827060532637
+    },
+    {
+      "name": "Kyle Hagan",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    }
   ],
   "multi-collateral-dai": [
     {
       "name": "Rune Christensen",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.91079592355543
+      "positive_to_sum": 0.5978311001320927
     }
   ],
   "decentraland": [
-    { "name": "Ariel Meilich", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "Esteban Ordano", "confidence": 1, "role": "Founder", "positive_to_sum": 0 }
+    {
+      "name": "Ariel Meilich",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    },
+    {
+      "name": "Esteban Ordano",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.4864218235015869
+    }
   ],
   "chiliz": [
-    { "name": "Alexandre Dreyfus", "confidence": 1, "role": "Founder", "positive_to_sum": 1 }
+    {
+      "name": "Alexandre Dreyfus",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.6610856509413991
+    }
   ],
   "stellar": [
     {
       "name": "Jed McCaleb",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.605728981931242
+      "positive_to_sum": 0.5497386737596992
     },
     {
       "name": "Joyce Kim",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.493742014274791
+      "positive_to_sum": 0.5536146605649127
     }
   ],
   "kucoin-token": [
@@ -247,44 +462,69 @@
       "name": "Eric Don",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.593779563565781
+      "positive_to_sum": 0.5078042314835102
     },
-    { "name": "Jack Zhu", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "John Lee", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
-    { "name": "Kent Li", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "Linda Lin", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
+    {
+      "name": "Jack Zhu",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    },
+    {
+      "name": "John Lee",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.6332230698896664
+    },
+    {
+      "name": "Kent Li",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    },
+    {
+      "name": "Linda Lin",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.6259997814655356
+    },
     {
       "name": "Michael Gan",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.293170286874142
+      "positive_to_sum": 0.46012441969359325
     },
-    { "name": "Top Lan", "confidence": 1, "role": "Founder", "positive_to_sum": 0 }
+    {
+      "name": "Top Lan",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    }
   ],
   "xrp": [
     {
       "name": "David Schwartz",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.649137676090622
+      "positive_to_sum": 0.5596456304244384
     },
     {
       "name": "Jed McCaleb",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.605728981931242
+      "positive_to_sum": 0.5497386737596992
     },
     {
       "name": "Arthur Britto",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.798725384861481
+      "positive_to_sum": 0.5911253226806332
     },
     {
       "name": "Chris Larsen",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.649729760876678
+      "positive_to_sum": 0.5431908369980862
     }
   ],
   "solana": [
@@ -292,16 +532,21 @@
       "name": "Anatoly Yakovenko",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.432774790944141
+      "positive_to_sum": 0.5205834405097881
     },
-    { "name": "Greg Fitzgerald", "confidence": 1, "role": "Founder", "positive_to_sum": 0 }
+    {
+      "name": "Greg Fitzgerald",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    }
   ],
   "cardano": [
     {
       "name": "Charles Hoskinson",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.871783850618636
+      "positive_to_sum": 0.6438775697017367
     }
   ],
   "algorand": [
@@ -309,7 +554,7 @@
       "name": "Silvio Micali",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.791123469604843
+      "positive_to_sum": 0.604046135213485
     }
   ],
   "ecash": [
@@ -317,7 +562,7 @@
       "name": "Amaury Séchet",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.780031583495349
+      "positive_to_sum": 0.6280030133354817
     }
   ],
   "stacks": [
@@ -325,7 +570,7 @@
       "name": "Muneeb Ali",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.964990161757373
+      "positive_to_sum": 0.6847147631167211
     }
   ],
   "ethereum-classic": [
@@ -333,120 +578,237 @@
       "name": "Vitalik Buterin",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.895735387743381
+      "positive_to_sum": 0.6430287751039412
     }
   ],
   "compound": [
-    { "name": "Robert Leshner", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
-    { "name": "Geoffrey Hayes", "confidence": 1, "role": "Founder", "positive_to_sum": 0 }
+    {
+      "name": "Robert Leshner",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.733911122969298
+    },
+    {
+      "name": "Geoffrey Hayes",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    }
   ],
   "arbitrum": [
     {
       "name": "Ed Felten",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.623086171234074
+      "positive_to_sum": 0.5626728518774441
     },
-    { "name": "Steven Goldfeder", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
-    { "name": "Harry Kalodner", "confidence": 1, "role": "Founder", "positive_to_sum": 0 }
+    {
+      "name": "Steven Goldfeder",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.682705064424416
+    },
+    {
+      "name": "Harry Kalodner",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.5726190634781402
+    }
   ],
   "quant": [
     {
       "name": "Gilbert Verdian",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.728369105651708
+      "positive_to_sum": 0.5785550122679106
     },
-    { "name": "Dr Paolo Tasca", "confidence": 1, "role": "Founder", "positive_to_sum": 1 }
+    {
+      "name": "Dr Paolo Tasca",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.9229963421821594
+    }
   ],
   "artificial-superintelligence-alliance": [
-    { "name": "Toby Simpson", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "Humayun Sheikh", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
-    { "name": "Thomas Hain", "confidence": 1, "role": "Founder", "positive_to_sum": 0 }
+    {
+      "name": "Toby Simpson",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.6006690680781285
+    },
+    {
+      "name": "Humayun Sheikh",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.7094130220875072
+    },
+    {
+      "name": "Thomas Hain",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.6006690680781285
+    }
   ],
   "hedera": [
     {
       "name": "Dr. Leemon Baird",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.868345826867617
+      "positive_to_sum": 0.6124932360262302
     },
     {
       "name": "Mance Harmon",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.666340841158435
+      "positive_to_sum": 0.5803010665404107
     }
   ],
   "mx-token": [
-    { "name": "Sheen Xin Hu", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "Aaron Wagener", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "Piotr Brzezinski", "confidence": 1, "role": "Founder", "positive_to_sum": 0 }
+    {
+      "name": "Sheen Xin Hu",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    },
+    {
+      "name": "Aaron Wagener",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    },
+    {
+      "name": "Piotr Brzezinski",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    }
   ],
   "zcash": [
-    { "name": "Zooko Wilcox-O'Hearn", "confidence": 1, "role": "Founder", "positive_to_sum": 0 }
+    {
+      "name": "Zooko Wilcox-O'Hearn",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.2642116656271865
+    }
   ],
   "tron": [
     {
       "name": "Justin Sun",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.857293677135489
+      "positive_to_sum": 0.6234766328185324
     }
   ],
   "nervos-network": [
-    { "name": "Terry Tai", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "Daniel Lv", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "Kevin Wang", "confidence": 1, "role": "Founder", "positive_to_sum": 1 }
+    {
+      "name": "Terry Tai",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    },
+    {
+      "name": "Daniel Lv",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    },
+    {
+      "name": "Kevin Wang",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.7362371055631293
+    }
   ],
   "gatetoken": [
-    { "name": "Thomas Kofler", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "Wassilios Lytras", "confidence": 1, "role": "Founder", "positive_to_sum": 0 }
+    {
+      "name": "Thomas Kofler",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    },
+    {
+      "name": "Wassilios Lytras",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    }
   ],
   "multiversx-egld": [
     {
       "name": "Beniamin Mincu",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.965434345318495
+      "positive_to_sum": 0.6966746531380931
     },
     {
       "name": "Lucian Mincu",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.848633222545889
+      "positive_to_sum": 0.6414679958627861
     },
-    { "name": "Lucian Todea", "confidence": 1, "role": "Founder", "positive_to_sum": 1 }
+    {
+      "name": "Lucian Todea",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.7082357707239768
+    }
   ],
   "kusama": [
     {
       "name": "Dr. Gavin Wood",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.887962710651772
+      "positive_to_sum": 0.6277075670233266
     }
   ],
-  "filecoin": [{ "name": "Juan Benet", "confidence": 1, "role": "Founder", "positive_to_sum": 1 }],
+  "filecoin": [
+    {
+      "name": "Juan Benet",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.6813171042336358
+    }
+  ],
   "lido-dao": [
-    { "name": "Konstantin Lomashuk", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
-    { "name": "Vasiliy Shapovalov", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
+    {
+      "name": "Konstantin Lomashuk",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.6761718573877669
+    },
+    {
+      "name": "Vasiliy Shapovalov",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.5643135915433672
+    },
     {
       "name": "Jordan Fish",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.723524196542667
+      "positive_to_sum": 0.6145307571475896
     }
   ],
   "1inch": [
-    { "name": "Sergej Kunz", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
-    { "name": "Anton Bukov", "confidence": 1, "role": "Founder", "positive_to_sum": 1 }
+    {
+      "name": "Sergej Kunz",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.7025579749566845
+    },
+    {
+      "name": "Anton Bukov",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.7527627149025705
+    }
   ],
   "synthetix": [
     {
       "name": "Kain Warwick",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.897808643596162
+      "positive_to_sum": 0.6397668048003741
     }
   ],
   "the-graph": [
@@ -454,40 +816,65 @@
       "name": "Yaniv Tal",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.64361333608234
+      "positive_to_sum": 0.5955857823739787
     },
-    { "name": "Brandon Ramirez", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "Jannis Pohlmann", "confidence": 1, "role": "Founder", "positive_to_sum": 0 }
+    {
+      "name": "Brandon Ramirez",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    },
+    {
+      "name": "Jannis Pohlmann",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    }
   ],
   "cronos": [
     {
       "name": "Kris Marszalek",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.810303249534448
+      "positive_to_sum": 0.6355785448956649
     },
-    { "name": "Rafael Melo", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "Gary Or", "confidence": 1, "role": "Founder", "positive_to_sum": 0.458685239844454 },
-    { "name": "Bobby Bao", "confidence": 1, "role": "Founder", "positive_to_sum": 0 }
+    {
+      "name": "Rafael Melo",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.5749196310838064
+    },
+    {
+      "name": "Gary Or",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.5085746936689287
+    },
+    {
+      "name": "Bobby Bao",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.5414528020999908
+    }
   ],
   "nexo": [
     {
       "name": "Kosta Kantchev",
       "confidence": 1,
       "role": "Co-Founder & Executive Chairman",
-      "positive_to_sum": 1
+      "positive_to_sum": 0.7018850236569338
     },
     {
       "name": "Antoni Trenchev",
       "confidence": 1,
       "role": "Co-Founder & Managing Partner",
-      "positive_to_sum": 0.850425770060539
+      "positive_to_sum": 0.6166184461984229
     },
     {
       "name": "Kalin Metodiev",
       "confidence": 1,
       "role": "Co-Founder & Managing Partner",
-      "positive_to_sum": 1
+      "positive_to_sum": 0.9218447941816568
     }
   ],
   "worldcoin-org": [
@@ -495,85 +882,177 @@
       "name": "Sam Altman",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.664385051308038
+      "positive_to_sum": 0.551859933266855
     },
     {
       "name": "Alex Blania",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.91728702071043
+      "positive_to_sum": 0.6275285657493683
     }
   ],
   "vechain": [
-    { "name": "Sunny Lu", "confidence": 1, "role": "Founder", "positive_to_sum": 0.92975970664434 },
-    { "name": "Jay Zhang", "confidence": 1, "role": "Founder", "positive_to_sum": 0 }
+    {
+      "name": "Sunny Lu",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.6945711706222676
+    },
+    {
+      "name": "Jay Zhang",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    }
   ],
   "xdc-network": [
-    { "name": "Ritesh Kakkad", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
-    { "name": "Atul Khekade", "confidence": 1, "role": "Founder", "positive_to_sum": 1 }
+    {
+      "name": "Ritesh Kakkad",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.7615046614632706
+    },
+    {
+      "name": "Atul Khekade",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.962832250531787
+    }
   ],
   "green-metaverse-token": [
-    { "name": "Yawn Rong", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
-    { "name": "Jerry Huang", "confidence": 1, "role": "Founder", "positive_to_sum": 0 }
+    {
+      "name": "Yawn Rong",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.7109098189391927
+    },
+    {
+      "name": "Jerry Huang",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.6394994854927063
+    }
   ],
   "litecoin": [
     {
       "name": "Charlie Lee",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.471149344915427
+      "positive_to_sum": 0.49277702566003717
     }
   ],
   "immutable-x": [
-    { "name": "James Ferguson", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
-    { "name": "Robbie Ferguson", "confidence": 1, "role": "Founder", "positive_to_sum": 1 }
+    {
+      "name": "James Ferguson",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.9081950052351504
+    },
+    {
+      "name": "Robbie Ferguson",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.6715591611870394
+    }
   ],
   "trust-wallet-token": [
-    { "name": "Viktor Radchenko", "confidence": 1, "role": "Founder", "positive_to_sum": 0 }
+    {
+      "name": "Viktor Radchenko",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    }
   ],
   "livepeer": [
-    { "name": "Doug Petkanics", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "Eric Tang", "confidence": 1, "role": "Founder", "positive_to_sum": 1 }
+    {
+      "name": "Doug Petkanics",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    },
+    {
+      "name": "Eric Tang",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.75023429467925
+    }
   ],
   "horizen": [
     {
       "name": "Dr. Rob Viglione",
       "confidence": 1,
       "role": "Co-Founder and CEO",
-      "positive_to_sum": 0
+      "positive_to_sum": null
     },
-    { "name": "Rolf Versluis", "confidence": 1, "role": "Co-Founder", "positive_to_sum": 1 },
+    {
+      "name": "Rolf Versluis",
+      "confidence": 1,
+      "role": "Co-Founder",
+      "positive_to_sum": 0.7120537793241629
+    },
     {
       "name": "Jane Lippencott",
       "confidence": 1,
       "role": "Co-Founder and member of the founding team",
-      "positive_to_sum": 0
+      "positive_to_sum": null
     }
   ],
   "axelar": [
-    { "name": "Georgios Vlachos", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
-    { "name": "Sergey Gorbunov", "confidence": 1, "role": "Founder", "positive_to_sum": 1 }
+    {
+      "name": "Georgios Vlachos",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.7125620718909051
+    },
+    {
+      "name": "Sergey Gorbunov",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.728919395915163
+    }
   ],
   "curve-dao-token": [
     {
       "name": "Michael Egorov",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.840167074386554
+      "positive_to_sum": 0.5972633171056431
     }
   ],
-  "eos": [{ "name": "Yves La Rose", "confidence": 1, "role": "Founder", "positive_to_sum": 1 }],
+  "eos": [
+    {
+      "name": "Yves La Rose",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.7059544766329785
+    }
+  ],
   "celo": [
-    { "name": "Rene Reinsberg", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
-    { "name": "Marek Olszewski", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
-    { "name": "Sep Kamvar", "confidence": 1, "role": "Founder", "positive_to_sum": 0 }
+    {
+      "name": "Rene Reinsberg",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.5456120033144056
+    },
+    {
+      "name": "Marek Olszewski",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.8276835083961487
+    },
+    {
+      "name": "Sep Kamvar",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    }
   ],
   "maker": [
     {
       "name": "Rune Christensen",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.91079592355543
+      "positive_to_sum": 0.5978311001320927
     }
   ],
   "gnosis-gno": [
@@ -581,67 +1060,157 @@
       "name": "Martin Köppelmann",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.668700597025102
+      "positive_to_sum": 0.6053033696866533
     },
-    { "name": "Stefan George", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
-    { "name": "Dr. Friederike Ernst", "confidence": 1, "role": "Founder", "positive_to_sum": 1 }
+    {
+      "name": "Stefan George",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.7985154628311235
+    },
+    {
+      "name": "Dr. Friederike Ernst",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.7154247760772705
+    }
   ],
   "astar": [
     {
       "name": "Sota Watanabe",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.801102346366323
+      "positive_to_sum": 0.6054053136786898
     }
   ],
   "near-protocol": [
-    { "name": "Erik Trautman", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
+    {
+      "name": "Erik Trautman",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    },
     {
       "name": "Illia Polosukhin",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.916750698301822
+      "positive_to_sum": 0.6139967970572537
     },
-    { "name": "Alexander Skidanov", "confidence": 1, "role": "Founder", "positive_to_sum": 1 }
+    {
+      "name": "Alexander Skidanov",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.6927300218763575
+    }
   ],
   "bitget-token-new": [
-    { "name": "Gracy Chen", "confidence": 1, "role": "CEO", "positive_to_sum": 0.959489949948894 },
-    { "name": "Vugar Usi Zade", "confidence": 1, "role": "COO", "positive_to_sum": 1 },
-    { "name": "Hon Ng", "confidence": 1, "role": "CLO", "positive_to_sum": 1 },
-    { "name": "Min Lin", "confidence": 1, "role": "CBO", "positive_to_sum": 1 }
+    {
+      "name": "Gracy Chen",
+      "confidence": 1,
+      "role": "CEO",
+      "positive_to_sum": 0.7088477474770096
+    },
+    {
+      "name": "Vugar Usi Zade",
+      "confidence": 1,
+      "role": "COO",
+      "positive_to_sum": 0.7696958366994728
+    },
+    {
+      "name": "Hon Ng",
+      "confidence": 1,
+      "role": "CLO",
+      "positive_to_sum": 0.7653308633413359
+    },
+    {
+      "name": "Min Lin",
+      "confidence": 1,
+      "role": "CBO",
+      "positive_to_sum": 0.7170961960648505
+    }
   ],
   "uniswap": [
     {
       "name": "Hayden Adams",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.667592101817137
+      "positive_to_sum": 0.5539914196423485
     }
   ],
   "aptos": [
-    { "name": "Mo Shaikh", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
-    { "name": "Avery Ching", "confidence": 1, "role": "Founder", "positive_to_sum": 1 }
+    {
+      "name": "Mo Shaikh",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.6203882348374513
+    },
+    {
+      "name": "Avery Ching",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.6479589924683938
+    }
   ],
   "ankr": [
-    { "name": "Chandler Song", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
-    { "name": "Ryan Fang", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
-    { "name": "Stanley Wu", "confidence": 1, "role": "Founder", "positive_to_sum": 1 }
+    {
+      "name": "Chandler Song",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.7100301287105159
+    },
+    {
+      "name": "Ryan Fang",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.7855481487133515
+    },
+    {
+      "name": "Stanley Wu",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.7232898251161408
+    }
   ],
   "okb": [
-    { "name": "Jay Hao", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
-    { "name": "Mingxing “Star” Xu", "confidence": 1, "role": "Founder", "positive_to_sum": 0 }
+    {
+      "name": "Jay Hao",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.6707991775026027
+    },
+    {
+      "name": "Mingxing “Star” Xu",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    }
   ],
   "origintrail": [
-    { "name": "Žiga Drev", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
-    { "name": "Tomaž Levak", "confidence": 1, "role": "Founder", "positive_to_sum": 1 },
-    { "name": "Branimir Rakić", "confidence": 1, "role": "Founder", "positive_to_sum": 1 }
+    {
+      "name": "Žiga Drev",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.6525623935102643
+    },
+    {
+      "name": "Tomaž Levak",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.7200016681353375
+    },
+    {
+      "name": "Branimir Rakić",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.6854584282365519
+    }
   ],
   "usdd": [
     {
       "name": "Justin Sun",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.857293677135489
+      "positive_to_sum": 0.6234766328185324
     }
   ],
   "bittorrent-new": [
@@ -649,13 +1218,13 @@
       "name": "Bram Cohen",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.849623787481407
+      "positive_to_sum": 0.6732857371374796
     },
     {
       "name": "Justin Sun",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.857293677135489
+      "positive_to_sum": 0.6234766328185324
     }
   ],
   "pax-gold": [
@@ -663,7 +1232,7 @@
       "name": "Charles Cascarilla",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.813667179215161
+      "positive_to_sum": 0.6106528358291077
     }
   ],
   "0x": [
@@ -671,34 +1240,61 @@
       "name": "Will Warren",
       "confidence": 1,
       "role": "Founder, CEO",
-      "positive_to_sum": 0.762502239928838
+      "positive_to_sum": 0.5804854233272398
     },
-    { "name": "Amir Bandeali", "confidence": 1, "role": "Founder, CTO", "positive_to_sum": 0 }
+    {
+      "name": "Amir Bandeali",
+      "confidence": 1,
+      "role": "Founder, CTO",
+      "positive_to_sum": null
+    }
   ],
-  "wootrade": [{ "name": "Jack Tan", "confidence": 1, "role": "Co-founder", "positive_to_sum": 1 }],
+  "wootrade": [
+    {
+      "name": "Jack Tan",
+      "confidence": 1,
+      "role": "Co-founder",
+      "positive_to_sum": 0.8358493446196779
+    }
+  ],
   "bnb": [
     {
       "name": "Changpeng Zhao",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.633500091087378
+      "positive_to_sum": 0.5556289376886752
     },
-    { "name": "He Yi", "confidence": 1, "role": "Co-Founder", "positive_to_sum": 0.707794297553616 }
+    {
+      "name": "He Yi",
+      "confidence": 1,
+      "role": "Co-Founder",
+      "positive_to_sum": 0.5848904880594498
+    }
   ],
   "conflux-network": [
     {
       "name": "Fan Long",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.803139346139973
+      "positive_to_sum": 0.7163674373514046
     },
-    { "name": "YuanJie Zhang", "confidence": 1, "role": "Co-Founder", "positive_to_sum": 0 },
-    { "name": "Ming Wu", "confidence": 1, "role": "Co-Founder, CTO", "positive_to_sum": 1 },
+    {
+      "name": "YuanJie Zhang",
+      "confidence": 1,
+      "role": "Co-Founder",
+      "positive_to_sum": 0.8107285083139577
+    },
+    {
+      "name": "Ming Wu",
+      "confidence": 1,
+      "role": "Co-Founder, CTO",
+      "positive_to_sum": 0.7339665658701222
+    },
     {
       "name": "Guang Yang",
       "confidence": 1,
       "role": "Co-Founder, Research Director",
-      "positive_to_sum": 1
+      "positive_to_sum": 0.6991394723497854
     }
   ],
   "arweave": [
@@ -706,64 +1302,99 @@
       "name": "Sam Williams",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.830456551618744
+      "positive_to_sum": 0.7055513656520204
     },
-    { "name": "William Jones", "confidence": 1, "role": "Founder", "positive_to_sum": 1 }
+    {
+      "name": "William Jones",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.7467598327001927
+    }
   ],
   "holo": [
-    { "name": "Arthur Brock", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "Eric Harris-Braun", "confidence": 1, "role": "Founder", "positive_to_sum": 1 }
+    {
+      "name": "Arthur Brock",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.5298728346824646
+    },
+    {
+      "name": "Eric Harris-Braun",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.804642582078057
+    }
   ],
   "ethereum": [
     {
       "name": "Vitalik Buterin",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.895735387743381
+      "positive_to_sum": 0.6430287751039412
     },
     {
       "name": "Gavin Wood",
       "confidence": 1,
       "role": "Co-Founder",
-      "positive_to_sum": 0.697128778647489
+      "positive_to_sum": 0.5569523231337276
     },
     {
       "name": "Anthony Di Iorio",
       "confidence": 1,
       "role": "Co-Founder",
-      "positive_to_sum": 0.841816154740156
+      "positive_to_sum": 0.6404389398242041
     },
     {
       "name": "Charles Hoskinson",
       "confidence": 1,
       "role": "Co-Founder",
-      "positive_to_sum": 0.871783850618636
+      "positive_to_sum": 0.6438775697017367
     },
-    { "name": "Mihai Alisie", "confidence": 1, "role": "Co-Founder", "positive_to_sum": 1 },
+    {
+      "name": "Mihai Alisie",
+      "confidence": 1,
+      "role": "Co-Founder",
+      "positive_to_sum": 0.7606375643071911
+    },
     {
       "name": "Joseph Lubin",
       "confidence": 1,
       "role": "Co-Founder",
-      "positive_to_sum": 0.81762113533152
+      "positive_to_sum": 0.624537893905668
     },
-    { "name": "Amir Chetrit", "confidence": 1, "role": "Co-Founder", "positive_to_sum": 1 }
+    {
+      "name": "Amir Chetrit",
+      "confidence": 1,
+      "role": "Co-Founder",
+      "positive_to_sum": 0.7210812175354452
+    }
   ],
   "cosmos": [
     {
       "name": "Jae Kwon",
       "confidence": 1,
       "role": "Founder",
-      "positive_to_sum": 0.379512782493263
+      "positive_to_sum": 0.4365855385957872
     },
-    { "name": "Zarko Milosevic", "confidence": 1, "role": "Founder", "positive_to_sum": 0 },
-    { "name": "Ethan Buchman", "confidence": 1, "role": "Founder", "positive_to_sum": 1 }
+    {
+      "name": "Zarko Milosevic",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": null
+    },
+    {
+      "name": "Ethan Buchman",
+      "confidence": 1,
+      "role": "Founder",
+      "positive_to_sum": 0.6717923893433099
+    }
   ],
   "ethereum-name-service": [
     {
       "name": "Nick Johnson",
       "confidence": 1,
       "role": "Lead Developer",
-      "positive_to_sum": 0.816416861145884
+      "positive_to_sum": 0.6396394244230168
     }
   ]
 }
