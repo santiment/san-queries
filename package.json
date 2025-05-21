@@ -114,7 +114,7 @@
     "rxjs-exhaustmap-with-trailing": "^2.1.1",
     "san-studio": "github:santiment/san-studio#ec969a8",
     "san-webkit": "github:santiment/san-webkit#2b179d6a",
-    "san-webkit-next": "github:santiment/san-webkit#lib-4d27ab03-030425",
+    "san-webkit-next": "github:santiment/san-webkit#lib-db8de2f0-090425",
     "svelte": "5.25.8",
     "svelte-check": "^4.1.5",
     "svelte-preprocess-cssmodules": "github:DmitriVanGuard/svelte-preprocess-cssmodules#3b24f22",

@@ -19,7 +19,7 @@ index 417b59c93063ab284f6f46515f00d19dcb9c70da..d4dc81b9f535efa725dd56aaa2068733
  					// Do not forward other cookies for "credentials: include" because we don't know
  					// which cookie belongs to which domain (browser does not pass this info)
 -					if (`.${url.hostname}`.endsWith(`.${event.url.hostname}`) && credentials !== 'omit') {
-+					if ((url.hostname.includes(process.env.CORS_HOSTNAME) || `.${url.hostname}`.endsWith(`.${event.url.hostname}`)) && credentials !== 'omit') {
++					if ((url.hostname.includes(process.env.CORS_HOSTNAME) || url.hostname.includes('santiment') || `.${url.hostname}`.endsWith(`.${event.url.hostname}`)) && credentials !== 'omit') {
  						const cookie = get_cookie_header(url, request.headers.get('cookie'));
  						if (cookie) request.headers.set('cookie', cookie);
  					}
@@ -42,7 +42,7 @@ index e2af144654e67c65be5f62503e33f2f09237b76f..a8248e7bd8f2fae9cc66112cbdff1fd7
  
  		const url = new URL(input instanceof Request ? input.url : input, event.url);
 -		const same_origin = url.origin === event.url.origin;
-+		const same_domain = url.hostname.includes(process.env.CORS_HOSTNAME);
++		const same_domain = url.hostname.includes(process.env.CORS_HOSTNAME) || url.hostname.includes('santiment');
 +const same_origin = same_domain || url.origin === event.url.origin;
 +        
  

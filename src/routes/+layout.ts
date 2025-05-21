@@ -49,6 +49,10 @@ function getPageType(pathname: string) {
 
 export const load: LayoutLoad = (event) => {
   const { data } = event
+  console.log(event.route)
+  console.log(data)
+
+  console.log('------')
 
   setupKitClientSession(data)
 

@@ -15,13 +15,15 @@
   import { useDashboardDuplicateFlow } from './flow/duplicate'
   import { showAddSqlQueryDialog$ } from './DocumentContent/extensions/query-widget-block-node/ui/AddSqlQueryDialog.svelte'
   import { onMount } from 'svelte'
+  import { BROWSER } from 'esm-env'
 
   type TProps = {
     apiDashboard: undefined | null | TApiDashboard<any>
     cache?: null | TDashboardSqlData[]
     readonly?: boolean
+    onlyBrowser?: boolean
   }
-  let { apiDashboard, cache, readonly = true }: TProps = $props()
+  let { apiDashboard, cache, readonly = true, onlyBrowser = false }: TProps = $props()
 
   // TODO: Cleanup unused sql queries in readonly mode
 
@@ -98,9 +100,11 @@
 
   <DocumentHeading onChange={onDocumentUpdate}></DocumentHeading>
 
-  <DocumentContent
-    onclickcapture={onContentClick}
-    onUpdate={onDocumentUpdate}
-    editorProps={{ showAddSqlQueryDialog }}
-  ></DocumentContent>
+  {#if onlyBrowser ? BROWSER : true}
+    <DocumentContent
+      onclickcapture={onContentClick}
+      onUpdate={onDocumentUpdate}
+      editorProps={{ showAddSqlQueryDialog }}
+    ></DocumentContent>
+  {/if}
 </article>

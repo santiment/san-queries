@@ -56,7 +56,7 @@
 </script>
 
 <header class="flex items-center">
-  <User user={author} class="text-waterloo" />
+  <User user={author || {}} class="text-waterloo" />
 
   <div class="ml-3 flex h-[32px] gap-1 border-l fill-fiord pl-3 text-base text-rhino">
     {#if isAuthor && queryEditor.name.$.includes(', 2024, ')}

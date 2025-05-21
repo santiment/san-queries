@@ -11,6 +11,10 @@ declare global {
 
       customer: import('san-webkit-next/ctx/customer/api').TCustomer | undefined
       device: import('san-webkit-next/ctx/device').DeviceType
+
+      old_device: any
+      old_currentUser: null
+      old_customer: object
     }
     // interface PageData {}
     // interface Platform {}
