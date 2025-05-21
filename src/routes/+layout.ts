@@ -56,12 +56,12 @@ export const load: LayoutLoad = (event) => {
 
   setupKitClientSession(data)
 
-  //if (!data.customer?.currentUser) {
-  //  if (event.route.id?.startsWith('/(editor)/') && event.url.pathname.includes('/new')) {
-  //    // if (event.route.id?.startsWith('/(editor)/')) {
-  //    throw redirect(302, '/sign-up?from=' + encodeURIComponent(event.url.href))
-  //  }
-  //}
+  if (!data.customer?.currentUser) {
+    if (event.route.id?.startsWith('/(editor)/') && event.url.pathname.includes('/new')) {
+      // if (event.route.id?.startsWith('/(editor)/')) {
+      throw redirect(302, '/sign-up?from=' + encodeURIComponent(event.url.href))
+    }
+  }
 
   return {
     session: data,
