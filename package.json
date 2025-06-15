@@ -70,7 +70,7 @@
     "@melt-ui/svelte": "^0.86.2",
     "@popsql/monaco-sql-languages": "^0.1.0",
     "@santiment-network/chart": "^1.0.2",
-    "@santiment-network/chart-next": "npm:@santiment-network/chart@^1.0.4",
+    "@santiment-network/chart-next": "npm:@santiment-network/chart@^1.0.7",
     "@sentry/sveltekit": "^8.36.0",
     "@sveltejs/adapter-auto": "^3.3.1",
     "@sveltejs/adapter-node": "^5.2.12",
