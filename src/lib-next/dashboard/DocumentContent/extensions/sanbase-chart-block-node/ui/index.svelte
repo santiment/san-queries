@@ -12,11 +12,14 @@
   import { useSanbaseChartWidgetFlow } from '../ctx'
   import Resizer from '../../utils/Resizer.svelte'
   import ChartsButton from './ChartsButton.svelte'
+  import { AskForInsightButton } from 'san-webkit-next/ui/app/AIChatbot'
   import { internalProxyFetcher } from '../../utils/api'
+  import { useCustomerCtx } from 'san-webkit-next/ctx/customer'
 
   let { view, data }: TDataWidgetProps<typeof SANBASE_CHART_BLOCK_NODE> = $props()
 
   const { dashboard } = useDashboardCtx.get()
+  const { currentUser } = useCustomerCtx.get()
   const { metricSeries, chartParameters, normalizeMetric } = useSanbaseChartWidgetFlow(data.widget)
 
   useApiMetricFetchSettingsCtx.set({ fetcher: internalProxyFetcher })
@@ -114,7 +117,13 @@
         <ApiMetricSeries series={item}></ApiMetricSeries>
       {/each}
 
-      <SpikeExplanations></SpikeExplanations>
+      <SpikeExplanations>
+        {#snippet children({ slug, explanation })}
+          {#if currentUser.$$?.email?.endsWith('@santiment.net')}
+            <AskForInsightButton {slug} {explanation}></AskForInsightButton>
+          {/if}
+        {/snippet}
+      </SpikeExplanations>
 
       <Tooltip></Tooltip>
     </Chart>
