@@ -18,6 +18,7 @@
   import { BROWSER } from 'esm-env'
   import AIChatBot, { useChatContext } from 'san-webkit-next/ui/app/AIChatbot'
   import { checkIsDyorDashboard } from '$lib-next/utils'
+  import { useCustomerCtx } from 'san-webkit-next/ctx/customer'
 
   type TProps = {
     apiDashboard: undefined | null | TApiDashboard<any>
@@ -30,6 +31,7 @@
   // TODO: Cleanup unused sql queries in readonly mode
 
   const { dashboard } = useDashboardCtx.set(apiDashboard, readonly)
+  const { currentUser } = useCustomerCtx.get()
 
   const isDyorDashboard = checkIsDyorDashboard()
   useDashboardSqlQueriesCtx.set(apiDashboard, cache)
@@ -126,6 +128,6 @@
   {/if}
 </article>
 
-{#if BROWSER && isDyorDashboard}
+{#if BROWSER && isDyorDashboard && currentUser.$$?.email?.endsWith('@santiment.net')}
   <AIChatBot></AIChatBot>
 {/if}
