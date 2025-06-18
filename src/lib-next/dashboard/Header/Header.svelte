@@ -115,7 +115,7 @@
         </Popover>
       {/if}
     {:else if currentUser.$$}
-      {#if false}
+      {#if currentUser.$$?.email?.includes('@santiment.net')}
         <Button icon="copy" explanation="Duplicate" onclick={onDuplicateClick}></Button>
       {/if}
     {/if}
