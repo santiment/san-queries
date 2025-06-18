@@ -16,6 +16,9 @@
   import { showAddSqlQueryDialog$ } from './DocumentContent/extensions/query-widget-block-node/ui/AddSqlQueryDialog.svelte'
   import { onMount } from 'svelte'
   import { BROWSER } from 'esm-env'
+  import AIChatBot, { useChatContext } from 'san-webkit-next/ui/app/AIChatbot'
+  import { checkIsDyorDashboard } from '$lib-next/utils'
+  import { useCustomerCtx } from 'san-webkit-next/ctx/customer'
 
   type TProps = {
     apiDashboard: undefined | null | TApiDashboard<any>
@@ -28,7 +31,9 @@
   // TODO: Cleanup unused sql queries in readonly mode
 
   const { dashboard } = useDashboardCtx.set(apiDashboard, readonly)
+  const { currentUser } = useCustomerCtx.get()
 
+  const isDyorDashboard = checkIsDyorDashboard()
   useDashboardSqlQueriesCtx.set(apiDashboard, cache)
 
   useDashboardParameterWidgetsCtx.set()
@@ -39,6 +44,20 @@
   const { publishDashboard, unpublishDashboard } = dashboard.isCurrentUserAuthor
     ? usePublishToggleFlow()
     : {}
+
+  if (isDyorDashboard) {
+    useChatContext.set({
+      dashboardId: '1153',
+      asset: 'ethereum',
+      metrics: [
+        'price_usd',
+        'social_volume_total',
+        'social_dominance_total',
+        'sentiment_positive_total',
+        'sentiment_negative_total',
+      ],
+    })
+  }
 
   const showDashboardPublishedDialog = showDashboardPublishedDialog$()
   const showAddSqlQueryDialog = showAddSqlQueryDialog$()
@@ -108,3 +127,7 @@
     ></DocumentContent>
   {/if}
 </article>
+
+{#if BROWSER && isDyorDashboard && currentUser.$$?.email?.endsWith('@santiment.net')}
+  <AIChatBot></AIChatBot>
+{/if}

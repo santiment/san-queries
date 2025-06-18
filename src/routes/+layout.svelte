@@ -10,6 +10,8 @@
   import { useAssetsCtx } from 'san-webkit-next/ctx/assets'
   import NextNotifications from 'san-webkit-next/ui/core/Notifications'
   import { BootFlag } from 'san-webkit-next/utils'
+  import { useClockCtx, useTimeZoneCtx } from 'san-webkit-next/ctx/time'
+  import { useMetricsRestrictionsCtx } from 'san-webkit-next/ctx/metrics-registry'
 
   import Dialogs from 'san-webkit/lib/ui/Dialog/Dialogs.svelte'
   import Notifications from 'san-webkit/lib/ui/Notifications'
@@ -28,6 +30,10 @@
   useUiCtx()
   useDeviceCtx(data.session.device)
   useAssetsCtx()
+
+  useMetricsRestrictionsCtx.set()
+  useTimeZoneCtx.set()
+  useClockCtx.set()
 
   $effect(() => {
     BootFlag.set()

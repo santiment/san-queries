@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { TSeries } from 'san-webkit-next/ui/app/Chart/ctx'
+  import { useApiMetricFetchSettingsCtx, type TSeries } from 'san-webkit-next/ui/app/Chart/ctx'
   import type { SANBASE_CHART_BLOCK_NODE } from '../schema'
   import type { TDataWidgetProps } from '../../schema/data-widget'
 
@@ -18,6 +18,8 @@
 
   const { dashboard } = useDashboardCtx.get()
   const { metricSeries, chartParameters, normalizeMetric } = useSanbaseChartWidgetFlow(data.widget)
+
+  useApiMetricFetchSettingsCtx.set({ fetcher: internalProxyFetcher })
 
   const showMetricsDialogDialog = showMetricsDialogDialog$()
 
@@ -99,6 +101,8 @@
 
   {#if BROWSER}
     <Chart
+      onRangeSelectEnd={() => {}}
+      onRangeSelectChange={() => {}}
       class="min-h-0 flex-1 bg-white"
       options={{
         handleScroll: { mouseWheel: false },
@@ -107,7 +111,7 @@
       }}
     >
       {#each metricSeries.$ as item (item.id)}
-        <ApiMetricSeries series={item} fetcher={internalProxyFetcher}></ApiMetricSeries>
+        <ApiMetricSeries series={item}></ApiMetricSeries>
       {/each}
 
       <SpikeExplanations></SpikeExplanations>
