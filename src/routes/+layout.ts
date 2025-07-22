@@ -44,6 +44,8 @@ function getPageType(pathname: string) {
 
   if (pathname.startsWith('/dashboard/')) return 'dashboard'
 
+  if (pathname.startsWith('/__prototype__/dashboard-exchanges/')) return 'dashboard-exchanges'
+
   return 'explorer'
 }
 
