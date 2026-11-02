@@ -11,9 +11,8 @@ export type TAssetInfoData = {
   sentiment_negative_total: number
 }
 
-export const queryAssetInfo = ApiQuery(
-  (variables: { slug: string }) => ({
-    schema: `query($slug: String!){
+// Also on the /api/internal allowlist (src/routes/api/internal/allowed-queries.ts)
+export const ASSET_INFO_QUERY = `query($slug: String!){
   data:projectBySlug(slug:$slug) {
     priceUsd
     marketcapUsd
@@ -29,7 +28,11 @@ export const queryAssetInfo = ApiQuery(
     sentiment_negative_total: aggregatedTimeseriesData(aggregation:SUM, metric:"sentiment_negative_total",from:"utc_now-12h", to:"utc_now", includeIncompleteData: true)
   }
 }
-`,
+`
+
+export const queryAssetInfo = ApiQuery(
+  (variables: { slug: string }) => ({
+    schema: ASSET_INFO_QUERY,
     variables: {
       slug: variables.slug,
     },

@@ -1,25 +1,53 @@
 import type { RequestHandler } from './$types'
-import { GQL_BASIC_AUTH_USERNAME, GQL_BASIC_AUTH_PASSWORD } from '$env/static/private'
+import { env } from '$env/dynamic/private'
 
 import { error, json } from '@sveltejs/kit'
+import { findAllowedQuery } from './allowed-queries'
 
-const ENDPOINT = process.env.NODE_GQL_SERVER_URL || process.env.GQL_SERVER_URL
+const ENDPOINT = (process.env.NODE_GQL_SERVER_URL || process.env.GQL_SERVER_URL) as string
 
-export const POST: RequestHandler = async (event) => {
-  const { headers, body } = event.request
+// Sanbase still sees the visitor: X-Forwarded-For feeds its request log and per-IP call
+// limits (without it every request comes from this pod's cluster IP, which has none),
+// and Origin picks the product. Nothing else is passed on, cookies included.
+const FORWARDED_HEADERS = ['origin', 'user-agent', 'x-forwarded-for']
 
-  headers.delete('content-length')
+// Runs the dashboard widgets' queries with Sanbase's basic-auth credential, so restricted
+// metrics render for every visitor. That credential reads everything, hence the allowlist.
+export const POST: RequestHandler = async ({ request }) => {
+  let body: unknown
+  try {
+    body = await request.json()
+  } catch {
+    error(400, 'Bad request')
+  }
 
-  if (GQL_BASIC_AUTH_USERNAME && GQL_BASIC_AUTH_PASSWORD) {
-    headers.set(
-      'Authorization',
-      `Basic ${btoa(`${GQL_BASIC_AUTH_USERNAME}:${GQL_BASIC_AUTH_PASSWORD}`)}`,
-    )
+  const { query: text, variables = null } = (body ?? {}) as { query?: unknown; variables?: unknown }
+
+  const query = typeof text === 'string' ? findAllowedQuery(text) : undefined
+  if (!query) error(400, 'Query not allowed')
+
+  if (variables !== null && (typeof variables !== 'object' || Array.isArray(variables))) {
+    error(400, 'Bad request')
+  }
+
+  const headers = new Headers({ 'Content-Type': 'application/json' })
+  for (const name of FORWARDED_HEADERS) {
+    const value = request.headers.get(name)
+    if (value) headers.set(name, value)
+  }
+
+  // Read at runtime from the pod's environment (Vault), never baked into the image.
+  const { GRAPHQL_BASIC_AUTH_USERNAME: username, GRAPHQL_BASIC_AUTH_PASSWORD: password } = env
+  if (username && password) {
+    headers.set('Authorization', `Basic ${btoa(`${username}:${password}`)}`)
   }
 
   try {
-    // @ts-expect-error
-    const response = await fetch(ENDPOINT, { method: 'POST', duplex: 'half', headers, body })
+    const response = await fetch(ENDPOINT, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ query, variables }),
+    })
 
     const data = await response.json()
     return json(data, { status: response.status })
