@@ -1,5 +1,4 @@
 import type { RequestHandler } from './$types'
-import { GQL_BASIC_AUTH_USERNAME, GQL_BASIC_AUTH_PASSWORD } from '$env/static/private'
 
 import { error, json } from '@sveltejs/kit'
 
