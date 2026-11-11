@@ -1,0 +1,19 @@
+diff --git a/dist/block-layout/drag-handle.js b/dist/block-layout/drag-handle.js
+index 7fdbbe845b963efbcdc267373cb6a26aaa29efb3..4a3b1832e46f5e1f89543dd0c71f4d57940f8a36 100644
+--- a/dist/block-layout/drag-handle.js
++++ b/dist/block-layout/drag-handle.js
+@@ -1,5 +1,3 @@
+-// @ts-ignore
+-import { __serializeForClipboard } from '@tiptap/pm/view';
+ import { NodeSelection } from 'prosemirror-state';
+ export function createDragHandle(editor, BlockActions) {
+     let domNode = null;
+@@ -16,7 +14,7 @@ export function createDragHandle(editor, BlockActions) {
+         const selection = NodeSelection.create(view.state.doc, posOfBlockNode);
+         view.dispatch(view.state.tr.setSelection(selection));
+         const slice = view.state.selection.content();
+-        const { dom, text } = __serializeForClipboard(view, slice);
++        const { dom, text } = view.serializeForClipboard(slice);
+         event.dataTransfer.clearData();
+         event.dataTransfer.setData('text/html', dom.innerHTML);
+         event.dataTransfer.setData('text/plain', text);
