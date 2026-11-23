@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { TDashboardDataWidgetByType } from '$lib-next/dashboard/ctx/data-widgets.svelte'
   import { useDashboardSqlQueriesCtx } from '$lib-next/dashboard/ctx/dashboard-queries.svelte'
-  import { markdownToHTML } from 'san-webkit/lib/ui/Editor/markdown'
+  import { safeMarkdownToHTML } from '$lib-next/utils/markdown'
 
   type TProps = { sqlDataWidget?: TDashboardDataWidgetByType['query-widget']; column: number }
   let { sqlDataWidget, column }: TProps = $props()
@@ -22,7 +22,8 @@
   Data is empty
 {:else}
   <div class="">
-    {@html markdownToHTML(columnData.slice(0, 1).toString())}
+    <!-- SQL result text is untrusted (anyone can publish a dashboard): never use raw `marked` output -->
+    {@html safeMarkdownToHTML(columnData.slice(0, 1).toString())}
   </div>
 {/if}
 
