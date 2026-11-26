@@ -2,6 +2,7 @@ import { BROWSER } from 'esm-env'
 import type { PageLoad } from './$types'
 
 import { redirect } from '@sveltejs/kit'
+import { getSafeRedirectPath } from '$lib-next/utils/safe-redirect'
 
 export const ssr = false
 
@@ -18,20 +19,7 @@ export const load: PageLoad = async ({ parent, url: { searchParams } }) => {
   // currentUser.set(data)
   // customerData$.refetch()
 
-  let successRedirect = '/'
-
-  try {
-    const url = searchParams.get('success_redirect_url')
-    if (url) {
-      const successRedirectUrl = new URL(url)
-
-      if (successRedirectUrl.hostname.endsWith('.santiment.net')) {
-        successRedirect = successRedirectUrl.pathname
-      }
-    }
-  } catch (e) {
-    console.error(e)
-  }
+  const successRedirect = getSafeRedirectPath(searchParams.get('success_redirect_url'))
 
   return {
     email: searchParams.get('email') as string,
