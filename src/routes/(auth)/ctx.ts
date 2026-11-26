@@ -3,6 +3,7 @@ import { goto } from '$app/navigation'
 import { notifications$ } from 'san-webkit/lib/ui/Notifications'
 import { ethLoginMutation } from 'san-webkit/lib/api/login'
 import { CURRENT_USER_FRAGMENT } from 'san-webkit/lib/stores/user'
+import { getSafeRedirectPath } from '$lib-next/utils/safe-redirect'
 
 const CTX = 'authCtx'
 
@@ -27,17 +28,7 @@ export function startEthLoginFlow() {
       try {
         const from = new URLSearchParams(window.location.search).get('from')
 
-        let successRedirect = '/'
-
-        if (from) {
-          const url = new URL(from)
-
-          if (url.hostname.endsWith('.santiment.net')) {
-            successRedirect = url.pathname
-          }
-        }
-
-        goto(successRedirect)
+        goto(getSafeRedirectPath(from))
       } catch (e) {
         goto('/query/new')
       }
